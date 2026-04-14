@@ -1,180 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Agrani Sinha | VS Code Portfolio</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agrani Sinha | VS Code Portfolio</title>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <div class="app-shell">
 
-  <!-- TITLE BAR -->
-  <header class="titlebar">
-    <div class="titlebar-left">
-      <span class="dot red"></span>
-      <span class="dot yellow"></span>
-      <span class="dot green"></span>
-    </div>
-    <div class="titlebar-center">
-      Agrani Sinha - Portfolio - Visual Studio Code
-    </div>
-    <div class="titlebar-right">— □ ✕</div>
-  </header>
+<!-- TITLE BAR -->
+<header class="titlebar">
+  <div class="titlebar-left">
+    <span class="dot red"></span>
+    <span class="dot yellow"></span>
+    <span class="dot green"></span>
+  </div>
+  <div class="titlebar-center">Agrani Sinha - Portfolio - Visual Studio Code</div>
+  <div class="titlebar-right">— □ ✕</div>
+</header>
 
-  <!-- WORKBENCH -->
-  <div class="workbench">
+<div class="workbench">
 
-    <!-- ACTIVITY BAR -->
-    <aside class="activity-bar">
-      <button class="activity active">📁</button>
-      <button class="activity">🔍</button>
-      <button class="activity">⑂</button>
-      <button class="activity">🧩</button>
-    </aside>
+<!-- ACTIVITY BAR -->
+<aside class="activity-bar">
+  <button class="activity active">📁</button>
+  <button class="activity">🔍</button>
+  <button class="activity">⑂</button>
+</aside>
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-      <div class="sidebar-title">EXPLORER</div>
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-title">EXPLORER</div>
 
-      <div class="folder">
-        <div class="folder-title">PORTFOLIO</div>
-        <ul>
-          <li onclick="openTab('about')">about.js</li>
-          <li onclick="openTab('projects')">projects.js</li>
-          <li onclick="openTab('experience')">experience.js</li>
-          <li onclick="openTab('skills')">skills.js</li>
-          <li onclick="openTab('lor')">lor.js</li>
-          <li onclick="openTab('research')">research.js</li>
-          <li onclick="openTab('resume')">resume.js</li>
-          <li onclick="openTab('contact')">contact.js</li>
-        </ul>
-      </div>
-    </aside>
-
-    <!-- EDITOR -->
-    <div class="editor">
-
-      <!-- TOP EDITOR AREA -->
-      <div class="editor-top">
-
-        <!-- TABS -->
-        <div class="tabs" id="tabs">
-          <div class="tab active" data-tab="about">about.js</div>
-        </div>
-
-        <!-- CONTENT -->
-        <div class="editor-content">
-
-          <!-- ABOUT -->
-          <section id="about" class="panel active">
-            <h1>Agrani Sinha</h1>
-            <p>AI × Healthcare × Systems</p>
-            <p>
-              Health Informatics graduate with a Biotechnology foundation,
-              building AI-driven healthcare systems.
-            </p>
-          </section>
-
-          <!-- PROJECTS -->
-          <section id="projects" class="panel">
-            <h2>Projects</h2>
-
-            <div class="card">
-              <h3>Respiratory Chatbot</h3>
-              <div class="images">
-                <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (1).jpeg">
-                <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (2).jpeg">
-                <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (3).jpeg">
-              </div>
-            </div>
-
-            <div class="card">
-              <h3>Bio Calculator</h3>
-              <div class="images">
-                <img src="assets/images/Biocalculator/bio1.webp">
-                <img src="assets/images/Biocalculator/bio2.webp">
-              </div>
-            </div>
-
-          </section>
-
-          <!-- EXPERIENCE -->
-          <section id="experience" class="panel">
-            <div class="card">
-              Alivia Care
-              <img src="docs/WhatsApp Image 2026-04-13 at 23.46.44.jpeg">
-            </div>
-            <div class="card">
-              BluCognition
-              <img src="docs/blucogniton.png">
-            </div>
-          </section>
-
-          <!-- SKILLS -->
-          <section id="skills" class="panel">
-            <div class="skills">
-              <span>Python</span>
-              <span>Flutter</span>
-              <span>ML</span>
-              <span>SQL</span>
-            </div>
-          </section>
-
-          <!-- LOR -->
-          <section id="lor" class="panel">
-            <div class="grid">
-              <img src="docs/lortext.png">
-              <img src="docs/LemonadestandLOR.jpeg">
-              <img src="docs/cdri-lor.jpeg">
-              <img src="docs/sanfoundry-lor.jpeg">
-            </div>
-          </section>
-
-          <!-- RESUME -->
-          <section id="resume" class="panel">
-            <a href="docs/Agrani Sinha Resume.pdf">Open Resume</a>
-          </section>
-
-          <!-- CONTACT -->
-          <section id="contact" class="panel">
-            <p>Email: agbrian521@gmail.com</p>
-          </section>
-
-        </div>
-      </div>
-
-      <!-- TERMINAL (FIXED POSITION) -->
-      <div class="terminal">
-        <div class="terminal-header">TERMINAL</div>
-
-        <div class="terminal-body" id="terminalOutput">
-          <div>> help</div>
-          <div>Type commands: about, projects, resume</div>
-        </div>
-
-        <div class="terminal-input">
-          <span>> </span>
-          <input id="terminalInput" />
-        </div>
-      </div>
-
+  <div class="explorer-group">
+    <div class="explorer-title" onclick="toggleFolder('portfolioFolder')">
+      <span id="portfolioFolderCaret">▾</span> PORTFOLIO
     </div>
 
+    <ul id="portfolioFolder" class="file-tree show">
+      <li class="file-item" onclick="openTab(event,'about')">about.js</li>
+      <li class="file-item" onclick="openTab(event,'projects')">projects.js</li>
+      <li class="file-item" onclick="openTab(event,'experience')">experience.js</li>
+      <li class="file-item" onclick="openTab(event,'skills')">skills.js</li>
+      <li class="file-item" onclick="openTab(event,'lor')">lor.js</li>
+      <li class="file-item" onclick="openTab(event,'resume')">resume.js</li>
+      <li class="file-item" onclick="openTab(event,'contact')">contact.js</li>
+    </ul>
+  </div>
+</aside>
+
+<!-- EDITOR -->
+<main class="editor-area">
+
+<!-- TABS -->
+<div class="editor-tabs" id="editorTabs">
+  <button class="editor-tab active" data-tab="about">about.js</button>
+</div>
+
+<!-- CONTENT -->
+<div class="editor-content">
+
+<section id="about" class="panel active">
+  <h1>Agrani Sinha</h1>
+  <p>AI × Healthcare × Systems</p>
+</section>
+
+<section id="projects" class="panel">
+  <h2>Projects</h2>
+
+  <div class="card">
+    <h3>Respiratory Chatbot</h3>
+    <div class="images">
+      <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (1).jpeg">
+      <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (2).jpeg">
+      <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (3).jpeg">
+    </div>
   </div>
 
-  <!-- STATUS BAR -->
-  <footer class="status-bar">
-    <span>main</span>
-    <span>JavaScript</span>
-    <span>UTF-8</span>
-  </footer>
+  <div class="card">
+    <h3>Bio Calculator</h3>
+    <div class="images">
+      <img src="assets/images/Biocalculator/bio1.webp">
+      <img src="assets/images/Biocalculator/bio2.webp">
+    </div>
+  </div>
+
+</section>
+
+<section id="experience" class="panel">
+  <div class="card">Alivia Care</div>
+  <div class="card">BluCognition</div>
+</section>
+
+<section id="skills" class="panel">
+  <div class="skills">
+    <span>Python</span>
+    <span>Flutter</span>
+    <span>ML</span>
+    <span>SQL</span>
+  </div>
+</section>
+
+<section id="lor" class="panel">
+  <div class="grid">
+    <img src="docs/lortext.png">
+    <img src="docs/LemonadestandLOR.jpeg">
+    <img src="docs/cdri-lor.jpeg">
+    <img src="docs/sanfoundry-lor.jpeg">
+  </div>
+</section>
+
+<section id="resume" class="panel">
+  <a href="docs/Agrani Sinha Resume.pdf">Open Resume</a>
+</section>
+
+<section id="contact" class="panel">
+  <p>Email: agbrian521@gmail.com</p>
+</section>
+
+</div>
+
+<!-- TERMINAL -->
+<div class="terminal">
+  <div class="terminal-header">TERMINAL</div>
+  <div class="terminal-body" id="terminalOutput"></div>
+
+  <div class="terminal-input">
+    <span>> </span>
+    <input id="terminalInput">
+  </div>
+</div>
+
+</main>
+</div>
+
+<footer class="status-bar">
+  <span>main</span>
+  <span>JavaScript</span>
+</footer>
 
 </div>
 
 <script src="script.js"></script>
-
 </body>
 </html>
