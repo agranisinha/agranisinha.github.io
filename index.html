@@ -62,27 +62,23 @@
       <span>Help</span>
       <span class="copilot-menu">Copilot</span>
     </div>
-    <!-- =========================
-   VS CODE LAYOUT
-========================= -->
-<div class="vscode-layout">
-
-  <!-- ACTIVITY BAR -->
-  <div class="activity-bar">
-    <div class="activity-icon active" onclick="openSidebar('explorer')">📁</div>
-    <div class="activity-icon" onclick="openSidebar('search')">🔍</div>
-    <div class="activity-icon" onclick="openSidebar('git')">🔗</div>
-    <div class="activity-icon" onclick="openSidebar('files')">📄</div>
-    <div class="activity-icon" onclick="openSidebar('spark')">✨</div>
-
-    <div class="activity-bottom">
-      <div class="activity-icon" onclick="toggleSettings()">⚙️</div>
-    </div>
-  </div>
-
-      <!-- SIDEBAR -->
-      <div class="sidebar-panel" id="sidebarPanel">
+ <div class="vscode-layout">
     
+      <!-- ACTIVITY BAR -->
+      <div class="activity-bar">
+        <div class="activity-icon active">📁</div>
+        <div class="activity-icon">🔍</div>
+        <div class="activity-icon">🔗</div>
+        <div class="activity-icon">📄</div>
+        <div class="activity-icon">✨</div>
+    
+        <div class="activity-bottom">
+          <div class="activity-icon" onclick="toggleSettings()">⚙️</div>
+        </div>
+      </div>
+    
+      <!-- SIDEBAR -->
+      <div class="sidebar-panel">
         <div class="sidebar-header">PORTFOLIO</div>
     
         <div class="file-list">
@@ -96,53 +92,51 @@
           <div class="file">📕 Resume.pdf</div>
         </div>
     
-        <div class="copilot-box">
-          ✨ Agrani's Copilot
+        <div class="copilot-box">✨ Agrani's Copilot</div>
+      </div>
+    
+      <!-- 🔥 MAIN EDITOR AREA (THIS WAS BROKEN) -->
+      <div class="editor-area">
+    
+        <div class="editor-content" id="editorContent">
+    
+          <!-- HOME CONTENT -->
+          <div class="home-container">
+            <p class="code-line">// hello world !! Welcome to my portfolio</p>
+    
+            <h1 class="hero-name">
+              Agrani <span>Sinha</span>
+            </h1>
+    
+            <div class="roles">
+              <span>AI Engineer</span>
+              <span>Clinical Informatics</span>
+              <span>Data Scientist</span>
+            </div>
+    
+            <p class="hero-desc">
+              I build intelligent healthcare systems using AI, machine learning,
+              and clinical informatics to solve real-world problems.
+            </p>
+    
+            <div class="home-buttons">
+              <button onclick="openTab('projects')">📁 Projects</button>
+              <button onclick="openTab('about')">👤 About</button>
+              <button onclick="openTab('contact')">✉️ Contact</button>
+            </div>
+    
+            <div class="stats">
+              <div><strong>10+</strong><span>Projects</span></div>
+              <div><strong>6+</strong><span>Experience</span></div>
+              <div><strong>96.8%</strong><span>Model Accuracy</span></div>
+            </div>
+          </div>
+    
         </div>
     
       </div>
     
     </div>
-    
-         <div class="editor-content">
-    
-     <!-- HOME CONTENT -->
-      <div id="homeContent" class="editor-view active">
-      
-        <div class="home-container">
-      
-          <p class="code-line">// hello world !! Welcome to my portfolio</p>
-      
-          <h1 class="hero-name">
-            Agrani <span>Sinha</span>
-          </h1>
-      
-          <div class="roles">
-            <span>AI Engineer</span>
-            <span>Clinical Informatics</span>
-            <span>Data Scientist</span>
-          </div>
-      
-          <p class="hero-desc">
-            I build intelligent healthcare systems using AI, machine learning,
-            and clinical informatics to solve real-world problems.
-          </p>
-      
-          <div class="home-buttons">
-            <button onclick="openTab('projects')">📁 Projects</button>
-            <button onclick="openTab('about')">👤 About</button>
-            <button onclick="openTab('contact')">✉️ Contact</button>
-          </div>
-      
-          <div class="stats">
-            <div><strong>10+</strong><span>Projects</span></div>
-            <div><strong>6+</strong><span>Experience</span></div>
-            <div><strong>96.8%</strong><span>Model Accuracy</span></div>
-          </div>
-      
-        </div>
-      
-      </div>
         
     <!-- SETTINGS PANEL -->
     <div class="settings-panel" id="settingsPanel">
