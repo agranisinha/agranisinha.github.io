@@ -785,18 +785,28 @@ body.gruv { background: #282828; }
   opacity: 1;
 }
 
-/* HEADER FEEDBACK MESSAGE */
+/* ================= HEADER FEEDBACK (FINAL) ================= */
+
 .header-feedback {
-  margin-left: 12px;
+  margin-left: 14px;
+
   font-size: 12px;
   color: #ff79c6;
   font-family: "Fira Code", monospace;
 
   opacity: 0;
   transition: opacity 0.3s ease;
+
+  display: inline-flex;
+  align-items: center;
+
+  max-width: 260px;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
+/* show animation */
 .header-feedback.show {
   opacity: 1;
 }
