@@ -142,3 +142,28 @@ function setTheme(theme) {
 function openTab(name) {
   alert("Opening " + name + " (next step we will connect real pages)");
 }
+
+// ================= WINDOW BUTTONS =================
+
+const quotes = [
+  "Nice try 😏 but I’ll stay open.",
+  "You can't close me that easily 😎",
+  "This portfolio is immortal 🚀",
+  "Denied. Try harder 😈",
+  "I’m not going anywhere 👀"
+];
+
+document.querySelector(".traffic.red").onclick = () => {
+  alert(quotes[Math.floor(Math.random() * quotes.length)]);
+};
+
+document.querySelector(".traffic.yellow").onclick = () => {
+  document.body.style.transform = "scale(0.95)";
+  setTimeout(() => {
+    document.body.style.transform = "scale(1)";
+  }, 200);
+};
+
+document.querySelector(".traffic.green").onclick = () => {
+  document.body.classList.toggle("fullscreen");
+};
