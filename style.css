@@ -857,3 +857,17 @@ body.gruv { background: #282828; }
 .header-feedback.show {
   opacity: 1;
 }
+
+/* ================= EDITOR FIX ================= */
+.editor-content {
+  width: 100%;
+  height: calc(100vh - 100px); /* adjust based on header */
+  padding: 40px;
+  overflow-y: auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #e6edf3;
+}
