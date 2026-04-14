@@ -1,39 +1,45 @@
 function openTab(id) {
+  // switch panels
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 
-  const tabs = document.getElementById('tabs');
+  // tabs
+  document.querySelectorAll('.editor-tab').forEach(t => t.classList.remove('active'));
 
-  if (!document.querySelector(`[data-tab='${id}']`)) {
-    const tab = document.createElement('div');
-    tab.className = 'tab active';
-    tab.innerText = id + ".js";
-    tab.setAttribute("data-tab", id);
+  let existing = document.querySelector(`[data-tab="${id}"]`);
+
+  if (!existing) {
+    const tab = document.createElement('button');
+    tab.className = 'editor-tab active';
+    tab.innerHTML = `<span class="icon js">JS</span> ${id}.js`;
+    tab.setAttribute('data-tab', id);
 
     tab.onclick = () => openTab(id);
 
-    tabs.appendChild(tab);
+    document.getElementById('editorTabs').appendChild(tab);
+  } else {
+    existing.classList.add('active');
   }
 }
 
+/* FOLDER TOGGLE */
 function toggleFolder(id) {
-  const folder = document.getElementById(id);
-  folder.style.display = folder.style.display === "block" ? "none" : "block";
+  const el = document.getElementById(id);
+  const caret = document.getElementById(id + "Caret");
+
+  el.classList.toggle('show');
+  caret.textContent = el.classList.contains('show') ? "▾" : "▸";
 }
 
-function toggleTheme() {
-  document.body.classList.toggle("light");
-}
-
-// typing
-const text = "Agrani Sinha";
+/* TYPING */
+const text = "AI × Healthcare × Systems";
 let i = 0;
 
 function type() {
   if (i < text.length) {
-    document.getElementById("typing").innerHTML += text.charAt(i);
+    document.getElementById("typing").innerHTML += text[i];
     i++;
-    setTimeout(type, 100);
+    setTimeout(type, 80);
   }
 }
 
