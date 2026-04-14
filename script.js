@@ -1,159 +1,172 @@
-// ================= SAFE INIT =================
-document.addEventListener("DOMContentLoaded", () => {
+// ================= COMMAND PALETTE =================
+const openPaletteBtn = document.getElementById("openPaletteBtn");
+const paletteOverlay = document.getElementById("paletteOverlay");
+const paletteBackdrop = document.getElementById("paletteBackdrop");
+const paletteInput = document.getElementById("paletteInput");
 
-  // ================= ELEMENTS =================
-  const red = document.querySelector(".dot.red");
-  const yellow = document.querySelector(".dot.yellow");
-  const green = document.querySelector(".dot.green");
+function openPalette() {
+  paletteOverlay.classList.add("open");
+  paletteOverlay.setAttribute("aria-hidden", "false");
+  setTimeout(() => paletteInput.focus(), 50);
+}
 
-  const feedback = document.getElementById("headerFeedback");
+function closePalette() {
+  paletteOverlay.classList.remove("open");
+  paletteOverlay.setAttribute("aria-hidden", "true");
+}
 
-  const cursorSquare = document.getElementById("cursorSquare");
-  const cursorDot = document.getElementById("cursorDot");
+openPaletteBtn?.addEventListener("click", openPalette);
+paletteBackdrop?.addEventListener("click", closePalette);
 
-  // ================= TYPEWRITER =================
-  function typeWriter(el, text, speed = 30) {
-    let i = 0;
-    el.innerHTML = "";
+document.addEventListener("keydown", (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "p") {
+    e.preventDefault();
+    openPalette();
+  }
+  if (e.key === "Escape") closePalette();
+});
 
-    function typing() {
-      if (i < text.length) {
-        el.innerHTML += text.charAt(i);
-        i++;
-        setTimeout(typing, speed);
-      }
+
+// ================= SETTINGS =================
+function toggleSettings() {
+  const panel = document.getElementById("settingsPanel");
+  panel.classList.toggle("open");
+}
+
+
+// ================= THEMES =================
+function setTheme(theme) {
+  document.body.className = theme;
+
+  document.querySelectorAll(".theme-option").forEach(el => el.classList.remove("active"));
+  event.target.classList.add("active");
+}
+
+
+// ================= DYNAMIC TABS =================
+function openTab(tab) {
+  const container = document.getElementById("editorContent");
+
+  container.style.opacity = 0;
+
+  setTimeout(() => {
+    if (tab === "home") container.innerHTML = getHome();
+    if (tab === "about") container.innerHTML = getAbout();
+    if (tab === "projects") container.innerHTML = getProjects();
+    if (tab === "contact") container.innerHTML = getContact();
+    if (tab === "resume") window.open("resume.pdf", "_blank");
+
+    container.style.opacity = 1;
+    startTyping(); // re-trigger typing
+  }, 200);
+}
+
+
+// ================= PAGE TEMPLATES =================
+function getHome() {
+  return `
+    <div class="home-container">
+      <p class="code-line" id="typingText"></p>
+
+      <h1 class="hero-name">
+        Agrani <span>Sinha</span>
+      </h1>
+
+      <div class="roles">
+        <span>AI Engineer</span>
+        <span>Clinical Informatics</span>
+        <span>Data Scientist</span>
+      </div>
+
+      <p class="hero-desc">
+        I build intelligent healthcare systems using AI, ML, and clinical workflows.
+      </p>
+
+      <div class="home-buttons">
+        <button onclick="openTab('projects')">📁 Projects</button>
+        <button onclick="openTab('about')">👤 About</button>
+        <button onclick="openTab('contact')">✉️ Contact</button>
+      </div>
+
+      <div class="stats">
+        <div><strong>10+</strong><span>Projects</span></div>
+        <div><strong>6+</strong><span>Experience</span></div>
+        <div><strong>96.8%</strong><span>Accuracy</span></div>
+      </div>
+    </div>
+  `;
+}
+
+function getAbout() {
+  return `
+    <div class="home-container">
+      <h2>👤 About Me</h2>
+      <p>
+        I'm a Health Informatics graduate student at UNF with strong expertise
+        in AI, Data Science, and Clinical Systems.
+      </p>
+    </div>
+  `;
+}
+
+function getProjects() {
+  return `
+    <div class="home-container">
+      <h2>📁 Projects</h2>
+      <p>• AI Healthcare Assistant</p>
+      <p>• EHR Optimization System</p>
+      <p>• Data Science YouTube Platform</p>
+    </div>
+  `;
+}
+
+function getContact() {
+  return `
+    <div class="home-container">
+      <h2>✉️ Contact</h2>
+      <p>Email: agrani@example.com</p>
+      <p>LinkedIn: linkedin.com/in/agrani</p>
+    </div>
+  `;
+}
+
+
+// ================= TYPING EFFECT =================
+function startTyping() {
+  const el = document.getElementById("typingText");
+  if (!el) return;
+
+  const text = "// hello world !! Welcome to my portfolio";
+  el.innerHTML = "";
+  let i = 0;
+
+  function type() {
+    if (i < text.length) {
+      el.innerHTML += text.charAt(i);
+      i++;
+      setTimeout(type, 25);
     }
-    typing();
   }
 
-  // ================= TAB SYSTEM =================
-  window.openTab = function (name) {
+  type();
+}
 
-    const editor = document.querySelector(".editor-content");
-    if (!editor) return;
 
-    editor.style.opacity = 0;
+// ================= MAC BUTTONS =================
+window.onload = function () {
+  const red = document.getElementById("btnRed");
+  const yellow = document.getElementById("btnYellow");
+  const green = document.getElementById("btnGreen");
+  const feedback = document.getElementById("headerFeedback");
 
-    setTimeout(() => {
-
-      // ===== HOME =====
-      if (name === "home") {
-        editor.innerHTML = `
-          <div class="home-container">
-            <p id="typingText" class="code-line"></p>
-
-            <h1 class="hero-name">
-              Agrani <span>Sinha</span>
-            </h1>
-
-            <div class="roles">
-              <span>Backend Engineer</span>
-              <span>AI / ML Dev</span>
-              <span>Data Scientist</span>
-              <span>Clinical Informatics</span>
-            </div>
-
-            <p class="hero-desc">
-              I build intelligent healthcare systems using AI, ML, and clinical workflows.
-              My focus is on scalable, impactful, and real-world solutions.
-            </p>
-
-            <div class="home-buttons">
-              <button onclick="openTab('projects')">📁 Projects</button>
-              <button onclick="openTab('about')">👤 About Me</button>
-              <button onclick="openTab('contact')">✉️ Contact</button>
-            </div>
-
-            <div class="stats">
-              <div><strong>10+</strong><span>Projects</span></div>
-              <div><strong>6+</strong><span>Experience</span></div>
-              <div><strong>96.8%</strong><span>Accuracy</span></div>
-            </div>
-          </div>
-        `;
-
-        const typingEl = document.getElementById("typingText");
-        if (typingEl) {
-          typeWriter(typingEl, "// hello world !! Welcome to my portfolio");
-        }
-      }
-
-      // ===== PROJECTS =====
-      if (name === "projects") {
-        editor.innerHTML = `
-          <div class="home-container">
-            <h2 class="hero-name">Projects</h2>
-
-            <p class="hero-desc">
-              AI-powered healthcare + Flutter apps
-            </p>
-
-            <ul style="margin-top:20px; line-height:1.8;">
-              <li>📊 AI Healthcare EHR System</li>
-              <li>📱 Flutter Face Recognition App</li>
-              <li>📈 Data Science Dashboard</li>
-              <li>🤖 Clinical Decision Support Tool</li>
-            </ul>
-
-            <div class="home-buttons">
-              <button onclick="openTab('home')">← Back</button>
-            </div>
-          </div>
-        `;
-      }
-
-      // ===== ABOUT =====
-      if (name === "about") {
-        editor.innerHTML = `
-          <div class="home-container">
-            <h2 class="hero-name">About Me</h2>
-
-            <p class="hero-desc">
-              Health Informatics @ UNF | AI in Healthcare | Backend + ML systems.
-            </p>
-
-            <div class="home-buttons">
-              <button onclick="openTab('home')">← Back</button>
-            </div>
-          </div>
-        `;
-      }
-
-      // ===== CONTACT =====
-      if (name === "contact") {
-        editor.innerHTML = `
-          <div class="home-container">
-            <h2 class="hero-name">Contact</h2>
-
-            <p class="hero-desc">
-              📧 agrani@example.com <br>
-              💼 linkedin.com/in/agranisinha
-            </p>
-
-            <div class="home-buttons">
-              <button onclick="openTab('home')">← Back</button>
-            </div>
-          </div>
-        `;
-      }
-
-      editor.style.opacity = 1;
-
-    }, 150);
-  };
-
-  // ================= TRAFFIC BUTTONS =================
   const quotes = [
     "Nice try 😏 but I’ll stay open.",
-    "You can't close me that easily 😎",
+    "You can't close me 😎",
     "This portfolio is immortal 🚀",
-    "Denied. Try harder 😈",
-    "I’m not going anywhere 👀"
+    "Denied 😈",
   ];
 
   function showMessage(msg) {
-    if (!feedback) return;
-
     feedback.innerText = msg;
     feedback.classList.add("show");
 
@@ -162,47 +175,39 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 2000);
   }
 
-  // 🔴 RED
-  if (red) {
-    red.addEventListener("click", (e) => {
-      e.stopPropagation();
-      showMessage(quotes[Math.floor(Math.random() * quotes.length)]);
-    });
-  }
+  red.onclick = () => {
+    showMessage(quotes[Math.floor(Math.random() * quotes.length)]);
+  };
 
-  // 🟡 YELLOW
-  if (yellow) {
-    yellow.addEventListener("click", () => {
-      document.body.style.transform = "scale(0.96)";
-      setTimeout(() => {
-        document.body.style.transform = "scale(1)";
-      }, 200);
-    });
-  }
+  yellow.onclick = () => {
+    document.body.style.transform = "scale(0.96)";
+    setTimeout(() => {
+      document.body.style.transform = "scale(1)";
+    }, 200);
+  };
 
-  // 🟢 GREEN
-  if (green) {
-    green.addEventListener("click", () => {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen();
-      } else {
-        document.exitFullscreen();
-      }
-    });
-  }
+  green.onclick = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  };
 
-  // ================= CURSOR =================
-  document.addEventListener("mousemove", (e) => {
-    if (!cursorSquare || !cursorDot) return;
+  startTyping();
+};
 
-    cursorDot.style.left = e.clientX + "px";
-    cursorDot.style.top = e.clientY + "px";
 
-    cursorSquare.style.left = e.clientX + "px";
-    cursorSquare.style.top = e.clientY + "px";
-  });
+// ================= CURSOR =================
+document.addEventListener("mousemove", (e) => {
+  const square = document.getElementById("cursorSquare");
+  const dot = document.getElementById("cursorDot");
 
-  // ================= LOAD HOME =================
-  openTab("home");
+  if (!square || !dot) return;
 
+  square.style.left = e.clientX + "px";
+  square.style.top = e.clientY + "px";
+
+  dot.style.left = e.clientX + "px";
+  dot.style.top = e.clientY + "px";
 });
