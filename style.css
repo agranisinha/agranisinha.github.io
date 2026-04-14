@@ -99,7 +99,72 @@ body {
   background: rgba(255,255,255,0.08);
   padding: 4px;
 }
+/* MENU */
+.menu-item {
+  position: relative;
+  cursor: pointer;
+  padding: 6px 10px;
+}
 
+.menu-item:hover {
+  background: rgba(255,255,255,0.08);
+}
+
+/* DROPDOWN */
+.dropdown {
+  display: none;
+  position: absolute;
+  top: 32px;
+  left: 0;
+  background: #2a2a2a;
+  border-radius: 8px;
+  min-width: 220px;
+  padding: 8px 0;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+  z-index: 999;
+}
+
+.menu-item:hover .dropdown {
+  display: block;
+}
+
+.dropdown div {
+  padding: 8px 14px;
+  font-size: 13px;
+}
+
+.dropdown div:hover {
+  background: rgba(255,255,255,0.08);
+}
+
+.dropdown hr {
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  margin: 6px 0;
+}
+
+/* FIX COMMAND PALETTE POSITION */
+.palette-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  z-index: 9999;
+}
+
+.palette-overlay.open {
+  display: block;
+}
+
+.palette-box {
+  position: absolute;
+  top: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 560px;
+  background: #1e1e1e;
+  border-radius: 10px;
+  padding: 10px;
+}
 /* ================= LAYOUT ================= */
 .vscode-layout {
   display: flex;
