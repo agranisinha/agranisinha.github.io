@@ -1,9 +1,21 @@
+/* ================= ROOT ================= */
+:root {
+  --bg: #1e1e1e;
+  --sidebar: #252526;
+  --activity: #333;
+  --tabs: #2d2d2d;
+  --border: #3c3c3c;
+  --text: #d4d4d4;
+  --muted: #858585;
+  --accent: #007acc;
+}
+
 /* ================= BASE ================= */
 body {
   margin: 0;
-  font-family: Consolas, monospace;
-  background: #1e1e1e;
-  color: #d4d4d4;
+  font-family: Consolas, "Courier New", monospace;
+  background: var(--bg);
+  color: var(--text);
   overflow: hidden;
 }
 
@@ -13,7 +25,7 @@ body {
   height: 100vh;
 }
 
-/* ================= TITLE BAR ================= */
+/* ================= TITLEBAR ================= */
 .titlebar {
   height: 30px;
   background: #323233;
@@ -24,17 +36,6 @@ body {
   font-size: 12px;
 }
 
-.traffic {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  display: inline-block;
-  margin-right: 5px;
-}
-.red { background: #ff5f56; }
-.yellow { background: #ffbd2e; }
-.green { background: #27c93f; }
-
 /* ================= WORKBENCH ================= */
 .workbench {
   display: flex;
@@ -44,7 +45,7 @@ body {
 /* ================= ACTIVITY BAR ================= */
 .activity-bar {
   width: 48px;
-  background: #333;
+  background: var(--activity);
   display: flex;
   flex-direction: column;
 }
@@ -53,41 +54,45 @@ body {
   height: 48px;
   border: none;
   background: transparent;
-  color: #aaa;
+  color: var(--muted);
   cursor: pointer;
 }
 
 .activity-btn.active {
   color: white;
-  border-left: 2px solid #007acc;
+  border-left: 2px solid var(--accent);
 }
 
 /* ================= SIDEBAR ================= */
 .sidebar {
   width: 240px;
-  background: #252526;
+  background: var(--sidebar);
   padding: 10px;
 }
 
 .sidebar-header {
   font-size: 11px;
-  color: #888;
+  color: var(--muted);
   margin-bottom: 10px;
 }
 
+/* FILE TREE */
 .file-item {
-  padding: 6px 8px;
-  cursor: pointer;
+  padding: 6px 10px;
   border-radius: 4px;
   font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
 }
 
 .file-item:hover {
-  background: #37373d;
+  background: #2a2d2e;
+  padding-left: 14px;
 }
 
 .file-item.active {
   background: #094771;
+  border-left: 2px solid var(--accent);
 }
 
 /* ================= EDITOR ================= */
@@ -101,34 +106,56 @@ body {
 .editor-tabs {
   height: 35px;
   display: flex;
-  background: #2d2d2d;
+  background: var(--tabs);
 }
 
 .editor-tab {
   padding: 6px 12px;
-  border-right: 1px solid #3c3c3c;
-  cursor: pointer;
+  border-right: 1px solid var(--border);
   font-size: 12px;
+  cursor: pointer;
+  background: var(--tabs);
+  display: flex;
+  align-items: center;
+}
+
+.editor-tab:hover {
+  background: #3a3a3a;
 }
 
 .editor-tab.active {
-  background: #1e1e1e;
+  background: var(--bg);
+}
+
+/* CLOSE BUTTON */
+.close-tab {
+  margin-left: 8px;
+  opacity: 0;
+}
+
+.editor-tab:hover .close-tab {
+  opacity: 1;
 }
 
 /* ================= CONTENT ================= */
 .editor-content {
   flex: 1;
   overflow-y: auto;
-  padding: 30px 50px;
+  padding: 28px 48px;
   line-height: 1.6;
 }
 
-/* ================= PANELS ================= */
+/* ================= PANEL ================= */
 .panel {
-  display: none;
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
 }
+
 .panel.active {
-  display: block;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 /* ================= CODE ================= */
@@ -141,11 +168,10 @@ body {
 
 .code-row {
   font-size: 13px;
-  margin-bottom: 3px;
 }
 
 .line-number {
-  color: #858585;
+  color: var(--muted);
   margin-right: 12px;
 }
 
@@ -158,57 +184,56 @@ body {
 /* ================= HERO ================= */
 .hero-card {
   background: #252526;
+  border: 1px solid #333;
   padding: 20px;
   border-radius: 6px;
-  border: 1px solid #333;
 }
 
-.hero-actions {
-  margin-top: 10px;
-}
-
+/* ================= BUTTON ================= */
 .vscode-btn {
   display: inline-block;
   padding: 6px 10px;
-  background: #007acc;
+  background: var(--accent);
   color: white;
-  text-decoration: none;
   margin-right: 8px;
   border-radius: 4px;
 }
 
-.vscode-btn.primary {
-  background: #0e639c;
+.vscode-btn:hover {
+  transform: scale(1.05);
 }
 
-/* ================= PROJECTS ================= */
+.vscode-btn:active {
+  transform: scale(0.95);
+}
+
+/* ================= CARDS ================= */
 .project-card,
-.experience-item {
+.experience-item,
+.mini-card {
   background: #252526;
-  padding: 15px;
-  border-radius: 6px;
-  margin-bottom: 20px;
   border: 1px solid #333;
+  padding: 15px;
+  margin-bottom: 18px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
 }
 
-.section-card h2 {
-  margin-bottom: 15px;
+.project-card:hover,
+.experience-item:hover,
+.mini-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
 }
 
-/* ================= MINI GRID ================= */
+/* ================= GRID ================= */
 .mini-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
 }
 
-.mini-card {
-  background: #252526;
-  padding: 10px;
-  border-radius: 5px;
-}
-
-/* ================= IMAGE FIX ================= */
+/* ================= IMAGES ================= */
 .compact-gallery {
   display: grid;
   gap: 8px;
@@ -225,12 +250,16 @@ body {
 
 .compact-gallery img {
   width: 100%;
-  height: 85px; /* 🔥 THIS FIXES YOUR BIG IMAGE ISSUE */
+  height: 85px;
   object-fit: cover;
   border-radius: 4px;
+  transition: transform 0.2s ease;
 }
 
-/* ================= SINGLE IMAGE ================= */
+.compact-gallery img:hover {
+  transform: scale(1.08);
+}
+
 .compact-single img {
   width: 120px;
   height: 80px;
@@ -239,29 +268,27 @@ body {
 
 /* ================= SKILLS ================= */
 .skills-wrap span {
-  background: #007acc;
+  background: var(--accent);
   padding: 4px 8px;
   margin: 4px;
   font-size: 11px;
   border-radius: 3px;
-  display: inline-block;
 }
 
 /* ================= TERMINAL ================= */
 .terminal {
   height: 140px;
-  background: #1e1e1e;
-  border-top: 1px solid #333;
+  border-top: 1px solid var(--border);
 }
 
 .terminal-header {
-  background: #2d2d2d;
-  padding: 5px;
+  background: var(--tabs);
+  padding: 4px;
   font-size: 11px;
 }
 
 .terminal-body {
-  padding: 10px;
+  padding: 8px;
   font-size: 12px;
   height: 70px;
   overflow-y: auto;
@@ -270,7 +297,7 @@ body {
 .terminal-input {
   display: flex;
   padding: 6px;
-  border-top: 1px solid #333;
+  border-top: 1px solid var(--border);
 }
 
 .terminal-input input {
@@ -284,10 +311,9 @@ body {
 /* ================= STATUS BAR ================= */
 .status-bar {
   height: 22px;
-  background: #007acc;
+  background: var(--accent);
   display: flex;
   align-items: center;
-  gap: 12px;
   padding: 0 10px;
   font-size: 11px;
 }
