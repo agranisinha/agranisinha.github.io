@@ -1,38 +1,29 @@
-// ================= CURSOR GLOW =================
-const glow = document.createElement('div');
-glow.className = 'cursor-glow';
-document.body.appendChild(glow);
+// ================= FIX TAB SYSTEM =================
+function openTab(id, el = null) {
 
-document.addEventListener('mousemove', (e) => {
-  glow.style.left = e.clientX + 'px';
-  glow.style.top  = e.clientY + 'px';
-});
+  // 🔥 HIDE ALL PANELS
+  document.querySelectorAll('.panel').forEach(p => {
+    p.classList.remove('active');
+  });
 
-// ================= TAB SYSTEM (SYNC TABS + PANELS) =================
-function openTab(id, el=null){
-  // panels
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  // 🔥 SHOW ONLY CLICKED PANEL
   const panel = document.getElementById(id);
-  if(panel) panel.classList.add('active');
+  if (panel) panel.classList.add('active');
 
-  // sidebar active
-  document.querySelectorAll('.file-item').forEach(f=>f.classList.remove('active'));
-  if(el) el.classList.add('active');
-  else {
-    const auto = document.querySelector(`.file-item[onclick*="${id}"]`);
-    if(auto) auto.classList.add('active');
-  }
+  // 🔥 UPDATE SIDEBAR
+  document.querySelectorAll('.file-item').forEach(f => f.classList.remove('active'));
+  if (el) el.classList.add('active');
 
-  // tabs
-  const tabs = document.querySelectorAll('.editor-tab');
-  tabs.forEach(t=>t.classList.remove('active'));
+  // 🔥 FIX TAB BAR
+  document.querySelectorAll('.editor-tab').forEach(t => t.classList.remove('active'));
 
-  let tab = document.querySelector(`.editor-tab[data-tab="${id}"]`);
-  if(!tab){
-    tab = document.createElement('button');
+  let tab = document.querySelector(`[data-tab="${id}"]`);
+
+  if (!tab) {
+    tab = document.createElement('div');
     tab.className = 'editor-tab active';
-    tab.dataset.tab = id;
-    tab.innerHTML = `<span class="icon js">JS</span> ${id}.js <span class="close-tab" onclick="closeTab(event,'${id}')">×</span>`;
+    tab.setAttribute('data-tab', id);
+    tab.innerHTML = `JS ${id}.js ×`;
     tab.onclick = () => openTab(id);
     document.getElementById('editorTabs').appendChild(tab);
   } else {
@@ -40,79 +31,66 @@ function openTab(id, el=null){
   }
 }
 
-function closeTab(e,id){
-  e.stopPropagation();
-  const tab = document.querySelector(`.editor-tab[data-tab="${id}"]`);
-  tab?.remove();
+// ================= FIX INITIAL LOAD =================
+window.onload = () => {
   openTab('about');
-}
-
-window.addEventListener('load', () => openTab('about'));
+};
 
 // ================= MODAL =================
-function openModal(key){
+function openModal(key) {
   const modal = document.getElementById('detailModal');
   const content = document.getElementById('modalContent');
   const item = modalData[key];
-  if(!item) return;
 
-  const gallery = item.gallery?.length
-    ? `<div class="modal-gallery">${item.gallery.map(src=>`<img src="${src}" onerror="this.style.display='none'">`).join('')}</div>`
-    : '';
+  if (!item) return;
 
-  content.innerHTML = `<h2>${item.title}</h2>${item.description}${gallery}`;
-  modal.setAttribute('aria-hidden','false');
+  content.innerHTML = `
+    <h2>${item.title}</h2>
+    ${item.description}
+    <div class="modal-gallery">
+      ${item.gallery.map(img => `<img src="${img}" onerror="this.style.display='none'">`).join('')}
+    </div>
+  `;
+
+  modal.setAttribute("aria-hidden", "false");
 }
-function closeModal(){
-  document.getElementById('detailModal').setAttribute('aria-hidden','true');
+
+function closeModal() {
+  document.getElementById('detailModal').setAttribute("aria-hidden", "true");
 }
 
-// ================= AI TERMINAL (ROBUST) =================
+// ================= AI ASSISTANT FIX =================
 const input = document.getElementById('terminalInput');
 const output = document.getElementById('terminalOutput');
 
-function log(line){
-  const d = document.createElement('div');
-  d.textContent = line;
-  output.appendChild(d);
-  output.scrollTop = output.scrollHeight;
-}
+input.addEventListener("keydown", function(e) {
+  if (e.key === "Enter") {
 
-const routes = {
-  projects:'projects',
-  experience:'experience',
-  skills:'skills',
-  contact:'contact',
-  research:'research',
-  resume:'resume'
-};
+    let cmd = input.value.toLowerCase();
 
-input?.addEventListener('keydown', (e)=>{
-  if(e.key !== 'Enter') return;
-  const cmd = (input.value || '').trim().toLowerCase();
-  if(!cmd) return;
+    output.innerHTML += `<div>> ${cmd}</div>`;
 
-  log(`> ${cmd}`);
+    if (cmd.includes("project")) openTab("projects");
+    else if (cmd.includes("experience")) openTab("experience");
+    else if (cmd.includes("skills")) openTab("skills");
+    else if (cmd.includes("contact")) openTab("contact");
+    else if (cmd.includes("resume")) window.open("docs/Agrani Sinha Resume.pdf");
+    else output.innerHTML += `<div>Try: projects, experience, skills</div>`;
 
-  const hit = Object.keys(routes).find(k => cmd.includes(k));
-  if(hit){
-    openTab(routes[hit]);
-    log(`Opening ${routes[hit]}...`);
-    if(hit === 'resume'){
-      window.open('docs/Agrani Sinha Resume.pdf','_blank');
-    }
-  } else {
-    log('Try: projects, experience, skills, research, resume, contact');
+    input.value = "";
+    output.scrollTop = output.scrollHeight;
   }
-  input.value = '';
 });
 
 // ================= TYPING =================
-const typingEl = document.getElementById('typing');
 const text = "AI × Healthcare × Systems";
-let idx = 0;
-(function type(){
-  if(!typingEl) return;
-  typingEl.textContent = text.slice(0, idx++);
-  if(idx <= text.length) setTimeout(type, 60);
-})();
+let i = 0;
+
+function type() {
+  if (i < text.length) {
+    document.getElementById("typing").innerHTML += text[i];
+    i++;
+    setTimeout(type, 60);
+  }
+}
+type();
