@@ -784,3 +784,19 @@ body.gruv { background: #282828; }
 .trigger-feedback.show {
   opacity: 1;
 }
+
+/* HEADER FEEDBACK MESSAGE */
+.header-feedback {
+  margin-left: 12px;
+  font-size: 12px;
+  color: #ff79c6;
+  font-family: "Fira Code", monospace;
+
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  white-space: nowrap;
+}
+
+.header-feedback.show {
+  opacity: 1;
+}
