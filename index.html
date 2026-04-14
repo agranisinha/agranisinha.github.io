@@ -11,153 +11,121 @@
 
 <body>
 
-<div id="cursorGlow"></div>
+<div class="container">
 
-<!-- HERO -->
-<section class="hero">
-  <h1>Agrani Sinha</h1>
-  <h2>AI × Healthcare × Systems</h2>
-  <p>Health Informatics | Biotechnology | Data Science</p>
-</section>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <h2>Agrani</h2>
 
-<!-- FEATURED PROJECT -->
-<section class="section fade">
-  <h2>Featured Work</h2>
+    <ul>
+      <li onclick="showSection('about')">About</li>
+      <li onclick="showSection('projects')">Projects</li>
+      <li onclick="showSection('experience')">Experience</li>
+      <li onclick="showSection('skills')">Skills</li>
+      <li onclick="showSection('research')">Research</li>
+      <li onclick="showSection('resume')">Resume</li>
+      <li onclick="showSection('contact')">Contact</li>
+    </ul>
+  </aside>
 
-  <div class="project">
-    <h3>Respiratory Health Chatbot</h3>
+  <!-- MAIN PANEL -->
+  <main class="main">
 
-    <div class="images compact">
-      <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (1).jpeg">
-      <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (2).jpeg">
-      <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (3).jpeg">
-    </div>
+    <!-- ABOUT -->
+    <section id="about" class="panel active">
+      <h1>Agrani Sinha</h1>
+      <h3>AI × Healthcare × Systems</h3>
+      <p>
+        Health Informatics graduate with a Biotechnology foundation,
+        building intelligent healthcare systems.
+      </p>
+    </section>
 
-    <p>
-      Developed a web-based AI chatbot to assist users with respiratory symptoms,
-      improving accessibility to healthcare guidance.
-    </p>
-  </div>
+    <!-- PROJECTS -->
+    <section id="projects" class="panel">
+      <h2>Projects</h2>
 
-  <div class="project">
-    <h3>Bio Calculator</h3>
+      <div class="card">
+        <h3>Respiratory Chatbot</h3>
 
-    <div class="images compact">
-      <img src="assets/images/Biocalculator/bio1.webp">
-      <img src="assets/images/Biocalculator/bio2.webp">
-    </div>
+        <div class="images compact">
+          <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (1).jpeg">
+          <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (2).jpeg">
+          <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (3).jpeg">
+        </div>
 
-    <p>
-      Designed a biological calculation tool supporting laboratory workflows,
-      published on Google Play Store.
-    </p>
-  </div>
-</section>
+        <p>AI chatbot for healthcare guidance.</p>
+      </div>
 
-<!-- OTHER PROJECTS -->
-<section class="section fade">
-  <h2>Other Projects</h2>
+      <div class="card">
+        <h3>Bio Calculator</h3>
 
-  <div class="grid">
-    <div class="card">ML Drug Discovery – 96.8% accuracy TB model</div>
-    <div class="card">Inventory App – Flutter + Google Sheets</div>
-    <div class="card">AI Plant Identification – TensorFlow + Voice</div>
-    <div class="card">AI Chess & Checkers – Python AI logic</div>
-    <div class="card">COVID Bioinformatics DB – Genomic data system</div>
-  </div>
-</section>
+        <div class="images compact">
+          <img src="assets/images/Biocalculator/bio1.webp">
+          <img src="assets/images/Biocalculator/bio2.webp">
+        </div>
+      </div>
 
-<!-- EXPERIENCE -->
-<section class="section fade">
-  <h2>Experience</h2>
+      <div class="card">ML Drug Discovery</div>
+      <div class="card">Inventory App</div>
+      <div class="card">AI Plant Detection</div>
+    </section>
 
-  <div class="card">
-    <h3>Clinical Informatics Intern — Alivia Care</h3>
-    <p>
-      Worked on EHR workflows, clinical reporting, and healthcare data optimization.
-    </p>
-    <img src="docs/WhatsApp Image 2026-04-13 at 23.46.44.jpeg">
-  </div>
+    <!-- EXPERIENCE -->
+    <section id="experience" class="panel">
+      <h2>Experience</h2>
 
-  <div class="card">
-    <h3>Data Science Analyst — BluCognition</h3>
-    <p>
-      Built ML pipelines, automated analytics, and data-driven systems.
-    </p>
-    <img src="docs/blucogniton.png">
-  </div>
+      <div class="card">
+        <h3>Alivia Care</h3>
+        <img src="docs/WhatsApp Image 2026-04-13 at 23.46.44.jpeg">
+      </div>
 
-  <div class="card">
-    <h3>Academic Research Associate — Digiversal</h3>
-    <p>Conducted applied research in data analytics and AI.</p>
-  </div>
+      <div class="card">
+        <h3>BluCognition</h3>
+        <img src="docs/blucogniton.png">
+      </div>
 
-  <div class="card">
-    <h3>Bioinformatics Intern — IBAB</h3>
-    <p>Worked on genomic datasets and biological data modeling.</p>
-  </div>
+      <div class="card">IBAB</div>
+      <div class="card">SRL Diagnostics</div>
+    </section>
 
-  <div class="card">
-    <h3>Microbiology Trainee — SRL Diagnostics</h3>
-    <p>Hands-on laboratory and microbiological analysis.</p>
-  </div>
+    <!-- SKILLS -->
+    <section id="skills" class="panel">
+      <h2>Skills</h2>
 
-  <div class="card">
-    <h3>Content Developer — Sanfoundry</h3>
-    <p>Created technical educational content.</p>
-  </div>
-</section>
+      <div class="skills">
+        <span>Python</span>
+        <span>Flutter</span>
+        <span>Machine Learning</span>
+        <span>TensorFlow</span>
+        <span>SQL</span>
+        <span>Healthcare Informatics</span>
+      </div>
+    </section>
 
-<!-- SKILLS -->
-<section class="section fade">
-  <h2>Skills</h2>
+    <!-- RESEARCH -->
+    <section id="research" class="panel">
+      <h2>Research</h2>
 
-  <div class="skills">
-    <span>Python</span>
-    <span>Flutter</span>
-    <span>Machine Learning</span>
-    <span>TensorFlow</span>
-    <span>Data Science</span>
-    <span>Healthcare Informatics</span>
-    <span>SQL</span>
-    <span>AI Systems</span>
-  </div>
-</section>
+      <a href="docs/Thesis.pdf" target="_blank">Thesis</a><br>
+      <a href="docs/Dissertationppt.pptx" target="_blank">PPT</a>
+    </section>
 
-<!-- LOR -->
-<section class="section fade">
-  <h2>Recommendations</h2>
+    <!-- RESUME -->
+    <section id="resume" class="panel">
+      <h2>Resume</h2>
+      <a href="docs/Agrani Sinha Resume.pdf" target="_blank">View Resume</a>
+    </section>
 
-  <div class="grid">
-    <img src="docs/lortext.png">
-    <img src="docs/LemonadestandLOR.jpeg">
-    <img src="docs/cdri-lor.jpeg">
-    <img src="docs/sanfoundry-lor.jpeg">
-  </div>
-</section>
+    <!-- CONTACT -->
+    <section id="contact" class="panel">
+      <h2>Contact</h2>
+      <p>Email: agbrian521@gmail.com</p>
+    </section>
 
-<!-- RESUME -->
-<section class="section fade">
-  <h2>Resume</h2>
+  </main>
 
-  <a href="docs/Agrani Sinha Resume.pdf" target="_blank" class="btn">
-    View Resume
-  </a>
-</section>
-
-<!-- RESEARCH -->
-<section class="section fade">
-  <h2>Research</h2>
-
-  <a href="docs/Thesis.pdf" target="_blank" class="btn">Thesis</a>
-  <a href="docs/Dissertationppt.pptx" target="_blank" class="btn">PPT</a>
-</section>
-
-<!-- CONTACT -->
-<section class="section fade">
-  <h2>Contact</h2>
-  <p>Email: agbrian521@gmail.com</p>
-</section>
+</div>
 
 <script src="script.js"></script>
 
