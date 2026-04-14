@@ -1,63 +1,81 @@
+const openPaletteBtn = document.getElementById("openPaletteBtn");
+const paletteOverlay = document.getElementById("paletteOverlay");
+const paletteBackdrop = document.getElementById("paletteBackdrop");
 const paletteInput = document.getElementById("paletteInput");
 const paletteItems = Array.from(document.querySelectorAll(".palette-item"));
 const cursorSquare = document.getElementById("cursorSquare");
 const cursorDot = document.getElementById("cursorDot");
 
-let activeIndex = 0;
+function openPalette() {
+  paletteOverlay.classList.add("open");
+  paletteOverlay.setAttribute("aria-hidden", "false");
+  setTimeout(() => paletteInput.focus(), 20);
+}
+
+function closePalette() {
+  paletteOverlay.classList.remove("open");
+  paletteOverlay.setAttribute("aria-hidden", "true");
+}
 
 function setActiveItem(index) {
-  paletteItems.forEach((item) => item.classList.remove("active"));
-  activeIndex = Math.max(0, Math.min(index, paletteItems.length - 1));
-  paletteItems[activeIndex].classList.add("active");
-  paletteItems[activeIndex].scrollIntoView({ block: "nearest" });
+  const visibleItems = paletteItems.filter((item) => item.style.display !== "none");
+  if (!visibleItems.length) return;
+
+  visibleItems.forEach((item) => item.classList.remove("active"));
+  const safeIndex = Math.max(0, Math.min(index, visibleItems.length - 1));
+  visibleItems[safeIndex].classList.add("active");
+  visibleItems[safeIndex].scrollIntoView({ block: "nearest" });
+}
+
+function getVisibleItems() {
+  return paletteItems.filter((item) => item.style.display !== "none");
 }
 
 function filterPalette(query) {
   const normalized = query.trim().toLowerCase();
 
-  let firstVisibleIndex = -1;
-
-  paletteItems.forEach((item, index) => {
+  paletteItems.forEach((item) => {
     const text = item.innerText.toLowerCase();
-    const visible = text.includes(normalized);
-    item.style.display = visible ? "flex" : "none";
-
-    if (visible && firstVisibleIndex === -1) {
-      firstVisibleIndex = index;
-    }
+    item.style.display = text.includes(normalized) ? "flex" : "none";
   });
 
-  if (firstVisibleIndex !== -1) {
-    paletteItems.forEach((item) => item.classList.remove("active"));
-    paletteItems[firstVisibleIndex].classList.add("active");
-    activeIndex = firstVisibleIndex;
-  }
+  setActiveItem(0);
 }
+
+openPaletteBtn.addEventListener("click", openPalette);
+paletteBackdrop.addEventListener("click", closePalette);
+
+paletteItems.forEach((item) => {
+  item.addEventListener("mouseenter", () => {
+    getVisibleItems().forEach((node) => node.classList.remove("active"));
+    item.classList.add("active");
+  });
+
+  item.addEventListener("click", () => {
+    closePalette();
+  });
+});
 
 paletteInput.addEventListener("input", (e) => {
   filterPalette(e.target.value);
 });
 
 paletteInput.addEventListener("keydown", (e) => {
-  const visibleItems = paletteItems.filter((item) => item.style.display !== "none");
-  const currentVisibleIndex = visibleItems.findIndex((item) =>
-    item.classList.contains("active")
-  );
+  const visibleItems = getVisibleItems();
+  const currentIndex = visibleItems.findIndex((item) => item.classList.contains("active"));
 
   if (e.key === "ArrowDown") {
     e.preventDefault();
-    if (!visibleItems.length) return;
-    const next = (currentVisibleIndex + 1) % visibleItems.length;
-    paletteItems.forEach((item) => item.classList.remove("active"));
+    const next = currentIndex < visibleItems.length - 1 ? currentIndex + 1 : 0;
+    visibleItems.forEach((item) => item.classList.remove("active"));
     visibleItems[next].classList.add("active");
     visibleItems[next].scrollIntoView({ block: "nearest" });
   }
 
   if (e.key === "ArrowUp") {
     e.preventDefault();
-    if (!visibleItems.length) return;
-    const next = (currentVisibleIndex - 1 + visibleItems.length) % visibleItems.length;
-    paletteItems.forEach((item) => item.classList.remove("active"));
+    const next = currentIndex > 0 ? currentIndex - 1 : visibleItems.length - 1;
+    visibleItems.forEach((item) => item.classList.remove("active"));
     visibleItems[next].classList.add("active");
     visibleItems[next].scrollIntoView({ block: "nearest" });
   }
@@ -66,20 +84,24 @@ paletteInput.addEventListener("keydown", (e) => {
     e.preventDefault();
     const active = document.querySelector(".palette-item.active");
     if (active) {
-      alert(`Selected: ${active.innerText.trim()}`);
+      closePalette();
     }
   }
 
   if (e.key === "Escape") {
-    paletteInput.blur();
+    closePalette();
   }
 });
 
-paletteItems.forEach((item, index) => {
-  item.addEventListener("mouseenter", () => setActiveItem(index));
-  item.addEventListener("click", () => {
-    alert(`Selected: ${item.innerText.trim()}`);
-  });
+document.addEventListener("keydown", (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "p") {
+    e.preventDefault();
+    openPalette();
+  }
+
+  if (e.key === "Escape" && paletteOverlay.classList.contains("open")) {
+    closePalette();
+  }
 });
 
 document.addEventListener("mousemove", (e) => {
@@ -97,9 +119,4 @@ document.addEventListener("mousedown", () => {
 document.addEventListener("mouseup", () => {
   cursorSquare.style.width = "24px";
   cursorSquare.style.height = "24px";
-});
-
-window.addEventListener("load", () => {
-  paletteInput.focus();
-  setActiveItem(0);
 });
