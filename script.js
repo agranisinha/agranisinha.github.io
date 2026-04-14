@@ -1,6 +1,9 @@
 // ================= INIT =================
 document.addEventListener("DOMContentLoaded", () => {
 
+  const editorContent = document.getElementById("editorContent");
+  const tabsContainer = document.getElementById("editorTabs");
+
   const paletteOverlay = document.getElementById("paletteOverlay");
   const paletteBackdrop = document.getElementById("paletteBackdrop");
   const openPaletteBtn = document.getElementById("openPaletteBtn");
@@ -12,8 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const yellow = document.getElementById("btnYellow");
   const green = document.getElementById("btnGreen");
   const feedback = document.getElementById("headerFeedback");
-
-  const editorContent = document.getElementById("editorContent");
 
   // ================= COMMAND PALETTE =================
   function openPalette() {
@@ -56,10 +57,55 @@ document.addEventListener("DOMContentLoaded", () => {
     event.target.classList.add("active");
   };
 
-  // ================= DYNAMIC PAGES =================
+  // ================= TAB SYSTEM =================
+  function addTab(name, label) {
+
+    const existing = document.querySelector(`.tab[data-tab="${name}"]`);
+    if (existing) {
+      setActiveTab(existing);
+      return;
+    }
+
+    const tab = document.createElement("div");
+    tab.className = "tab";
+    tab.dataset.tab = name;
+
+    tab.innerHTML = `
+      ${label}
+      <span class="close-tab">×</span>
+    `;
+
+    tab.onclick = () => {
+      openTab(name);
+      setActiveTab(tab);
+    };
+
+    tab.querySelector(".close-tab").onclick = (e) => {
+      e.stopPropagation();
+      tab.remove();
+    };
+
+    tabsContainer.appendChild(tab);
+    setActiveTab(tab);
+  }
+
+  function setActiveTab(tab) {
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+  }
+
+  // ================= PAGE NAV =================
   window.openTab = function (tab) {
 
-    // smooth fade out
+    const labels = {
+      home: "⚛ home.tsx",
+      about: "🌐 about.html",
+      projects: "🟨 projects.js",
+      contact: "🎨 contact.css"
+    };
+
+    addTab(tab, labels[tab]);
+
     editorContent.style.opacity = 0;
 
     setTimeout(() => {
@@ -69,17 +115,15 @@ document.addEventListener("DOMContentLoaded", () => {
       if (tab === "projects") editorContent.innerHTML = getProjects();
       if (tab === "contact") editorContent.innerHTML = getContact();
 
-      // fade in
       editorContent.style.opacity = 1;
 
-      // re-run animations
       startTyping();
       animateElements();
 
-    }, 250);
+    }, 200);
   };
 
-  // ================= PAGE CONTENT =================
+  // ================= HOME =================
   function getHome() {
     return `
       <div class="home-container">
@@ -91,9 +135,10 @@ document.addEventListener("DOMContentLoaded", () => {
         </h1>
 
         <div class="roles">
-          <span>AI Engineer</span>
-          <span>Clinical Informatics</span>
+          <span>Backend Engineer</span>
+          <span>AI / ML Dev</span>
           <span>Data Scientist</span>
+          <span>Clinical Informatics</span>
         </div>
 
         <p class="hero-desc">
@@ -117,19 +162,61 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
+  // ================= ABOUT (YOUR PROFILE STYLE) =================
   function getAbout() {
     return `
-      <div class="home-container">
-        <h2 class="hero-name" style="font-size:48px;">About Me</h2>
-        <p class="hero-desc">
-          I specialize in AI + Healthcare systems, building intelligent,
-          user-focused applications that integrate data, clinical workflows,
-          and real-world impact.
-        </p>
+      <div class="about-container">
+
+        <p class="code-line">&lt;!-- about.html - Agrani Sinha --&gt;</p>
+
+        <h1 class="hero-name">About Me</h1>
+
+        <p class="about-sub">// who I am • what I do • where I build</p>
+
+        <div class="about-card">
+          <p>
+            Hi! I'm <span class="highlight">Agrani Sinha</span>, a software developer 
+            working at the intersection of 
+            <span class="highlight">AI, backend engineering, and healthcare systems</span>.
+            <br/><br/>
+            I specialize in building intelligent, scalable solutions using 
+            machine learning, clinical informatics, and real-world data systems.
+            <br/><br/>
+            Currently focused on 
+            <span class="highlight">AI-driven healthcare workflows</span>, 
+            EHR systems, and production-ready ML pipelines.
+          </p>
+        </div>
+
+        <div class="about-card">
+          <h3 class="section-title">CURRENT FOCUS</h3>
+
+          <div class="focus-grid">
+            <div>⚙ Building AI Healthcare Systems</div>
+            <div>🤖 ML & LLM Pipelines</div>
+            <div>📊 Data Science + Informatics</div>
+            <div>🚀 Backend Architectures</div>
+          </div>
+        </div>
+
+        <div class="about-card">
+          <h3 class="section-title">EDUCATION</h3>
+
+          <p>
+            🎓 MSc Health Informatics <br/>
+            University of North Florida
+          </p>
+
+          <p>
+            💡 Focus: AI, Clinical Systems, Data Science
+          </p>
+        </div>
+
       </div>
     `;
   }
 
+  // ================= PROJECTS =================
   function getProjects() {
     return `
       <div class="home-container">
@@ -138,31 +225,33 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="roles">
           <span>AI Chatbot</span>
           <span>Inventory App</span>
-          <span>Drug Discovery ML</span>
-          <span>Bioinformatics DB</span>
+          <span>Bioinformatics</span>
+          <span>ML Systems</span>
         </div>
 
         <p class="hero-desc">
-          My work combines machine learning, mobile apps, and healthcare systems.
+          My work combines machine learning, backend systems,
+          and healthcare innovation.
         </p>
       </div>
     `;
   }
 
+  // ================= CONTACT =================
   function getContact() {
     return `
       <div class="home-container">
         <h2 class="hero-name" style="font-size:48px;">Contact</h2>
 
         <p class="hero-desc">
-          Email: agbrian521@gmail.com <br/>
-          LinkedIn: linkedin.com/in/agranisinha
+          📧 agbrian521@gmail.com <br/>
+          🔗 linkedin.com/in/agranisinha
         </p>
       </div>
     `;
   }
 
-  // ================= TYPING EFFECT =================
+  // ================= TYPING =================
   function startTyping() {
     const el = document.getElementById("typingText");
     if (!el) return;
@@ -183,9 +272,11 @@ document.addEventListener("DOMContentLoaded", () => {
     type();
   }
 
-  // ================= ANIMATIONS =================
+  // ================= ANIMATION =================
   function animateElements() {
-    const elements = document.querySelectorAll(".hero-name, .roles span, .home-buttons button, .stats div");
+    const elements = document.querySelectorAll(
+      ".hero-name, .roles span, .home-buttons button, .stats div"
+    );
 
     elements.forEach((el, i) => {
       el.style.opacity = 0;
@@ -247,7 +338,7 @@ document.addEventListener("DOMContentLoaded", () => {
     dot.style.top = e.clientY + "px";
   });
 
-  // ================= INIT LOAD =================
-  startTyping();
-  animateElements();
+  // ================= INITIAL LOAD =================
+  openTab("home");
+
 });
