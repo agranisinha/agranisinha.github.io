@@ -701,3 +701,67 @@ document.addEventListener("DOMContentLoaded", () => {
 
   openTab("home");
 });
+
+// ================= MENU FUNCTIONS =================
+
+function toggleSidebar() {
+  document.querySelector(".sidebar-panel").classList.toggle("hide");
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+
+function closeTab() {
+  alert("Tab closed (next step: real tab system)");
+}
+
+function closeAllTabs() {
+  alert("All tabs closed");
+}
+
+function downloadResume() {
+  window.open("Resume.pdf", "_blank");
+}
+
+// ================= COMMAND PALETTE =================
+
+function openPalette() {
+  const overlay = document.getElementById("paletteOverlay");
+  overlay.classList.add("open");
+
+  document.getElementById("paletteInput").focus();
+}
+
+function closePalette() {
+  document.getElementById("paletteOverlay").classList.remove("open");
+}
+
+document.addEventListener("keydown", (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key === "p") {
+    e.preventDefault();
+    openPalette();
+  }
+
+  if (e.key === "Escape") {
+    closePalette();
+  }
+});
+
+// ================= TERMINAL =================
+
+function toggleTerminal() {
+  const terminal = document.getElementById("terminalPanel");
+
+  if (terminal) {
+    terminal.classList.toggle("open");
+  }
+}
+
+function clearTerminal() {
+  document.getElementById("terminalBody").innerHTML = "";
+}
