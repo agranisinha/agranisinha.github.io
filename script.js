@@ -149,8 +149,7 @@ window.onload = function () {
   const yellow = document.querySelector(".traffic.yellow");
   const green = document.querySelector(".traffic.green");
 
-  // ✅ NEW: use header feedback instead of palette
-  const feedback = document.getElementById("triggerFeedback");
+  const feedback = document.getElementById("headerFeedback");
 
   const quotes = [
     "Nice try 😏 but I’ll stay open.",
@@ -161,10 +160,7 @@ window.onload = function () {
   ];
 
   function showMessage(msg) {
-    if (!feedback) {
-      console.log("❌ triggerFeedback not found");
-      return;
-    }
+    if (!feedback) return;
 
     feedback.innerText = msg;
     feedback.classList.add("show");
@@ -174,7 +170,7 @@ window.onload = function () {
     }, 2000);
   }
 
-  // 🔴 RED BUTTON → show message (NO POPUP)
+  // 🔴 RED BUTTON
   if (red) {
     red.onclick = () => {
       const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
@@ -182,7 +178,7 @@ window.onload = function () {
     };
   }
 
-  // 🟡 YELLOW BUTTON → mini animation
+  // 🟡 YELLOW
   if (yellow) {
     yellow.onclick = () => {
       document.body.style.transform = "scale(0.96)";
@@ -192,7 +188,7 @@ window.onload = function () {
     };
   }
 
-  // 🟢 GREEN BUTTON → REAL FULLSCREEN
+  // 🟢 GREEN FULLSCREEN
   if (green) {
     green.onclick = () => {
       if (!document.fullscreenElement) {
