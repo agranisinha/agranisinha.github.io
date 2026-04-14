@@ -759,3 +759,28 @@ body.gruv { background: #282828; }
 .palette-feedback.show {
   opacity: 1;
 }
+
+.trigger-feedback {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+
+  top: -28px;
+
+  background: rgba(30,30,30,0.95);
+  border: 1px solid rgba(255,255,255,0.12);
+
+  padding: 6px 12px;
+  border-radius: 6px;
+
+  font-size: 12px;
+  color: #ff79c6;
+
+  opacity: 0;
+  transition: 0.3s ease;
+  pointer-events: none;
+}
+
+.trigger-feedback.show {
+  opacity: 1;
+}
