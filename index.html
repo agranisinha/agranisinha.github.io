@@ -51,7 +51,73 @@
       <span>Help</span>
       <span class="copilot-menu">Copilot</span>
     </div>
+    <!-- =========================
+   VS CODE LAYOUT
+========================= -->
+<div class="vscode-layout">
 
+  <!-- ACTIVITY BAR -->
+  <div class="activity-bar">
+    <div class="activity-icon active" onclick="openSidebar('explorer')">📁</div>
+    <div class="activity-icon" onclick="openSidebar('search')">🔍</div>
+    <div class="activity-icon" onclick="openSidebar('git')">🔗</div>
+    <div class="activity-icon" onclick="openSidebar('files')">📄</div>
+    <div class="activity-icon" onclick="openSidebar('spark')">✨</div>
+
+    <div class="activity-bottom">
+      <div class="activity-icon" onclick="toggleSettings()">⚙️</div>
+    </div>
+  </div>
+
+      <!-- SIDEBAR -->
+      <div class="sidebar-panel" id="sidebarPanel">
+    
+        <div class="sidebar-header">PORTFOLIO</div>
+    
+        <div class="file-list">
+          <div class="file active">⚛️ home.tsx</div>
+          <div class="file">🌐 about.html</div>
+          <div class="file">🟨 projects.js</div>
+          <div class="file">🟩 skills.json</div>
+          <div class="file">🟦 experience.ts</div>
+          <div class="file">🎨 contact.css</div>
+          <div class="file">📄 README.md</div>
+          <div class="file">📕 Resume.pdf</div>
+        </div>
+    
+        <div class="copilot-box">
+          ✨ Agrani's Copilot
+        </div>
+    
+      </div>
+    
+    </div>
+    
+    <!-- SETTINGS PANEL -->
+    <div class="settings-panel" id="settingsPanel">
+      <div class="settings-header">SETTINGS</div>
+    
+      <div class="settings-section">
+        <div class="section-title">🎨 COLOR THEME</div>
+    
+        <div class="theme-option active" onclick="setTheme('dark')">💜 Agrani Dark</div>
+        <div class="theme-option" onclick="setTheme('rose')">🌸 Rosé Pine</div>
+        <div class="theme-option" onclick="setTheme('tokyo')">🌃 Tokyo Night</div>
+        <div class="theme-option" onclick="setTheme('cat')">🐱 Catppuccin</div>
+        <div class="theme-option" onclick="setTheme('nord')">❄️ Nord</div>
+        <div class="theme-option" onclick="setTheme('gruv')">🔥 Gruvbox</div>
+      </div>
+    
+      <div class="settings-section">
+        <div class="section-title">⚡ QUICK ACTIONS</div>
+    
+        <div class="action">🔍 Command Palette (Ctrl + P)</div>
+        <div class="action">💬 Copilot Chat</div>
+        <div class="action">📥 Download Resume</div>
+        <div class="action">🖥 Toggle Fullscreen</div>
+      </div>
+
+    </div>
     <main class="fake-editor">
       <div class="fake-sidebar"></div>
       <div class="fake-main">
