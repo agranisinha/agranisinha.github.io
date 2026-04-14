@@ -6,7 +6,7 @@ function openTab(id) {
 
   if (!document.querySelector(`[data-tab='${id}']`)) {
     const tab = document.createElement('div');
-    tab.className = 'tab';
+    tab.className = 'tab active';
     tab.innerText = id + ".js";
     tab.setAttribute("data-tab", id);
 
@@ -16,7 +16,16 @@ function openTab(id) {
   }
 }
 
-// TYPING EFFECT
+function toggleFolder(id) {
+  const folder = document.getElementById(id);
+  folder.style.display = folder.style.display === "block" ? "none" : "block";
+}
+
+function toggleTheme() {
+  document.body.classList.toggle("light");
+}
+
+// typing
 const text = "Agrani Sinha";
 let i = 0;
 
