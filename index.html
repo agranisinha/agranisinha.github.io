@@ -1,130 +1,416 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Agrani Sinha</title>
-
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agrani Sinha | Portfolio</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
+  <div class="app-shell">
+    <!-- TITLE BAR -->
+    <header class="titlebar">
+      <div class="titlebar-left">
+        <span class="traffic"></span>
+        <span class="traffic yellow"></span>
+        <span class="traffic green"></span>
+      </div>
+      <div class="titlebar-center">Agrani Sinha - Portfolio - Visual Studio Code</div>
+      <div class="titlebar-right">⎯ ☐ ✕</div>
+    </header>
 
-<div class="app">
+    <!-- MAIN WORKBENCH -->
+    <div class="workbench">
+      <!-- ACTIVITY BAR -->
+      <aside class="activity-bar">
+        <button class="activity-btn active" title="Explorer">📁</button>
+        <button class="activity-btn" title="Search">🔎</button>
+        <button class="activity-btn" title="Git">⑂</button>
+        <button class="activity-btn" title="Extensions">🧩</button>
+        <button class="activity-btn bottom" id="themeToggle" title="Toggle theme">🌗</button>
+      </aside>
 
-<!-- SIDEBAR -->
-<aside class="sidebar">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sidebar-header">EXPLORER</div>
 
-  <div class="top">
-    <h3>Explorer</h3>
-    <button onclick="toggleTheme()">🌗</button>
-  </div>
+        <div class="explorer-group">
+          <div class="explorer-title" onclick="toggleFolder('portfolioFolder')">
+            <span class="caret" id="portfolioFolderCaret">▾</span>
+            <span>PORTFOLIO</span>
+          </div>
 
-  <ul>
-    <li onclick="openTab('about')">📄 about.js</li>
+          <ul class="file-tree show" id="portfolioFolder">
+            <li onclick="openTab('about')" class="file-item">
+              <span class="icon js">JS</span> about.js
+            </li>
+            <li onclick="openTab('projects')" class="file-item">
+              <span class="icon js">JS</span> projects.js
+            </li>
+            <li onclick="openTab('experience')" class="file-item">
+              <span class="icon js">JS</span> experience.js
+            </li>
+            <li onclick="openTab('skills')" class="file-item">
+              <span class="icon js">JS</span> skills.js
+            </li>
+            <li onclick="openTab('lor')" class="file-item">
+              <span class="icon js">JS</span> lor.js
+            </li>
+            <li onclick="openTab('research')" class="file-item">
+              <span class="icon js">JS</span> research.js
+            </li>
+            <li onclick="openTab('resume')" class="file-item">
+              <span class="icon js">JS</span> resume.js
+            </li>
+            <li onclick="openTab('contact')" class="file-item">
+              <span class="icon js">JS</span> contact.js
+            </li>
+          </ul>
+        </div>
 
-    <li onclick="toggleFolder('proj')">📁 projects</li>
-    <ul id="proj" class="folder">
-      <li onclick="openTab('projects')">chatbot.js</li>
-    </ul>
+        <div class="explorer-group">
+          <div class="explorer-title" onclick="toggleFolder('assetsFolder')">
+            <span class="caret" id="assetsFolderCaret">▸</span>
+            <span>ASSETS</span>
+          </div>
+          <ul class="file-tree" id="assetsFolder">
+            <li class="file-item passive"><span class="icon img">IMG</span> assets/images/...</li>
+            <li class="file-item passive"><span class="icon pdf">PDF</span> docs/Thesis.pdf</li>
+            <li class="file-item passive"><span class="icon pdf">PDF</span> docs/Agrani Sinha Resume.pdf</li>
+          </ul>
+        </div>
+      </aside>
 
-    <li onclick="openTab('experience')">📁 experience.js</li>
-    <li onclick="openTab('skills')">📄 skills.js</li>
-    <li onclick="openTab('lor')">📁 lor.js</li>
-    <li onclick="openTab('resume')">📄 resume.js</li>
-    <li onclick="openTab('contact')">📄 contact.js</li>
-  </ul>
+      <!-- EDITOR -->
+      <main class="editor-area">
+        <div class="editor-tabs" id="editorTabs">
+          <button class="editor-tab active" data-tab="about" onclick="openTab('about')">
+            <span class="icon js">JS</span> about.js
+          </button>
+        </div>
 
-</aside>
+        <div class="editor-content">
+          <!-- ABOUT -->
+          <section id="about" class="panel active">
+            <div class="code-header">
+              <span class="line-number">1</span>
+              <span class="code-line"><span class="kw">const</span> <span class="var">developer</span> <span class="op">=</span> <span class="br">{</span></span>
+            </div>
+            <div class="code-block">
+              <div><span class="line-number">2</span><span class="code-line"><span class="prop">name</span>: <span class="str">"Agrani Sinha"</span>,</span></div>
+              <div><span class="line-number">3</span><span class="code-line"><span class="prop">title</span>: <span class="str typing-wrap">"<span id="typing"></span><span class="cursor">|</span>"</span>,</span></div>
+              <div><span class="line-number">4</span><span class="code-line"><span class="prop">domain</span>: <span class="str">"Health Informatics, Biotechnology, AI Systems"</span>,</span></div>
+              <div><span class="line-number">5</span><span class="code-line"><span class="prop">summary</span>: <span class="str">"Health Informatics graduate with a Biotechnology foundation, building AI-driven, data-informed healthcare systems that improve clinical workflows, patient outcomes, and decision-making."</span>,</span></div>
+              <div><span class="line-number">6</span><span class="code-line"><span class="prop">focus</span>: <span class="arr">["Clinical Informatics", "AI in Healthcare", "Data Science", "Patient-Centered Systems"]</span></span></div>
+              <div><span class="line-number">7</span><span class="code-line"><span class="br">}</span>;</span></div>
+            </div>
 
-<!-- MAIN -->
-<div class="editor">
+            <div class="hero-panel">
+              <div class="hero-card">
+                <h1>Agrani Sinha</h1>
+                <p class="hero-subtitle">AI × Healthcare × Systems</p>
+                <p class="hero-description">
+                  I build practical, data-driven healthcare solutions at the intersection of
+                  biotechnology, clinical informatics, and intelligent system design.
+                </p>
+                <div class="hero-actions">
+                  <a class="vscode-btn primary" href="docs/Agrani Sinha Resume.pdf" target="_blank">Open Resume</a>
+                  <a class="vscode-btn" href="docs/Thesis.pdf" target="_blank">Open Thesis</a>
+                  <a class="vscode-btn" href="https://www.linkedin.com/in/agranisinha" target="_blank">LinkedIn</a>
+                </div>
+              </div>
+            </div>
+          </section>
 
-<div class="tabs" id="tabs"></div>
+          <!-- PROJECTS -->
+          <section id="projects" class="panel">
+            <div class="panel-title">projects.js</div>
 
-<div class="content">
+            <div class="section-card">
+              <h2>Featured Projects</h2>
 
-<!-- ABOUT -->
-<section id="about" class="panel active">
-  <h1 id="typing"></h1><span class="cursor">|</span>
+              <article class="project-card">
+                <div class="project-copy">
+                  <h3>Respiratory Health Chatbot</h3>
+                  <p>
+                    Built a web-based chatbot for respiratory health guidance using HTML, CSS, and Vue.js,
+                    designed to make healthcare information more accessible and interactive.
+                  </p>
+                </div>
+                <div class="compact-gallery three">
+                  <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (1).jpeg" alt="Respiratory chatbot screenshot 1" />
+                  <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (2).jpeg" alt="Respiratory chatbot screenshot 2" />
+                  <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (3).jpeg" alt="Respiratory chatbot screenshot 3" />
+                  <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (4).jpeg" alt="Respiratory chatbot screenshot 4" />
+                  <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (5).jpeg" alt="Respiratory chatbot screenshot 5" />
+                  <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.45.jpeg" alt="Respiratory chatbot screenshot 6" />
+                </div>
+              </article>
 
-  <p>AI × Healthcare × Systems</p>
-</section>
+              <article class="project-card">
+                <div class="project-copy">
+                  <h3>Bio Calculator App</h3>
+                  <p>
+                    Created a biological and chemical lab calculation tool using HTML, CSS, and JavaScript,
+                    published on Google Play Store to support calculation-heavy lab workflows.
+                  </p>
+                </div>
+                <div class="compact-gallery two">
+                  <img src="assets/images/Biocalculator/bio1.webp" alt="Bio Calculator screenshot 1" />
+                  <img src="assets/images/Biocalculator/bio2.webp" alt="Bio Calculator screenshot 2" />
+                  <img src="assets/images/Biocalculator/bio3.webp" alt="Bio Calculator screenshot 3" />
+                  <img src="assets/images/Biocalculator/bio4.webp" alt="Bio Calculator screenshot 4" />
+                </div>
+              </article>
 
-<!-- PROJECTS -->
-<section id="projects" class="panel">
+              <div class="mini-grid">
+                <div class="mini-card">
+                  <h4>ML Drug Discovery</h4>
+                  <p>Developed an SVM model with 96.8% accuracy for tuberculosis inhibitor prediction using MATLAB and AutoDock.</p>
+                </div>
+                <div class="mini-card">
+                  <h4>Inventory Management App</h4>
+                  <p>Built a Flutter + Google Sheets based inventory system with tracking, updates, filtering, and business-oriented workflows.</p>
+                </div>
+                <div class="mini-card">
+                  <h4>AI Plant Identification</h4>
+                  <p>TensorFlow-based computer vision system for plant identification with voice feedback integration.</p>
+                </div>
+                <div class="mini-card">
+                  <h4>AI Games — Chess & Checkers</h4>
+                  <p>Built Python-based AI gameplay logic to demonstrate algorithmic reasoning and decision-making.</p>
+                </div>
+                <div class="mini-card">
+                  <h4>COVID-19 Bioinformatics Database</h4>
+                  <p>Worked on genomic data structuring and research-focused bioinformatics database organization.</p>
+                </div>
+              </div>
+            </div>
+          </section>
 
-  <div class="card">
-    <h3>Respiratory Chatbot</h3>
+          <!-- EXPERIENCE -->
+          <section id="experience" class="panel">
+            <div class="panel-title">experience.js</div>
 
-    <div class="images">
-      <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (1).jpeg">
-      <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (2).jpeg">
-      <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (3).jpeg">
+            <div class="section-card">
+              <h2>Professional Experience</h2>
+
+              <div class="experience-list">
+                <article class="experience-item">
+                  <div class="experience-text">
+                    <h3>Clinical Informatics Intern — Alivia Care</h3>
+                    <p class="meta">Jacksonville, FL | Oct 2025 – Feb 2026</p>
+                    <p>
+                      Worked on EHR-based reporting and clinical workflow optimization, supported data accessibility,
+                      and collaborated with informatics teams on healthcare data use cases.
+                    </p>
+                  </div>
+                  <div class="compact-single">
+                    <img src="assets/images/badge.png" alt="Alivia Care badge" />
+                  </div>
+                </article>
+
+                <article class="experience-item">
+                  <div class="experience-text">
+                    <h3>Data Science Analyst — BluCognition</h3>
+                    <p class="meta">Pune, India | Mar 2022 – Jun 2023</p>
+                    <p>
+                      Built ML pipelines for processing and structuring complex financial data, developed automation-oriented
+                      solutions using AI and analytics, and transformed unstructured information into usable outputs.
+                    </p>
+                  </div>
+                </article>
+
+                <article class="experience-item">
+                  <div class="experience-text">
+                    <h3>Academic Research Associate — Digiversal Consultant</h3>
+                    <p class="meta">Noida, India | Dec 2020 – Mar 2022</p>
+                    <p>Conducted research and data analysis for IT and analytics consulting projects and prepared structured technical documentation.</p>
+                  </div>
+                </article>
+
+                <article class="experience-item">
+                  <div class="experience-text">
+                    <h3>Bioinformatics Research Intern — IBAB</h3>
+                    <p class="meta">Remote | Jul 2020 – Dec 2020</p>
+                    <p>Curated genomic datasets for COVID-19 research support and contributed to biological data organization and meta-database work.</p>
+                  </div>
+                </article>
+
+                <article class="experience-item">
+                  <div class="experience-text">
+                    <h3>Microbiology Trainee — SRL Diagnostics</h3>
+                    <p class="meta">Noida, India | Jun 2018 – Jul 2018</p>
+                    <p>Performed microbial testing using culture techniques and diagnostics while supporting laboratory workflow and sample analysis processes.</p>
+                  </div>
+                  <div class="compact-gallery three">
+                    <img src="assets/images/Microbiology/m1.png" alt="Microbiology 1" />
+                    <img src="assets/images/Microbiology/m2.png" alt="Microbiology 2" />
+                    <img src="assets/images/Microbiology/m3.png" alt="Microbiology 3" />
+                    <img src="assets/images/Microbiology/m4.png" alt="Microbiology 4" />
+                    <img src="assets/images/Microbiology/m5.png.png" alt="Microbiology 5" />
+                    <img src="assets/images/Microbiology/m6.png" alt="Microbiology 6" />
+                    <img src="assets/images/Microbiology/m7.png" alt="Microbiology 7" />
+                  </div>
+                </article>
+
+                <article class="experience-item">
+                  <div class="experience-text">
+                    <h3>Content Developer — Sanfoundry</h3>
+                    <p class="meta">Remote | Dec 2017 – Mar 2018</p>
+                    <p>Created 1000+ technical MCQs for bioprocess engineering education and contributed structured learning content for engineering learners.</p>
+                    <a class="vscode-btn small" href="https://www.sanfoundry.com/1000-bioprocess-engineering-questions-answers/" target="_blank">Published Work</a>
+                  </div>
+                </article>
+
+                <article class="experience-item">
+                  <div class="experience-text">
+                    <h3>Volunteer — Lemonade Stand Bootcamp</h3>
+                    <p class="meta">Pensacola, FL | May 2025 – Aug 2025</p>
+                    <p>Designed 2D and 3D visual assets using Canva and Blender and worked with teams on educational game development deliverables.</p>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </section>
+
+          <!-- SKILLS -->
+          <section id="skills" class="panel">
+            <div class="panel-title">skills.js</div>
+
+            <div class="section-card">
+              <h2>Skills</h2>
+              <div class="skills-groups">
+                <div class="skill-group">
+                  <h3>Programming</h3>
+                  <div class="skills-wrap">
+                    <span>Python</span>
+                    <span>Java</span>
+                    <span>C</span>
+                    <span>C++</span>
+                    <span>JavaScript</span>
+                    <span>HTML</span>
+                    <span>CSS</span>
+                    <span>Flutter</span>
+                  </div>
+                </div>
+
+                <div class="skill-group">
+                  <h3>AI / ML</h3>
+                  <div class="skills-wrap">
+                    <span>Machine Learning</span>
+                    <span>TensorFlow</span>
+                    <span>Computer Vision</span>
+                    <span>AI Systems</span>
+                  </div>
+                </div>
+
+                <div class="skill-group">
+                  <h3>Data & Analytics</h3>
+                  <div class="skills-wrap">
+                    <span>Data Science</span>
+                    <span>Data Analytics</span>
+                    <span>Jupyter Notebook</span>
+                    <span>Google Colab</span>
+                    <span>SAS</span>
+                    <span>Microsoft Excel</span>
+                  </div>
+                </div>
+
+                <div class="skill-group">
+                  <h3>Healthcare & Tools</h3>
+                  <div class="skills-wrap">
+                    <span>Clinical Informatics</span>
+                    <span>EHR Systems</span>
+                    <span>EHRGo</span>
+                    <span>WellSky</span>
+                    <span>Bioinformatics</span>
+                    <span>GitHub</span>
+                    <span>Android Studio</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- LOR -->
+          <section id="lor" class="panel">
+            <div class="panel-title">lor.js</div>
+
+            <div class="section-card">
+              <h2>Letters of Recommendation</h2>
+              <div class="compact-gallery two">
+                <img src="docs/lortext.png" alt="LOR text" />
+                <img src="docs/LemonadestandLOR.jpeg" alt="Lemonade Stand LOR" />
+                <img src="docs/cdri-lor.jpeg" alt="CDRI LOR" />
+                <img src="docs/sanfoundry-lor.jpeg" alt="Sanfoundry LOR" />
+              </div>
+            </div>
+          </section>
+
+          <!-- RESEARCH -->
+          <section id="research" class="panel">
+            <div class="panel-title">research.js</div>
+
+            <div class="section-card">
+              <h2>Research & Dissertation</h2>
+              <div class="link-stack">
+                <a class="vscode-btn" href="docs/Thesis.pdf" target="_blank">Open Thesis.pdf</a>
+                <a class="vscode-btn" href="docs/Dissertationppt.pptx" target="_blank">Open Dissertationppt.pptx</a>
+              </div>
+            </div>
+          </section>
+
+          <!-- RESUME -->
+          <section id="resume" class="panel">
+            <div class="panel-title">resume.js</div>
+
+            <div class="section-card">
+              <h2>Resume</h2>
+              <div class="link-stack">
+                <a class="vscode-btn primary" href="docs/Agrani Sinha Resume.pdf" target="_blank">Open Resume</a>
+              </div>
+            </div>
+          </section>
+
+          <!-- CONTACT -->
+          <section id="contact" class="panel">
+            <div class="panel-title">contact.js</div>
+
+            <div class="section-card">
+              <h2>Contact</h2>
+              <div class="contact-lines">
+                <p><span class="muted">Email:</span> agbrian521@gmail.com</p>
+                <p><span class="muted">LinkedIn:</span> <a href="https://www.linkedin.com/in/agranisinha" target="_blank">linkedin.com/in/agranisinha</a></p>
+                <p><span class="muted">Portfolio:</span> <a href="https://agranisinha.github.io/" target="_blank">agranisinha.github.io</a></p>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- TERMINAL -->
+        <div class="terminal">
+          <div class="terminal-header">
+            <span>TERMINAL</span>
+          </div>
+          <div class="terminal-body">
+            <div><span class="terminal-prompt">PS C:\Users\Agrani\portfolio&gt;</span> npm run showcase</div>
+            <div class="terminal-output">Launching AI + Healthcare portfolio...</div>
+            <div class="terminal-output">Loaded sections: about, projects, experience, skills, lor, research, resume, contact</div>
+          </div>
+        </div>
+      </main>
     </div>
 
+    <!-- STATUS BAR -->
+    <footer class="status-bar">
+      <span>main</span>
+      <span>JavaScript</span>
+      <span>UTF-8</span>
+      <span>Portfolio Ready</span>
+    </footer>
   </div>
 
-  <div class="card">
-    <h3>Bio Calculator</h3>
-
-    <div class="images">
-      <img src="assets/images/Biocalculator/bio1.webp">
-      <img src="assets/images/Biocalculator/bio2.webp">
-    </div>
-
-  </div>
-
-</section>
-
-<!-- EXPERIENCE -->
-<section id="experience" class="panel">
-  <div class="card">
-    Alivia Care
-    <img src="docs/WhatsApp Image 2026-04-13 at 23.46.44.jpeg">
-  </div>
-
-  <div class="card">
-    BluCognition
-    <img src="docs/blucogniton.png">
-  </div>
-</section>
-
-<!-- SKILLS -->
-<section id="skills" class="panel">
-  <div class="skills">
-    <span>Python</span>
-    <span>Flutter</span>
-    <span>ML</span>
-    <span>SQL</span>
-  </div>
-</section>
-
-<!-- LOR -->
-<section id="lor" class="panel">
-  <div class="grid">
-    <img src="docs/lortext.png">
-    <img src="docs/LemonadestandLOR.jpeg">
-    <img src="docs/cdri-lor.jpeg">
-    <img src="docs/sanfoundry-lor.jpeg">
-  </div>
-</section>
-
-<!-- RESUME -->
-<section id="resume" class="panel">
-  <a href="docs/Agrani Sinha Resume.pdf">View Resume</a>
-</section>
-
-<!-- CONTACT -->
-<section id="contact" class="panel">
-  <p>Email: agbrian521@gmail.com</p>
-</section>
-
-</div>
-</div>
-</div>
-
-<script src="script.js"></script>
-
+  <script src="script.js"></script>
 </body>
 </html>
