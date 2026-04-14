@@ -139,3 +139,6 @@ function setTheme(theme) {
   document.querySelectorAll('.theme-option').forEach(t => t.classList.remove('active'));
   event.target.classList.add('active');
 }
+function openTab(name) {
+  alert("Opening " + name + " (next step we will connect real pages)");
+}
