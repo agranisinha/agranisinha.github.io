@@ -2,357 +2,133 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Agrani Sinha | Portfolio</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
-  <button id="backToTop" title="Back to top">↑</button>
 
-  <nav class="navbar">
-    <div class="nav-logo">Agrani Sinha</div>
-    <ul class="nav-links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#journey">Journey</a></li>
-      <li><a href="#experience">Experience</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#recommendations">LORs</a></li>
-      <li><a href="#research">Research</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-    <button id="themeToggle" class="theme-toggle">🌙</button>
-  </nav>
+<button id="backToTop">↑</button>
 
-  <header class="hero">
-    <div class="hero-overlay"></div>
-    <div class="hero-content reveal">
-      <p class="hero-tag">Biotechnology • Health Informatics • AI Systems</p>
-      <h1>Agrani Sinha</h1>
-      <h2><span id="typing"></span></h2>
-      <p class="hero-text">
-        Building data-driven healthcare solutions through clinical informatics,
-        AI, biotechnology, and human-centered system design.
-      </p>
-      <div class="hero-buttons">
-        <a class="btn primary" href="#projects">View Projects</a>
-        <a class="btn secondary" href="docs/Agrani Sinha Resume.pdf" target="_blank">View Resume</a>
-        <a class="btn secondary" href="https://www.linkedin.com/in/agranisinha" target="_blank">LinkedIn</a>
+<nav class="navbar">
+  <div class="nav-logo">Agrani Sinha</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#journey">Journey</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#recommendations">LORs</a></li>
+    <li><a href="#research">Research</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<header class="hero">
+  <div class="hero-content reveal">
+    <h1>Agrani Sinha</h1>
+    <h2 id="typing"></h2>
+    <p>Biotechnology • Health Informatics • AI Systems</p>
+  </div>
+</header>
+
+<main>
+
+<section id="about" class="section reveal">
+  <h2>About Me</h2>
+  <p>Interdisciplinary healthcare + AI profile.</p>
+</section>
+
+<section id="journey" class="section reveal">
+  <h2>My Journey</h2>
+  <p>From Biotechnology → AI → Clinical Informatics.</p>
+</section>
+
+<section id="experience" class="section reveal">
+  <h2>Experience</h2>
+
+  <div class="grid">
+    <div class="card">
+      <h3>Alivia Care</h3>
+      <img src="docs/cdri-lor.jpeg">
+    </div>
+
+    <div class="card">
+      <h3>BluCognition</h3>
+      <img src="docs/sanfoundry-lor.jpeg">
+    </div>
+  </div>
+</section>
+
+<section id="projects" class="section reveal">
+  <h2>Projects</h2>
+
+  <div class="grid">
+
+    <div class="card">
+      <h3>ML Drug Discovery</h3>
+      <img src="assets/images/ml1.png">
+    </div>
+
+    <div class="card">
+      <h3>Inventory App</h3>
+      <img src="assets/images/inv1.png">
+    </div>
+
+    <div class="card">
+      <h3>Chatbot</h3>
+
+      <div class="image-showcase">
+        <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (1).jpeg">
+        <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (2).jpeg">
+        <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (3).jpeg">
       </div>
     </div>
-  </header>
 
-  <main>
-    <section id="about" class="section reveal">
-      <div class="section-header">
-        <span>About Me</span>
-        <h2>Interdisciplinary profile with healthcare impact</h2>
+    <div class="card">
+      <h3>Bio Calculator</h3>
+
+      <div class="image-showcase">
+        <img src="assets/images/Biocalculator/bio1.webp">
+        <img src="assets/images/Biocalculator/bio2.webp">
       </div>
-      <div class="glass-card about-card">
-        <p>
-          I am a Health Informatics graduate student with a strong academic foundation in
-          <strong>Biotechnology</strong>, bringing an interdisciplinary perspective to healthcare innovation.
-          My work lies at the intersection of <strong>clinical informatics, artificial intelligence,
-          data science, and system design</strong>.
-        </p>
-        <p>
-          I enjoy building solutions that are technically strong, practical in real-world settings,
-          and focused on improving healthcare workflows, accessibility, and patient outcomes.
-        </p>
-        <div class="chips">
-          <span>Biotechnology</span>
-          <span>Health Informatics</span>
-          <span>AI in Healthcare</span>
-          <span>Clinical Systems</span>
-          <span>Data Science</span>
-          <span>System Design</span>
-        </div>
-      </div>
-    </section>
+    </div>
 
-    <section id="journey" class="section reveal">
-      <div class="section-header">
-        <span>My Journey</span>
-        <h2>From biotechnology to healthcare technology</h2>
-      </div>
-      <div class="timeline">
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content glass-card">
-            <h3>Biotechnology Foundation</h3>
-            <p>
-              Built a strong base in biological systems, healthcare fundamentals, laboratory methods,
-              and applied scientific problem solving.
-            </p>
-          </div>
-        </div>
+  </div>
+</section>
 
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content glass-card">
-            <h3>Research and Technical Exploration</h3>
-            <p>
-              Expanded into bioinformatics, microbiology, analytics, and technical documentation through
-              research and applied project work.
-            </p>
-          </div>
-        </div>
+<section id="recommendations" class="section reveal">
+  <h2>Letters of Recommendation</h2>
 
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content glass-card">
-            <h3>Data Science and AI</h3>
-            <p>
-              Transitioned into machine learning, automation, intelligent systems, and real-world data pipelines
-              for structured decision-making.
-            </p>
-          </div>
-        </div>
+  <div class="grid">
+    <img src="docs/lortext.png">
+    <img src="docs/LemonadestandLOR.jpeg">
+    <img src="docs/cdri-lor.jpeg">
+    <img src="docs/sanfoundry-lor.jpeg">
+  </div>
+</section>
 
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content glass-card">
-            <h3>Clinical Informatics and Health Innovation</h3>
-            <p>
-              Now focused on EHR workflows, healthcare data systems, AI-driven health solutions,
-              and patient-centered digital transformation.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
+<section id="research" class="section reveal">
+  <h2>Research</h2>
 
-    <section id="experience" class="section reveal">
-      <div class="section-header">
-        <span>Experience</span>
-        <h2>Internships, research, and professional work</h2>
-      </div>
+  <a href="docs/Thesis.pdf" target="_blank" class="btn">Thesis</a>
+  <a href="docs/Dissertationppt.pptx" target="_blank" class="btn">PPT</a>
+</section>
 
-      <div class="cards-grid">
-        <article class="glass-card exp-card">
-          <h3>🏥 Clinical Informatics Intern — Alivia Care</h3>
-          <p class="meta">Jacksonville, FL | Oct 2025 – Feb 2026</p>
-          <div class="carousel" data-auto="true">
-            <button class="carousel-btn prev">‹</button>
-            <div class="carousel-track">
-              <img src="assets/images/badge.png" alt="Alivia Care" />
-            </div>
-            <button class="carousel-btn next">›</button>
-          </div>
-          <ul>
-            <li>Worked on EHR-based reporting and clinical workflow optimization.</li>
-            <li>Supported data accessibility and operational insight generation.</li>
-            <li>Collaborated with informatics teams on healthcare data use cases.</li>
-          </ul>
-        </article>
+<section id="contact" class="section reveal">
+  <h2>Contact</h2>
+  <p>Email: agbrian521@gmail.com</p>
+</section>
 
-        <article class="glass-card exp-card">
-          <h3>📊 Data Science Analyst — BluCognition</h3>
-          <p class="meta">Pune, India | Mar 2022 – Jun 2023</p>
-          <ul>
-            <li>Built ML pipelines for processing and structuring complex financial data.</li>
-            <li>Developed automation-oriented solutions using AI and analytics.</li>
-            <li>Worked on transforming unstructured information into usable outputs.</li>
-          </ul>
-        </article>
+</main>
 
-        <article class="glass-card exp-card">
-          <h3>🔬 Academic Research Associate — Digiversal Consultant</h3>
-          <p class="meta">Noida, India | Dec 2020 – Mar 2022</p>
-          <ul>
-            <li>Conducted research and data analysis for IT and analytics consulting projects.</li>
-            <li>Prepared technical reports and structured documentation.</li>
-          </ul>
-        </article>
+<footer>
+  <p>© 2026 Agrani Sinha</p>
+</footer>
 
-        <article class="glass-card exp-card">
-          <h3>🧬 Bioinformatics Research Intern — IBAB</h3>
-          <p class="meta">Remote | Jul 2020 – Dec 2020</p>
-          <ul>
-            <li>Curated genomic datasets for COVID-19 research support.</li>
-            <li>Contributed to biological data organization and meta-database work.</li>
-          </ul>
-        </article>
+<script src="script.js"></script>
 
-        <article class="glass-card exp-card">
-          <h3>🧫 Microbiology Trainee — SRL Diagnostics</h3>
-          <p class="meta">Noida, India | Jun 2018 – Jul 2018</p>
-          <div class="carousel" data-auto="true">
-            <button class="carousel-btn prev">‹</button>
-            <div class="carousel-track">
-              <img src="assets/images/Microbiology/m1.png" alt="Microbiology visual 1" />
-              <img src="assets/images/Microbiology/m2.png" alt="Microbiology visual 2" />
-              <img src="assets/images/Microbiology/m3.png" alt="Microbiology visual 3" />
-              <img src="assets/images/Microbiology/m4.png" alt="Microbiology visual 4" />
-              <img src="assets/images/Microbiology/m5.png.png" alt="Microbiology visual 5" />
-              <img src="assets/images/Microbiology/m6.png" alt="Microbiology visual 6" />
-              <img src="assets/images/Microbiology/m7.png" alt="Microbiology visual 7" />
-            </div>
-            <button class="carousel-btn next">›</button>
-          </div>
-          <ul>
-            <li>Performed microbial testing using culture techniques and diagnostics.</li>
-            <li>Supported laboratory workflow and sample analysis processes.</li>
-          </ul>
-        </article>
-
-        <article class="glass-card exp-card">
-          <h3>✍️ Content Developer — Sanfoundry</h3>
-          <p class="meta">Remote | Dec 2017 – Mar 2018</p>
-          <ul>
-            <li>Created 1000+ technical MCQs for bioprocess engineering education.</li>
-            <li>Contributed structured learning content for engineering learners.</li>
-          </ul>
-          <div class="card-links">
-            <a class="btn primary" href="https://www.sanfoundry.com/1000-bioprocess-engineering-questions-answers/" target="_blank">Published Work</a>
-          </div>
-        </article>
-
-        <article class="glass-card exp-card">
-          <h3>🎨 Volunteer — Lemonade Stand Bootcamp</h3>
-          <p class="meta">Pensacola, FL | May 2025 – Aug 2025</p>
-          <ul>
-            <li>Designed 2D and 3D visual assets using Canva and Blender.</li>
-            <li>Worked with teams on educational game development deliverables.</li>
-          </ul>
-        </article>
-      </div>
-    </section>
-
-    <section id="projects" class="section reveal">
-      <div class="section-header">
-        <span>Projects</span>
-        <h2>Selected technical and healthcare-focused work</h2>
-      </div>
-
-      <div class="cards-grid">
-        <article class="glass-card project-card">
-          <h3>🧪 ML Drug Discovery</h3>
-          <p>
-            Developed an SVM model with <strong>96.8% accuracy</strong> for tuberculosis inhibitor prediction
-            using MATLAB and AutoDock.
-          </p>
-        </article>
-
-        <article class="glass-card project-card">
-          <h3>📦 Inventory Management App</h3>
-          <p>
-            Built a Flutter + Google Sheets based inventory system with tracking,
-            updates, filtering, and business-oriented workflows.
-          </p>
-        </article>
-
-        <article class="glass-card project-card">
-          <h3>🤖 Respiratory Health Chatbot</h3>
-          <div class="carousel" data-auto="true">
-            <button class="carousel-btn prev">‹</button>
-            <div class="carousel-track">
-              <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (1).jpeg" alt="Health chatbot visual 1" />
-              <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (2).jpeg" alt="Health chatbot visual 2" />
-              <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (3).jpeg" alt="Health chatbot visual 3" />
-              <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (4).jpeg" alt="Health chatbot visual 4" />
-              <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (5).jpeg" alt="Health chatbot visual 5" />
-              <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.45.jpeg" alt="Health chatbot visual 6" />
-            </div>
-            <button class="carousel-btn next">›</button>
-          </div>
-          <p>
-            Built a web-based chatbot for respiratory health guidance using HTML,
-            CSS, and Vue.js.
-          </p>
-        </article>
-
-        <article class="glass-card project-card">
-          <h3>🧬 Bio Calculator App</h3>
-          <div class="carousel" data-auto="true">
-            <button class="carousel-btn prev">‹</button>
-            <div class="carousel-track">
-              <img src="assets/images/Biocalculator/bio1.webp" alt="Bio Calculator visual 1" />
-              <img src="assets/images/Biocalculator/bio2.webp" alt="Bio Calculator visual 2" />
-              <img src="assets/images/Biocalculator/bio3.webp" alt="Bio Calculator visual 3" />
-              <img src="assets/images/Biocalculator/bio4.webp" alt="Bio Calculator visual 4" />
-            </div>
-            <button class="carousel-btn next">›</button>
-          </div>
-          <p>
-            Created a biological and chemical lab calculation tool using HTML,
-            CSS, and JavaScript, published on Google Play Store.
-          </p>
-        </article>
-
-        <article class="glass-card project-card">
-          <h3>🌿 AI Plant Identification</h3>
-          <p>
-            TensorFlow-based computer vision system for plant identification with
-            voice feedback integration.
-          </p>
-        </article>
-
-        <article class="glass-card project-card">
-          <h3>🎮 AI Games — Chess & Checkers</h3>
-          <p>
-            Built Python-based AI gameplay logic for Chess and Checkers to demonstrate
-            algorithmic reasoning and decision-making.
-          </p>
-        </article>
-
-        <article class="glass-card project-card">
-          <h3>🧪 COVID-19 Bioinformatics Database</h3>
-          <p>
-            Worked on genomic data structuring and research-focused bioinformatics
-            database organization.
-          </p>
-        </article>
-
-    <section id="recommendations" class="section reveal">
-      <div class="section-header">
-        <span>Letters of Recommendation</span>
-        <h2>Academic and professional endorsements</h2>
-      </div>
-
-      <div class="cards-grid">
-        <article class="glass-card lor-card">
-          <img class="doc-preview" src="docs/lortext.png" alt="LOR" />
-          <h3>Recommendations</h3>
-          <img class="doc-preview" href="docs/WhatsApp Image 2026-04-13 at 23.46.44.jpeg" alt="LOR 1 preview" />
-          <img class="doc-preview" src="docs/LemonadestandLOR.jpeg" alt="LOR 2 preview" />
-          <img class="doc-preview" src="docs/cdri-lor.jpeg" alt="LOR 3 preview" />
-          <img class="doc-preview" src="docs/sanfoundry-lor.jpeg" alt="LOR 4 preview" />
-        </article>
-
-    <section id="research" class="section reveal">
-      <div class="section-header">
-        <span>Research & Dissertation</span>
-        <h2>Academic work and supporting documents</h2>
-      </div>
-      <div class="cards-grid">
-        <article class="glass-card">
-          <h3>📘 Dissertation</h3>
-          <p>Access dissertation work and supporting academic documentation.</p>
-          <div class="card-links">
-            <a class="btn primary" href="docs/Thesis.pdf" target="_blank">View Dissertation</a>
-            <a class="btn primary" href="docs/Dissertationppt.pptx" target="_blank">View Dissertation</a>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section id="contact" class="section reveal">
-      <div class="section-header">
-        <span>Contact</span>
-        <h2>Let’s connect</h2>
-      </div>
-      <div class="glass-card contact-card">
-        <p><strong>Email:</strong> <a href="mailto:agbrian521@gmail.com">agbrian521@gmail.com</a></p>
-        <p><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/agranisinha" target="_blank">linkedin.com/in/agranisinha</a></p>
-        <p><strong>Portfolio:</strong> <a href="https://agranisinha.github.io" target="_blank">agranisinha.github.io</a></p>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <p>© 2026 Agrani Sinha • Built with purpose, data, and innovation.</p>
-  </footer>
-
-  <script src="script.js"></script>
 </body>
 </html>
