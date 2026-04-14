@@ -1,96 +1,162 @@
-// ================= FIX TAB SYSTEM =================
+/* =========================
+   TAB SYSTEM (FIXED)
+========================= */
 function openTab(id, el = null) {
+  // panels
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  const target = document.getElementById(id);
+  if (target) target.classList.add('active');
 
-  // 🔥 HIDE ALL PANELS
-  document.querySelectorAll('.panel').forEach(p => {
-    p.classList.remove('active');
-  });
-
-  // 🔥 SHOW ONLY CLICKED PANEL
-  const panel = document.getElementById(id);
-  if (panel) panel.classList.add('active');
-
-  // 🔥 UPDATE SIDEBAR
+  // sidebar highlight
   document.querySelectorAll('.file-item').forEach(f => f.classList.remove('active'));
   if (el) el.classList.add('active');
 
-  // 🔥 FIX TAB BAR
-  document.querySelectorAll('.editor-tab').forEach(t => t.classList.remove('active'));
+  // tabs
+  const tabs = document.querySelectorAll('.editor-tab');
+  tabs.forEach(t => t.classList.remove('active'));
 
-  let tab = document.querySelector(`[data-tab="${id}"]`);
+  let existing = document.querySelector(`[data-tab="${id}"]`);
 
-  if (!tab) {
-    tab = document.createElement('div');
+  if (!existing) {
+    const tab = document.createElement('button');
     tab.className = 'editor-tab active';
     tab.setAttribute('data-tab', id);
-    tab.innerHTML = `JS ${id}.js ×`;
+    tab.innerHTML = `<span class="icon js">JS</span> ${id}.js <span class="close-tab">×</span>`;
+
     tab.onclick = () => openTab(id);
+
+    tab.querySelector('.close-tab').onclick = (e) => {
+      e.stopPropagation();
+      tab.remove();
+      openTab('about');
+    };
+
     document.getElementById('editorTabs').appendChild(tab);
   } else {
-    tab.classList.add('active');
+    existing.classList.add('active');
   }
 }
 
-// ================= FIX INITIAL LOAD =================
-window.onload = () => {
-  openTab('about');
-};
-
-// ================= MODAL =================
+/* =========================
+   MODAL SYSTEM
+========================= */
 function openModal(key) {
   const modal = document.getElementById('detailModal');
   const content = document.getElementById('modalContent');
-  const item = modalData[key];
 
+  const item = modalData[key];
   if (!item) return;
+
+  let images = '';
+  if (item.gallery.length) {
+    images = `<div class="modal-gallery">
+      ${item.gallery.map(img => `<img src="${img}">`).join("")}
+    </div>`;
+  }
 
   content.innerHTML = `
     <h2>${item.title}</h2>
     ${item.description}
-    <div class="modal-gallery">
-      ${item.gallery.map(img => `<img src="${img}" onerror="this.style.display='none'">`).join('')}
-    </div>
+    ${images}
   `;
 
-  modal.setAttribute("aria-hidden", "false");
+  modal.style.display = "block";
 }
 
 function closeModal() {
-  document.getElementById('detailModal').setAttribute("aria-hidden", "true");
+  document.getElementById('detailModal').style.display = "none";
 }
 
-// ================= AI ASSISTANT FIX =================
-const input = document.getElementById('terminalInput');
-const output = document.getElementById('terminalOutput');
+/* =========================
+   AI TERMINAL (FIXED)
+========================= */
+const input = document.getElementById("terminalInput");
+const output = document.getElementById("terminalOutput");
 
-input.addEventListener("keydown", function(e) {
+function typeLine(text) {
+  const line = document.createElement("div");
+  output.appendChild(line);
+
+  let i = 0;
+  function typing() {
+    if (i < text.length) {
+      line.textContent += text[i];
+      i++;
+      setTimeout(typing, 20);
+    }
+  }
+  typing();
+}
+
+input.addEventListener("keydown", function (e) {
   if (e.key === "Enter") {
+    const cmd = input.value.toLowerCase().trim();
+    typeLine("> " + cmd);
 
-    let cmd = input.value.toLowerCase();
-
-    output.innerHTML += `<div>> ${cmd}</div>`;
-
-    if (cmd.includes("project")) openTab("projects");
-    else if (cmd.includes("experience")) openTab("experience");
-    else if (cmd.includes("skills")) openTab("skills");
-    else if (cmd.includes("contact")) openTab("contact");
-    else if (cmd.includes("resume")) window.open("docs/Agrani Sinha Resume.pdf");
-    else output.innerHTML += `<div>Try: projects, experience, skills</div>`;
+    if (cmd.includes("project")) {
+      typeLine("Opening projects...");
+      openTab("projects");
+    }
+    else if (cmd.includes("experience")) {
+      typeLine("Opening experience...");
+      openTab("experience");
+    }
+    else if (cmd.includes("skills")) {
+      typeLine("Opening skills...");
+      openTab("skills");
+    }
+    else if (cmd.includes("contact")) {
+      typeLine("Opening contact...");
+      openTab("contact");
+    }
+    else if (cmd.includes("resume")) {
+      typeLine("Opening resume...");
+      window.open("docs/Agrani Sinha Resume.pdf");
+    }
+    else {
+      typeLine("Try: projects, experience, skills, resume");
+    }
 
     input.value = "";
-    output.scrollTop = output.scrollHeight;
   }
 });
 
-// ================= TYPING =================
+/* =========================
+   HERO TYPING EFFECT
+========================= */
+const typing = document.getElementById("typing");
 const text = "AI × Healthcare × Systems";
 let i = 0;
 
-function type() {
+function typeHero() {
   if (i < text.length) {
-    document.getElementById("typing").innerHTML += text[i];
+    typing.innerHTML += text[i];
     i++;
-    setTimeout(type, 60);
+    setTimeout(typeHero, 50);
   }
 }
-type();
+typeHero();
+
+/* =========================
+   CURSOR GLOW
+========================= */
+const glow = document.createElement("div");
+glow.className = "cursor-glow";
+document.body.appendChild(glow);
+
+document.addEventListener("mousemove", (e) => {
+  glow.style.left = e.clientX + "px";
+  glow.style.top = e.clientY + "px";
+});
+
+/* =========================
+   GSAP ANIMATIONS
+========================= */
+gsap.from(".hero-title", { y: 40, opacity: 0, duration: 1 });
+gsap.from(".hero-roles span", { y: 20, opacity: 0, stagger: 0.1 });
+gsap.from(".mini-card", {
+  scrollTrigger: ".mini-card",
+  y: 30,
+  opacity: 0,
+  stagger: 0.1
+});
