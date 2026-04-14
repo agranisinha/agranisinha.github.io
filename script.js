@@ -120,3 +120,22 @@ document.addEventListener("mouseup", () => {
   cursorSquare.style.width = "24px";
   cursorSquare.style.height = "24px";
 });
+
+// ================= SIDEBAR =================
+function openSidebar(type) {
+  document.querySelectorAll('.activity-icon').forEach(i => i.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+// ================= SETTINGS =================
+function toggleSettings() {
+  document.getElementById('settingsPanel').classList.toggle('open');
+}
+
+// ================= THEMES =================
+function setTheme(theme) {
+  document.body.className = theme;
+
+  document.querySelectorAll('.theme-option').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+}
