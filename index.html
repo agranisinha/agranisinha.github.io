@@ -5,129 +5,186 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Agrani Sinha</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="container">
+<div class="app">
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <h2>Agrani</h2>
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <h3>Explorer</h3>
 
-    <ul>
-      <li onclick="showSection('about')">About</li>
-      <li onclick="showSection('projects')">Projects</li>
-      <li onclick="showSection('experience')">Experience</li>
-      <li onclick="showSection('skills')">Skills</li>
-      <li onclick="showSection('research')">Research</li>
-      <li onclick="showSection('resume')">Resume</li>
-      <li onclick="showSection('contact')">Contact</li>
-    </ul>
-  </aside>
+  <ul>
+    <li onclick="openTab('about')">about.js</li>
+    <li onclick="openTab('projects')">projects.js</li>
+    <li onclick="openTab('experience')">experience.js</li>
+    <li onclick="openTab('skills')">skills.js</li>
+    <li onclick="openTab('lor')">lor.js</li>
+    <li onclick="openTab('research')">research.js</li>
+    <li onclick="openTab('resume')">resume.js</li>
+    <li onclick="openTab('contact')">contact.js</li>
+  </ul>
+</aside>
 
-  <!-- MAIN PANEL -->
-  <main class="main">
+<!-- MAIN -->
+<div class="editor">
 
-    <!-- ABOUT -->
-    <section id="about" class="panel active">
-      <h1>Agrani Sinha</h1>
-      <h3>AI × Healthcare × Systems</h3>
-      <p>
-        Health Informatics graduate with a Biotechnology foundation,
-        building intelligent healthcare systems.
-      </p>
-    </section>
+<div class="tabs" id="tabs"></div>
 
-    <!-- PROJECTS -->
-    <section id="projects" class="panel">
-      <h2>Projects</h2>
+<div class="content">
 
-      <div class="card">
-        <h3>Respiratory Chatbot</h3>
+<!-- ABOUT -->
+<section id="about" class="panel active">
+  <h1>Agrani Sinha</h1>
+  <p>
+    Health Informatics graduate with a Biotechnology foundation, focused on
+    building AI-driven healthcare systems that improve clinical workflows,
+    patient outcomes, and decision-making processes.
+  </p>
+</section>
 
-        <div class="images compact">
-          <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (1).jpeg">
-          <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (2).jpeg">
-          <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (3).jpeg">
-        </div>
+<!-- PROJECTS -->
+<section id="projects" class="panel">
+  <h2>Projects</h2>
 
-        <p>AI chatbot for healthcare guidance.</p>
-      </div>
+  <div class="card">
+    <h3>Respiratory Health Chatbot</h3>
+    <p>
+      Developed a web-based chatbot for symptom-based respiratory health guidance.
+      Focused on accessibility and real-time patient interaction.
+    </p>
 
-      <div class="card">
-        <h3>Bio Calculator</h3>
+    <div class="images">
+      <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (1).jpeg">
+      <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (2).jpeg">
+      <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (3).jpeg">
+    </div>
+  </div>
 
-        <div class="images compact">
-          <img src="assets/images/Biocalculator/bio1.webp">
-          <img src="assets/images/Biocalculator/bio2.webp">
-        </div>
-      </div>
+  <div class="card">
+    <h3>Bio Calculator</h3>
+    <p>
+      Designed a lab-focused biological calculator to streamline chemical
+      and biological computations, deployed on Play Store.
+    </p>
 
-      <div class="card">ML Drug Discovery</div>
-      <div class="card">Inventory App</div>
-      <div class="card">AI Plant Detection</div>
-    </section>
+    <div class="images">
+      <img src="assets/images/Biocalculator/bio1.webp">
+      <img src="assets/images/Biocalculator/bio2.webp">
+    </div>
+  </div>
 
-    <!-- EXPERIENCE -->
-    <section id="experience" class="panel">
-      <h2>Experience</h2>
+  <div class="card">
+    <h3>ML Drug Discovery</h3>
+    <p>Achieved 96.8% accuracy in TB inhibitor prediction using SVM.</p>
+  </div>
 
-      <div class="card">
-        <h3>Alivia Care</h3>
-        <img src="docs/WhatsApp Image 2026-04-13 at 23.46.44.jpeg">
-      </div>
+  <div class="card">
+    <h3>Inventory Management System</h3>
+    <p>Flutter-based system with real-time Google Sheets integration.</p>
+  </div>
 
-      <div class="card">
-        <h3>BluCognition</h3>
-        <img src="docs/blucogniton.png">
-      </div>
+  <div class="card">
+    <h3>AI Plant Identification</h3>
+    <p>TensorFlow-based plant recognition with voice feedback.</p>
+  </div>
 
-      <div class="card">IBAB</div>
-      <div class="card">SRL Diagnostics</div>
-    </section>
+  <div class="card">
+    <h3>AI Games (Chess & Checkers)</h3>
+    <p>Built AI decision logic for gameplay using Python.</p>
+  </div>
 
-    <!-- SKILLS -->
-    <section id="skills" class="panel">
-      <h2>Skills</h2>
+  <div class="card">
+    <h3>COVID Bioinformatics Database</h3>
+    <p>Structured genomic data into a research database.</p>
+  </div>
 
-      <div class="skills">
-        <span>Python</span>
-        <span>Flutter</span>
-        <span>Machine Learning</span>
-        <span>TensorFlow</span>
-        <span>SQL</span>
-        <span>Healthcare Informatics</span>
-      </div>
-    </section>
+</section>
 
-    <!-- RESEARCH -->
-    <section id="research" class="panel">
-      <h2>Research</h2>
+<!-- EXPERIENCE -->
+<section id="experience" class="panel">
+  <h2>Experience</h2>
 
-      <a href="docs/Thesis.pdf" target="_blank">Thesis</a><br>
-      <a href="docs/Dissertationppt.pptx" target="_blank">PPT</a>
-    </section>
+  <div class="card">
+    <h3>Clinical Informatics Intern — Alivia Care</h3>
+    <p>
+      Worked on EHR workflows, clinical analytics, and healthcare data optimization.
+    </p>
+    <img src="docs/WhatsApp Image 2026-04-13 at 23.46.44.jpeg">
+  </div>
 
-    <!-- RESUME -->
-    <section id="resume" class="panel">
-      <h2>Resume</h2>
-      <a href="docs/Agrani Sinha Resume.pdf" target="_blank">View Resume</a>
-    </section>
+  <div class="card">
+    <h3>Data Science Analyst — BluCognition</h3>
+    <p>
+      Developed machine learning pipelines and automated data systems.
+    </p>
+    <img src="docs/blucogniton.png">
+  </div>
 
-    <!-- CONTACT -->
-    <section id="contact" class="panel">
-      <h2>Contact</h2>
-      <p>Email: agbrian521@gmail.com</p>
-    </section>
+  <div class="card">Academic Research Associate — Digiversal</div>
+  <div class="card">Bioinformatics Intern — IBAB</div>
+  <div class="card">Microbiology Trainee — SRL Diagnostics</div>
+  <div class="card">Content Developer — Sanfoundry</div>
 
-  </main>
+</section>
 
+<!-- SKILLS -->
+<section id="skills" class="panel">
+  <h2>Skills</h2>
+
+  <div class="skills">
+    <span>Python</span>
+    <span>Flutter</span>
+    <span>Machine Learning</span>
+    <span>TensorFlow</span>
+    <span>Data Science</span>
+    <span>SQL</span>
+    <span>Healthcare Informatics</span>
+    <span>EHR Systems</span>
+    <span>Data Analytics</span>
+    <span>AI Systems</span>
+    <span>Bioinformatics</span>
+  </div>
+</section>
+
+<!-- LOR -->
+<section id="lor" class="panel">
+  <h2>Letters of Recommendation</h2>
+
+  <div class="grid">
+    <img src="docs/lortext.png">
+    <img src="docs/LemonadestandLOR.jpeg">
+    <img src="docs/cdri-lor.jpeg">
+    <img src="docs/sanfoundry-lor.jpeg">
+  </div>
+</section>
+
+<!-- RESEARCH -->
+<section id="research" class="panel">
+  <h2>Research</h2>
+
+  <a href="docs/Thesis.pdf" target="_blank">Thesis</a><br>
+  <a href="docs/Dissertationppt.pptx" target="_blank">Presentation</a>
+</section>
+
+<!-- RESUME -->
+<section id="resume" class="panel">
+  <h2>Resume</h2>
+  <a href="docs/Agrani Sinha Resume.pdf" target="_blank">View Resume</a>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="panel">
+  <h2>Contact</h2>
+  <p>Email: agbrian521@gmail.com</p>
+</section>
+
+</div>
+</div>
 </div>
 
 <script src="script.js"></script>
-
 </body>
 </html>
