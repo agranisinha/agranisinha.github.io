@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Agrani Sinha | VS Code Portfolio</title>
+  <title>Agrani Sinha | Portfolio</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -63,18 +63,6 @@
             </li>
           </ul>
         </div>
-
-        <div class="explorer-group">
-          <div class="explorer-title" onclick="toggleFolder('assetsFolder')">
-            <span class="caret" id="assetsFolderCaret">▸</span>
-            <span>ASSETS</span>
-          </div>
-          <ul class="file-tree" id="assetsFolder">
-            <li class="file-item passive"><span class="icon img">IMG</span> assets/images/...</li>
-            <li class="file-item passive"><span class="icon pdf">PDF</span> docs/Thesis.pdf</li>
-            <li class="file-item passive"><span class="icon pdf">PDF</span> docs/Agrani Sinha Resume.pdf</li>
-          </ul>
-        </div>
       </aside>
 
       <main class="editor-area">
@@ -86,6 +74,7 @@
         </div>
 
         <div class="editor-content">
+          <!-- ABOUT -->
           <section id="about" class="panel active">
             <div class="panel-title">about.js</div>
 
@@ -108,14 +97,14 @@
                   intelligent, practical, and data-driven healthcare solutions.
                 </p>
                 <div class="hero-actions">
-                  <a class="vscode-btn primary" href="docs/Agrani Sinha Resume.pdf" target="_blank">Open Resume</a>
-                  <a class="vscode-btn" href="docs/Thesis.pdf" target="_blank">Open Thesis</a>
+                  <a class="vscode-btn primary" href="docs/Agrani Sinha Resume.pdf" target="_blank">Resume</a>
                   <a class="vscode-btn" href="https://www.linkedin.com/in/agranisinha" target="_blank">LinkedIn</a>
                 </div>
               </div>
             </div>
           </section>
 
+          <!-- PROJECTS -->
           <section id="projects" class="panel">
             <div class="panel-title">projects.js</div>
 
@@ -181,6 +170,7 @@
             </div>
           </section>
 
+          <!-- EXPERIENCE -->
           <section id="experience" class="panel">
             <div class="panel-title">experience.js</div>
 
@@ -217,7 +207,10 @@
                   <div class="experience-text">
                     <h3>Academic Research Associate — Digiversal Consultant</h3>
                     <p class="meta">Noida, India | Dec 2020 – Mar 2022</p>
-                    <p>Conducted research and data analysis for IT and analytics consulting projects and prepared structured technical documentation.</p>
+                    <p>
+                      Conducted research and data analysis for IT and analytics consulting projects and prepared
+                      structured technical documentation.
+                    </p>
                   </div>
                 </article>
 
@@ -225,7 +218,10 @@
                   <div class="experience-text">
                     <h3>Bioinformatics Research Intern — IBAB</h3>
                     <p class="meta">Remote | Jul 2020 – Dec 2020</p>
-                    <p>Curated genomic datasets for COVID-19 research support and contributed to biological data organization and meta-database work.</p>
+                    <p>
+                      Curated genomic datasets for COVID-19 research support and contributed to biological data
+                      organization and meta-database work.
+                    </p>
                   </div>
                 </article>
 
@@ -233,36 +229,37 @@
                   <div class="experience-text">
                     <h3>Microbiology Trainee — SRL Diagnostics</h3>
                     <p class="meta">Noida, India | Jun 2018 – Jul 2018</p>
-                    <p>Performed microbial testing using culture techniques and diagnostics
-                                    and supported laboratory workflows for diagnostic testing.
-                  </p>
-                </div>
+                    <p>
+                      Performed microbial testing using culture techniques and diagnostics and supported
+                      laboratory workflows for diagnostic testing.
+                    </p>
+                  </div>
 
-                <div class="compact-gallery three">
-                  <img src="assets/images/Microbiology/m1.png" />
-                  <img src="assets/images/Microbiology/m2.png" />
-                  <img src="assets/images/Microbiology/m3.png" />
-                  <img src="assets/images/Microbiology/m4.png" />
-                  <img src="assets/images/Microbiology/m5.png.png" />
-                  <img src="assets/images/Microbiology/m6.png" />
-                </div>
-              </article>
+                  <div class="compact-gallery three">
+                    <img src="assets/images/Microbiology/m1.png" alt="Microbiology 1" />
+                    <img src="assets/images/Microbiology/m2.png" alt="Microbiology 2" />
+                    <img src="assets/images/Microbiology/m3.png" alt="Microbiology 3" />
+                    <img src="assets/images/Microbiology/m4.png" alt="Microbiology 4" />
+                    <img src="assets/images/Microbiology/m5.png.png" alt="Microbiology 5" />
+                    <img src="assets/images/Microbiology/m6.png" alt="Microbiology 6" />
+                  </div>
+                </article>
 
-              <article class="experience-item">
-                <div class="experience-text">
-                  <h3>Content Developer — Sanfoundry</h3>
-                  <p class="meta">Remote</p>
-                  <p>
-                    Created 1000+ MCQs for Bioprocess Engineering.
-                  </p>
-                  <a class="vscode-btn small"
-                     href="https://www.sanfoundry.com/1000-bioprocess-engineering-questions-answers/"
-                     target="_blank">
-                     View Work
-                  </a>
-                </div>
-              </article>
-
+                <article class="experience-item">
+                  <div class="experience-text">
+                    <h3>Content Developer — Sanfoundry</h3>
+                    <p class="meta">Remote</p>
+                    <p>
+                      Created 1000+ MCQs for Bioprocess Engineering.
+                    </p>
+                    <a class="vscode-btn small"
+                       href="https://www.sanfoundry.com/1000-bioprocess-engineering-questions-answers/"
+                       target="_blank">
+                      View Work
+                    </a>
+                  </div>
+                </article>
+              </div>
             </div>
           </section>
 
@@ -290,10 +287,10 @@
 
             <div class="section-card">
               <div class="compact-gallery two">
-                <img src="docs/lortext.png" />
-                <img src="docs/LemonadestandLOR.jpeg" />
-                <img src="docs/cdri-lor.jpeg" />
-                <img src="docs/sanfoundry-lor.jpeg" />
+                <img src="docs/lortext.png" alt="LOR text" />
+                <img src="docs/LemonadestandLOR.jpeg" alt="Lemonade Stand LOR" />
+                <img src="docs/cdri-lor.jpeg" alt="CDRI LOR" />
+                <img src="docs/sanfoundry-lor.jpeg" alt="Sanfoundry LOR" />
               </div>
             </div>
           </section>
@@ -303,8 +300,8 @@
             <div class="panel-title">research.js</div>
 
             <div class="section-card">
-              <a class="vscode-btn" href="docs/Thesis.pdf">Open Thesis</a>
-              <a class="vscode-btn" href="docs/Dissertationppt.pptx">Open PPT</a>
+              <a class="vscode-btn" href="docs/Thesis.pdf" target="_blank">Open Thesis</a>
+              <a class="vscode-btn" href="docs/Dissertationppt.pptx" target="_blank">Open PPT</a>
             </div>
           </section>
 
@@ -313,7 +310,7 @@
             <div class="panel-title">resume.js</div>
 
             <div class="section-card">
-              <a class="vscode-btn primary" href="docs/Agrani Sinha Resume.pdf">
+              <a class="vscode-btn primary" href="docs/Agrani Sinha Resume.pdf" target="_blank">
                 Open Resume
               </a>
             </div>
@@ -327,44 +324,38 @@
               <p>Email: agbrian521@gmail.com</p>
               <p>
                 LinkedIn:
-                <a href="https://www.linkedin.com/in/agranisinha">
+                <a href="https://www.linkedin.com/in/agranisinha" target="_blank">
                   agranisinha
                 </a>
               </p>
             </div>
           </section>
-
         </div>
 
-        <!-- TERMINAL -->
+        <!-- AI ASSISTANT / TERMINAL -->
         <div class="terminal">
-          <div class="terminal-header">TERMINAL</div>
+          <div class="terminal-header">AI ASSISTANT</div>
 
           <div class="terminal-body" id="terminalOutput">
-            <div>> help</div>
-            <div>Try: about, projects, resume</div>
+            <div>&gt; assistant ready</div>
+            <div>Try: projects, experience, skills, resume, contact</div>
           </div>
 
           <div class="terminal-input">
-            <span>> </span>
-            <input id="terminalInput" />
+            <span>&gt; </span>
+            <input id="terminalInput" placeholder="Ask AI assistant..." />
           </div>
         </div>
-
       </main>
     </div>
 
-    <!-- STATUS BAR -->
     <footer class="status-bar">
       <span>main</span>
       <span>JavaScript</span>
       <span>UTF-8</span>
     </footer>
-
   </div>
 
   <script src="script.js"></script>
 </body>
 </html>
-
-  
