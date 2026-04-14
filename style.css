@@ -829,3 +829,30 @@ body.gruv { background: #282828; }
 
   color: #e6edf3;
 }
+/* ================= ANIMATIONS ================= */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.typing {
+  border-right: 2px solid #4ec9b0;
+  white-space: nowrap;
+  overflow: hidden;
+  animation: typing 3s steps(30), blink 0.8s infinite;
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink {
+  50% { border-color: transparent }
+}
