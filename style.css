@@ -5,25 +5,28 @@
   padding: 0;
 }
 
+/* ================= ROOT ================= */
 :root {
   --bg: #05070b;
-  --panel: #2f3036;
-  --panel-top: #34353b;
-  --panel-footer: #2a2b31;
+  --panel: #252526;
+  --panel-top: #2d2d2d;
   --text: #d9dde5;
   --muted: #8c92a0;
   --line: rgba(255, 255, 255, 0.06);
-  --purple: rgba(110, 81, 153, 0.52);
+  --blue: #007acc;
 }
 
+/* ================= BODY ================= */
 body {
   width: 100%;
   height: 100%;
   overflow: hidden;
+
   background:
     radial-gradient(circle at 20% 20%, rgba(0, 153, 255, 0.12), transparent 24%),
     radial-gradient(circle at 80% 20%, rgba(120, 80, 255, 0.12), transparent 24%),
     #05070b;
+
   font-family: "Inter", sans-serif;
   color: var(--text);
   cursor: none;
@@ -31,14 +34,20 @@ body {
 
 /* ================= HEADER ================= */
 .top-header {
-  height: 46px;
-  display: grid;
-  grid-template-columns: 220px 1fr 120px;
+  height: 50px;
+  display: flex;
   align-items: center;
-  padding: 0 12px;
-  background: linear-gradient(180deg, #151938 0%, #101427 100%);
+  justify-content: space-between;
+
+  padding: 0 16px;
+
+  background: linear-gradient(90deg, #0a0f2c, #111a40);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+
+  z-index: 999;
 }
 
+/* ================= MAC BUTTONS ================= */
 .mac-dots {
   display: flex;
   align-items: center;
@@ -49,18 +58,26 @@ body {
   width: 14px;
   height: 14px;
   border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .dot.red { background: #ff5f56; }
 .dot.yellow { background: #ffbd2e; }
 .dot.green { background: #27c93f; }
 
-/* HEADER FEEDBACK TEXT */
+.dot:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 8px rgba(255,255,255,0.4);
+}
+
+/* ================= HEADER MESSAGE ================= */
 .header-feedback {
   margin-left: 12px;
-  font-size: 12px;
-  color: #ff79c6;
+  font-size: 13px;
+  color: #00ffd0;
   font-family: "Fira Code", monospace;
+
   opacity: 0;
   transition: opacity 0.3s ease;
   white-space: nowrap;
@@ -70,25 +87,38 @@ body {
   opacity: 1;
 }
 
-/* COMMAND TRIGGER */
+/* ================= COMMAND BAR ================= */
 .header-command-trigger {
   margin: 0 auto;
   min-width: 420px;
   max-width: 520px;
   height: 34px;
+
   padding: 0 12px;
   border-radius: 8px;
+
   background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   font-family: "Fira Code", monospace;
+  color: #c9d1d9;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.header-command-trigger:hover {
+  background: rgba(255,255,255,0.1);
 }
 
 .keycap {
   padding: 3px 7px;
   border-radius: 6px;
-  background: rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.08);
   font-size: 11px;
 }
 
@@ -98,14 +128,17 @@ body {
   display: flex;
   align-items: center;
   gap: 18px;
+
   padding: 0 16px;
   background: #1e1e1e;
+
   font-size: 13px;
 }
 
 .menu-bar span {
   cursor: pointer;
   padding: 4px 6px;
+  border-radius: 4px;
 }
 
 .menu-bar span:hover {
@@ -115,13 +148,14 @@ body {
 /* ================= LAYOUT ================= */
 .vscode-layout {
   display: flex;
-  height: calc(100vh - 78px);
+  height: calc(100vh - 82px);
 }
 
-/* ACTIVITY BAR */
+/* ================= ACTIVITY BAR ================= */
 .activity-bar {
   width: 55px;
   background: #2d2d2d;
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -129,46 +163,72 @@ body {
 
 .activity-icon {
   font-size: 20px;
-  padding: 12px;
+  padding: 14px;
   opacity: 0.6;
   cursor: pointer;
+  transition: 0.2s;
 }
 
 .activity-icon:hover {
   opacity: 1;
 }
 
-/* SIDEBAR */
+.activity-bottom {
+  margin-top: auto;
+}
+
+/* ================= SIDEBAR ================= */
 .sidebar-panel {
   width: 250px;
   background: #252526;
+  border-right: 1px solid rgba(255,255,255,0.05);
 }
 
 .sidebar-header {
-  padding: 12px;
+  padding: 14px;
   font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.file-list {
+  padding: 5px;
 }
 
 .file {
-  padding: 8px;
+  padding: 8px 10px;
+  border-radius: 6px;
   cursor: pointer;
+  color: #c9d1d9;
 }
 
 .file:hover {
   background: rgba(255,255,255,0.08);
 }
 
+.file.active {
+  background: rgba(255,255,255,0.12);
+}
+
+.copilot-box {
+  margin: 15px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #7c3aed;
+  color: #c084fc;
+  text-align: center;
+}
+
 /* ================= EDITOR ================= */
-.editor {
+.editor-area {
   flex: 1;
-  background: #1e1e1e;
+  background: #0b0d12;
+  overflow: hidden;
 }
 
 .editor-content {
   padding: 60px 80px;
   height: 100%;
   overflow-y: auto;
-  display: block;
 }
 
 /* ================= HOME ================= */
@@ -183,7 +243,7 @@ body {
 }
 
 .hero-name {
-  font-size: 72px;
+  font-size: 64px;
   font-weight: 800;
   margin-top: 10px;
 }
@@ -218,11 +278,14 @@ body {
 .home-buttons button {
   margin-right: 12px;
   padding: 10px 18px;
-  background: #007acc;
+
+  background: var(--blue);
   border: none;
   border-radius: 6px;
+
   color: white;
   cursor: pointer;
+  transition: 0.2s;
 }
 
 .home-buttons button:hover {
@@ -249,6 +312,7 @@ body {
   position: fixed;
   inset: 0;
   display: none;
+  z-index: 9999;
 }
 
 .palette-overlay.open {
@@ -267,9 +331,11 @@ body {
   top: 150px;
   left: 50%;
   transform: translateX(-50%);
+
   width: 560px;
   background: #2f3036;
   border-radius: 10px;
+  padding: 12px;
 }
 
 /* ================= CURSOR ================= */
@@ -280,6 +346,7 @@ body {
   border: 2px solid #8ffff7;
   pointer-events: none;
   transform: translate(-50%, -50%);
+  z-index: 99999;
 }
 
 .cursor-dot {
@@ -288,10 +355,11 @@ body {
   height: 3px;
   background: #dff;
   pointer-events: none;
+  z-index: 99999;
 }
 
-/* ================= ANIMATIONS ================= */
+/* ================= ANIMATION ================= */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(15px); }
   to { opacity: 1; transform: translateY(0); }
 }
