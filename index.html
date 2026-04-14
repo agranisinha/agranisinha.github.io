@@ -20,32 +20,36 @@
 
   <div class="app-shell">
     <header class="top-header">
-      <div class="mac-dots">
-        <span class="traffic red"></span>
-        <span class="traffic yellow"></span>
-        <span class="traffic green"></span>
-      
-        <!-- 🔥 MUST EXIST -->
-        <span id="headerFeedback" class="header-feedback">test</span>
-      </div>
+  
+  <!-- LEFT: MAC DOTS + MESSAGE -->
+  <div class="mac-dots">
+    <span class="traffic red"></span>
+    <span class="traffic yellow"></span>
+    <span class="traffic green"></span>
 
-      <button class="header-command-trigger" id="openPaletteBtn">
-        <span class="trigger-left">
-          <span class="search-icon">⌕</span>
-          <span class="trigger-text" id="triggerText">agrani-sinha : portfolio</span>
-        </span>
-      
-        <span class="trigger-right">
-          <span class="keycap">Ctrl</span>
-          <span class="keycap">P</span>
-        </span>
-      
-        <!-- 🔥 ADD THIS -->
-        <span class="trigger-feedback" id="triggerFeedback"></span>
-      </button>
+    <!-- ✅ FINAL MESSAGE ELEMENT -->
+    <span id="headerFeedback" class="header-feedback"></span>
+  </div>
 
-      <div class="header-spacer"></div>
-    </header>
+  <!-- CENTER: COMMAND PALETTE BAR -->
+  <button class="header-command-trigger" id="openPaletteBtn">
+    <span class="trigger-left">
+      <span class="search-icon">⌕</span>
+      <span class="trigger-text" id="triggerText">
+        agrani-sinha : portfolio
+      </span>
+    </span>
+
+    <span class="trigger-right">
+      <span class="keycap">Ctrl</span>
+      <span class="keycap">P</span>
+    </span>
+  </button>
+
+  <!-- RIGHT: EMPTY SPACE -->
+  <div class="header-spacer"></div>
+
+</header>
 
     <!-- MENU BAR -->
     <div class="menu-bar">
