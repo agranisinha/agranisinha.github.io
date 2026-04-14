@@ -657,3 +657,60 @@ body.gruv { background: #282828; }
     width: 100%;
   }
 }
+
+/* HOME SECTION */
+.home-container {
+  padding: 60px;
+  max-width: 800px;
+}
+
+.code-line {
+  color: #4fd1c5;
+  font-family: "Fira Code", monospace;
+  margin-bottom: 10px;
+}
+
+.home-title {
+  font-size: 64px;
+  font-weight: 800;
+  color: white;
+}
+
+.home-title span {
+  color: #ff79c6;
+}
+
+.home-tags {
+  margin: 15px 0;
+  display: flex;
+  gap: 10px;
+}
+
+.home-tags span {
+  background: #1f2937;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+.home-desc {
+  margin: 20px 0;
+  color: #9ca3af;
+  line-height: 1.6;
+}
+
+.home-buttons button {
+  margin-right: 10px;
+  padding: 10px 16px;
+  border: 1px solid #3b82f6;
+  background: transparent;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.home-buttons button:hover {
+  background: #3b82f6;
+}
