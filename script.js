@@ -13,6 +13,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const green = document.getElementById("btnGreen");
   const feedback = document.getElementById("headerFeedback");
 
+  const editorContent = document.getElementById("editorContent");
+
   // ================= COMMAND PALETTE =================
   function openPalette() {
     paletteOverlay.classList.add("open");
@@ -54,27 +56,34 @@ document.addEventListener("DOMContentLoaded", () => {
     event.target.classList.add("active");
   };
 
-  // ================= TABS =================
+  // ================= DYNAMIC PAGES =================
   window.openTab = function (tab) {
-    const container = document.getElementById("editorContent");
 
-    container.style.opacity = 0;
+    // smooth fade out
+    editorContent.style.opacity = 0;
 
     setTimeout(() => {
-      if (tab === "home") container.innerHTML = getHome();
-      if (tab === "about") container.innerHTML = getAbout();
-      if (tab === "projects") container.innerHTML = getProjects();
-      if (tab === "contact") container.innerHTML = getContact();
 
-      container.style.opacity = 1;
+      if (tab === "home") editorContent.innerHTML = getHome();
+      if (tab === "about") editorContent.innerHTML = getAbout();
+      if (tab === "projects") editorContent.innerHTML = getProjects();
+      if (tab === "contact") editorContent.innerHTML = getContact();
+
+      // fade in
+      editorContent.style.opacity = 1;
+
+      // re-run animations
       startTyping();
-    }, 200);
+      animateElements();
+
+    }, 250);
   };
 
-  // ================= PAGES =================
+  // ================= PAGE CONTENT =================
   function getHome() {
     return `
       <div class="home-container">
+
         <p class="code-line" id="typingText"></p>
 
         <h1 class="hero-name">
@@ -88,7 +97,8 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
 
         <p class="hero-desc">
-          I build intelligent healthcare systems using AI, ML, and clinical workflows.
+          I build intelligent healthcare systems using AI, machine learning,
+          and clinical informatics to solve real-world problems.
         </p>
 
         <div class="home-buttons">
@@ -102,23 +112,57 @@ document.addEventListener("DOMContentLoaded", () => {
           <div><strong>6+</strong><span>Experience</span></div>
           <div><strong>96.8%</strong><span>Accuracy</span></div>
         </div>
+
       </div>
     `;
   }
 
   function getAbout() {
-    return `<div class="home-container"><h2>About Me</h2></div>`;
+    return `
+      <div class="home-container">
+        <h2 class="hero-name" style="font-size:48px;">About Me</h2>
+        <p class="hero-desc">
+          I specialize in AI + Healthcare systems, building intelligent,
+          user-focused applications that integrate data, clinical workflows,
+          and real-world impact.
+        </p>
+      </div>
+    `;
   }
 
   function getProjects() {
-    return `<div class="home-container"><h2>Projects</h2></div>`;
+    return `
+      <div class="home-container">
+        <h2 class="hero-name" style="font-size:48px;">Projects</h2>
+
+        <div class="roles">
+          <span>AI Chatbot</span>
+          <span>Inventory App</span>
+          <span>Drug Discovery ML</span>
+          <span>Bioinformatics DB</span>
+        </div>
+
+        <p class="hero-desc">
+          My work combines machine learning, mobile apps, and healthcare systems.
+        </p>
+      </div>
+    `;
   }
 
   function getContact() {
-    return `<div class="home-container"><h2>Contact</h2></div>`;
+    return `
+      <div class="home-container">
+        <h2 class="hero-name" style="font-size:48px;">Contact</h2>
+
+        <p class="hero-desc">
+          Email: agbrian521@gmail.com <br/>
+          LinkedIn: linkedin.com/in/agranisinha
+        </p>
+      </div>
+    `;
   }
 
-  // ================= TYPING =================
+  // ================= TYPING EFFECT =================
   function startTyping() {
     const el = document.getElementById("typingText");
     if (!el) return;
@@ -127,21 +171,39 @@ document.addEventListener("DOMContentLoaded", () => {
     el.innerHTML = "";
 
     let i = 0;
+
     function type() {
       if (i < text.length) {
         el.innerHTML += text.charAt(i);
         i++;
-        setTimeout(type, 25);
+        setTimeout(type, 20);
       }
     }
+
     type();
+  }
+
+  // ================= ANIMATIONS =================
+  function animateElements() {
+    const elements = document.querySelectorAll(".hero-name, .roles span, .home-buttons button, .stats div");
+
+    elements.forEach((el, i) => {
+      el.style.opacity = 0;
+      el.style.transform = "translateY(20px)";
+
+      setTimeout(() => {
+        el.style.transition = "all 0.4s ease";
+        el.style.opacity = 1;
+        el.style.transform = "translateY(0)";
+      }, i * 80);
+    });
   }
 
   // ================= MAC BUTTONS =================
   const quotes = [
     "Nice try 😏",
-    "You can't close me 😎",
     "Still running 🚀",
+    "You can't close me 😎",
     "Access denied 😈"
   ];
 
@@ -185,5 +247,7 @@ document.addEventListener("DOMContentLoaded", () => {
     dot.style.top = e.clientY + "px";
   });
 
+  // ================= INIT LOAD =================
   startTyping();
+  animateElements();
 });
