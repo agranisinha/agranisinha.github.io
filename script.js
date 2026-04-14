@@ -196,23 +196,22 @@ document.addEventListener("DOMContentLoaded", () => {
     type();
   }
 
-  function animateElements() {
-    const els = document.querySelectorAll(
-      ".hero-name, .roles span, .home-buttons button, .stats div, .about-card, .project-card, .exp-card, .skills-chip"
-    );
+ function animateElements() {
+  const cards = document.querySelectorAll(
+    ".about-card, .project-card, .exp-card, .skills-chip, .timeline-item"
+  );
 
-    els.forEach((el, index) => {
-      el.style.opacity = "0";
-      el.style.transform = "translateY(14px)";
+  cards.forEach((el, index) => {
+    el.style.opacity = "0";
+    el.style.transform = "translateY(14px)";
 
-      setTimeout(() => {
-        el.style.transition = "opacity 0.35s ease, transform 0.35s ease";
-        el.style.opacity = "1";
-        el.style.transform = "translateY(0)";
-      }, 50 + index * 45);
-    });
-  }
-
+    setTimeout(() => {
+      el.style.transition = "opacity 0.35s ease, transform 0.35s ease";
+      el.style.opacity = "1";
+      el.style.transform = "translateY(0)";
+    }, 40 + index * 35);
+  });
+}
   function startTyping() {
     const typingEl = document.getElementById("typingText");
     if (!typingEl) return;
