@@ -1,33 +1,17 @@
-const reveals = document.querySelectorAll(".reveal");
+// SCROLL ANIMATION
+const items = document.querySelectorAll('.fade');
 
-window.addEventListener("scroll", () => {
-  reveals.forEach(el => {
+window.addEventListener('scroll', () => {
+  items.forEach(el => {
     if (el.getBoundingClientRect().top < window.innerHeight - 100) {
-      el.classList.add("active");
+      el.classList.add('show');
     }
   });
 });
 
-const btn = document.getElementById("backToTop");
-
-window.addEventListener("scroll", () => {
-  btn.style.display = window.scrollY > 300 ? "block" : "none";
+// CURSOR GLOW
+document.addEventListener("mousemove", e => {
+  const glow = document.getElementById("cursorGlow");
+  glow.style.left = e.pageX + "px";
+  glow.style.top = e.pageY + "px";
 });
-
-btn.onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
-
-const roles = ["AI in Healthcare", "Clinical Informatics", "Data Science"];
-let i = 0, j = 0;
-
-function type() {
-  document.getElementById("typing").textContent =
-    roles[i].substring(0, j++);
-
-  if (j > roles[i].length) {
-    j = 0;
-    i = (i + 1) % roles.length;
-  }
-
-  setTimeout(type, 100);
-}
-type();
