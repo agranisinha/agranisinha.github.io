@@ -1,46 +1,25 @@
-function openTab(id) {
-  // switch panels
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+function openTab(event,id){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 
-  // tabs
-  document.querySelectorAll('.editor-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.file-item').forEach(f=>f.classList.remove('active'));
+  event.target.classList.add('active');
+}
 
-  let existing = document.querySelector(`[data-tab="${id}"]`);
+const input=document.getElementById("terminalInput");
+const output=document.getElementById("terminalOutput");
 
-  if (!existing) {
-    const tab = document.createElement('button');
-    tab.className = 'editor-tab active';
-    tab.innerHTML = `<span class="icon js">JS</span> ${id}.js`;
-    tab.setAttribute('data-tab', id);
+input.addEventListener("keypress",function(e){
+  if(e.key==="Enter"){
+    const cmd=input.value.toLowerCase();
 
-    tab.onclick = () => openTab(id);
+    const line=document.createElement("div");
+    line.textContent="> "+cmd;
+    output.appendChild(line);
 
-    document.getElementById('editorTabs').appendChild(tab);
-  } else {
-    existing.classList.add('active');
+    if(cmd==="projects") openTab({target:document.querySelector("[onclick*='projects']")},"projects");
+    if(cmd==="about") openTab({target:document.querySelector("[onclick*='about']")},"about");
+
+    input.value="";
   }
-}
-
-/* FOLDER TOGGLE */
-function toggleFolder(id) {
-  const el = document.getElementById(id);
-  const caret = document.getElementById(id + "Caret");
-
-  el.classList.toggle('show');
-  caret.textContent = el.classList.contains('show') ? "▾" : "▸";
-}
-
-/* TYPING */
-const text = "AI × Healthcare × Systems";
-let i = 0;
-
-function type() {
-  if (i < text.length) {
-    document.getElementById("typing").innerHTML += text[i];
-    i++;
-    setTimeout(type, 80);
-  }
-}
-
-type();
+});
