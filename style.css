@@ -118,6 +118,49 @@ body {
   width: 100%;
 }
 
+/* MENU BAR */
+.menu-bar {
+  height: 32px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  padding: 0 16px;
+
+  background: #1e1e1e;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+
+  font-size: 13px;
+  font-family: "Inter", sans-serif;
+  color: #c5c5c5;
+
+  user-select: none;
+}
+
+/* menu items */
+.menu-bar span {
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 4px;
+  transition: all 0.15s ease;
+}
+
+/* hover like VS Code */
+.menu-bar span:hover {
+  background: rgba(255,255,255,0.08);
+  color: #ffffff;
+}
+
+/* copilot highlight */
+.copilot-menu {
+  color: #9b8cff;
+}
+
+/* active underline effect (optional) */
+.menu-bar span:active {
+  background: rgba(255,255,255,0.12);
+}
+
 /* fake editor background */
 .fake-editor {
   position: relative;
