@@ -253,65 +253,63 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function getHome() {
   return `
-  <div class="home-container">
+    <div class="home-container home-animate">
 
-    <div class="home-grid">
+      <div class="home-grid">
 
-      <!-- LEFT SIDE -->
-      <div class="home-left">
+        <div class="home-left">
+          <p class="code-line" id="typingText"></p>
 
-        <p class="code-line" id="typingText"></p>
+          <h1 class="hero-name hero-reveal">
+            Agrani <span>Sinha</span>
+          </h1>
 
-        <h1 class="hero-name">
-          Agrani <span>Sinha</span>
-        </h1>
-
-        <div class="roles">
-          <span>AI Engineer</span>
-          <span>Clinical Informatics</span>
-          <span>Data Scientist</span>
-          <span>Healthcare Systems</span>
-        </div>
-
-        <p class="hero-desc">
-          I build intelligent healthcare systems using AI, machine learning,
-          clinical informatics, and data-driven workflows to solve real-world problems.
-        </p>
-
-        <div class="home-buttons">
-          <button onclick="openTab('projects')">📁 Projects</button>
-          <button onclick="openTab('about')">👤 About</button>
-          <button onclick="openTab('contact')">✉️ Contact</button>
-        </div>
-
-        <!-- UPDATED STATS -->
-        <div class="stats">
-          <div>
-            <strong>10+</strong>
-            <span>Projects</span>
+          <div class="roles role-reveal">
+            <span>AI Engineer</span>
+            <span>Clinical Informatics</span>
+            <span>Data Scientist</span>
+            <span>Healthcare Systems</span>
           </div>
 
-          <div>
-            <strong>3+</strong>
-            <span>Years Experience</span>
+          <p class="hero-desc desc-reveal">
+            I build intelligent healthcare systems using AI, machine learning,
+            clinical informatics, and data-driven workflows to solve real-world problems.
+          </p>
+
+          <div class="home-buttons button-reveal">
+            <button onclick="openTab('projects')">📁 Projects</button>
+            <button onclick="openTab('about')">👤 About</button>
+            <button onclick="openTab('contact')">✉️ Contact</button>
+          </div>
+
+          <div class="stats stats-reveal">
+            <div class="stat-card">
+              <strong>10+</strong>
+              <span>Projects</span>
+            </div>
+
+            <div class="stat-card">
+              <strong>3+</strong>
+              <span>Years Experience</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="home-right image-reveal">
+          <div class="profile-wrapper floating-photo">
+            <div class="profile-glow"></div>
+            <img
+              src="assets/images/profile.png"
+              alt="Agrani Sinha"
+              onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=&quot;profile-fallback&quot;>AS</div>';"
+            />
           </div>
         </div>
 
       </div>
-
-      <!-- RIGHT SIDE (PROFILE IMAGE) -->
-      <div class="home-right">
-        <div class="profile-wrapper">
-          <img src="assets/images/profile.png" alt="Agrani Sinha" />
-        </div>
-      </div>
-
     </div>
-
-  </div>
   `;
 }
-
   function getAbout() {
     return `
       <div class="about-container">
