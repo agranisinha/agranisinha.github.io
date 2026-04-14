@@ -143,27 +143,41 @@ function openTab(name) {
   alert("Opening " + name + " (next step we will connect real pages)");
 }
 
-// ================= WINDOW BUTTONS =================
+window.onload = function () {
 
-const quotes = [
-  "Nice try 😏 but I’ll stay open.",
-  "You can't close me that easily 😎",
-  "This portfolio is immortal 🚀",
-  "Denied. Try harder 😈",
-  "I’m not going anywhere 👀"
-];
+  const red = document.querySelector(".traffic.red");
+  const yellow = document.querySelector(".traffic.yellow");
+  const green = document.querySelector(".traffic.green");
 
-document.querySelector(".traffic.red").onclick = () => {
-  alert(quotes[Math.floor(Math.random() * quotes.length)]);
-};
+  console.log("Buttons:", red, yellow, green); // DEBUG
 
-document.querySelector(".traffic.yellow").onclick = () => {
-  document.body.style.transform = "scale(0.95)";
-  setTimeout(() => {
-    document.body.style.transform = "scale(1)";
-  }, 200);
-};
+  const quotes = [
+    "Nice try 😏 but I’ll stay open.",
+    "You can't close me that easily 😎",
+    "This portfolio is immortal 🚀",
+    "Denied. Try harder 😈",
+    "I’m not going anywhere 👀"
+  ];
 
-document.querySelector(".traffic.green").onclick = () => {
-  document.body.classList.toggle("fullscreen");
+  if (red) {
+    red.onclick = () => {
+      alert(quotes[Math.floor(Math.random() * quotes.length)]);
+    };
+  }
+
+  if (yellow) {
+    yellow.onclick = () => {
+      document.body.style.transform = "scale(0.95)";
+      setTimeout(() => {
+        document.body.style.transform = "scale(1)";
+      }, 200);
+    };
+  }
+
+  if (green) {
+    green.onclick = () => {
+      document.body.classList.toggle("fullscreen");
+    };
+  }
+
 };
