@@ -161,6 +161,152 @@ body {
   background: rgba(255,255,255,0.12);
 }
 
+/* =========================
+   LAYOUT
+========================= */
+.vscode-layout {
+  display: flex;
+  height: calc(100vh - 80px);
+}
+
+/* ACTIVITY BAR */
+.activity-bar {
+  width: 55px;
+  background: #2d2d2d;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 10px;
+  border-right: 1px solid rgba(255,255,255,0.05);
+}
+
+.activity-icon {
+  font-size: 20px;
+  padding: 12px;
+  margin: 6px 0;
+  opacity: 0.6;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.activity-icon:hover,
+.activity-icon.active {
+  opacity: 1;
+  color: #fff;
+}
+
+.activity-bottom {
+  margin-top: auto;
+  padding-bottom: 10px;
+}
+
+/* SIDEBAR */
+.sidebar-panel {
+  width: 250px;
+  background: #252526;
+  color: #ccc;
+  border-right: 1px solid rgba(255,255,255,0.05);
+}
+
+.sidebar-header {
+  padding: 12px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: #aaa;
+}
+
+.file-list {
+  padding: 10px;
+}
+
+.file {
+  padding: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 4px;
+}
+
+.file:hover {
+  background: rgba(255,255,255,0.08);
+}
+
+.file.active {
+  background: rgba(255,255,255,0.12);
+}
+
+/* COPILOT BOX */
+.copilot-box {
+  margin: 12px;
+  padding: 12px;
+  border: 1px solid #7c5cff;
+  border-radius: 10px;
+  color: #bca8ff;
+  text-align: center;
+}
+
+/* =========================
+   SETTINGS PANEL
+========================= */
+.settings-panel {
+  position: fixed;
+  left: 80px;
+  top: 80px;
+  width: 320px;
+  background: #1e1e1e;
+  border-radius: 12px;
+  padding: 16px;
+  display: none;
+  z-index: 999;
+  box-shadow: 0 0 30px rgba(0,0,0,0.6);
+}
+
+.settings-panel.open {
+  display: block;
+}
+
+.settings-header {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.settings-section {
+  margin-top: 14px;
+}
+
+.section-title {
+  font-size: 12px;
+  color: #aaa;
+  margin-bottom: 8px;
+}
+
+.theme-option {
+  padding: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.theme-option:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+.theme-option.active {
+  background: rgba(255,255,255,0.15);
+}
+
+.action {
+  padding: 8px;
+  opacity: 0.8;
+}
+
+/* =========================
+   THEMES
+========================= */
+body.rose { background: #191724; }
+body.tokyo { background: #1a1b26; }
+body.cat { background: #24273a; }
+body.nord { background: #2e3440; }
+body.gruv { background: #282828; }
+
 /* fake editor background */
 .fake-editor {
   position: relative;
