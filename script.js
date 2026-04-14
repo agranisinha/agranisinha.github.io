@@ -149,7 +149,7 @@ function openTab(name) {
   if (name === "home") {
     editor.innerHTML = `
       <div class="home-container">
-        <p class="code-line">// hello world !! Welcome to my portfolio</p>
+        <p class="code-line typing">// hello world !! Welcome to my portfolio</p>
 
         <h1 class="home-title">
           Agrani <span>Sinha</span>
