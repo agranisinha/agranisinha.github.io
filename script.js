@@ -149,7 +149,7 @@ window.onload = function () {
   const yellow = document.querySelector(".traffic.yellow");
   const green = document.querySelector(".traffic.green");
 
-  console.log("Buttons:", red, yellow, green); // DEBUG
+  const feedback = document.getElementById("paletteFeedback");
 
   const quotes = [
     "Nice try 😏 but I’ll stay open.",
@@ -159,25 +159,45 @@ window.onload = function () {
     "I’m not going anywhere 👀"
   ];
 
+  function showMessage(msg) {
+    if (!feedback) return;
+
+    feedback.innerText = msg;
+    feedback.classList.add("show");
+
+    setTimeout(() => {
+      feedback.classList.remove("show");
+    }, 2000);
+  }
+
+  // 🔴 RED → show message in palette
   if (red) {
     red.onclick = () => {
-      alert(quotes[Math.floor(Math.random() * quotes.length)]);
+      showMessage(quotes[Math.floor(Math.random() * quotes.length)]);
     };
   }
 
+  // 🟡 YELLOW → mini animation
   if (yellow) {
     yellow.onclick = () => {
-      document.body.style.transform = "scale(0.95)";
+      document.body.style.transform = "scale(0.96)";
       setTimeout(() => {
         document.body.style.transform = "scale(1)";
       }, 200);
     };
   }
 
+  // 🟢 GREEN → TRUE FULLSCREEN
   if (green) {
     green.onclick = () => {
-      document.body.classList.toggle("fullscreen");
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
     };
   }
+
+};
 
 };
