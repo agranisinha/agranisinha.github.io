@@ -732,3 +732,56 @@ body {
     height: 320px;
   }
 }
+/* ================= TERMINAL ================= */
+.terminal-panel {
+  position: fixed;
+  bottom: 0;
+  left: 55px;
+  right: 0;
+  height: 260px;
+  background: #0d1117;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  display: none;
+  flex-direction: column;
+  z-index: 999;
+}
+
+.terminal-panel.open {
+  display: flex;
+}
+
+.terminal-header {
+  padding: 8px 12px;
+  font-size: 13px;
+  background: #161b22;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.terminal-body {
+  flex: 1;
+  padding: 10px;
+  font-family: "Fira Code", monospace;
+  font-size: 13px;
+  overflow-y: auto;
+  color: #c9d1d9;
+}
+
+.terminal-input-line {
+  display: flex;
+  padding: 8px;
+  background: #0d1117;
+}
+
+.prompt {
+  margin-right: 6px;
+  color: #58a6ff;
+}
+
+#terminalInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  font-family: "Fira Code", monospace;
+}
