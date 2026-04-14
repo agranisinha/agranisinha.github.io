@@ -8,32 +8,35 @@
 /* ================= ROOT ================= */
 body {
   font-family: Consolas, monospace;
-  background: #0a192f;
+  background: #0d1117;
   color: #d4d4d4;
   overflow: hidden;
 }
 
-/* ================= NEON CURSOR ================= */
-body::after {
+/* ================= BACKGROUND ANIMATION ================= */
+body::before {
   content: "";
   position: fixed;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: rgba(0,122,204,0.7);
-  pointer-events: none;
-  transform: translate(-50%, -50%);
-  z-index: 9999;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(0,122,204,0.15), transparent 70%);
+  animation: moveBg 10s linear infinite;
+  z-index: -1;
 }
 
-/* ================= APP ================= */
+@keyframes moveBg {
+  0% { transform: translate(0,0); }
+  50% { transform: translate(-20%, -20%); }
+  100% { transform: translate(0,0); }
+}
+
+/* ================= LAYOUT ================= */
 .app-shell {
   display: flex;
   flex-direction: column;
   height: 100vh;
 }
 
-/* ================= WORKBENCH ================= */
 .workbench {
   display: flex;
   flex: 1;
@@ -41,28 +44,26 @@ body::after {
 
 /* ================= SIDEBAR ================= */
 .sidebar {
-  width: 230px;
-  background: #252526;
+  width: 240px;
+  background: #161b22;
   padding: 10px;
 }
 
 .file-item {
   padding: 8px;
-  border-radius: 4px;
   cursor: pointer;
+  border-radius: 4px;
   transition: 0.2s;
 }
 
 .file-item:hover {
-  background: #2a2d2e;
+  background: #21262d;
 }
 
 .file-item.active {
-  background: #007acc;
+  background: #238636;
+  box-shadow: 0 0 10px #238636;
 }
-
-/* ================= ICONS ================= */
-.icon.js::before { content: "🟨"; margin-right: 6px; }
 
 /* ================= EDITOR ================= */
 .editor-area {
@@ -74,30 +75,30 @@ body::after {
 /* ================= TABS ================= */
 .editor-tabs {
   display: flex;
-  background: #2d2d2d;
+  background: #161b22;
+  border-bottom: 1px solid #30363d;
 }
 
 .editor-tab {
-  padding: 8px 14px;
+  padding: 8px 12px;
   cursor: pointer;
-  border-right: 1px solid #3c3c3c;
+  display: flex;
+  gap: 6px;
+  align-items: center;
 }
 
 .editor-tab.active {
-  background: #1e1e1e;
-  border-top: 2px solid #007acc;
+  background: #0d1117;
+  border-top: 2px solid #58a6ff;
+  color: #58a6ff;
 }
 
 /* ================= CONTENT ================= */
 .editor-content {
   flex: 1;
   overflow-y: auto;
-  padding: 25px 40px;
+  padding: 20px 40px;
 }
-
-/* ================= PANEL ================= */
-.panel { display: none; }
-.panel.active { display: block; }
 
 /* ================= HERO ================= */
 .hero-title {
@@ -106,9 +107,27 @@ body::after {
 }
 
 .hero-title span {
-  background: linear-gradient(90deg, #ff00cc, #007acc);
+  background: linear-gradient(90deg, #ff00cc, #00ffff);
   -webkit-background-clip: text;
   color: transparent;
+}
+
+/* ================= BUTTON ================= */
+.btn {
+  padding: 8px 14px;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  color: #c9d1d9;
+  transition: 0.3s;
+}
+
+.btn.primary {
+  background: #238636;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px #58a6ff;
 }
 
 /* ================= PROFILE ================= */
@@ -117,19 +136,13 @@ body::after {
   height: 250px;
   border-radius: 20px;
   overflow: hidden;
-  border: 2px solid #007acc;
-  box-shadow: 0 0 30px #007acc;
-  transition: 0.3s;
-}
-
-.profile-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 60px #00eaff;
+  border: 2px solid #58a6ff;
+  box-shadow: 0 0 25px #58a6ff;
 }
 
 /* ================= CARDS ================= */
 .mini-card {
-  background: #252526;
+  background: #161b22;
   padding: 15px;
   border-radius: 6px;
   transition: 0.3s;
@@ -137,34 +150,27 @@ body::after {
 
 .mini-card:hover {
   transform: translateY(-6px);
-  border: 1px solid #00eaff;
-  box-shadow: 0 0 20px rgba(0,255,255,0.4);
+  box-shadow: 0 0 15px #58a6ff;
 }
 
 /* ================= TERMINAL ================= */
 .terminal {
   height: 120px;
-  background: #111;
-  border-top: 1px solid #333;
+  background: #010409;
+  border-top: 1px solid #30363d;
+  display: flex;
+  flex-direction: column;
 }
 
 .terminal-body {
-  height: 70px;
+  flex: 1;
+  padding: 6px;
   overflow-y: auto;
-  padding: 5px;
 }
 
 .terminal-input input {
   background: transparent;
   border: none;
-  color: #00ffcc;
+  color: #58a6ff;
   outline: none;
-}
-
-/* ================= PARTICLE BG ================= */
-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: -1;
 }
