@@ -724,3 +724,45 @@ body.gruv {
     display: none;
   }
 }
+
+/* ================= TABS ================= */
+.editor-tabs {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  background: #1e1e1e;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding-left: 10px;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 6px 14px;
+  margin-right: 6px;
+
+  background: #2d2d2d;
+  border-radius: 6px 6px 0 0;
+
+  font-size: 13px;
+  color: #ccc;
+
+  cursor: pointer;
+}
+
+.tab.active {
+  background: #1e1e1e;
+  color: #fff;
+  border-bottom: 2px solid #4ec9b0;
+}
+
+.close-tab {
+  margin-left: 6px;
+  opacity: 0.5;
+}
+
+.close-tab:hover {
+  opacity: 1;
+}
