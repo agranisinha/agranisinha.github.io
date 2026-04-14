@@ -45,15 +45,71 @@
 
     <!-- ================= MENU BAR ================= -->
     <div class="menu-bar">
-      <span>File</span>
-      <span>Edit</span>
-      <span>View</span>
-      <span>Go</span>
-      <span>Run</span>
-      <span>Terminal</span>
-      <span>Help</span>
-      <span class="copilot-menu">Copilot</span>
+
+  <div class="menu-item">File
+    <div class="dropdown">
+      <div onclick="openTab('home')">New Tab</div>
+      <div onclick="openPalette()">Open File...</div>
+      <hr>
+      <div onclick="closeTab()">Close Tab</div>
+      <div onclick="closeAllTabs()">Close All Tabs</div>
+      <hr>
+      <div onclick="openTab('home')">home.tsx</div>
+      <div onclick="openTab('about')">about.html</div>
+      <div onclick="openTab('projects')">projects.js</div>
+      <hr>
+      <div onclick="downloadResume()">Download Resume</div>
     </div>
+  </div>
+
+  <div class="menu-item">Edit
+    <div class="dropdown">
+      <div onclick="openPalette()">Find...</div>
+      <div>Select All</div>
+      <div>Copy</div>
+    </div>
+  </div>
+
+  <div class="menu-item">View
+    <div class="dropdown">
+      <div onclick="openPalette()">Command Palette</div>
+      <div onclick="toggleSidebar()">Toggle Sidebar</div>
+      <div onclick="toggleTerminal()">Toggle Terminal</div>
+      <div onclick="toggleTerminal()">✨ Agrani's Copilot</div>
+      <hr>
+      <div onclick="toggleFullscreen()">Enter Full Screen</div>
+    </div>
+  </div>
+
+  <div class="menu-item">Go
+    <div class="dropdown">
+      <div onclick="openPalette()">Go to File...</div>
+      <hr>
+      <div onclick="openTab('home')">home.tsx</div>
+      <div onclick="openTab('about')">about.html</div>
+      <div onclick="openTab('projects')">projects.js</div>
+      <div onclick="openTab('skills')">skills.json</div>
+    </div>
+  </div>
+
+  <div class="menu-item">Terminal
+    <div class="dropdown">
+      <div onclick="toggleTerminal()">New Terminal</div>
+      <div onclick="toggleTerminal()">Toggle Terminal</div>
+      <hr>
+      <div onclick="clearTerminal()">Clear Terminal</div>
+    </div>
+  </div>
+
+  <div class="menu-item">Help
+    <div class="dropdown">
+      <div onclick="openPalette()">Command Palette</div>
+      <hr>
+      <div onclick="openTab('about')">About</div>
+    </div>
+  </div>
+
+</div>
 
     <!-- ================= MAIN LAYOUT ================= -->
     <div class="vscode-layout">
