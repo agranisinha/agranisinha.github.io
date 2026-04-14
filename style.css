@@ -12,8 +12,8 @@
   --text: #d9dde5;
   --muted: #8c92a0;
   --line: rgba(255, 255, 255, 0.06);
-  --purple: rgba(121, 87, 167, 0.48);
-  --purple-border: rgba(168, 129, 236, 0.18);
+  --purple: rgba(110, 81, 153, 0.52);
+  --header-bg: #12162a;
 }
 
 html,
@@ -21,93 +21,169 @@ body {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background: radial-gradient(circle at 20% 20%, rgba(0, 153, 255, 0.12), transparent 22%),
-    radial-gradient(circle at 80% 20%, rgba(120, 80, 255, 0.12), transparent 22%),
+  background:
+    radial-gradient(circle at 20% 20%, rgba(0, 153, 255, 0.12), transparent 24%),
+    radial-gradient(circle at 80% 20%, rgba(120, 80, 255, 0.12), transparent 24%),
     #05070b;
   font-family: "Inter", sans-serif;
   color: var(--text);
   cursor: none;
 }
 
-/* background demo */
-.demo-bg {
-  position: fixed;
-  inset: 0;
+.app-shell {
+  width: 100%;
+  height: 100%;
+}
+
+/* header */
+.top-header {
+  height: 46px;
+  display: grid;
+  grid-template-columns: 120px 1fr 120px;
+  align-items: center;
+  padding: 0 12px;
+  background: linear-gradient(180deg, #151938 0%, #101427 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.mac-dots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+}
+
+.dot.red { background: #ff5f56; }
+.dot.yellow { background: #ffbd2e; }
+.dot.green { background: #27c93f; }
+
+.header-command-trigger {
+  margin: 0 auto;
+  min-width: 420px;
+  max-width: 520px;
+  height: 34px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.06);
+  color: #b7bdc9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: background 0.18s ease, border-color 0.18s ease;
+  font-family: "Fira Code", monospace;
+}
+
+.header-command-trigger:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.12);
+}
+
+.trigger-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-icon {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.trigger-text {
+  font-size: 12px;
+}
+
+.trigger-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.keycap {
+  padding: 3px 7px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.06);
+  color: #969dac;
+  font-size: 11px;
+}
+
+.header-spacer {
+  width: 100%;
+}
+
+/* fake editor background */
+.fake-editor {
+  position: relative;
+  width: 100%;
+  height: calc(100% - 46px);
   display: grid;
   grid-template-columns: 300px 1fr;
-  filter: blur(6px);
-  opacity: 0.45;
+  filter: blur(0px);
 }
 
 .fake-sidebar {
-  background: rgba(255, 255, 255, 0.04);
-  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(255,255,255,0.03);
+  border-right: 1px solid rgba(255,255,255,0.04);
 }
 
-.fake-content {
+.fake-main {
   padding: 120px 80px;
 }
 
-.fake-line {
-  height: 10px;
-  border-radius: 999px;
-  background: rgba(53, 194, 255, 0.12);
-  margin-bottom: 14px;
-}
-
-.fake-line.short { width: 18%; }
-.fake-line.medium { width: 34%; }
-.fake-line.long { width: 52%; }
-
 .fake-title {
-  margin-top: 24px;
   font-size: 92px;
   font-weight: 800;
   letter-spacing: -3px;
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(255,255,255,0.12);
 }
 
 .fake-subtitle {
-  margin-top: 14px;
-  font-size: 18px;
-  color: rgba(255, 255, 255, 0.35);
+  margin-top: 16px;
+  font-size: 22px;
+  color: rgba(255,255,255,0.08);
+  font-family: "Fira Code", monospace;
 }
 
-.fake-buttons {
-  display: flex;
-  gap: 12px;
-  margin-top: 28px;
-}
-
-.fake-buttons span {
-  width: 120px;
-  height: 42px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 8px;
-}
-
-/* overlay */
+/* overlay hidden by default */
 .palette-overlay {
   position: fixed;
   inset: 0;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding-top: 160px;
-  background: rgba(4, 7, 12, 0.42);
-  backdrop-filter: blur(8px);
+  display: none;
+  z-index: 1000;
 }
 
-/* palette */
+.palette-overlay.open {
+  display: block;
+}
+
+.palette-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(5, 8, 14, 0.48);
+  backdrop-filter: blur(7px);
+}
+
+/* floating palette */
 .palette-box {
-  width: min(560px, calc(100% - 48px));
+  position: absolute;
+  top: 155px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 560px;
   border-radius: 10px;
   overflow: hidden;
   background: var(--panel);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255,255,255,0.08);
   box-shadow:
-    0 24px 80px rgba(0, 0, 0, 0.45),
-    0 0 0 1px rgba(255, 255, 255, 0.03);
+    0 24px 80px rgba(0,0,0,0.45),
+    0 0 0 1px rgba(255,255,255,0.03);
 }
 
 .palette-top {
@@ -147,7 +223,7 @@ body {
   align-items: center;
   justify-content: center;
   border-radius: 5px;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255,255,255,0.06);
   color: #9da4b2;
   font-size: 11px;
   font-family: "Fira Code", monospace;
@@ -164,7 +240,7 @@ body {
 }
 
 .palette-list::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255,255,255,0.12);
 }
 
 .palette-section-label {
@@ -191,7 +267,7 @@ body {
 }
 
 .palette-item:hover {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255,255,255,0.04);
 }
 
 .palette-item.active {
@@ -239,7 +315,7 @@ body {
 .palette-meta.shortcut {
   padding: 4px 8px;
   border-radius: 5px;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255,255,255,0.06);
 }
 
 .palette-footer {
@@ -258,7 +334,7 @@ body {
   margin-left: auto;
 }
 
-/* square cursor */
+/* cursor */
 .cursor-square,
 .cursor-dot {
   position: fixed;
@@ -273,36 +349,33 @@ body {
   width: 24px;
   height: 24px;
   border: 2px solid #8ffff7;
+  background: rgba(143, 255, 247, 0.03);
   box-shadow:
-    0 0 12px rgba(143, 255, 247, 0.45),
-    inset 0 0 8px rgba(143, 255, 247, 0.08);
-  background: rgba(143, 255, 247, 0.04);
+    0 0 12px rgba(143,255,247,0.45),
+    inset 0 0 8px rgba(143,255,247,0.08);
   transition: transform 0.06s linear, width 0.12s ease, height 0.12s ease;
 }
 
 .cursor-dot {
   width: 3px;
   height: 3px;
-  background: #dff;
   border-radius: 50%;
+  background: #dff;
 }
 
-/* responsive */
 @media (max-width: 700px) {
-  .palette-overlay {
-    padding-top: 110px;
+  .header-command-trigger {
+    min-width: 260px;
+    max-width: 320px;
   }
 
-  .palette-footer {
-    gap: 8px;
+  .palette-box {
+    width: calc(100% - 28px);
+    top: 110px;
   }
 
   .palette-footer-tip {
-    width: 100%;
     margin-left: 0;
-  }
-
-  .fake-title {
-    font-size: 54px;
+    width: 100%;
   }
 }
