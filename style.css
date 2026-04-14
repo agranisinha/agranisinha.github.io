@@ -766,3 +766,36 @@ body.gruv {
 .close-tab:hover {
   opacity: 1;
 }
+.about-container {
+  max-width: 900px;
+  animation: fadeIn 0.5s ease;
+}
+
+.about-sub {
+  color: #8c92a0;
+  margin-bottom: 20px;
+}
+
+.about-card {
+  background: #1f232a;
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.highlight {
+  color: #4ec9b0;
+  font-weight: 600;
+}
+
+.section-title {
+  color: #4ec9b0;
+  margin-bottom: 12px;
+}
+
+.focus-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
