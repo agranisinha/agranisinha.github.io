@@ -170,17 +170,19 @@ window.onload = function () {
     }, 2000);
   }
 
-  // 🔴 RED BUTTON
+   // 🔴 RED BUTTON (ONLY MESSAGE)
   if (red) {
-    red.onclick = () => {
+    red.onclick = (e) => {
+      e.stopPropagation(); // 🔥 prevent accidental triggers
       const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
       showMessage(randomQuote);
     };
   }
-
-  // 🟡 YELLOW
+  
+  // 🟡 YELLOW BUTTON (ONLY THIS SHRINKS)
   if (yellow) {
     yellow.onclick = () => {
+      document.body.style.transition = "transform 0.2s ease";
       document.body.style.transform = "scale(0.96)";
       setTimeout(() => {
         document.body.style.transform = "scale(1)";
