@@ -28,46 +28,51 @@
       </aside>
 
       <aside class="sidebar">
-        <div class="sidebar-header">EXPLORER</div>
+        <div class="sidebar-header">PORTFOLIO</div>
 
         <div class="explorer-group">
-          <div class="explorer-title" onclick="toggleFolder('portfolioFolder')">
-            <span class="caret" id="portfolioFolderCaret">▾</span>
+          <div class="explorer-title">
+            <span class="caret">▾</span>
             <span>PORTFOLIO</span>
           </div>
 
           <ul class="file-tree show" id="portfolioFolder">
-            <li onclick="openTab(event, 'about')" class="file-item active">
+            <li onclick="openTab('about', this)" class="file-item active">
               <span class="icon js">JS</span> about.js
             </li>
-            <li onclick="openTab(event, 'projects')" class="file-item">
+            <li onclick="openTab('projects', this)" class="file-item">
               <span class="icon js">JS</span> projects.js
             </li>
-            <li onclick="openTab(event, 'experience')" class="file-item">
+            <li onclick="openTab('experience', this)" class="file-item">
               <span class="icon js">JS</span> experience.js
             </li>
-            <li onclick="openTab(event, 'skills')" class="file-item">
+            <li onclick="openTab('skills', this)" class="file-item">
               <span class="icon js">JS</span> skills.js
             </li>
-            <li onclick="openTab(event, 'lor')" class="file-item">
+            <li onclick="openTab('lor', this)" class="file-item">
               <span class="icon js">JS</span> lor.js
             </li>
-            <li onclick="openTab(event, 'research')" class="file-item">
+            <li onclick="openTab('research', this)" class="file-item">
               <span class="icon js">JS</span> research.js
             </li>
-            <li onclick="openTab(event, 'resume')" class="file-item">
+            <li onclick="openTab('resume', this)" class="file-item">
               <span class="icon js">JS</span> resume.js
             </li>
-            <li onclick="openTab(event, 'contact')" class="file-item">
+            <li onclick="openTab('contact', this)" class="file-item">
               <span class="icon js">JS</span> contact.js
             </li>
           </ul>
+        </div>
+
+        <div class="copilot-box">
+          <div class="copilot-title">🤖 AI Assistant</div>
+          <p>Ask about my projects, experience, skills, research, or resume.</p>
         </div>
       </aside>
 
       <main class="editor-area">
         <div class="editor-tabs" id="editorTabs">
-          <button class="editor-tab active" data-tab="about" onclick="openTab(null, 'about')">
+          <button class="editor-tab active" data-tab="about" onclick="openTab('about')">
             <span class="icon js">JS</span> about.js
             <span class="close-tab" onclick="closeTab(event, 'about')">×</span>
           </button>
@@ -83,9 +88,10 @@
               <div class="code-row"><span class="line-number">2</span><span class="prop">name</span>: <span class="str">"Agrani Sinha"</span>,</div>
               <div class="code-row"><span class="line-number">3</span><span class="prop">title</span>: <span class="str">"<span id="typing"></span><span class="cursor">|</span>"</span>,</div>
               <div class="code-row"><span class="line-number">4</span><span class="prop">domain</span>: <span class="str">"Health Informatics, Biotechnology, AI Systems"</span>,</div>
-              <div class="code-row"><span class="line-number">5</span><span class="prop">summary</span>: <span class="str">"Building practical, data-driven healthcare systems that improve workflows, accessibility, and patient outcomes."</span>,</div>
-              <div class="code-row"><span class="line-number">6</span><span class="prop">focus</span>: <span class="arr">["Clinical Informatics", "AI in Healthcare", "Data Science", "Patient-Centered Systems"]</span></div>
-              <div class="code-row"><span class="line-number">7</span><span class="br">}</span>;</div>
+              <div class="code-row"><span class="line-number">5</span><span class="prop">summary</span>: <span class="str">"I build practical, data-driven healthcare systems that improve workflows, accessibility, and patient outcomes."</span>,</div>
+              <div class="code-row"><span class="line-number">6</span><span class="prop">focus</span>: <span class="arr">["Clinical Informatics", "AI in Healthcare", "Data Science", "Patient-Centered Systems"]</span>,</div>
+              <div class="code-row"><span class="line-number">7</span><span class="prop">education</span>: <span class="str">"Health Informatics + Biotechnology"</span></div>
+              <div class="code-row"><span class="line-number">8</span><span class="br">}</span>;</div>
             </div>
 
             <div class="hero-panel">
@@ -93,12 +99,43 @@
                 <h1>Agrani Sinha</h1>
                 <p class="hero-subtitle">AI × Healthcare × Systems</p>
                 <p class="hero-description">
-                  Health Informatics graduate with a Biotechnology foundation, focused on building
-                  intelligent, practical, and data-driven healthcare solutions.
+                  I am a Health Informatics professional with a Biotechnology foundation, focused on creating intelligent,
+                  practical, and data-driven healthcare solutions. My work combines clinical informatics, machine learning,
+                  analytics, and system design to build tools that improve decision-making, streamline workflows, and make
+                  healthcare technology more accessible.
                 </p>
+
+                <div class="hero-tags">
+                  <span>AI / ML</span>
+                  <span>Clinical Informatics</span>
+                  <span>Data Science</span>
+                  <span>Healthcare Systems</span>
+                  <span>Bioinformatics</span>
+                </div>
+
                 <div class="hero-actions">
                   <a class="vscode-btn primary" href="docs/Agrani Sinha Resume.pdf" target="_blank">Resume</a>
                   <a class="vscode-btn" href="https://www.linkedin.com/in/agranisinha" target="_blank">LinkedIn</a>
+                  <a class="vscode-btn" href="#" onclick="openTab('projects'); return false;">Projects</a>
+                </div>
+
+                <div class="hero-stats">
+                  <div class="stat-card">
+                    <strong>10+</strong>
+                    <span>Projects</span>
+                  </div>
+                  <div class="stat-card">
+                    <strong>6+</strong>
+                    <span>Key Roles</span>
+                  </div>
+                  <div class="stat-card">
+                    <strong>1000+</strong>
+                    <span>MCQs Authored</span>
+                  </div>
+                  <div class="stat-card">
+                    <strong>96.8%</strong>
+                    <span>Best Model Accuracy</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -109,62 +146,46 @@
             <div class="panel-title">projects.js</div>
 
             <div class="section-card">
-              <h2>Featured Projects</h2>
-
-              <article class="project-card">
-                <div class="project-copy">
-                  <h3>Respiratory Health Chatbot</h3>
-                  <p>
-                    Built a web-based chatbot for respiratory health guidance using HTML, CSS, and Vue.js.
-                    The goal was to make symptom-based healthcare information more accessible and interactive.
-                  </p>
-                </div>
-                <div class="compact-gallery three">
-                  <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (1).jpeg" alt="Respiratory chatbot screenshot 1" />
-                  <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (2).jpeg" alt="Respiratory chatbot screenshot 2" />
-                  <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (3).jpeg" alt="Respiratory chatbot screenshot 3" />
-                  <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (4).jpeg" alt="Respiratory chatbot screenshot 4" />
-                  <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (5).jpeg" alt="Respiratory chatbot screenshot 5" />
-                  <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.45.jpeg" alt="Respiratory chatbot screenshot 6" />
-                </div>
-              </article>
-
-              <article class="project-card">
-                <div class="project-copy">
-                  <h3>Bio Calculator App</h3>
-                  <p>
-                    Created a biological and chemical lab calculation tool using HTML, CSS, and JavaScript,
-                    then published it on Google Play Store to support lab workflows.
-                  </p>
-                </div>
-                <div class="compact-gallery two">
-                  <img src="assets/images/Biocalculator/bio1.webp" alt="Bio Calculator screenshot 1" />
-                  <img src="assets/images/Biocalculator/bio2.webp" alt="Bio Calculator screenshot 2" />
-                  <img src="assets/images/Biocalculator/bio3.webp" alt="Bio Calculator screenshot 3" />
-                  <img src="assets/images/Biocalculator/bio4.webp" alt="Bio Calculator screenshot 4" />
-                </div>
-              </article>
+              <h2>Projects</h2>
+              <p class="section-intro">
+                A mix of healthcare, AI, data science, and software systems work. Click any card to open detailed information,
+                screenshots, and relevant context.
+              </p>
 
               <div class="mini-grid">
-                <div class="mini-card">
+                <div class="mini-card clickable" onclick="openModal('chatbot')">
+                  <h4>Respiratory Health Chatbot</h4>
+                  <p>Interactive symptom guidance system using web technologies.</p>
+                </div>
+
+                <div class="mini-card clickable" onclick="openModal('bioapp')">
+                  <h4>Bio Calculator App</h4>
+                  <p>Biological and chemical lab calculation tool published on Play Store.</p>
+                </div>
+
+                <div class="mini-card clickable" onclick="openModal('drugdiscovery')">
                   <h4>ML Drug Discovery</h4>
-                  <p>Developed an SVM model with 96.8% accuracy for tuberculosis inhibitor prediction using MATLAB and AutoDock.</p>
+                  <p>SVM model for tuberculosis inhibitor prediction.</p>
                 </div>
-                <div class="mini-card">
+
+                <div class="mini-card clickable" onclick="openModal('inventory')">
                   <h4>Inventory Management App</h4>
-                  <p>Built a Flutter + Google Sheets based inventory system with tracking, updates, filtering, and business-oriented workflows.</p>
+                  <p>Flutter + Google Sheets real-time inventory system.</p>
                 </div>
-                <div class="mini-card">
+
+                <div class="mini-card clickable" onclick="openModal('plant')">
                   <h4>AI Plant Identification</h4>
-                  <p>TensorFlow-based computer vision system for plant identification with voice feedback integration.</p>
+                  <p>Computer vision system with voice feedback integration.</p>
                 </div>
-                <div class="mini-card">
+
+                <div class="mini-card clickable" onclick="openModal('games')">
                   <h4>AI Games — Chess & Checkers</h4>
-                  <p>Built Python-based AI gameplay logic to demonstrate algorithmic reasoning and decision-making.</p>
+                  <p>Python-based AI gameplay and decision logic.</p>
                 </div>
-                <div class="mini-card">
-                  <h4>COVID-19 Bioinformatics Database</h4>
-                  <p>Worked on genomic data structuring and research-focused bioinformatics database organization.</p>
+
+                <div class="mini-card clickable" onclick="openModal('covid')">
+                  <h4>COVID-19 Bioinformatics DB</h4>
+                  <p>Genomic data structuring and research-oriented organization.</p>
                 </div>
               </div>
             </div>
@@ -176,89 +197,40 @@
 
             <div class="section-card">
               <h2>Professional Experience</h2>
+              <p class="section-intro">
+                My experience spans clinical informatics, data science, bioinformatics, laboratory work, and technical content development.
+              </p>
 
-              <div class="experience-list">
-                <article class="experience-item">
-                  <div class="experience-text">
-                    <h3>Clinical Informatics Intern — Alivia Care</h3>
-                    <p class="meta">Jacksonville, FL | Oct 2025 – Feb 2026</p>
-                    <p>
-                      Worked on EHR-based reporting and clinical workflow optimization, supported data accessibility,
-                      and collaborated with informatics teams on healthcare data use cases.
-                    </p>
-                  </div>
-                  <div class="compact-single">
-                    <img src="assets/images/badge.png" alt="Alivia Care badge" />
-                  </div>
-                </article>
+              <div class="mini-grid">
+                <div class="mini-card clickable" onclick="openModal('alivia')">
+                  <h4>Clinical Informatics Intern</h4>
+                  <p>Alivia Care</p>
+                </div>
 
-                <article class="experience-item">
-                  <div class="experience-text">
-                    <h3>Data Science Analyst — BluCognition</h3>
-                    <p class="meta">Pune, India | Mar 2022 – Jun 2023</p>
-                    <p>
-                      Built ML pipelines for processing and structuring complex financial data, developed automation-oriented
-                      solutions using AI and analytics, and transformed unstructured information into usable outputs.
-                    </p>
-                  </div>
-                </article>
+                <div class="mini-card clickable" onclick="openModal('blu')">
+                  <h4>Data Science Analyst</h4>
+                  <p>BluCognition</p>
+                </div>
 
-                <article class="experience-item">
-                  <div class="experience-text">
-                    <h3>Academic Research Associate — Digiversal Consultant</h3>
-                    <p class="meta">Noida, India | Dec 2020 – Mar 2022</p>
-                    <p>
-                      Conducted research and data analysis for IT and analytics consulting projects and prepared
-                      structured technical documentation.
-                    </p>
-                  </div>
-                </article>
+                <div class="mini-card clickable" onclick="openModal('digiversal')">
+                  <h4>Academic Research Associate</h4>
+                  <p>Digiversal Consultant</p>
+                </div>
 
-                <article class="experience-item">
-                  <div class="experience-text">
-                    <h3>Bioinformatics Research Intern — IBAB</h3>
-                    <p class="meta">Remote | Jul 2020 – Dec 2020</p>
-                    <p>
-                      Curated genomic datasets for COVID-19 research support and contributed to biological data
-                      organization and meta-database work.
-                    </p>
-                  </div>
-                </article>
+                <div class="mini-card clickable" onclick="openModal('ibab')">
+                  <h4>Bioinformatics Research Intern</h4>
+                  <p>IBAB</p>
+                </div>
 
-                <article class="experience-item">
-                  <div class="experience-text">
-                    <h3>Microbiology Trainee — SRL Diagnostics</h3>
-                    <p class="meta">Noida, India | Jun 2018 – Jul 2018</p>
-                    <p>
-                      Performed microbial testing using culture techniques and diagnostics and supported
-                      laboratory workflows for diagnostic testing.
-                    </p>
-                  </div>
+                <div class="mini-card clickable" onclick="openModal('srl')">
+                  <h4>Microbiology Trainee</h4>
+                  <p>SRL Diagnostics</p>
+                </div>
 
-                  <div class="compact-gallery three">
-                    <img src="assets/images/Microbiology/m1.png" alt="Microbiology 1" />
-                    <img src="assets/images/Microbiology/m2.png" alt="Microbiology 2" />
-                    <img src="assets/images/Microbiology/m3.png" alt="Microbiology 3" />
-                    <img src="assets/images/Microbiology/m4.png" alt="Microbiology 4" />
-                    <img src="assets/images/Microbiology/m5.png.png" alt="Microbiology 5" />
-                    <img src="assets/images/Microbiology/m6.png" alt="Microbiology 6" />
-                  </div>
-                </article>
-
-                <article class="experience-item">
-                  <div class="experience-text">
-                    <h3>Content Developer — Sanfoundry</h3>
-                    <p class="meta">Remote</p>
-                    <p>
-                      Created 1000+ MCQs for Bioprocess Engineering.
-                    </p>
-                    <a class="vscode-btn small"
-                       href="https://www.sanfoundry.com/1000-bioprocess-engineering-questions-answers/"
-                       target="_blank">
-                      View Work
-                    </a>
-                  </div>
-                </article>
+                <div class="mini-card clickable" onclick="openModal('sanfoundry')">
+                  <h4>Content Developer</h4>
+                  <p>Sanfoundry</p>
+                </div>
               </div>
             </div>
           </section>
@@ -268,15 +240,59 @@
             <div class="panel-title">skills.js</div>
 
             <div class="section-card">
-              <div class="skills-wrap">
-                <span>Python</span>
-                <span>Flutter</span>
-                <span>Machine Learning</span>
-                <span>TensorFlow</span>
-                <span>SQL</span>
-                <span>Data Science</span>
-                <span>Clinical Informatics</span>
-                <span>EHR Systems</span>
+              <h2>Skills</h2>
+              <p class="section-intro">
+                Technical, analytical, and healthcare-focused skills grouped to reflect how I build and apply systems.
+              </p>
+
+              <div class="skills-groups">
+                <div class="skill-group">
+                  <h3>Programming & Development</h3>
+                  <div class="skills-wrap">
+                    <span>Python</span>
+                    <span>Java</span>
+                    <span>C++</span>
+                    <span>JavaScript</span>
+                    <span>HTML</span>
+                    <span>CSS</span>
+                    <span>Flutter</span>
+                  </div>
+                </div>
+
+                <div class="skill-group">
+                  <h3>AI / ML</h3>
+                  <div class="skills-wrap">
+                    <span>Machine Learning</span>
+                    <span>TensorFlow</span>
+                    <span>Computer Vision</span>
+                    <span>Predictive Modeling</span>
+                    <span>AI Systems</span>
+                  </div>
+                </div>
+
+                <div class="skill-group">
+                  <h3>Data & Analytics</h3>
+                  <div class="skills-wrap">
+                    <span>Data Science</span>
+                    <span>Data Analytics</span>
+                    <span>SQL</span>
+                    <span>Excel</span>
+                    <span>SAS</span>
+                    <span>Google Sheets</span>
+                  </div>
+                </div>
+
+                <div class="skill-group">
+                  <h3>Healthcare & Research</h3>
+                  <div class="skills-wrap">
+                    <span>Clinical Informatics</span>
+                    <span>EHR Systems</span>
+                    <span>Bioinformatics</span>
+                    <span>Healthcare Workflows</span>
+                    <span>Laboratory Diagnostics</span>
+                    <span>Research Documentation</span>
+                  </div>
+                </div>
               </div>
             </div>
           </section>
@@ -286,6 +302,11 @@
             <div class="panel-title">lor.js</div>
 
             <div class="section-card">
+              <h2>Letters of Recommendation</h2>
+              <p class="section-intro">
+                Selected recommendation materials and supporting documents.
+              </p>
+
               <div class="compact-gallery two">
                 <img src="docs/lortext.png" alt="LOR text" />
                 <img src="docs/LemonadestandLOR.jpeg" alt="Lemonade Stand LOR" />
@@ -300,8 +321,15 @@
             <div class="panel-title">research.js</div>
 
             <div class="section-card">
-              <a class="vscode-btn" href="docs/Thesis.pdf" target="_blank">Open Thesis</a>
-              <a class="vscode-btn" href="docs/Dissertationppt.pptx" target="_blank">Open PPT</a>
+              <h2>Research & Dissertation</h2>
+              <p class="section-intro">
+                Academic research materials including dissertation documentation and presentation artifacts.
+              </p>
+
+              <div class="link-stack">
+                <a class="vscode-btn" href="docs/Thesis.pdf" target="_blank">Open Thesis</a>
+                <a class="vscode-btn" href="docs/Dissertationppt.pptx" target="_blank">Open Dissertation PPT</a>
+              </div>
             </div>
           </section>
 
@@ -310,9 +338,14 @@
             <div class="panel-title">resume.js</div>
 
             <div class="section-card">
-              <a class="vscode-btn primary" href="docs/Agrani Sinha Resume.pdf" target="_blank">
-                Open Resume
-              </a>
+              <h2>Resume</h2>
+              <p class="section-intro">
+                Open the latest version of my resume for a concise view of my background, experience, projects, and skills.
+              </p>
+
+              <div class="link-stack">
+                <a class="vscode-btn primary" href="docs/Agrani Sinha Resume.pdf" target="_blank">Open Resume</a>
+              </div>
             </div>
           </section>
 
@@ -321,11 +354,12 @@
             <div class="panel-title">contact.js</div>
 
             <div class="section-card">
-              <p>Email: agbrian521@gmail.com</p>
+              <h2>Contact</h2>
+              <p>Email: <a href="mailto:agbrian521@gmail.com">agbrian521@gmail.com</a></p>
               <p>
                 LinkedIn:
                 <a href="https://www.linkedin.com/in/agranisinha" target="_blank">
-                  agranisinha
+                  linkedin.com/in/agranisinha
                 </a>
               </p>
             </div>
@@ -356,6 +390,250 @@
     </footer>
   </div>
 
-  <script src="script.js"></script>
+  <!-- DETAIL MODAL -->
+  <div class="detail-modal" id="detailModal" aria-hidden="true">
+    <div class="detail-modal-backdrop" onclick="closeModal()"></div>
+    <div class="detail-modal-content">
+      <button class="detail-close" onclick="closeModal()">×</button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <script>
+    // ================= TAB SWITCHING =================
+    function openTab(id, el = null) {
+      document.querySelectorAll('.panel').forEach(panel => panel.classList.remove('active'));
+      const target = document.getElementById(id);
+      if (target) target.classList.add('active');
+
+      document.querySelectorAll('.file-item').forEach(item => item.classList.remove('active'));
+      if (el) {
+        el.classList.add('active');
+      } else {
+        const autoFile = document.querySelector(`.file-item[onclick*="${id}"]`);
+        if (autoFile) autoFile.classList.add('active');
+      }
+    }
+
+    // ================= MODAL DATA =================
+    const modalData = {
+      chatbot: {
+        title: "Respiratory Health Chatbot",
+        description: `
+          <p>Built a web-based chatbot for respiratory health guidance using HTML, CSS, and Vue.js.</p>
+          <p>The objective was to make symptom-based healthcare information more accessible, interactive, and easy to understand for users.</p>
+        `,
+        gallery: [
+          "assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (1).jpeg",
+          "assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (2).jpeg",
+          "assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (3).jpeg",
+          "assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (4).jpeg",
+          "assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (5).jpeg",
+          "assets/images/WhatsApp Image 2026-04-13 at 22.27.45.jpeg"
+        ]
+      },
+      bioapp: {
+        title: "Bio Calculator App",
+        description: `
+          <p>Created a biological and chemical lab calculation tool using HTML, CSS, and JavaScript.</p>
+          <p>The tool was designed to reduce manual calculation effort in lab workflows and was published on Google Play Store.</p>
+        `,
+        gallery: [
+          "assets/images/Biocalculator/bio1.webp",
+          "assets/images/Biocalculator/bio2.webp",
+          "assets/images/Biocalculator/bio3.webp",
+          "assets/images/Biocalculator/bio4.webp"
+        ]
+      },
+      drugdiscovery: {
+        title: "ML Drug Discovery",
+        description: `
+          <p>Developed an SVM model with 96.8% accuracy for tuberculosis inhibitor prediction using MATLAB and AutoDock.</p>
+          <p>This project demonstrated the use of machine learning for biomedical research and drug discovery screening.</p>
+        `,
+        gallery: []
+      },
+      inventory: {
+        title: "Inventory Management App",
+        description: `
+          <p>Built a Flutter + Google Sheets based inventory system with tracking, updates, filtering, and business-oriented workflows.</p>
+          <p>The system supports real-time inventory visibility and practical business management needs.</p>
+        `,
+        gallery: []
+      },
+      plant: {
+        title: "AI Plant Identification",
+        description: `
+          <p>TensorFlow-based computer vision system for plant identification with voice feedback integration.</p>
+          <p>Focused on combining image classification with a user-friendly interaction experience.</p>
+        `,
+        gallery: []
+      },
+      games: {
+        title: "AI Games — Chess & Checkers",
+        description: `
+          <p>Built Python-based AI gameplay logic to demonstrate algorithmic reasoning and decision-making.</p>
+          <p>This work explored game intelligence, rule-based systems, and strategic optimization.</p>
+        `,
+        gallery: []
+      },
+      covid: {
+        title: "COVID-19 Bioinformatics Database",
+        description: `
+          <p>Worked on genomic data structuring and research-focused bioinformatics database organization.</p>
+          <p>The project supported biological data management and research accessibility.</p>
+        `,
+        gallery: []
+      },
+      alivia: {
+        title: "Clinical Informatics Intern — Alivia Care",
+        description: `
+          <p><strong>Location:</strong> Jacksonville, FL | <strong>Duration:</strong> Oct 2025 – Feb 2026</p>
+          <p>Worked on EHR-based reporting and clinical workflow optimization, supported data accessibility, and collaborated with informatics teams on healthcare data use cases.</p>
+        `,
+        gallery: ["assets/images/badge.png"]
+      },
+      blu: {
+        title: "Data Science Analyst — BluCognition",
+        description: `
+          <p><strong>Location:</strong> Pune, India | <strong>Duration:</strong> Mar 2022 – Jun 2023</p>
+          <p>Built ML pipelines for processing and structuring complex financial data, developed automation-oriented solutions using AI and analytics, and transformed unstructured information into usable outputs.</p>
+        `,
+        gallery: []
+      },
+      digiversal: {
+        title: "Academic Research Associate — Digiversal Consultant",
+        description: `
+          <p><strong>Location:</strong> Noida, India | <strong>Duration:</strong> Dec 2020 – Mar 2022</p>
+          <p>Conducted research and data analysis for IT and analytics consulting projects and prepared structured technical documentation.</p>
+        `,
+        gallery: []
+      },
+      ibab: {
+        title: "Bioinformatics Research Intern — IBAB",
+        description: `
+          <p><strong>Location:</strong> Remote | <strong>Duration:</strong> Jul 2020 – Dec 2020</p>
+          <p>Curated genomic datasets for COVID-19 research support and contributed to biological data organization and meta-database work.</p>
+        `,
+        gallery: []
+      },
+      srl: {
+        title: "Microbiology Trainee — SRL Diagnostics",
+        description: `
+          <p><strong>Location:</strong> Noida, India | <strong>Duration:</strong> Jun 2018 – Jul 2018</p>
+          <p>Performed microbial testing using culture techniques and diagnostics and supported laboratory workflows for diagnostic testing.</p>
+        `,
+        gallery: [
+          "assets/images/Microbiology/m1.png",
+          "assets/images/Microbiology/m2.png",
+          "assets/images/Microbiology/m3.png",
+          "assets/images/Microbiology/m4.png",
+          "assets/images/Microbiology/m5.png.png",
+          "assets/images/Microbiology/m6.png"
+        ]
+      },
+      sanfoundry: {
+        title: "Content Developer — Sanfoundry",
+        description: `
+          <p><strong>Location:</strong> Remote</p>
+          <p>Created 1000+ MCQs for Bioprocess Engineering and contributed to structured educational technical content.</p>
+          <p><a href="https://www.sanfoundry.com/1000-bioprocess-engineering-questions-answers/" target="_blank">View Published Work</a></p>
+        `,
+        gallery: []
+      }
+    };
+
+    function openModal(key) {
+      const modal = document.getElementById('detailModal');
+      const content = document.getElementById('modalContent');
+      const item = modalData[key];
+      if (!item) return;
+
+      const galleryHtml = item.gallery.length
+        ? `<div class="modal-gallery">${item.gallery.map(src => `<img src="${src}" alt="">`).join('')}</div>`
+        : '';
+
+      content.innerHTML = `
+        <h2>${item.title}</h2>
+        ${item.description}
+        ${galleryHtml}
+      `;
+
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('modal-open');
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('detailModal');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('modal-open');
+    }
+
+    // ================= TERMINAL ASSISTANT =================
+    const terminalInput = document.getElementById('terminalInput');
+    const terminalOutput = document.getElementById('terminalOutput');
+
+    const assistantReplies = {
+      "projects": "Opening projects...",
+      "show projects": "Opening projects...",
+      "experience": "Opening experience...",
+      "show experience": "Opening experience...",
+      "skills": "Opening skills...",
+      "show skills": "Opening skills...",
+      "resume": "Opening resume...",
+      "contact": "Opening contact...",
+      "research": "Opening research..."
+    };
+
+    function addTerminalLine(text) {
+      const line = document.createElement('div');
+      line.textContent = text;
+      terminalOutput.appendChild(line);
+      terminalOutput.scrollTop = terminalOutput.scrollHeight;
+    }
+
+    terminalInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        const value = terminalInput.value.trim().toLowerCase();
+        if (!value) return;
+
+        addTerminalLine(`> ${value}`);
+
+        if (assistantReplies[value]) {
+          addTerminalLine(assistantReplies[value]);
+
+          if (value.includes('project')) openTab('projects');
+          if (value.includes('experience')) openTab('experience');
+          if (value.includes('skills')) openTab('skills');
+          if (value.includes('contact')) openTab('contact');
+          if (value.includes('research')) openTab('research');
+
+          if (value === 'resume') {
+            openTab('resume');
+            window.open('docs/Agrani Sinha Resume.pdf', '_blank');
+          }
+        } else {
+          addTerminalLine("Try: projects, experience, skills, research, resume, contact");
+        }
+
+        terminalInput.value = '';
+      }
+    });
+
+    // ================= TYPING EFFECT =================
+    const typingEl = document.getElementById('typing');
+    const typingText = "AI × Healthcare × Systems";
+    let typingIndex = 0;
+
+    function typeLoop() {
+      if (!typingEl) return;
+      if (typingIndex <= typingText.length) {
+        typingEl.textContent = typingText.slice(0, typingIndex);
+        typingIndex += 1;
+        setTimeout(typeLoop, 70);
+      }
+    }
+    typeLoop();
+  </script>
 </body>
 </html>
