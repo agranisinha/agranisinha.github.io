@@ -1,6 +1,7 @@
 # 🌐 Agrani Sinha | Portfolio  
 Building data-driven healthcare solutions | AI • Clinical Informatics • System Design  
 
+
 # 👋 Hi, I'm Agrani Sinha  
 
 🎓 Health Informatics Graduate Student  
@@ -31,51 +32,73 @@ to create impactful solutions in healthcare.
 
 
 ## 💼 Experience
-- **Clinical Informatics Intern** – Alivia Care  
-  → Worked on EHR systems, reporting, and clinical workflow optimization  
 
-- **Data Science Analyst** – BluCognition  
-  → Developed ML models and data pipelines for structured analytics  
+### 🏥 Clinical Informatics Intern – Alivia Care  
+- Worked on EHR systems, reporting, and clinical workflow optimization  
+- Supported data accessibility and operational insights  
+
+
+### 📊 Data Science Analyst – BluCognition  
+- Developed machine learning models for financial data processing  
+- Built pipelines to convert unstructured data into structured insights  
+
+
+### 🔬 Academic Research Associate – Digiversal Consultant  
+- Conducted research and data analysis for IT and analytics projects  
+- Prepared structured reports and technical documentation  
+
+
+### 🧬 Bioinformatics Research Intern – IBAB  
+- Curated genomic datasets for COVID-19 research  
+- Contributed to building a biological meta-database  
+
+
+### 🧫 Microbiology Intern – SRL Diagnostics  
+- Performed microbial testing using lab techniques and diagnostics  
+- Assisted in laboratory workflow and sample analysis  
+
+
+### ✍️ Content Developer – Sanfoundry  
+- Created 1000+ technical MCQs for engineering education  
+- Developed structured learning content
+- 📘 Published work: https://www.sanfoundry.com/1000-bioprocess-engineering-questions-answers/  
+
+
+### 🎨 Volunteer – Lemonade Stand Bootcamp  
+- Designed 2D/3D visual assets using Canva and Blender  
+- Collaborated on educational game development projects  
 
 
 ## 🧠 Featured Projects
 
-### 🧪 ML Drug Discovery (Central Drug Research Institute, Lucknow)
+### 🧪 ML Drug Discovery (CDRI)
 - Developed SVM model with **96.8% accuracy** for tuberculosis inhibitor prediction  
 - Tools: MATLAB, AutoDock  
-- Applied AI techniques to biomedical research  
-
 
 ### 📦 Inventory Management System (Flutter)
 - Built a **real-time inventory tracking app** using Flutter + Google Sheets  
 - Features: Add, update, delete, stock alerts, category filtering  
-- Designed for real-world business use  
 
 ### 🤖 Respiratory Health Chatbot
-- Web-based chatbot for symptom guidance and health interaction  
+- Web-based chatbot for symptom guidance  
 - Built using HTML, CSS, Vue.js  
-- Focused on improving accessibility to healthcare information  
 
 ### 🧬 Bio Calculator App
-- Lab calculation tool for biological and chemical computations  
-- Built using HTML, CSS, JavaScript  
+- Lab calculation tool for biological computations  
 - Published on Google Play Store  
 
 ### 🌿 AI Plant Identification System
 - TensorFlow-based computer vision model  
-- Identifies plant species with **voice feedback integration**  
-- Combines AI with interactive user experience  
+- Includes voice feedback  
 
 ### 🎮 AI-Based Games (Chess & Checkers)
-- Developed intelligent gameplay using Python  
-- Implemented AI-based decision-making logic  
-- Demonstrates algorithmic thinking and problem-solving  
-
+- Python-based AI gameplay logic  
+- Demonstrates algorithmic problem-solving  
 
 ### 🧪 Bioinformatics COVID-19 Database
-- Worked on genomic data curation and structuring  
-- Contributed to a research meta-database  
-- Focused on real-world healthcare data organization  
+- Worked on genomic data structuring  
+- Built research-focused database  
+
 
 ## 🛠️ Tech Stack
 - **Languages:** Python, Java, C++, JavaScript  
@@ -83,10 +106,12 @@ to create impactful solutions in healthcare.
 - **Tools:** Flutter, GitHub, Excel, SAS  
 - **Healthcare:** EHR Systems, WellSky  
 
+
 ## 🎯 Current Focus
 - AI-powered healthcare systems  
 - Clinical workflow optimization  
 - Patient-centered digital solutions  
+
 
 ## 🌐 Portfolio Website
 👉 https://agranisinha.github.io  
@@ -95,6 +120,5 @@ to create impactful solutions in healthcare.
 ## 📫 Connect With Me
 📧 Email: agbrian521@gmail.com  
 🔗 LinkedIn: https://www.linkedin.com/in/agranisinha  
-
 
 ⭐ *Building at the intersection of healthcare, data, and innovation.*
