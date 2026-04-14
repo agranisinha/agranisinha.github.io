@@ -1,117 +1,116 @@
-body {
-  margin: 0;
-  font-family: Consolas, monospace;
-  background: linear-gradient(135deg, #0a192f, #1e1e1e);
-  color: #d4d4d4;
+// ================= TAB SYSTEM =================
+function openTab(id, el = null) {
+
+  // HIDE ALL PANELS
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+
+  // SHOW CURRENT
+  const panel = document.getElementById(id);
+  if (panel) panel.classList.add('active');
+
+  // SIDEBAR ACTIVE
+  document.querySelectorAll('.file-item').forEach(f => f.classList.remove('active'));
+  if (el) el.classList.add('active');
+
+  // REMOVE ACTIVE FROM TABS
+  document.querySelectorAll('.editor-tab').forEach(t => t.classList.remove('active'));
+
+  let tab = document.querySelector(`[data-tab="${id}"]`);
+
+  if (!tab) {
+    tab = document.createElement('div');
+    tab.className = 'editor-tab active';
+    tab.setAttribute('data-tab', id);
+
+    tab.innerHTML = `
+      JS ${id}.js
+      <span class="close-tab" onclick="closeTab(event,'${id}')">×</span>
+    `;
+
+    tab.onclick = () => openTab(id);
+    document.getElementById('editorTabs').appendChild(tab);
+  } else {
+    tab.classList.add('active');
+  }
 }
 
-/* LAYOUT */
-.workbench {
-  display: flex;
-  height: 100vh;
+// ================= CLOSE TAB =================
+function closeTab(e, id) {
+  e.stopPropagation();
+
+  const tab = document.querySelector(`[data-tab="${id}"]`);
+  if (tab) tab.remove();
+
+  openTab("about");
 }
 
-/* SIDEBAR */
-.sidebar {
-  width: 220px;
-  background: #252526;
-  padding: 10px;
+// ================= INITIAL LOAD =================
+window.onload = () => {
+  openTab("about");
+};
+
+// ================= AI TERMINAL =================
+const input = document.getElementById("terminalInput");
+const output = document.getElementById("terminalOutput");
+
+function print(text) {
+  const line = document.createElement("div");
+  line.innerText = text;
+  output.appendChild(line);
+  output.scrollTop = output.scrollHeight;
 }
 
-.file-item {
-  padding: 8px;
-  border-radius: 4px;
-  cursor: pointer;
+if (input) {
+  input.addEventListener("keydown", function(e) {
+    if (e.key === "Enter") {
+
+      let cmd = input.value.toLowerCase();
+      print("> " + cmd);
+
+      if (cmd.includes("project")) {
+        openTab("projects");
+        print("📂 Opening projects...");
+      }
+      else if (cmd.includes("experience")) {
+        openTab("experience");
+        print("💼 Opening experience...");
+      }
+      else if (cmd.includes("skills")) {
+        openTab("skills");
+        print("🧠 Loading skills...");
+      }
+      else if (cmd.includes("contact")) {
+        openTab("contact");
+        print("📧 Opening contact...");
+      }
+      else if (cmd.includes("resume")) {
+        window.open("docs/Agrani Sinha Resume.pdf");
+        print("📄 Opening resume...");
+      }
+      else {
+        print("Try: projects, experience, skills, resume");
+      }
+
+      input.value = "";
+    }
+  });
 }
 
-.file-item:hover {
-  background: #2a2d2e;
-}
+// ================= TYPING EFFECT =================
+const words = ["AI Engineer", "Healthcare Systems", "Data Scientist"];
+let i = 0, j = 0;
 
-.file-item.active {
-  background: #007acc;
-}
+function type() {
+  const el = document.getElementById("typing");
+  if (!el) return;
 
-/* MAIN */
-.editor-area {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
+  el.innerHTML = words[i].substring(0, j++);
 
-/* TABS */
-.editor-tabs {
-  display: flex;
-  background: #2d2d2d;
-}
+  if (j > words[i].length) {
+    i = (i + 1) % words.length;
+    j = 0;
+  }
 
-.editor-tab {
-  padding: 8px 14px;
-  cursor: pointer;
-  border-right: 1px solid #3c3c3c;
+  setTimeout(type, 100);
 }
-
-.editor-tab.active {
-  background: #1e1e1e;
-  border-top: 2px solid #007acc;
-}
-
-/* CONTENT */
-.editor-content {
-  flex: 1;
-  overflow-y: auto;
-  padding: 20px 40px;
-}
-
-/* REMOVE EMPTY SPACE */
-.panel {
-  display: none;
-}
-
-.panel.active {
-  display: block;
-}
-
-/* HERO */
-.hero-title {
-  font-size: 60px;
-}
-
-.hero-title span {
-  background: linear-gradient(90deg, #ff00cc, #007acc);
-  -webkit-background-clip: text;
-  color: transparent;
-}
-
-/* CARDS */
-.mini-card {
-  background: #252526;
-  padding: 15px;
-  border-radius: 6px;
-  transition: 0.3s;
-}
-
-.mini-card:hover {
-  transform: translateY(-6px);
-  border: 1px solid #007acc;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-}
-
-/* GRID */
-.mini-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
-  gap: 15px;
-}
-
-/* TERMINAL */
-.terminal {
-  height: 100px;
-  border-top: 1px solid #333;
-}
-
-.terminal-body {
-  height: 60px;
-  overflow-y: auto;
-  padding: 5px;
-}
+type();
