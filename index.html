@@ -3,12 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>Agrani Sinha | Portfolio</title>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-  <script src="script.js"></script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -25,561 +20,195 @@
 </head>
 
 <body>
+  <!-- custom cursor -->
+  <div class="custom-cursor-dot"></div>
+  <div class="custom-cursor-outline"></div>
+
   <div class="app-shell">
-    <header class="titlebar">
-      <div class="titlebar-left">
+
+    <!-- ================= VERY TOP BAR ================= -->
+    <header class="top-window-bar">
+      <div class="window-controls">
         <span class="traffic red"></span>
         <span class="traffic yellow"></span>
         <span class="traffic green"></span>
       </div>
-      <div class="titlebar-center">Agrani Sinha - Portfolio - Visual Studio Code</div>
-      <div class="titlebar-right">— □ ✕</div>
+
+      <div class="top-command-center">
+        <div class="top-command-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <span class="command-project">agrani-sinha</span>
+          <span class="command-separator">:</span>
+          <span class="command-workspace">portfolio</span>
+          <span class="command-shortcut">Ctrl</span>
+          <span class="command-shortcut">P</span>
+        </div>
+      </div>
+
+      <div class="top-window-right">
+        <div class="window-square"></div>
+      </div>
     </header>
 
+    <!-- ================= MENU BAR ================= -->
+    <nav class="menu-bar">
+      <div class="menu-left">
+        <span>File</span>
+        <span>Edit</span>
+        <span>View</span>
+        <span>Go</span>
+        <span>Run</span>
+        <span>Terminal</span>
+        <span>Help</span>
+        <span>Copilot</span>
+      </div>
+    </nav>
+
+    <!-- ================= MAIN WORKBENCH ================= -->
     <div class="workbench">
-      <!-- ACTIVITY BAR -->
+
+      <!-- LEFT ACTIVITY BAR -->
       <aside class="activity-bar">
         <button class="activity-btn active" title="Explorer">
           <i class="fa-regular fa-folder-open"></i>
         </button>
+
         <button class="activity-btn" title="Search">
           <i class="fa-solid fa-magnifying-glass"></i>
         </button>
-        <button class="activity-btn" title="Projects" onclick="openTab('projects')">
-          <i class="fa-solid fa-diagram-project"></i>
+
+        <button class="activity-btn" title="Source Control">
+          <i class="fa-solid fa-code-branch"></i>
         </button>
-        <button class="activity-btn" title="Experience" onclick="openTab('experience')">
-          <i class="fa-solid fa-briefcase"></i>
+
+        <button class="activity-btn" title="Run">
+          <i class="fa-regular fa-circle-play"></i>
         </button>
-        <button class="activity-btn" title="AI Assistant" id="copilotToggle">
-          <i class="fa-solid fa-robot"></i>
+
+        <button class="activity-btn" title="Extensions">
+          <i class="fa-solid fa-cube"></i>
         </button>
-        <button class="activity-btn bottom" id="themeToggle" title="Toggle theme">
+
+        <button class="activity-btn mid-gap" title="Focus">
           <i class="fa-regular fa-star"></i>
+        </button>
+
+        <button class="activity-btn bottom" title="Settings">
+          <i class="fa-solid fa-gear"></i>
         </button>
       </aside>
 
       <!-- SIDEBAR -->
       <aside class="sidebar">
-        <div class="sidebar-header">PORTFOLIO</div>
+        <div class="sidebar-top">
+          <div class="sidebar-header">PORTFOLIO</div>
 
-        <div class="explorer-group">
-          <div class="explorer-title">
-            <span class="caret">▾</span>
-            <span>AGRANI-PORTFOLIO</span>
+          <div class="explorer-group">
+            <div class="explorer-title">
+              <span class="caret">▾</span>
+              <span>AGRANI-PORTFOLIO</span>
+            </div>
+
+            <ul class="file-tree">
+              <li class="file-item active">
+                <span class="file-icon react">⚛</span>
+                <span>home.tsx</span>
+              </li>
+
+              <li class="file-item">
+                <span class="file-icon html">◫</span>
+                <span>about.html</span>
+              </li>
+
+              <li class="file-item">
+                <span class="file-icon js">JS</span>
+                <span>projects.js</span>
+              </li>
+
+              <li class="file-item">
+                <span class="file-icon json">{ }</span>
+                <span>skills.json</span>
+              </li>
+
+              <li class="file-item">
+                <span class="file-icon ts">TS</span>
+                <span>experience.ts</span>
+              </li>
+
+              <li class="file-item">
+                <span class="file-icon css">◧</span>
+                <span>contact.css</span>
+              </li>
+
+              <li class="file-item">
+                <span class="file-icon md">≣</span>
+                <span>README.md</span>
+              </li>
+
+              <li class="file-item pdf-item">
+                <span class="file-icon pdf">PDF</span>
+                <span>Agrani_Sinha_Resume.pdf</span>
+              </li>
+            </ul>
           </div>
-
-          <ul class="file-tree show" id="portfolioFolder">
-            <li onclick="openTab('about', this)" class="file-item active">
-              <span class="icon js">JS</span> about.js
-            </li>
-            <li onclick="openTab('projects', this)" class="file-item">
-              <span class="icon js">JS</span> projects.js
-            </li>
-            <li onclick="openTab('experience', this)" class="file-item">
-              <span class="icon js">JS</span> experience.js
-            </li>
-            <li onclick="openTab('skills', this)" class="file-item">
-              <span class="icon js">JS</span> skills.js
-            </li>
-            <li onclick="openTab('leadership', this)" class="file-item">
-              <span class="icon js">JS</span> leadership.js
-            </li>
-            <li onclick="openTab('certifications', this)" class="file-item">
-              <span class="icon js">JS</span> certifications.js
-            </li>
-            <li onclick="openTab('lor', this)" class="file-item">
-              <span class="icon js">JS</span> lor.js
-            </li>
-            <li onclick="openTab('research', this)" class="file-item">
-              <span class="icon js">JS</span> research.js
-            </li>
-            <li onclick="openTab('resume', this)" class="file-item">
-              <span class="icon js">JS</span> resume.js
-            </li>
-            <li onclick="openTab('contact', this)" class="file-item">
-              <span class="icon js">JS</span> contact.js
-            </li>
-          </ul>
         </div>
 
-        <div class="copilot-box">
-          <div class="copilot-title">🤖 AI Assistant</div>
-          <p>Ask about my projects, experience, skills, research, certifications, or leadership.</p>
-          <button class="vscode-btn primary full-btn" onclick="toggleCopilot()">Open Copilot</button>
+        <!-- bottom copilot box -->
+        <div class="sidebar-bottom-box">
+          <button class="copilot-mini-box">
+            <span class="copilot-mini-left">
+              <span class="copilot-star">✦</span>
+              <span>Agrani's Copilot</span>
+            </span>
+            <span class="copilot-mini-right">AI</span>
+          </button>
         </div>
       </aside>
 
-      <!-- EDITOR -->
+      <!-- EDITOR AREA -->
       <main class="editor-area">
-        <div class="editor-tabs" id="editorTabs">
-          <button class="editor-tab active" data-tab="about" onclick="openTab('about')">
-            <span class="icon js">JS</span> about.js
-            <span class="close-tab" onclick="closeTab(event, 'about')">×</span>
+
+        <!-- tab bar -->
+        <div class="editor-tabs">
+          <button class="editor-tab active">
+            <span class="tab-left">
+              <span class="file-icon react">⚛</span>
+              <span>home.tsx</span>
+            </span>
+            <span class="tab-close">×</span>
           </button>
         </div>
 
+        <!-- breadcrumb -->
+        <div class="breadcrumb-bar">
+          <span class="crumb muted">agrani-sinha</span>
+          <span class="crumb-sep">></span>
+          <span class="crumb muted">src</span>
+          <span class="crumb-sep">></span>
+          <span class="crumb active">home.tsx</span>
+        </div>
+
+        <!-- main editor canvas -->
         <div class="editor-content">
-          <!-- ABOUT -->
-          <section id="about" class="panel active">
-            <div class="panel-title">about.js</div>
-
-            <div class="code-card">
-              <div class="code-row"><span class="line-number">1</span><span class="kw">const</span> <span class="var">developer</span> = {</div>
-              <div class="code-row"><span class="line-number">2</span>name: "Agrani Sinha",</div>
-              <div class="code-row"><span class="line-number">3</span>title: "<span id="typing"></span><span class="cursor">|</span>",</div>
-              <div class="code-row"><span class="line-number">4</span>domain: "Health Informatics + AI + Clinical Systems",</div>
-              <div class="code-row"><span class="line-number">5</span>focus: ["AI", "Healthcare", "Clinical Informatics", "Data Science"],</div>
-              <div class="code-row"><span class="line-number">6</span>};</div>
-            </div>
-
-            <div class="hero-container">
-              <div class="hero-left">
-                <h1 class="hero-title">
-                  Agrani <span>Sinha</span>
-                </h1>
-
-                <div class="hero-roles">
-                  <span>AI Engineer</span>
-                  <span>Clinical Informatics</span>
-                  <span>Data Scientist</span>
-                  <span>Healthcare Systems Builder</span>
-                </div>
-
-                <p class="hero-description">
-                  I build intelligent healthcare and analytics systems using AI, machine learning,
-                  clinical informatics, data science, and workflow-centered design. My work connects
-                  healthcare, software, and decision-support systems to solve practical real-world problems.
-                </p>
-
-                <div class="hero-buttons">
-                  <a href="#" onclick="openTab('projects')" class="btn primary">Projects</a>
-                  <a href="docs/Agrani Sinha Resume.pdf" target="_blank" class="btn">Resume</a>
-                  <a href="https://www.linkedin.com/in/agranisinha" target="_blank" class="btn">LinkedIn</a>
-                </div>
-
-                <div class="hero-stats">
-                  <div class="stat-card"><strong>10+</strong><span>Projects</span></div>
-                  <div class="stat-card"><strong>6+</strong><span>Experiences</span></div>
-                  <div class="stat-card"><strong>96.8%</strong><span>Best Model Accuracy</span></div>
-                  <div class="stat-card"><strong>AI + Health</strong><span>Core Focus</span></div>
-                </div>
-              </div>
-
-              <div class="hero-right">
-                <div class="profile-card">
-                  <img src="assets/images/profile.png" alt="Agrani Sinha" />
-                </div>
-              </div>
-            </div>
-
-            <div class="section-card top-space">
-              <h2>Profile Summary</h2>
-              <p class="section-intro">
-                Graduate student and healthcare technology professional with experience across
-                clinical informatics, bioinformatics, machine learning, mobile application development,
-                healthcare workflow improvement, and research support. I enjoy designing systems that are
-                technically strong, user-focused, and meaningful in healthcare environments.
-              </p>
-            </div>
-          </section>
-
-          <!-- PROJECTS -->
-          <section id="projects" class="panel">
-            <div class="panel-title">projects.js</div>
-
-            <div class="section-card">
-              <h2>Projects</h2>
-              <p class="section-intro">
-                A mix of healthcare, AI, data science, and software systems work. Click any card to open detailed information,
-                screenshots, and relevant context.
-              </p>
-
-              <div class="mini-grid">
-                <div class="mini-card clickable" onclick="openModal('chatbot')">
-                  <h4>Respiratory Health Chatbot</h4>
-                  <p>Interactive symptom guidance system using web technologies.</p>
-                </div>
-
-                <div class="mini-card clickable" onclick="openModal('bioapp')">
-                  <h4>Bio Calculator App</h4>
-                  <p>Biological and chemical lab calculation tool published on Play Store.</p>
-                </div>
-
-                <div class="mini-card clickable" onclick="openModal('drugdiscovery')">
-                  <h4>ML Drug Discovery</h4>
-                  <p>SVM model for tuberculosis inhibitor prediction.</p>
-                </div>
-
-                <div class="mini-card clickable" onclick="openModal('inventory')">
-                  <h4>Inventory Management App</h4>
-                  <p>Flutter + Google Sheets real-time inventory system.</p>
-                </div>
-
-                <div class="mini-card clickable" onclick="openModal('plant')">
-                  <h4>AI Plant Identification</h4>
-                  <p>Computer vision system with voice feedback integration.</p>
-                </div>
-
-                <div class="mini-card clickable" onclick="openModal('games')">
-                  <h4>AI Games — Chess & Checkers</h4>
-                  <p>Python-based AI gameplay and decision logic.</p>
-                </div>
-
-                <div class="mini-card clickable" onclick="openModal('covid')">
-                  <h4>COVID-19 Bioinformatics DB</h4>
-                  <p>Genomic data structuring and research-oriented organization.</p>
-                </div>
-
-                <div class="mini-card clickable" onclick="openModal('voicehealth')">
-                  <h4>Voice of Health EHR Concept</h4>
-                  <p>Context-aware healthcare communication and patient-centered workflow system.</p>
-                </div>
-
-                <div class="mini-card clickable" onclick="openModal('portfolio')">
-                  <h4>Interactive VS Code Portfolio</h4>
-                  <p>Dynamic portfolio system with tabs, assistant logic, and modal-driven details.</p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- EXPERIENCE -->
-          <section id="experience" class="panel">
-            <div class="panel-title">experience.js</div>
-
-            <div class="section-card">
-              <h2>Professional Experience</h2>
-              <p class="section-intro">
-                My experience spans clinical informatics, data science, bioinformatics, laboratory work, technical content development,
-                and research support.
-              </p>
-
-              <div class="mini-grid">
-                <div class="mini-card clickable" onclick="openModal('alivia')">
-                  <h4>Clinical Informatics Intern</h4>
-                  <p>Alivia Care</p>
-                </div>
-
-                <div class="mini-card clickable" onclick="openModal('blu')">
-                  <h4>Data Science Analyst</h4>
-                  <p>BluCognition</p>
-                </div>
-
-                <div class="mini-card clickable" onclick="openModal('digiversal')">
-                  <h4>Academic Research Associate</h4>
-                  <p>Digiversal Consultant</p>
-                </div>
-
-                <div class="mini-card clickable" onclick="openModal('ibab')">
-                  <h4>Bioinformatics Research Intern</h4>
-                  <p>IBAB</p>
-                </div>
-
-                <div class="mini-card clickable" onclick="openModal('srl')">
-                  <h4>Microbiology Trainee</h4>
-                  <p>SRL Diagnostics</p>
-                </div>
-
-                <div class="mini-card clickable" onclick="openModal('sanfoundry')">
-                  <h4>Content Developer</h4>
-                  <p>Sanfoundry</p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- SKILLS -->
-          <section id="skills" class="panel">
-            <div class="panel-title">skills.js</div>
-
-            <div class="section-card">
-              <h2>Skills</h2>
-              <p class="section-intro">
-                Technical, analytical, and healthcare-focused skills grouped to reflect how I design, build,
-                and apply systems in real environments.
-              </p>
-
-              <div class="skills-groups">
-                <div class="skill-group">
-                  <h3>Programming & Development</h3>
-                  <div class="skills-wrap">
-                    <span>Python</span>
-                    <span>Java</span>
-                    <span>C++</span>
-                    <span>JavaScript</span>
-                    <span>HTML</span>
-                    <span>CSS</span>
-                    <span>Flutter</span>
-                    <span>Dart</span>
-                    <span>Git/GitHub</span>
-                  </div>
-                </div>
-
-                <div class="skill-group">
-                  <h3>AI / ML / Intelligent Systems</h3>
-                  <div class="skills-wrap">
-                    <span>Machine Learning</span>
-                    <span>TensorFlow</span>
-                    <span>Computer Vision</span>
-                    <span>Predictive Modeling</span>
-                    <span>Classification Models</span>
-                    <span>NLP Concepts</span>
-                    <span>AI Systems</span>
-                    <span>Model Evaluation</span>
-                  </div>
-                </div>
-
-                <div class="skill-group">
-                  <h3>Data & Analytics</h3>
-                  <div class="skills-wrap">
-                    <span>Data Science</span>
-                    <span>Data Analytics</span>
-                    <span>SQL</span>
-                    <span>Excel</span>
-                    <span>SAS</span>
-                    <span>Google Sheets</span>
-                    <span>Data Cleaning</span>
-                    <span>Visualization</span>
-                    <span>Dashboard Thinking</span>
-                  </div>
-                </div>
-
-                <div class="skill-group">
-                  <h3>Healthcare & Research</h3>
-                  <div class="skills-wrap">
-                    <span>Clinical Informatics</span>
-                    <span>EHR Systems</span>
-                    <span>Healthcare Workflows</span>
-                    <span>Bioinformatics</span>
-                    <span>Laboratory Diagnostics</span>
-                    <span>Research Documentation</span>
-                    <span>Clinical Reporting</span>
-                    <span>Healthcare Data Interpretation</span>
-                  </div>
-                </div>
-
-                <div class="skill-group">
-                  <h3>Tools & Platforms</h3>
-                  <div class="skills-wrap">
-                    <span>MATLAB</span>
-                    <span>AutoDock</span>
-                    <span>Google Play Console</span>
-                    <span>VS Code</span>
-                    <span>Android Studio</span>
-                    <span>Google ML Kit</span>
-                    <span>Service Accounts</span>
-                    <span>REST/API Thinking</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- LEADERSHIP -->
-          <section id="leadership" class="panel">
-            <div class="panel-title">leadership.js</div>
-
-            <div class="section-card">
-              <h2>Leadership & Involvement</h2>
-              <p class="section-intro">
-                Roles and contributions beyond technical delivery, including student leadership,
-                academic community engagement, and professional representation.
-              </p>
-
-              <div class="mini-grid">
-                <div class="mini-card">
-                  <h4>Health Informatics & Analytics Club</h4>
-                  <p>Marketing Chair and active leadership contributor supporting podcast promotions, events, and outreach.</p>
-                </div>
-
-                <div class="mini-card">
-                  <h4>HIAC One-on-One Podcast</h4>
-                  <p>Supported planning, moderation coordination, communications, and promotion of healthcare informatics podcast episodes.</p>
-                </div>
-
-                <div class="mini-card">
-                  <h4>HIMSS Conference Participation</h4>
-                  <p>Actively engaged in healthcare technology networking, industry learning, and professional communication.</p>
-                </div>
-
-                <div class="mini-card">
-                  <h4>Academic & Professional Outreach</h4>
-                  <p>Connected industry speakers, workshop opportunities, and educational collaborations for student benefit.</p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- CERTIFICATIONS -->
-          <section id="certifications" class="panel">
-            <div class="panel-title">certifications.js</div>
-
-            <div class="section-card">
-              <h2>Certifications & Learning Highlights</h2>
-              <p class="section-intro">
-                A snapshot of structured learning, healthcare IT exposure, and professional development achievements.
-              </p>
-
-              <div class="mini-grid">
-                <div class="mini-card">
-                  <h4>WellSky EHR Certifications</h4>
-                  <p>Hands-on exposure to clinical informatics workflows and healthcare platform understanding.</p>
-                </div>
-
-                <div class="mini-card">
-                  <h4>IGNITE Leadership Program Scholar</h4>
-                  <p>Leadership development focused on self-awareness, trust, communication, and growth.</p>
-                </div>
-
-                <div class="mini-card">
-                  <h4>Healthcare Informatics Learning</h4>
-                  <p>Ongoing specialization in health informatics, clinical systems, and AI-enabled workflow improvement.</p>
-                </div>
-
-                <div class="mini-card">
-                  <h4>Applied Technical Portfolio</h4>
-                  <p>Built projects across mobile apps, AI tools, bioinformatics, analytics, and clinical support concepts.</p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- LOR -->
-          <section id="lor" class="panel">
-            <div class="panel-title">lor.js</div>
-
-            <div class="section-card">
-              <h2>Letters of Recommendation</h2>
-              <p class="section-intro">
-                Selected recommendation materials and supporting documents.
-              </p>
-
-              <div class="compact-gallery two">
-                <img src="docs/lortext.png" alt="LOR text" />
-                <img src="docs/LemonadestandLOR.jpeg" alt="Lemonade Stand LOR" />
-                <img src="docs/cdri-lor.jpeg" alt="CDRI LOR" />
-                <img src="docs/sanfoundry-lor.jpeg" alt="Sanfoundry LOR" />
-              </div>
-            </div>
-          </section>
-
-          <!-- RESEARCH -->
-          <section id="research" class="panel">
-            <div class="panel-title">research.js</div>
-
-            <div class="section-card">
-              <h2>Research & Dissertation</h2>
-              <p class="section-intro">
-                Academic research materials including dissertation documentation and presentation artifacts.
-              </p>
-
-              <div class="link-stack">
-                <a class="vscode-btn" href="docs/Thesis.pdf" target="_blank">Open Thesis</a>
-                <a class="vscode-btn" href="docs/Dissertationppt.pptx" target="_blank">Open Dissertation PPT</a>
-              </div>
-            </div>
-          </section>
-
-          <!-- RESUME -->
-          <section id="resume" class="panel">
-            <div class="panel-title">resume.js</div>
-
-            <div class="section-card">
-              <h2>Resume</h2>
-              <p class="section-intro">
-                Open the latest version of my resume for a concise view of my background, experience, projects, and skills.
-              </p>
-
-              <div class="link-stack">
-                <a class="vscode-btn primary" href="docs/Agrani Sinha Resume.pdf" target="_blank">Open Resume</a>
-              </div>
-            </div>
-          </section>
-
-          <!-- CONTACT -->
-          <section id="contact" class="panel">
-            <div class="panel-title">contact.js</div>
-
-            <div class="section-card">
-              <h2>Contact</h2>
-              <p><strong>Email:</strong> <a href="mailto:agbrian521@gmail.com">agbrian521@gmail.com</a></p>
-              <p>
-                <strong>LinkedIn:</strong>
-                <a href="https://www.linkedin.com/in/agranisinha" target="_blank">
-                  linkedin.com/in/agranisinha
-                </a>
-              </p>
-              <p><strong>Focus Areas:</strong> AI, Clinical Informatics, Health Technology, Data Science, Healthcare Systems</p>
-            </div>
-          </section>
+          <!-- next step: we will build the hero content exactly like the screenshot -->
         </div>
 
-        <!-- TERMINAL -->
-        <div class="terminal">
-          <div class="terminal-header">AI ASSISTANT / TERMINAL</div>
-
-          <div class="terminal-body" id="terminalOutput">
-            <div>&gt; assistant ready</div>
-            <div>Try: projects, experience, skills, leadership, certifications, resume, contact</div>
-          </div>
-
-          <div class="terminal-input">
-            <span>&gt; </span>
-            <input id="terminalInput" placeholder="Ask AI assistant..." />
-          </div>
-        </div>
       </main>
     </div>
 
+    <!-- STATUS BAR -->
     <footer class="status-bar">
-      <span>main</span>
-      <span>JavaScript</span>
-      <span>UTF-8</span>
-      <span>Portfolio Live</span>
+      <div class="status-left">
+        <span>⎇ main</span>
+      </div>
+
+      <div class="status-right">
+        <span>UTF-8</span>
+        <span>JavaScript</span>
+        <span>Ln 1, Col 1</span>
+      </div>
     </footer>
+
   </div>
-
-  <!-- COPILOT SIDE PANEL -->
-  <aside class="copilot-panel" id="copilotPanel" aria-hidden="true">
-    <div class="copilot-panel-header">
-      <div>
-        <h3>AI Assistant</h3>
-        <p>Ask about Agrani’s work</p>
-      </div>
-      <button class="copilot-close-btn" onclick="toggleCopilot()">×</button>
-    </div>
-
-    <div class="copilot-panel-body" id="copilotMessages">
-      <div class="copilot-message assistant">
-        Hi, I’m your portfolio copilot. You can ask about projects, experience, skills, research, leadership, or certifications.
-      </div>
-    </div>
-
-    <div class="copilot-suggestions">
-      <button onclick="sendCopilotPrompt('Show projects')">Show projects</button>
-      <button onclick="sendCopilotPrompt('Show experience')">Show experience</button>
-      <button onclick="sendCopilotPrompt('Show skills')">Show skills</button>
-      <button onclick="sendCopilotPrompt('Show leadership')">Show leadership</button>
-      <button onclick="sendCopilotPrompt('Show certifications')">Show certifications</button>
-      <button onclick="sendCopilotPrompt('How can I contact Agrani?')">Contact</button>
-    </div>
-
-    <div class="copilot-input-area">
-      <input id="copilotInput" type="text" placeholder="Ask something..." />
-      <button onclick="submitCopilotInput()">Send</button>
-    </div>
-  </aside>
-
-  <!-- DETAIL MODAL -->
-  <div class="detail-modal" id="detailModal" aria-hidden="true">
-    <div class="detail-modal-backdrop" onclick="closeModal()"></div>
-    <div class="detail-modal-content">
-      <button class="detail-close" onclick="closeModal()">×</button>
-      <div id="modalContent"></div>
-    </div>
-  </div>
-
-<script src="script.js"></script>
 </body>
 </html>
