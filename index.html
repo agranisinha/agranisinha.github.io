@@ -20,22 +20,25 @@
 
   <div class="app-shell">
     <header class="top-header">
-  
+
   <!-- LEFT: MAC DOTS + MESSAGE -->
   <div class="mac-dots">
-    <span class="traffic red"></span>
-    <span class="traffic yellow"></span>
-    <span class="traffic green"></span>
 
-    <!-- ✅ FINAL MESSAGE ELEMENT -->
+    <!-- ✅ FIXED BUTTONS -->
+    <div class="dot red" id="btnRed"></div>
+    <div class="dot yellow" id="btnYellow"></div>
+    <div class="dot green" id="btnGreen"></div>
+
+    <!-- ✅ FEEDBACK TEXT (VISIBLE BESIDE BUTTONS) -->
     <span id="headerFeedback" class="header-feedback"></span>
+
   </div>
 
-  <!-- CENTER: COMMAND PALETTE BAR -->
+  <!-- CENTER: COMMAND BAR -->
   <button class="header-command-trigger" id="openPaletteBtn">
     <span class="trigger-left">
       <span class="search-icon">⌕</span>
-      <span class="trigger-text" id="triggerText">
+      <span class="trigger-text">
         agrani-sinha : portfolio
       </span>
     </span>
@@ -46,11 +49,9 @@
     </span>
   </button>
 
-  <!-- RIGHT: EMPTY SPACE -->
   <div class="header-spacer"></div>
 
 </header>
-
     <!-- MENU BAR -->
     <div class="menu-bar">
       <span>File</span>
