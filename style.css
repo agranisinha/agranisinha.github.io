@@ -1,235 +1,92 @@
-/* ================= ROOT ================= */
-:root {
-  --bg: #1e1e1e;
-  --sidebar: #252526;
-  --activity: #333;
-  --tabs: #2d2d2d;
-  --border: #3c3c3c;
-  --text: #d4d4d4;
-  --muted: #858585;
-  --accent: #007acc;
-}
-
-/* ================= BASE ================= */
 body {
   margin: 0;
-  font-family: Consolas, "Courier New", monospace;
-  background: var(--bg);
-  color: var(--text);
-  overflow: hidden;
+  font-family: Consolas, monospace;
+  background: #1e1e1e;
+  color: #d4d4d4;
 }
 
-/* ================= TITLE BAR ================= */
-.titlebar {
-  height: 30px;
-  background: #323233;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 10px;
-  font-size: 12px;
-}
+.workbench { display: flex; height: 100vh; }
 
-/* ================= WORKBENCH ================= */
-.workbench {
-  display: flex;
-  height: calc(100vh - 30px);
-}
-
-/* ================= ACTIVITY BAR ================= */
-.activity-bar {
-  width: 48px;
-  background: var(--activity);
-  display: flex;
-  flex-direction: column;
-}
-
-.activity-btn {
-  height: 48px;
-  border: none;
-  background: transparent;
-  color: var(--muted);
-  cursor: pointer;
-}
-
-.activity-btn.active {
-  color: white;
-  border-left: 2px solid var(--accent);
-}
-
-/* ================= SIDEBAR ================= */
+/* SIDEBAR */
 .sidebar {
-  width: 240px;
-  background: var(--sidebar);
-  border-right: 1px solid var(--border);
-  padding: 8px;
+  width: 220px;
+  background: #252526;
+  padding: 10px;
 }
 
-.sidebar-header {
-  font-size: 11px;
-  color: var(--muted);
-  margin-bottom: 6px;
-}
-
-/* FILE TREE */
-.file-tree li {
-  list-style: none;
-  padding: 4px 6px;
+.file-item {
+  padding: 5px;
   cursor: pointer;
-  font-size: 12px;
-  border-radius: 4px;
 }
 
-.file-tree li:hover {
-  background: #37373d;
-}
+.file-item:hover { background: #373737; }
+.file-item.active { background: #094771; }
 
-/* ================= EDITOR ================= */
+/* EDITOR */
 .editor-area {
   flex: 1;
   display: flex;
   flex-direction: column;
 }
 
-/* ================= TABS ================= */
 .editor-tabs {
-  height: 35px;
   display: flex;
-  background: var(--tabs);
+  background: #2d2d2d;
 }
 
 .editor-tab {
-  padding: 6px 12px;
-  border-right: 1px solid var(--border);
-  font-size: 12px;
+  padding: 6px;
   cursor: pointer;
-  background: var(--tabs);
 }
 
 .editor-tab.active {
-  background: var(--bg);
+  background: #1e1e1e;
 }
 
-/* ================= EDITOR CONTENT ================= */
+/* CONTENT */
 .editor-content {
   flex: 1;
-  overflow-y: auto;
-  padding: 20px 30px;
-}
-
-/* ================= CODE BLOCK ================= */
-.code-block div {
-  margin-bottom: 4px;
-}
-
-.line-number {
-  color: var(--muted);
-  margin-right: 12px;
-  display: inline-block;
-  width: 20px;
-}
-
-/* ================= HERO ================= */
-.hero-panel {
-  margin-top: 20px;
-}
-
-.hero-card {
-  background: #252526;
-  border: 1px solid var(--border);
   padding: 20px;
-  border-radius: 6px;
+  overflow-y: auto;
 }
 
-/* ================= PROJECT ================= */
-.project-card {
+/* PANELS */
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* CARDS */
+.card {
   background: #252526;
-  padding: 15px;
-  border-radius: 6px;
-  margin-bottom: 15px;
+  padding: 10px;
+  margin-bottom: 10px;
 }
 
-/* ================= IMAGE FIX ================= */
-.compact-gallery {
-  display: grid;
+/* IMAGES FIXED */
+.images {
+  display: flex;
   gap: 8px;
-  margin-top: 10px;
 }
 
-.compact-gallery.three {
-  grid-template-columns: repeat(3, 1fr);
-}
-
-.compact-gallery.two {
-  grid-template-columns: repeat(2, 1fr);
-}
-
-.compact-gallery img {
-  width: 100%;
-  height: 90px;
+.images img {
+  width: 110px;
+  height: 80px;
   object-fit: cover;
-  border-radius: 4px;
 }
 
-/* ================= EXPERIENCE ================= */
-.experience-item {
-  background: #252526;
-  padding: 15px;
-  border-radius: 6px;
-  margin-bottom: 15px;
-}
-
-/* ================= SKILLS ================= */
-.skills-wrap span {
-  background: var(--accent);
-  padding: 4px 8px;
-  margin: 4px;
-  border-radius: 3px;
-  font-size: 11px;
-}
-
-/* ================= TERMINAL ================= */
+/* TERMINAL */
 .terminal {
-  height: 140px;
-  background: #1e1e1e;
-  border-top: 1px solid var(--border);
-}
-
-.terminal-header {
-  background: var(--tabs);
-  padding: 4px 8px;
-  font-size: 11px;
+  height: 120px;
+  border-top: 1px solid #444;
 }
 
 .terminal-body {
-  padding: 8px;
-  font-size: 12px;
-  max-height: 80px;
+  height: 80px;
   overflow-y: auto;
-}
-
-/* ================= INPUT ================= */
-.terminal-input {
-  display: flex;
-  padding: 6px;
-  border-top: 1px solid var(--border);
+  padding: 8px;
 }
 
 .terminal-input input {
   background: transparent;
   border: none;
   color: white;
-  outline: none;
-  flex: 1;
-}
-
-/* ================= STATUS BAR ================= */
-.status-bar {
-  height: 22px;
-  background: var(--accent);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 0 10px;
-  font-size: 11px;
 }
