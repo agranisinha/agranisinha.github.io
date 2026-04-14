@@ -1,92 +1,293 @@
+/* ================= BASE ================= */
 body {
   margin: 0;
   font-family: Consolas, monospace;
   background: #1e1e1e;
   color: #d4d4d4;
+  overflow: hidden;
 }
 
-.workbench { display: flex; height: 100vh; }
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
 
-/* SIDEBAR */
+/* ================= TITLE BAR ================= */
+.titlebar {
+  height: 30px;
+  background: #323233;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  font-size: 12px;
+}
+
+.traffic {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 5px;
+}
+.red { background: #ff5f56; }
+.yellow { background: #ffbd2e; }
+.green { background: #27c93f; }
+
+/* ================= WORKBENCH ================= */
+.workbench {
+  display: flex;
+  flex: 1;
+}
+
+/* ================= ACTIVITY BAR ================= */
+.activity-bar {
+  width: 48px;
+  background: #333;
+  display: flex;
+  flex-direction: column;
+}
+
+.activity-btn {
+  height: 48px;
+  border: none;
+  background: transparent;
+  color: #aaa;
+  cursor: pointer;
+}
+
+.activity-btn.active {
+  color: white;
+  border-left: 2px solid #007acc;
+}
+
+/* ================= SIDEBAR ================= */
 .sidebar {
-  width: 220px;
+  width: 240px;
   background: #252526;
   padding: 10px;
 }
 
-.file-item {
-  padding: 5px;
-  cursor: pointer;
+.sidebar-header {
+  font-size: 11px;
+  color: #888;
+  margin-bottom: 10px;
 }
 
-.file-item:hover { background: #373737; }
-.file-item.active { background: #094771; }
+.file-item {
+  padding: 6px 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 12px;
+}
 
-/* EDITOR */
+.file-item:hover {
+  background: #37373d;
+}
+
+.file-item.active {
+  background: #094771;
+}
+
+/* ================= EDITOR ================= */
 .editor-area {
   flex: 1;
   display: flex;
   flex-direction: column;
 }
 
+/* ================= TABS ================= */
 .editor-tabs {
+  height: 35px;
   display: flex;
   background: #2d2d2d;
 }
 
 .editor-tab {
-  padding: 6px;
+  padding: 6px 12px;
+  border-right: 1px solid #3c3c3c;
   cursor: pointer;
+  font-size: 12px;
 }
 
 .editor-tab.active {
   background: #1e1e1e;
 }
 
-/* CONTENT */
+/* ================= CONTENT ================= */
 .editor-content {
   flex: 1;
-  padding: 20px;
   overflow-y: auto;
+  padding: 30px 50px;
+  line-height: 1.6;
 }
 
-/* PANELS */
-.panel { display: none; }
-.panel.active { display: block; }
+/* ================= PANELS ================= */
+.panel {
+  display: none;
+}
+.panel.active {
+  display: block;
+}
 
-/* CARDS */
-.card {
+/* ================= CODE ================= */
+.code-card {
+  background: #1e1e1e;
+  border: 1px solid #333;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.code-row {
+  font-size: 13px;
+  margin-bottom: 3px;
+}
+
+.line-number {
+  color: #858585;
+  margin-right: 12px;
+}
+
+.kw { color: #569cd6; }
+.var { color: #9cdcfe; }
+.prop { color: #9cdcfe; }
+.str { color: #ce9178; }
+.arr { color: #b5cea8; }
+
+/* ================= HERO ================= */
+.hero-card {
+  background: #252526;
+  padding: 20px;
+  border-radius: 6px;
+  border: 1px solid #333;
+}
+
+.hero-actions {
+  margin-top: 10px;
+}
+
+.vscode-btn {
+  display: inline-block;
+  padding: 6px 10px;
+  background: #007acc;
+  color: white;
+  text-decoration: none;
+  margin-right: 8px;
+  border-radius: 4px;
+}
+
+.vscode-btn.primary {
+  background: #0e639c;
+}
+
+/* ================= PROJECTS ================= */
+.project-card,
+.experience-item {
+  background: #252526;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  border: 1px solid #333;
+}
+
+.section-card h2 {
+  margin-bottom: 15px;
+}
+
+/* ================= MINI GRID ================= */
+.mini-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.mini-card {
   background: #252526;
   padding: 10px;
-  margin-bottom: 10px;
+  border-radius: 5px;
 }
 
-/* IMAGES FIXED */
-.images {
-  display: flex;
+/* ================= IMAGE FIX ================= */
+.compact-gallery {
+  display: grid;
   gap: 8px;
+  margin-top: 10px;
 }
 
-.images img {
-  width: 110px;
+.compact-gallery.three {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.compact-gallery.two {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.compact-gallery img {
+  width: 100%;
+  height: 85px; /* 🔥 THIS FIXES YOUR BIG IMAGE ISSUE */
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* ================= SINGLE IMAGE ================= */
+.compact-single img {
+  width: 120px;
   height: 80px;
   object-fit: cover;
 }
 
-/* TERMINAL */
+/* ================= SKILLS ================= */
+.skills-wrap span {
+  background: #007acc;
+  padding: 4px 8px;
+  margin: 4px;
+  font-size: 11px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+/* ================= TERMINAL ================= */
 .terminal {
-  height: 120px;
-  border-top: 1px solid #444;
+  height: 140px;
+  background: #1e1e1e;
+  border-top: 1px solid #333;
+}
+
+.terminal-header {
+  background: #2d2d2d;
+  padding: 5px;
+  font-size: 11px;
 }
 
 .terminal-body {
-  height: 80px;
+  padding: 10px;
+  font-size: 12px;
+  height: 70px;
   overflow-y: auto;
-  padding: 8px;
+}
+
+.terminal-input {
+  display: flex;
+  padding: 6px;
+  border-top: 1px solid #333;
 }
 
 .terminal-input input {
   background: transparent;
   border: none;
   color: white;
+  outline: none;
+  flex: 1;
+}
+
+/* ================= STATUS BAR ================= */
+.status-bar {
+  height: 22px;
+  background: #007acc;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 10px;
+  font-size: 11px;
 }
