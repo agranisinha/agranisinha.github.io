@@ -1,146 +1,203 @@
-// ==============================
-// PANEL NAVIGATION
-// ==============================
-function openTab(id) {
+// ================= TAB SYSTEM =================
+function openTab(id, el = null) {
   document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
   document.getElementById(id).classList.add("active");
 
   document.querySelectorAll(".file-item").forEach(f => f.classList.remove("active"));
-  const activeFile = document.querySelector(`[onclick="openTab('${id}')"]`);
-  if (activeFile) activeFile.classList.add("active");
+  if (el) el.classList.add("active");
+
+  // 🔥 GSAP animation on tab change
+  gsap.from(`#${id}`, {
+    opacity: 0,
+    y: 30,
+    duration: 0.6,
+    ease: "power2.out"
+  });
 }
 
-// ==============================
-// AI TERMINAL
-// ==============================
+// ================= MODAL =================
+function openModal(key) {
+  const modal = document.getElementById("detailModal");
+  const content = document.getElementById("modalContent");
+
+  const data = modalData[key];
+
+  const gallery = data.gallery.map(img =>
+    `<img src="${img}" />`
+  ).join("");
+
+  content.innerHTML = `
+    <h2>${data.title}</h2>
+    ${data.description}
+    <div class="modal-gallery">${gallery}</div>
+  `;
+
+  modal.setAttribute("aria-hidden", "false");
+
+  // 🔥 GSAP modal animation
+  gsap.from(".detail-modal-content", {
+    scale: 0.8,
+    opacity: 0,
+    duration: 0.4,
+    ease: "back.out(1.7)"
+  });
+}
+
+function closeModal() {
+  document.getElementById("detailModal").setAttribute("aria-hidden", "true");
+}
+
+// ================= TERMINAL AI =================
 const input = document.getElementById("terminalInput");
 const output = document.getElementById("terminalOutput");
 
-// helper to print output
-function print(text) {
+function typeLine(text, speed = 15) {
   const line = document.createElement("div");
-  line.textContent = text;
   output.appendChild(line);
-  output.scrollTop = output.scrollHeight;
+
+  let i = 0;
+  function typing() {
+    if (i < text.length) {
+      line.textContent += text[i];
+      i++;
+      output.scrollTop = output.scrollHeight;
+      setTimeout(typing, speed);
+    }
+  }
+  typing();
 }
 
-// ==============================
-// AI RESPONSE ENGINE
-// ==============================
-function handleAI(command) {
-  command = command.toLowerCase();
+function handleCommand(cmd) {
+  cmd = cmd.toLowerCase();
 
-  // NAVIGATION COMMANDS
-  if (command.includes("project")) {
+  if (cmd.includes("project")) {
     openTab("projects");
-    print("📂 Showing projects...");
+    typeLine("📂 Opening projects...");
     return;
   }
 
-  if (command.includes("experience")) {
+  if (cmd.includes("experience")) {
     openTab("experience");
-    print("💼 Showing experience...");
+    typeLine("💼 Opening experience...");
     return;
   }
 
-  if (command.includes("skill")) {
+  if (cmd.includes("skills")) {
     openTab("skills");
-    print("🧠 Showing skills...");
+    typeLine("🧠 Loading skills...");
     return;
   }
 
-  if (command.includes("contact")) {
-    openTab("contact");
-    print("📬 Opening contact...");
-    return;
-  }
-
-  if (command.includes("resume")) {
+  if (cmd.includes("resume")) {
     window.open("docs/Agrani Sinha Resume.pdf");
-    print("📄 Opening resume...");
+    typeLine("📄 Opening resume...");
     return;
   }
 
-  if (command.includes("linkedin")) {
-    window.open("https://www.linkedin.com/in/agranisinha");
-    print("🔗 Opening LinkedIn...");
+  if (cmd.includes("contact")) {
+    openTab("contact");
+    typeLine("📬 Opening contact...");
     return;
   }
 
-  // SMART RESPONSES (AI FEEL)
-  if (command.includes("who are you") || command.includes("about")) {
-    print("👋 I'm Agrani — Health Informatics + AI enthusiast building healthcare solutions.");
-    openTab("about");
+  if (cmd.includes("help")) {
+    typeLine("Available commands:");
+    typeLine("- show projects");
+    typeLine("- show experience");
+    typeLine("- open resume");
+    typeLine("- contact");
     return;
   }
 
-  if (command.includes("what do you do")) {
-    print("💡 I build AI-driven healthcare systems combining data science, clinical informatics, and biotechnology.");
-    return;
-  }
-
-  if (command.includes("help")) {
-    print("💡 Try:");
-    print("- show projects");
-    print("- show experience");
-    print("- open resume");
-    print("- who are you");
-    return;
-  }
-
-  if (command.includes("clear")) {
-    output.innerHTML = "";
-    return;
-  }
-
-  // DEFAULT
-  print("🤖 I didn’t understand that. Try 'help'");
+  typeLine("🤖 Command not recognized");
 }
 
-// ==============================
-// INPUT LISTENER
-// ==============================
 input.addEventListener("keypress", function(e) {
   if (e.key === "Enter") {
-    const command = input.value.trim();
+    const cmd = input.value.trim();
 
-    print("> " + command);
-    handleAI(command);
+    typeLine("> " + cmd, 5);
+    handleCommand(cmd);
 
     input.value = "";
   }
 });
 
-// ==============================
-// TYPING EFFECT (HERO)
-// ==============================
+// ================= HERO TYPING =================
 const typingText = ["AI in Healthcare", "Clinical Informatics", "Data Science", "System Design"];
-let i = 0, j = 0;
-let current = "";
-let isDeleting = false;
+let i = 0, j = 0, current = "", isDeleting = false;
 
 function typeEffect() {
-  const element = document.getElementById("typing");
-  if (!element) return;
+  const el = document.getElementById("typing");
+  if (!el) return;
 
   current = typingText[i];
 
   if (isDeleting) {
-    element.textContent = current.substring(0, j--);
+    el.textContent = current.substring(0, j--);
   } else {
-    element.textContent = current.substring(0, j++);
+    el.textContent = current.substring(0, j++);
   }
 
   if (!isDeleting && j === current.length) {
     isDeleting = true;
-    setTimeout(typeEffect, 1000);
+    setTimeout(typeEffect, 1200);
   } else if (isDeleting && j === 0) {
     isDeleting = false;
     i = (i + 1) % typingText.length;
     setTimeout(typeEffect, 300);
   } else {
-    setTimeout(typeEffect, isDeleting ? 50 : 80);
+    setTimeout(typeEffect, isDeleting ? 40 : 80);
   }
 }
 
 typeEffect();
+
+// ================= GSAP ANIMATIONS =================
+gsap.registerPlugin(ScrollTrigger);
+
+// HERO ENTRY
+gsap.from(".big-title", {
+  opacity: 0,
+  y: 40,
+  duration: 1,
+  ease: "power3.out"
+});
+
+gsap.from(".hero-card", {
+  opacity: 0,
+  y: 60,
+  delay: 0.2,
+  duration: 1,
+  ease: "power3.out"
+});
+
+// CARDS ANIMATION
+gsap.utils.toArray(".mini-card").forEach((card, i) => {
+  gsap.from(card, {
+    scrollTrigger: {
+      trigger: card,
+      start: "top 85%"
+    },
+    opacity: 0,
+    y: 30,
+    duration: 0.5,
+    delay: i * 0.05
+  });
+});
+
+// SIDEBAR ANIMATION
+gsap.from(".sidebar", {
+  x: -60,
+  opacity: 0,
+  duration: 0.6
+});
+
+// TERMINAL FLOAT EFFECT
+gsap.to(".terminal", {
+  y: 5,
+  repeat: -1,
+  yoyo: true,
+  duration: 2,
+  ease: "sine.inOut"
+});
