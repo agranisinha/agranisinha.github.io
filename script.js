@@ -199,5 +199,29 @@ window.onload = function () {
   }
 
 };
+// ================= CUSTOM CURSOR =================
 
-};
+document.addEventListener("DOMContentLoaded", () => {
+
+  const square = document.getElementById("cursorSquare");
+  const dot = document.getElementById("cursorDot");
+
+  if (!square || !dot) return;
+
+  let mouseX = 0;
+  let mouseY = 0;
+
+  document.addEventListener("mousemove", (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+
+    // dot follows exactly
+    dot.style.left = mouseX + "px";
+    dot.style.top = mouseY + "px";
+
+    // square follows smoothly (lag effect)
+    square.style.left = mouseX + "px";
+    square.style.top = mouseY + "px";
+  });
+
+});
