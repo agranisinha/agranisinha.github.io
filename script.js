@@ -149,8 +149,8 @@ window.onload = function () {
   const yellow = document.querySelector(".traffic.yellow");
   const green = document.querySelector(".traffic.green");
 
-  const feedback = document.getElementById("paletteFeedback");
-  const palette = document.getElementById("paletteOverlay");
+  // ✅ NEW: use header feedback instead of palette
+  const feedback = document.getElementById("triggerFeedback");
 
   const quotes = [
     "Nice try 😏 but I’ll stay open.",
@@ -162,14 +162,8 @@ window.onload = function () {
 
   function showMessage(msg) {
     if (!feedback) {
-      console.log("❌ paletteFeedback not found");
+      console.log("❌ triggerFeedback not found");
       return;
-    }
-
-    // 🔥 FORCE OPEN PALETTE (THIS FIXES YOUR ISSUE)
-    if (palette) {
-      palette.classList.add("open");
-      palette.setAttribute("aria-hidden", "false");
     }
 
     feedback.innerText = msg;
@@ -180,7 +174,7 @@ window.onload = function () {
     }, 2000);
   }
 
-  // 🔴 RED BUTTON
+  // 🔴 RED BUTTON → show message (NO POPUP)
   if (red) {
     red.onclick = () => {
       const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
@@ -188,7 +182,7 @@ window.onload = function () {
     };
   }
 
-  // 🟡 YELLOW BUTTON
+  // 🟡 YELLOW BUTTON → mini animation
   if (yellow) {
     yellow.onclick = () => {
       document.body.style.transform = "scale(0.96)";
@@ -198,7 +192,7 @@ window.onload = function () {
     };
   }
 
-  // 🟢 GREEN BUTTON (REAL FULLSCREEN)
+  // 🟢 GREEN BUTTON → REAL FULLSCREEN
   if (green) {
     green.onclick = () => {
       if (!document.fullscreenElement) {
