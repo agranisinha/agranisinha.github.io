@@ -1,96 +1,274 @@
-// OPEN TAB
-function openTab(event, id) {
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+// =============================
+// VS Code-style Portfolio Logic
+// =============================
 
-  document.querySelectorAll('.file-item').forEach(f => f.classList.remove('active'));
-  if (event) event.currentTarget.classList.add('active');
+const DEFAULT_TAB = "about";
 
-  document.querySelectorAll('.editor-tab').forEach(t => t.classList.remove('active'));
+const panelIds = [
+  "about",
+  "projects",
+  "experience",
+  "skills",
+  "lor",
+  "research",
+  "resume",
+  "contact",
+];
 
-  let existing = document.querySelector(`[data-tab="${id}"]`);
+// -----------------------------
+// Helpers
+// -----------------------------
+function getPanel(id) {
+  return document.getElementById(id);
+}
 
-  if (!existing) {
-    const tab = document.createElement('button');
-    tab.className = 'editor-tab active';
-    tab.innerHTML = `${id}.js <span class="close-tab">×</span>`;
-    tab.setAttribute('data-tab', id);
+function getEditorTabs() {
+  return document.getElementById("editorTabs");
+}
 
-    tab.onclick = () => openTab(null, id);
+function getTabButton(id) {
+  return document.querySelector(`.editor-tab[data-tab="${id}"]`);
+}
 
-    document.getElementById('editorTabs').appendChild(tab);
-  } else {
-    existing.classList.add('active');
+function getFileItem(id) {
+  return document.querySelector(`.file-item[onclick*="'${id}'"]`);
+}
+
+function appendTerminalLine(text, className = "") {
+  const output = document.getElementById("terminalOutput");
+  if (!output) return;
+
+  const line = document.createElement("div");
+  if (className) line.className = className;
+  line.textContent = text;
+  output.appendChild(line);
+  output.scrollTop = output.scrollHeight;
+}
+
+function setActivePanel(id) {
+  document.querySelectorAll(".panel").forEach((panel) => {
+    panel.classList.remove("active");
+  });
+
+  const panel = getPanel(id);
+  if (panel) {
+    panel.classList.add("active");
   }
 }
 
-// CLOSE TAB
+function setActiveFile(id) {
+  document.querySelectorAll(".file-item").forEach((item) => {
+    item.classList.remove("active");
+  });
+
+  const fileItem = getFileItem(id);
+  if (fileItem) {
+    fileItem.classList.add("active");
+  }
+}
+
+function setActiveTab(id) {
+  document.querySelectorAll(".editor-tab").forEach((tab) => {
+    tab.classList.remove("active");
+  });
+
+  const tab = getTabButton(id);
+  if (tab) {
+    tab.classList.add("active");
+  }
+}
+
+function createTab(id) {
+  const tabsContainer = getEditorTabs();
+  if (!tabsContainer) return null;
+
+  const tab = document.createElement("button");
+  tab.className = "editor-tab active";
+  tab.setAttribute("data-tab", id);
+  tab.type = "button";
+
+  tab.innerHTML = `
+    <span class="icon js">JS</span> ${id}.js
+    <span class="close-tab" title="Close">×</span>
+  `;
+
+  tab.addEventListener("click", () => {
+    openTab(null, id);
+  });
+
+  const closeBtn = tab.querySelector(".close-tab");
+  if (closeBtn) {
+    closeBtn.addEventListener("click", (e) => {
+      closeTab(e, id);
+    });
+  }
+
+  tabsContainer.appendChild(tab);
+  return tab;
+}
+
+function ensureTabExists(id) {
+  let tab = getTabButton(id);
+  if (!tab) {
+    tab = createTab(id);
+  }
+  return tab;
+}
+
+// -----------------------------
+// Open Tab
+// -----------------------------
+function openTab(event, id) {
+  if (!panelIds.includes(id)) return;
+
+  setActivePanel(id);
+  setActiveFile(id);
+  ensureTabExists(id);
+  setActiveTab(id);
+}
+
+// -----------------------------
+// Close Tab
+// -----------------------------
 function closeTab(e, id) {
   e.stopPropagation();
 
-  const tab = document.querySelector(`[data-tab="${id}"]`);
+  const tab = getTabButton(id);
+  if (!tab) return;
+
+  const wasActive = tab.classList.contains("active");
   tab.remove();
 
-  openTab(null, "about");
+  // Never leave the UI without a visible panel
+  if (wasActive) {
+    const remainingTabs = document.querySelectorAll(".editor-tab");
+    if (remainingTabs.length > 0) {
+      const nextId = remainingTabs[remainingTabs.length - 1].getAttribute("data-tab");
+      openTab(null, nextId);
+    } else {
+      openTab(null, DEFAULT_TAB);
+    }
+  }
 }
 
-// FOLDER TOGGLE
+// -----------------------------
+// Folder Toggle
+// -----------------------------
 function toggleFolder(id) {
-  const el = document.getElementById(id);
+  const folder = document.getElementById(id);
   const caret = document.getElementById(id + "Caret");
 
-  el.classList.toggle("show");
+  if (!folder || !caret) return;
 
-  caret.textContent = el.classList.contains("show") ? "▾" : "▸";
+  folder.classList.toggle("show");
+  caret.textContent = folder.classList.contains("show") ? "▾" : "▸";
 }
 
-// TERMINAL COMMANDS
+// -----------------------------
+// Terminal Commands
+// -----------------------------
 const input = document.getElementById("terminalInput");
 const output = document.getElementById("terminalOutput");
 
-input.addEventListener("keypress", function(e){
-  if(e.key === "Enter"){
-    const cmd = input.value.toLowerCase();
+function handleCommand(rawCmd) {
+  const cmd = rawCmd.trim().toLowerCase();
 
-    const line = document.createElement("div");
-    line.textContent = "> " + cmd;
-    output.appendChild(line);
+  if (!cmd) return;
 
-    switch(cmd){
-      case "about":
-      case "projects":
-      case "experience":
-      case "skills":
-      case "lor":
-      case "contact":
-        openTab(null, cmd);
-        break;
+  appendTerminalLine("> " + cmd);
 
-      case "resume":
-        window.open("docs/Agrani Sinha Resume.pdf");
-        break;
+  switch (cmd) {
+    case "help":
+      appendTerminalLine("Available commands:");
+      appendTerminalLine("about, projects, experience, skills, lor, research, resume, contact");
+      appendTerminalLine("linkedin, clear, help");
+      break;
 
-      case "clear":
-        output.innerHTML = "";
-        break;
+    case "about":
+    case "projects":
+    case "experience":
+    case "skills":
+    case "lor":
+    case "research":
+    case "contact":
+      openTab(null, cmd);
+      appendTerminalLine(`Opened ${cmd}.js`);
+      break;
 
-      default:
-        output.appendChild(document.createTextNode("Command not found"));
-    }
+    case "resume":
+      openTab(null, "resume");
+      appendTerminalLine("Opened resume.js");
+      window.open("docs/Agrani Sinha Resume.pdf", "_blank");
+      break;
 
-    input.value = "";
+    case "linkedin":
+      appendTerminalLine("Opening LinkedIn...");
+      window.open("https://www.linkedin.com/in/agranisinha", "_blank");
+      break;
+
+    case "clear":
+      if (output) output.innerHTML = "";
+      break;
+
+    default:
+      appendTerminalLine(`Command not found: ${cmd}`);
+      appendTerminalLine("Type 'help' for available commands.");
+      break;
   }
-});
+}
 
-// TYPING EFFECT
-const text = "AI × Healthcare × Systems";
-let i = 0;
+if (input) {
+  input.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      handleCommand(input.value);
+      input.value = "";
+    }
+  });
+}
 
-function type(){
-  if(i < text.length){
-    document.getElementById("typing").innerHTML += text[i];
-    i++;
+// -----------------------------
+// Typing Effect
+// -----------------------------
+const typingTarget = document.getElementById("typing");
+const titleText = "AI × Healthcare × Systems";
+let typeIndex = 0;
+
+function type() {
+  if (!typingTarget) return;
+
+  if (typeIndex < titleText.length) {
+    typingTarget.textContent += titleText[typeIndex];
+    typeIndex += 1;
     setTimeout(type, 70);
   }
 }
-type();
+
+// -----------------------------
+// Theme Toggle
+// -----------------------------
+const themeToggle = document.getElementById("themeToggle");
+
+if (themeToggle) {
+  themeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("light-theme");
+  });
+}
+
+// -----------------------------
+// Init
+// -----------------------------
+document.addEventListener("DOMContentLoaded", () => {
+  // Ensure only default panel is active on load
+  setActivePanel(DEFAULT_TAB);
+  setActiveFile(DEFAULT_TAB);
+  ensureTabExists(DEFAULT_TAB);
+  setActiveTab(DEFAULT_TAB);
+
+  // Default terminal hint
+  if (output && output.children.length === 0) {
+    appendTerminalLine("> help");
+    appendTerminalLine("Try: about, projects, experience, skills, lor, research, resume, contact");
+  }
+
+  type();
+});
