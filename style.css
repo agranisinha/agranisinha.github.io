@@ -343,3 +343,80 @@ body {
   from {opacity:0; transform:translateY(10px);}
   to {opacity:1; transform:translateY(0);}
 }
+/* ================= HOME GRID ================= */
+.home-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  align-items: center;
+  gap: 60px;
+}
+
+/* LEFT */
+.home-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* RIGHT */
+.home-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* PROFILE IMAGE */
+.profile-wrapper {
+  width: 320px;
+  height: 320px;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+
+  border: 2px solid rgba(255,255,255,0.08);
+
+  box-shadow:
+    0 0 40px rgba(0,224,255,0.2),
+    0 0 80px rgba(255,0,150,0.1);
+
+  transition: transform 0.3s ease;
+}
+
+.profile-wrapper:hover {
+  transform: scale(1.05);
+}
+
+.profile-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ================= STATS ================= */
+.stats {
+  display: flex;
+  gap: 40px;
+  margin-top: 30px;
+}
+
+.stats strong {
+  font-size: 26px;
+  color: white;
+}
+
+.stats span {
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 900px) {
+  .home-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .home-right {
+    margin-top: 30px;
+  }
+}
