@@ -731,3 +731,28 @@ body.gruv { background: #282828; }
 .fullscreen {
   transform: scale(1.02);
 }
+/* =========================
+   COMMAND PALETTE FEEDBACK
+========================= */
+
+.palette-feedback {
+  position: absolute;
+  top: 8px;
+  right: 60px;
+
+  background: rgba(30,30,30,0.95);
+  border: 1px solid rgba(255,255,255,0.1);
+
+  padding: 6px 10px;
+  border-radius: 6px;
+
+  font-size: 12px;
+  color: #ff79c6;
+
+  opacity: 0;
+  transition: 0.3s ease;
+}
+
+.palette-feedback.show {
+  opacity: 1;
+}
