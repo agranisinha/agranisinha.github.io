@@ -3,212 +3,131 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Agrani Sinha | Portfolio</title>
+  <title>Command Palette Demo</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600&display=swap"
     rel="stylesheet"
-  />
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
   />
 
   <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
-  <!-- custom cursor -->
-  <div class="custom-cursor-dot"></div>
-  <div class="custom-cursor-outline"></div>
+  <!-- square cursor -->
+  <div class="cursor-square" id="cursorSquare"></div>
+  <div class="cursor-dot" id="cursorDot"></div>
 
-  <div class="app-shell">
-
-    <!-- ================= VERY TOP BAR ================= -->
-    <header class="top-window-bar">
-      <div class="window-controls">
-        <span class="traffic red"></span>
-        <span class="traffic yellow"></span>
-        <span class="traffic green"></span>
+  <!-- fake blurred background -->
+  <div class="demo-bg">
+    <div class="fake-sidebar"></div>
+    <div class="fake-content">
+      <div class="fake-line short"></div>
+      <div class="fake-line medium"></div>
+      <div class="fake-line long"></div>
+      <div class="fake-title">Agrani Sinha</div>
+      <div class="fake-subtitle">AI × Healthcare × Systems</div>
+      <div class="fake-buttons">
+        <span></span><span></span><span></span>
       </div>
-
-      <div class="top-command-center">
-        <div class="top-command-box">
-          <i class="fa-solid fa-magnifying-glass"></i>
-          <span class="command-project">agrani-sinha</span>
-          <span class="command-separator">:</span>
-          <span class="command-workspace">portfolio</span>
-          <span class="command-shortcut">Ctrl</span>
-          <span class="command-shortcut">P</span>
-        </div>
-      </div>
-
-      <div class="top-window-right">
-        <div class="window-square"></div>
-      </div>
-    </header>
-
-    <!-- ================= MENU BAR ================= -->
-    <nav class="menu-bar">
-      <div class="menu-left">
-        <span>File</span>
-        <span>Edit</span>
-        <span>View</span>
-        <span>Go</span>
-        <span>Run</span>
-        <span>Terminal</span>
-        <span>Help</span>
-        <span>Copilot</span>
-      </div>
-    </nav>
-
-    <!-- ================= MAIN WORKBENCH ================= -->
-    <div class="workbench">
-
-      <!-- LEFT ACTIVITY BAR -->
-      <aside class="activity-bar">
-        <button class="activity-btn active" title="Explorer">
-          <i class="fa-regular fa-folder-open"></i>
-        </button>
-
-        <button class="activity-btn" title="Search">
-          <i class="fa-solid fa-magnifying-glass"></i>
-        </button>
-
-        <button class="activity-btn" title="Source Control">
-          <i class="fa-solid fa-code-branch"></i>
-        </button>
-
-        <button class="activity-btn" title="Run">
-          <i class="fa-regular fa-circle-play"></i>
-        </button>
-
-        <button class="activity-btn" title="Extensions">
-          <i class="fa-solid fa-cube"></i>
-        </button>
-
-        <button class="activity-btn mid-gap" title="Focus">
-          <i class="fa-regular fa-star"></i>
-        </button>
-
-        <button class="activity-btn bottom" title="Settings">
-          <i class="fa-solid fa-gear"></i>
-        </button>
-      </aside>
-
-      <!-- SIDEBAR -->
-      <aside class="sidebar">
-        <div class="sidebar-top">
-          <div class="sidebar-header">PORTFOLIO</div>
-
-          <div class="explorer-group">
-            <div class="explorer-title">
-              <span class="caret">▾</span>
-              <span>AGRANI-PORTFOLIO</span>
-            </div>
-
-            <ul class="file-tree">
-              <li class="file-item active">
-                <span class="file-icon react">⚛</span>
-                <span>home.tsx</span>
-              </li>
-
-              <li class="file-item">
-                <span class="file-icon html">◫</span>
-                <span>about.html</span>
-              </li>
-
-              <li class="file-item">
-                <span class="file-icon js">JS</span>
-                <span>projects.js</span>
-              </li>
-
-              <li class="file-item">
-                <span class="file-icon json">{ }</span>
-                <span>skills.json</span>
-              </li>
-
-              <li class="file-item">
-                <span class="file-icon ts">TS</span>
-                <span>experience.ts</span>
-              </li>
-
-              <li class="file-item">
-                <span class="file-icon css">◧</span>
-                <span>contact.css</span>
-              </li>
-
-              <li class="file-item">
-                <span class="file-icon md">≣</span>
-                <span>README.md</span>
-              </li>
-
-              <li class="file-item pdf-item">
-                <span class="file-icon pdf">PDF</span>
-                <span>Agrani_Sinha_Resume.pdf</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- bottom copilot box -->
-        <div class="sidebar-bottom-box">
-          <button class="copilot-mini-box">
-            <span class="copilot-mini-left">
-              <span class="copilot-star">✦</span>
-              <span>Agrani's Copilot</span>
-            </span>
-            <span class="copilot-mini-right">AI</span>
-          </button>
-        </div>
-      </aside>
-
-      <!-- EDITOR AREA -->
-      <main class="editor-area">
-
-        <!-- tab bar -->
-        <div class="editor-tabs">
-          <button class="editor-tab active">
-            <span class="tab-left">
-              <span class="file-icon react">⚛</span>
-              <span>home.tsx</span>
-            </span>
-            <span class="tab-close">×</span>
-          </button>
-        </div>
-
-        <!-- breadcrumb -->
-        <div class="breadcrumb-bar">
-          <span class="crumb muted">agrani-sinha</span>
-          <span class="crumb-sep">></span>
-          <span class="crumb muted">src</span>
-          <span class="crumb-sep">></span>
-          <span class="crumb active">home.tsx</span>
-        </div>
-
-        <!-- main editor canvas -->
-        <div class="editor-content">
-          <!-- next step: we will build the hero content exactly like the screenshot -->
-        </div>
-
-      </main>
     </div>
-
-    <!-- STATUS BAR -->
-    <footer class="status-bar">
-      <div class="status-left">
-        <span>⎇ main</span>
-      </div>
-
-      <div class="status-right">
-        <span>UTF-8</span>
-        <span>JavaScript</span>
-        <span>Ln 1, Col 1</span>
-      </div>
-    </footer>
-
   </div>
+
+  <!-- overlay -->
+  <div class="palette-overlay">
+    <div class="palette-box" id="paletteBox">
+      <div class="palette-top">
+        <span class="palette-leading">›</span>
+        <input
+          id="paletteInput"
+          class="palette-input"
+          type="text"
+          placeholder="Go to file or run command..."
+          autocomplete="off"
+        />
+        <span class="palette-esc">Esc</span>
+      </div>
+
+      <div class="palette-list" id="paletteList">
+        <div class="palette-section-label">COMMANDS</div>
+
+        <button class="palette-item active" data-index="0">
+          <span class="palette-left">
+            <span class="palette-icon star">✧</span>
+            <span class="palette-text">Open Agrani's Copilot</span>
+          </span>
+          <span class="palette-meta shortcut">Ctrl+Shift+C</span>
+        </button>
+
+        <div class="palette-section-label">FILES</div>
+
+        <button class="palette-item" data-index="1">
+          <span class="palette-left">
+            <span class="palette-icon react">⚛</span>
+            <span class="palette-text">home.tsx</span>
+          </span>
+          <span class="palette-meta">src/</span>
+        </button>
+
+        <button class="palette-item" data-index="2">
+          <span class="palette-left">
+            <span class="palette-icon html">◫</span>
+            <span class="palette-text">about.html</span>
+          </span>
+          <span class="palette-meta">src/</span>
+        </button>
+
+        <button class="palette-item" data-index="3">
+          <span class="palette-left">
+            <span class="palette-icon js">JS</span>
+            <span class="palette-text">projects.js</span>
+          </span>
+          <span class="palette-meta">src/</span>
+        </button>
+
+        <button class="palette-item" data-index="4">
+          <span class="palette-left">
+            <span class="palette-icon json">{ }</span>
+            <span class="palette-text">skills.json</span>
+          </span>
+          <span class="palette-meta">data/</span>
+        </button>
+
+        <button class="palette-item" data-index="5">
+          <span class="palette-left">
+            <span class="palette-icon ts">TS</span>
+            <span class="palette-text">experience.ts</span>
+          </span>
+          <span class="palette-meta">src/</span>
+        </button>
+
+        <button class="palette-item" data-index="6">
+          <span class="palette-left">
+            <span class="palette-icon css">◧</span>
+            <span class="palette-text">contact.css</span>
+          </span>
+          <span class="palette-meta">src/</span>
+        </button>
+
+        <button class="palette-item" data-index="7">
+          <span class="palette-left">
+            <span class="palette-icon md">≣</span>
+            <span class="palette-text">README.md</span>
+          </span>
+          <span class="palette-meta">./</span>
+        </button>
+      </div>
+
+      <div class="palette-footer">
+        <span>↑↓ navigate</span>
+        <span>↵ open</span>
+        <span>Esc close</span>
+        <span class="palette-footer-tip">Tip: type "copilot" to open AI chat</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
