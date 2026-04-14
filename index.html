@@ -3,104 +3,76 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Agrani Sinha | Portfolio</title>
+  <title>Agrani Sinha</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<button id="backToTop">↑</button>
-
-<nav class="navbar">
-  <div class="nav-logo">Agrani Sinha</div>
-  <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#journey">Journey</a></li>
-    <li><a href="#experience">Experience</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#recommendations">LORs</a></li>
-    <li><a href="#research">Research</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
+<!-- NAV -->
+<nav class="nav">
+  <h2>Agrani</h2>
 </nav>
 
-<header class="hero">
-  <div class="hero-content reveal">
-    <h1>Agrani Sinha</h1>
-    <h2 id="typing"></h2>
-    <p>Biotechnology • Health Informatics • AI Systems</p>
+<!-- HERO -->
+<section class="hero">
+  <h1>Hi, I'm Agrani 👋</h1>
+  <h2>AI × Healthcare × Systems</h2>
+  <p>Health Informatics | Biotechnology | Data Science</p>
+</section>
+
+<!-- PROJECTS (MAIN FOCUS) -->
+<section class="section">
+  <h2>Featured Work</h2>
+
+  <!-- CHATBOT -->
+  <div class="project">
+    <h3>Respiratory Health Chatbot</h3>
+
+    <div class="images">
+      <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (1).jpeg">
+      <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (2).jpeg">
+      <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (3).jpeg">
+    </div>
+
+    <p>AI-powered healthcare chatbot for symptom guidance.</p>
   </div>
-</header>
 
-<main>
+  <!-- BIO CALCULATOR -->
+  <div class="project">
+    <h3>Bio Calculator</h3>
 
-<section id="about" class="section reveal">
-  <h2>About Me</h2>
-  <p>Interdisciplinary healthcare + AI profile.</p>
+    <div class="images">
+      <img src="assets/images/Biocalculator/bio1.webp">
+      <img src="assets/images/Biocalculator/bio2.webp">
+    </div>
+
+    <p>Biological calculation app published on Play Store.</p>
+  </div>
+
 </section>
 
-<section id="journey" class="section reveal">
-  <h2>My Journey</h2>
-  <p>From Biotechnology → AI → Clinical Informatics.</p>
-</section>
-
-<section id="experience" class="section reveal">
+<!-- EXPERIENCE -->
+<section class="section">
   <h2>Experience</h2>
 
-  <div class="grid">
-    <div class="card">
-      <h3>Alivia Care</h3>
-      <img src="docs/cdri-lor.jpeg">
-    </div>
-
-    <div class="card">
-      <h3>BluCognition</h3>
-      <img src="docs/sanfoundry-lor.jpeg">
-    </div>
+  <div class="card">
+    <h3>Alivia Care</h3>
+    <img src="docs/WhatsApp Image 2026-04-13 at 23.46.44.jpeg">
   </div>
+
+  <div class="card">
+    <h3>BluCognition</h3>
+    <img src="docs/blucogniton.png">
+  </div>
+
 </section>
 
-<section id="projects" class="section reveal">
-  <h2>Projects</h2>
-
-  <div class="grid">
-
-    <div class="card">
-      <h3>ML Drug Discovery</h3>
-      <img src="assets/images/ml1.png">
-    </div>
-
-    <div class="card">
-      <h3>Inventory App</h3>
-      <img src="assets/images/inv1.png">
-    </div>
-
-    <div class="card">
-      <h3>Chatbot</h3>
-
-      <div class="image-showcase">
-        <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (1).jpeg">
-        <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (2).jpeg">
-        <img src="assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (3).jpeg">
-      </div>
-    </div>
-
-    <div class="card">
-      <h3>Bio Calculator</h3>
-
-      <div class="image-showcase">
-        <img src="assets/images/Biocalculator/bio1.webp">
-        <img src="assets/images/Biocalculator/bio2.webp">
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<section id="recommendations" class="section reveal">
-  <h2>Letters of Recommendation</h2>
+<!-- LOR -->
+<section class="section">
+  <h2>Recommendations</h2>
 
   <div class="grid">
     <img src="docs/lortext.png">
@@ -108,27 +80,23 @@
     <img src="docs/cdri-lor.jpeg">
     <img src="docs/sanfoundry-lor.jpeg">
   </div>
+
 </section>
 
-<section id="research" class="section reveal">
+<!-- RESEARCH -->
+<section class="section">
   <h2>Research</h2>
 
-  <a href="docs/Thesis.pdf" target="_blank" class="btn">Thesis</a>
-  <a href="docs/Dissertationppt.pptx" target="_blank" class="btn">PPT</a>
+  <a href="docs/Thesis.pdf" target="_blank">Thesis</a>
+  <a href="docs/Dissertationppt.pptx" target="_blank">PPT</a>
+
 </section>
 
-<section id="contact" class="section reveal">
+<!-- CONTACT -->
+<section class="section">
   <h2>Contact</h2>
   <p>Email: agbrian521@gmail.com</p>
 </section>
-
-</main>
-
-<footer>
-  <p>© 2026 Agrani Sinha</p>
-</footer>
-
-<script src="script.js"></script>
 
 </body>
 </html>
