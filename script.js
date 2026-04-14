@@ -3,8 +3,7 @@ const reveals = document.querySelectorAll(".reveal");
 
 window.addEventListener("scroll", () => {
   reveals.forEach(el => {
-    const top = el.getBoundingClientRect().top;
-    if (top < window.innerHeight - 100) {
+    if (el.getBoundingClientRect().top < window.innerHeight - 100) {
       el.classList.add("active");
     }
   });
@@ -19,53 +18,47 @@ window.addEventListener("scroll", () => {
 
 topBtn.onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
-// DARK MODE
-const toggle = document.getElementById("themeToggle");
-
-toggle.onclick = () => {
-  document.body.classList.toggle("dark");
-};
-
-// TYPING EFFECT
-const text = ["AI in Healthcare", "Clinical Informatics", "Data Science", "System Design"];
-let i = 0, j = 0, current = "", isDeleting = false;
+// TYPING
+const roles = ["AI in Healthcare", "Clinical Informatics", "Data Science"];
+let i = 0, j = 0;
 
 function type() {
-  current = text[i];
-  if (isDeleting) {
-    document.getElementById("typing").textContent = current.substring(0, j--);
-  } else {
-    document.getElementById("typing").textContent = current.substring(0, j++);
+  document.getElementById("typing").textContent =
+    roles[i].substring(0, j++);
+
+  if (j > roles[i].length) {
+    j = 0;
+    i = (i + 1) % roles.length;
   }
 
-  if (!isDeleting && j === current.length) {
-    isDeleting = true;
-    setTimeout(type, 1000);
-  } else if (isDeleting && j === 0) {
-    isDeleting = false;
-    i = (i + 1) % text.length;
-    setTimeout(type, 300);
-  } else {
-    setTimeout(type, isDeleting ? 50 : 100);
-  }
+  setTimeout(type, 100);
 }
 type();
 
-// CAROUSEL LOGIC
+// CAROUSEL (LIMITED)
 document.querySelectorAll(".carousel").forEach(carousel => {
   const track = carousel.querySelector(".carousel-track");
+  const slides = track.children;
   const next = carousel.querySelector(".next");
   const prev = carousel.querySelector(".prev");
 
   let index = 0;
 
+  const update = () => {
+    track.style.transform = `translateX(-${index * 310}px)`;
+  };
+
   next.onclick = () => {
-    index++;
-    track.style.transform = `translateX(-${index * 300}px)`;
+    if (index < slides.length - 1) {
+      index++;
+      update();
+    }
   };
 
   prev.onclick = () => {
-    index = Math.max(0, index - 1);
-    track.style.transform = `translateX(-${index * 300}px)`;
+    if (index > 0) {
+      index--;
+      update();
+    }
   };
 });
