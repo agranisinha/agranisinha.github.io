@@ -1,3 +1,4 @@
+/* ================= RESET ================= */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -13,10 +14,8 @@
   --muted: #8c92a0;
   --line: rgba(255, 255, 255, 0.06);
   --purple: rgba(110, 81, 153, 0.52);
-  --header-bg: #12162a;
 }
 
-html,
 body {
   width: 100%;
   height: 100%;
@@ -30,28 +29,20 @@ body {
   cursor: none;
 }
 
-.app-shell {
-  width: 100%;
-  height: 100%;
-}
-
-/* header */
+/* ================= HEADER ================= */
 .top-header {
   height: 46px;
   display: grid;
-  grid-template-columns: 120px 1fr 120px;
+  grid-template-columns: 220px 1fr 120px;
   align-items: center;
   padding: 0 12px;
   background: linear-gradient(180deg, #151938 0%, #101427 100%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .mac-dots {
   display: flex;
   align-items: center;
-  gap: 8px;
-
-  min-width: 420px; /* 🔥 gives space for full sentence */
+  gap: 10px;
 }
 
 .dot {
@@ -64,6 +55,22 @@ body {
 .dot.yellow { background: #ffbd2e; }
 .dot.green { background: #27c93f; }
 
+/* HEADER FEEDBACK TEXT */
+.header-feedback {
+  margin-left: 12px;
+  font-size: 12px;
+  color: #ff79c6;
+  font-family: "Fira Code", monospace;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  white-space: nowrap;
+}
+
+.header-feedback.show {
+  opacity: 1;
+}
+
+/* COMMAND TRIGGER */
 .header-command-trigger {
   margin: 0 auto;
   min-width: 420px;
@@ -71,104 +78,44 @@ body {
   height: 34px;
   padding: 0 12px;
   border-radius: 8px;
-  border: 1px solid rgba(255,255,255,0.08);
   background: rgba(255,255,255,0.06);
-  color: #b7bdc9;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  cursor: pointer;
-  transition: background 0.18s ease, border-color 0.18s ease;
   font-family: "Fira Code", monospace;
-}
-
-.header-command-trigger:hover {
-  background: rgba(255,255,255,0.08);
-  border-color: rgba(255,255,255,0.12);
-}
-
-.trigger-left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.search-icon {
-  font-size: 12px;
-  opacity: 0.8;
-}
-
-.trigger-text {
-  font-size: 12px;
-}
-
-.trigger-right {
-  display: flex;
-  align-items: center;
-  gap: 6px;
 }
 
 .keycap {
   padding: 3px 7px;
   border-radius: 6px;
   background: rgba(255,255,255,0.06);
-  color: #969dac;
   font-size: 11px;
 }
 
-.header-spacer {
-  width: 100%;
-}
-
-/* MENU BAR */
+/* ================= MENU BAR ================= */
 .menu-bar {
   height: 32px;
   display: flex;
   align-items: center;
   gap: 18px;
-
   padding: 0 16px;
-
   background: #1e1e1e;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-
   font-size: 13px;
-  font-family: "Inter", sans-serif;
-  color: #c5c5c5;
-
-  user-select: none;
 }
 
-/* menu items */
 .menu-bar span {
   cursor: pointer;
   padding: 4px 6px;
-  border-radius: 4px;
-  transition: all 0.15s ease;
 }
 
-/* hover like VS Code */
 .menu-bar span:hover {
   background: rgba(255,255,255,0.08);
-  color: #ffffff;
 }
 
-/* copilot highlight */
-.copilot-menu {
-  color: #9b8cff;
-}
-
-/* active underline effect (optional) */
-.menu-bar span:active {
-  background: rgba(255,255,255,0.12);
-}
-
-/* =========================
-   LAYOUT
-========================= */
+/* ================= LAYOUT ================= */
 .vscode-layout {
   display: flex;
-  height: calc(100vh - 80px);
+  height: calc(100vh - 78px);
 }
 
 /* ACTIVITY BAR */
@@ -178,265 +125,130 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 10px;
-  border-right: 1px solid rgba(255,255,255,0.05);
 }
 
 .activity-icon {
   font-size: 20px;
   padding: 12px;
-  margin: 6px 0;
   opacity: 0.6;
   cursor: pointer;
-  transition: 0.2s;
 }
 
-.activity-icon:hover,
-.activity-icon.active {
+.activity-icon:hover {
   opacity: 1;
-  color: #fff;
-}
-
-.activity-bottom {
-  margin-top: auto;
-  padding-bottom: 10px;
 }
 
 /* SIDEBAR */
 .sidebar-panel {
   width: 250px;
   background: #252526;
-  color: #ccc;
-  border-right: 1px solid rgba(255,255,255,0.05);
 }
 
 .sidebar-header {
   padding: 12px;
   font-weight: bold;
-  letter-spacing: 1px;
-  color: #aaa;
-}
-
-.file-list {
-  padding: 10px;
 }
 
 .file {
   padding: 8px;
-  border-radius: 6px;
   cursor: pointer;
-  margin-bottom: 4px;
 }
 
 .file:hover {
   background: rgba(255,255,255,0.08);
 }
 
-.file.active {
-  background: rgba(255,255,255,0.12);
-}
-
-/* COPILOT BOX */
-.copilot-box {
-  margin: 12px;
-  padding: 12px;
-  border: 1px solid #7c5cff;
-  border-radius: 10px;
-  color: #bca8ff;
-  text-align: center;
-}
-
-/* =========================
-   SETTINGS PANEL
-========================= */
-.settings-panel {
-  position: fixed;
-  left: 80px;
-  top: 80px;
-  width: 320px;
-  background: #1e1e1e;
-  border-radius: 12px;
-  padding: 16px;
-  display: none;
-  z-index: 999;
-  box-shadow: 0 0 30px rgba(0,0,0,0.6);
-}
-
-.settings-panel.open {
-  display: block;
-}
-
-.settings-header {
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.settings-section {
-  margin-top: 14px;
-}
-
-.section-title {
-  font-size: 12px;
-  color: #aaa;
-  margin-bottom: 8px;
-}
-
-.theme-option {
-  padding: 8px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.theme-option:hover {
-  background: rgba(255,255,255,0.1);
-}
-
-.theme-option.active {
-  background: rgba(255,255,255,0.15);
-}
-
-.action {
-  padding: 8px;
-  opacity: 0.8;
-}
-
-/* EDITOR */
+/* ================= EDITOR ================= */
 .editor {
   flex: 1;
   background: #1e1e1e;
-  display: flex;
-  flex-direction: column;
 }
 
-/* TAB BAR */
-.tab-bar {
-  height: 40px;
-  background: #252526;
-  display: flex;
-  align-items: center;
-  padding-left: 10px;
-}
-
-.tab {
-  background: #1e1e1e;
-  padding: 6px 14px;
-  border-radius: 6px 6px 0 0;
-  font-size: 13px;
-  color: #ccc;
-}
-
-/* CONTENT */
 .editor-content {
-  padding: 40px;
-  color: #c5c5c5;
+  padding: 60px 80px;
+  height: 100%;
+  overflow-y: auto;
+  display: block;
+}
+
+/* ================= HOME ================= */
+.home-container {
+  max-width: 900px;
+  animation: fadeIn 0.6s ease;
+}
+
+.code-line {
+  color: #4ec9b0;
   font-family: "Fira Code", monospace;
 }
 
-/* CODE LINES */
-.code-line {
-  color: #6a9955;
-  margin-bottom: 6px;
-}
-
-/* HERO */
 .hero-name {
-  font-size: 64px;
+  font-size: 72px;
   font-weight: 800;
-  margin-top: 20px;
-  color: #fff;
+  margin-top: 10px;
 }
 
 .hero-name span {
-  color: #ff5cc8;
+  color: #ff4ecd;
 }
 
-/* TAGS */
-.hero-tags {
-  margin-top: 15px;
+.roles {
+  display: flex;
+  gap: 12px;
+  margin: 16px 0;
 }
 
-.hero-tags span {
-  background: #2d2d2d;
+.roles span {
+  background: #1f2937;
   padding: 6px 12px;
-  margin-right: 10px;
   border-radius: 6px;
-  font-size: 12px;
+  font-size: 13px;
 }
 
-/* DESCRIPTION */
 .hero-desc {
   margin-top: 20px;
+  color: #9ca3af;
   max-width: 600px;
-  line-height: 1.6;
 }
 
-/* BUTTONS */
-.hero-buttons {
+.home-buttons {
   margin-top: 25px;
 }
 
-.hero-buttons button {
+.home-buttons button {
   margin-right: 12px;
   padding: 10px 18px;
-  border: none;
   background: #007acc;
-  color: white;
+  border: none;
   border-radius: 6px;
+  color: white;
   cursor: pointer;
 }
 
-.hero-buttons button:hover {
+.home-buttons button:hover {
   background: #0e639c;
 }
 
-/* =========================
-   THEMES
-========================= */
-body.rose { background: #191724; }
-body.tokyo { background: #1a1b26; }
-body.cat { background: #24273a; }
-body.nord { background: #2e3440; }
-body.gruv { background: #282828; }
-
-/* fake editor background */
-.fake-editor {
-  position: relative;
-  width: 100%;
-  height: calc(100% - 46px);
-  display: grid;
-  grid-template-columns: 300px 1fr;
-  filter: blur(0px);
+.stats {
+  display: flex;
+  gap: 30px;
+  margin-top: 30px;
 }
 
-.fake-sidebar {
-  background: rgba(255,255,255,0.03);
-  border-right: 1px solid rgba(255,255,255,0.04);
-}
-
-.fake-main {
-  padding: 120px 80px;
-}
-
-.fake-title {
-  font-size: 92px;
-  font-weight: 800;
-  letter-spacing: -3px;
-  color: rgba(255,255,255,0.12);
-}
-
-.fake-subtitle {
-  margin-top: 16px;
+.stats strong {
   font-size: 22px;
-  color: rgba(255,255,255,0.08);
-  font-family: "Fira Code", monospace;
 }
 
-/* overlay hidden by default */
+.stats span {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+/* ================= COMMAND PALETTE ================= */
 .palette-overlay {
   position: fixed;
   inset: 0;
   display: none;
-  z-index: 1000;
 }
 
 .palette-overlay.open {
@@ -446,413 +258,40 @@ body.gruv { background: #282828; }
 .palette-backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(5, 8, 14, 0.48);
-  backdrop-filter: blur(7px);
+  background: rgba(5, 8, 14, 0.6);
+  backdrop-filter: blur(6px);
 }
 
-/* floating palette */
 .palette-box {
   position: absolute;
-  top: 155px;
+  top: 150px;
   left: 50%;
   transform: translateX(-50%);
   width: 560px;
-  border-radius: 10px;
-  overflow: hidden;
-  background: var(--panel);
-  border: 1px solid rgba(255,255,255,0.08);
-  box-shadow:
-    0 24px 80px rgba(0,0,0,0.45),
-    0 0 0 1px rgba(255,255,255,0.03);
-}
-
-.palette-top {
-  min-height: 42px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 0 14px;
-  background: var(--panel-top);
-  border-bottom: 1px solid var(--line);
-}
-
-.palette-leading {
-  font-family: "Fira Code", monospace;
-  color: #9ea5b3;
-  font-size: 16px;
-}
-
-.palette-input {
-  flex: 1;
-  background: transparent;
-  border: none;
-  outline: none;
-  color: var(--text);
-  font-family: "Fira Code", monospace;
-  font-size: 14px;
-}
-
-.palette-input::placeholder {
-  color: #8c92a0;
-}
-
-.palette-esc {
-  min-width: 30px;
-  height: 22px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 5px;
-  background: rgba(255,255,255,0.06);
-  color: #9da4b2;
-  font-size: 11px;
-  font-family: "Fira Code", monospace;
-}
-
-.palette-list {
-  max-height: 420px;
-  overflow-y: auto;
   background: #2f3036;
+  border-radius: 10px;
 }
 
-.palette-list::-webkit-scrollbar {
-  width: 6px;
-}
-
-.palette-list::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.12);
-}
-
-.palette-section-label {
-  padding: 12px 14px 6px;
-  font-size: 11px;
-  letter-spacing: 2px;
-  color: #8f96a4;
-  text-transform: uppercase;
-  font-family: "Fira Code", monospace;
-}
-
-.palette-item {
-  width: 100%;
-  min-height: 42px;
-  padding: 0 14px;
-  border: none;
-  background: transparent;
-  color: #dbe2ea;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  transition: background 0.14s ease;
-}
-
-.palette-item:hover {
-  background: rgba(255,255,255,0.04);
-}
-
-.palette-item.active {
-  background: var(--purple);
-}
-
-.palette-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-width: 0;
-}
-
-.palette-text {
-  font-family: "Fira Code", monospace;
-  font-size: 14px;
-}
-
-.palette-icon {
-  width: 18px;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 12px;
-  font-weight: 700;
-  flex-shrink: 0;
-}
-
-.palette-icon.star { color: #d4a5ff; }
-.palette-icon.react { color: #61dafb; }
-.palette-icon.html { color: #ff7b4a; }
-.palette-icon.js { color: #f7df1e; }
-.palette-icon.json { color: #d2d96b; }
-.palette-icon.ts { color: #67a8ff; }
-.palette-icon.css { color: #4c7cff; }
-.palette-icon.md { color: #82a8cc; }
-
-.palette-meta {
-  color: #9299a8;
-  font-size: 12px;
-  font-family: "Fira Code", monospace;
-  flex-shrink: 0;
-}
-
-.palette-meta.shortcut {
-  padding: 4px 8px;
-  border-radius: 5px;
-  background: rgba(255,255,255,0.06);
-}
-
-.palette-footer {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
-  padding: 10px 14px;
-  border-top: 1px solid var(--line);
-  background: var(--panel-footer);
-  color: #8f96a4;
-  font-size: 11px;
-  font-family: "Fira Code", monospace;
-}
-
-.palette-footer-tip {
-  margin-left: auto;
-}
-
-/* cursor */
-.cursor-square,
-.cursor-dot {
-  position: fixed;
-  top: 0;
-  left: 0;
-  pointer-events: none;
-  z-index: 99999;
-  transform: translate(-50%, -50%);
-}
-
+/* ================= CURSOR ================= */
 .cursor-square {
+  position: fixed;
   width: 24px;
   height: 24px;
   border: 2px solid #8ffff7;
-  background: rgba(143, 255, 247, 0.03);
-  box-shadow:
-    0 0 12px rgba(143,255,247,0.45),
-    inset 0 0 8px rgba(143,255,247,0.08);
-  transition: transform 0.06s linear, width 0.12s ease, height 0.12s ease;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
 }
 
 .cursor-dot {
+  position: fixed;
   width: 3px;
   height: 3px;
-  border-radius: 50%;
   background: #dff;
-}
-
-@media (max-width: 700px) {
-  .header-command-trigger {
-    min-width: 260px;
-    max-width: 320px;
-  }
-
-  .palette-box {
-    width: calc(100% - 28px);
-    top: 110px;
-  }
-
-  .palette-footer-tip {
-    margin-left: 0;
-    width: 100%;
-  }
-}
-
-/* ================= HOME ================= */
-.home-container {
-  max-width: 900px;
-  width: 100%;
-  text-align: left;
-  animation: fadeIn 0.6s ease;
-}
-
-.code-line {
-  color: #4ec9b0;
-  font-family: "Fira Code", monospace;
-  margin-bottom: 10px;
-}
-
-.home-title {
-  font-size: 64px;
-  font-weight: 800;
-}
-
-.home-title span {
-  color: #ff4ecd;
-}
-
-.home-tags {
-  margin: 16px 0;
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.home-tags span {
-  background: #1f2937;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 13px;
-}
-
-.home-desc {
-  margin: 20px 0;
-  color: #9ca3af;
-  line-height: 1.6;
-}
-
-.home-buttons button {
-  margin-right: 10px;
-  padding: 10px 18px;
-  background: #2563eb;
-  border: none;
-  border-radius: 6px;
-  color: white;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.home-buttons button:hover {
-  background: #1d4ed8;
-}
-
-.home-stats {
-  display: flex;
-  gap: 30px;
-  margin-top: 30px;
-}
-
-.home-stats div {
-  text-align: center;
-}
-
-.home-stats strong {
-  font-size: 20px;
-}
-
-.home-stats span {
-  display: block;
-  font-size: 12px;
-  color: #9ca3af;
-}
-/* =========================
-   COMMAND PALETTE FEEDBACK
-========================= */
-
-.palette-feedback {
-  position: absolute;
-  top: -28px;
-  left: 50%;
-  transform: translateX(-50%);
-
-  background: rgba(30,30,30,0.95);
-  border: 1px solid rgba(255,255,255,0.12);
-
-  padding: 6px 12px;
-  border-radius: 6px;
-
-  font-size: 12px;
-  color: #ff79c6;
-
-  opacity: 0;
-  z-index: 9999;
-
-  transition: 0.3s ease;
-}
-
-.palette-feedback.show {
-  opacity: 1;
-}
-
-.trigger-feedback {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-
-  top: -28px;
-
-  background: rgba(30,30,30,0.95);
-  border: 1px solid rgba(255,255,255,0.12);
-
-  padding: 6px 12px;
-  border-radius: 6px;
-
-  font-size: 12px;
-  color: #ff79c6;
-
-  opacity: 0;
-  transition: 0.3s ease;
   pointer-events: none;
 }
 
-.trigger-feedback.show {
-  opacity: 1;
-}
-
-/* ================= HEADER FEEDBACK (FINAL) ================= */
-
-.header-feedback {
-  margin-left: 12px;
-
-  font-size: 12px;
-  color: #ff79c6;
-  font-family: "Fira Code", monospace;
-
-  opacity: 0;
-  transition: opacity 0.3s ease;
-
-  display: inline-block;
-
-  /* 🔥 FIX TEXT CUT */
-  max-width: none;          /* remove restriction */
-  white-space: nowrap;      /* keep in one line */
-  overflow: visible;        /* show full text */
-}
-
-/* show animation */
-.header-feedback.show {
-  opacity: 1;
-}
-
-/* ================= EDITOR FIX ================= */
-.editor-content {
-  width: 100%;
-  height: calc(100vh - 100px); /* adjust based on header */
-  padding: 40px;
-  overflow-y: auto;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  color: #e6edf3;
-}
 /* ================= ANIMATIONS ================= */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.typing {
-  border-right: 2px solid #4ec9b0;
-  white-space: nowrap;
-  overflow: hidden;
-  animation: typing 3s steps(30), blink 0.8s infinite;
-}
-
-@keyframes typing {
-  from { width: 0 }
-  to { width: 100% }
-}
-
-@keyframes blink {
-  50% { border-color: transparent }
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
