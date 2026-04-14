@@ -50,6 +50,8 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
+
+  min-width: 420px; /* 🔥 gives space for full sentence */
 }
 
 .dot {
@@ -788,7 +790,7 @@ body.gruv { background: #282828; }
 /* ================= HEADER FEEDBACK (FINAL) ================= */
 
 .header-feedback {
-  margin-left: 14px;
+  margin-left: 12px;
 
   font-size: 12px;
   color: #ff79c6;
@@ -797,13 +799,12 @@ body.gruv { background: #282828; }
   opacity: 0;
   transition: opacity 0.3s ease;
 
-  display: inline-flex;
-  align-items: center;
+  display: inline-block;
 
-  max-width: 260px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  /* 🔥 FIX TEXT CUT */
+  max-width: none;          /* remove restriction */
+  white-space: nowrap;      /* keep in one line */
+  overflow: visible;        /* show full text */
 }
 
 /* show animation */
