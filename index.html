@@ -277,7 +277,14 @@
 
     <!-- ================= SETTINGS PANEL ================= -->
     <div class="settings-panel" id="settingsPanel">
-      <div class="settings-header">SETTINGS</div>
+      <div class="settings-header">
+          <span>SETTINGS</span>
+        
+          <div class="settings-actions">
+            <button onclick="minimizeSettings()">—</button>
+            <button onclick="toggleSettings()">×</button>
+          </div>
+        </div>
 
       <div class="settings-section">
         <div class="section-title">🎨 COLOR THEME</div>
