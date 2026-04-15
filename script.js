@@ -2120,61 +2120,525 @@ function getResume() {
     </div>
   `;
 }
+/* =========================
+   REAL VS CODE MOBILE UI
+   add at very end of script.js
+========================= */
+(() => {
+  const MOBILE_BP = 768;
 
-/* ================= MOBILE CONTROL FIX ================= */
-if (window.innerWidth <= 768) {
-
-  const sidebar = document.getElementById("sidebarPanel");
-  const copilot = document.getElementById("copilotSidebar");
-  const settings = document.getElementById("settingsPanel");
-
-  function closeAll() {
-    sidebar?.classList.remove("mobile-open");
-    copilot?.classList.remove("mobile-open");
-    settings?.classList.remove("mobile-open");
-
-    document.querySelectorAll(".menu-item")
-      .forEach(m => m.classList.remove("active"));
+  function isMobile() {
+    return window.innerWidth <= MOBILE_BP;
   }
 
-  /* ===== MENU FIX ===== */
-  document.querySelectorAll(".menu-item").forEach(menu => {
-    menu.onclick = function (e) {
-      e.stopPropagation();
+  function qs(sel, root = document) {
+    return root.querySelector(sel);
+  }
 
-      const open = menu.classList.contains("active");
-      closeAll();
+  function qsa(sel, root = document) {
+    return Array.from(root.querySelectorAll(sel));
+  }
 
-      if (!open) menu.classList.add("active");
+  function ensureBackdrop() {
+    let el = document.getElementById("mobileUiBackdrop");
+    if (!el) {
+      el = document.createElement("div");
+      el.id = "mobileUiBackdrop";
+      el.className = "mobile-ui-backdrop";
+      document.body.appendChild(el);
+    }
+    return el;
+  }
+
+  const backdrop = ensureBackdrop();
+
+  function getSidebar() {
+    return document.getElementById("sidebarPanel") || qs(".sidebar-panel");
+  }
+
+  function getCopilot() {
+    return document.getElementById("copilotSidebar");
+  }
+
+  function getSettings() {
+    return document.getElementById("settingsPanel");
+  }
+
+  function getPalette() {
+    return document.getElementById("paletteOverlay");
+  }
+
+  function getTerminal() {
+    return document.getElementById("terminalPanel");
+  }
+
+  function anySheetOpen() {
+    return (
+      getSidebar()?.classList.contains("mobile-open") ||
+      getCopilot()?.classList.contains("mobile-open") ||
+      getSettings()?.classList.contains("mobile-open") ||
+      getPalette()?.classList.contains("open") ||
+      getTerminal()?.classList.contains("open")
+    );
+  }
+
+  function showBackdrop() {
+    if (!isMobile()) return;
+    backdrop.classList.add("show");
+  }
+
+  function hideBackdrop() {
+    backdrop.classList.remove("show");
+  }
+
+  function closeMenus() {
+    qsa(".menu-item").forEach((m) => m.classList.remove("active"));
+  }
+
+  function closeSidebarMobile() {
+    const panel = getSidebar();
+    if (!panel) return;
+    panel.classList.remove("mobile-open");
+  }
+
+  function openSidebarMobile() {
+    const panel = getSidebar();
+    if (!panel) return;
+    panel.classList.remove("hide");
+    panel.classList.add("mobile-open");
+  }
+
+  function closeCopilotMobile() {
+    const panel = getCopilot();
+    if (!panel) return;
+    panel.classList.remove("mobile-open");
+    panel.classList.remove("open");
+    panel.classList.remove("minimized");
+    panel.setAttribute("aria-hidden", "true");
+    qs(".editor-area")?.classList.remove("with-copilot");
+  }
+
+  function openCopilotMobile() {
+    const panel = getCopilot();
+    if (!panel) return;
+    panel.classList.add("mobile-open");
+    panel.classList.add("open");
+    panel.classList.remove("minimized");
+    panel.setAttribute("aria-hidden", "false");
+    qs(".editor-area")?.classList.remove("with-copilot");
+  }
+
+  function closeSettingsMobile() {
+    const panel = getSettings();
+    if (!panel) return;
+    panel.classList.remove("mobile-open");
+    panel.classList.remove("open");
+    panel.classList.remove("minimized");
+  }
+
+  function openSettingsMobile() {
+    const panel = getSettings();
+    if (!panel) return;
+    panel.classList.add("mobile-open");
+    panel.classList.add("open");
+    panel.classList.remove("minimized");
+  }
+
+  function closePaletteMobile() {
+    const overlay = getPalette();
+    if (!overlay) return;
+    overlay.classList.remove("open");
+    overlay.setAttribute("aria-hidden", "true");
+  }
+
+  function openPaletteMobile() {
+    if (typeof window.openPalette === "function") {
+      window.openPalette();
+    } else {
+      const overlay = getPalette();
+      if (!overlay) return;
+      overlay.classList.add("open");
+      overlay.setAttribute("aria-hidden", "false");
+    }
+  }
+
+  function closeTerminalMobile() {
+    getTerminal()?.classList.remove("open");
+  }
+
+  function syncBackdrop() {
+    if (!isMobile()) {
+      hideBackdrop();
+      return;
+    }
+    if (anySheetOpen()) showBackdrop();
+    else hideBackdrop();
+  }
+
+  function closeAllMobilePanels({ keepMenus = false } = {}) {
+    closeSidebarMobile();
+    closeCopilotMobile();
+    closeSettingsMobile();
+    closePaletteMobile();
+    closeTerminalMobile();
+    if (!keepMenus) closeMenus();
+    syncBackdrop();
+  }
+
+  /* public overrides */
+
+  window.openSidebar = function mobileOpenSidebar(type) {
+    if (!isMobile()) return;
+
+    const normalized = String(type || "").toLowerCase();
+
+    qsa(".activity-icon").forEach((icon) => icon.classList.remove("active"));
+
+    const map = {
+      explorer: 0,
+      search: 1,
+      git: 2,
+      files: 3,
+      copilot: 4,
     };
+    const icons = qsa(".activity-icon");
+    if (typeof map[normalized] === "number" && icons[map[normalized]]) {
+      icons[map[normalized]].classList.add("active");
+    }
+
+    if (normalized === "search") {
+      closeAllMobilePanels();
+      openPaletteMobile();
+      syncBackdrop();
+      return;
+    }
+
+    if (normalized === "git") {
+      closeAllMobilePanels();
+      if (typeof window.toggleTerminal === "function") {
+        window.toggleTerminal();
+      }
+      syncBackdrop();
+      return;
+    }
+
+    if (normalized === "files" || normalized === "explorer") {
+      closeAllMobilePanels();
+      openSidebarMobile();
+      syncBackdrop();
+      return;
+    }
+
+    if (normalized === "copilot") {
+      closeAllMobilePanels();
+      openCopilotMobile();
+      syncBackdrop();
+      return;
+    }
+
+    closeAllMobilePanels();
+    openSidebarMobile();
+    syncBackdrop();
+  };
+
+  window.toggleSidebar = function mobileToggleSidebar() {
+    if (!isMobile()) return;
+
+    const sidebar = getSidebar();
+    if (!sidebar) return;
+
+    const willOpen = !sidebar.classList.contains("mobile-open");
+    closeAllMobilePanels();
+    if (willOpen) openSidebarMobile();
+    syncBackdrop();
+  };
+
+  window.toggleCopilotSidebar = function mobileToggleCopilot(force) {
+    if (!isMobile()) return;
+
+    const copilot = getCopilot();
+    if (!copilot) return;
+
+    if (force === true) {
+      closeAllMobilePanels();
+      openCopilotMobile();
+      syncBackdrop();
+      return;
+    }
+
+    if (force === false) {
+      closeCopilotMobile();
+      syncBackdrop();
+      return;
+    }
+
+    const willOpen = !copilot.classList.contains("mobile-open");
+    closeAllMobilePanels();
+    if (willOpen) openCopilotMobile();
+    syncBackdrop();
+  };
+
+  window.toggleSettings = function mobileToggleSettings() {
+    if (!isMobile()) return;
+
+    const settings = getSettings();
+    if (!settings) return;
+
+    const willOpen = !settings.classList.contains("mobile-open");
+    closeAllMobilePanels();
+    if (willOpen) openSettingsMobile();
+    syncBackdrop();
+  };
+
+  window.minimizeCopilot = function mobileMinimizeCopilot() {
+    if (!isMobile()) return;
+    closeCopilotMobile();
+    syncBackdrop();
+  };
+
+  window.minimizeSettings = function mobileMinimizeSettings() {
+    if (!isMobile()) return;
+    closeSettingsMobile();
+    syncBackdrop();
+  };
+
+  /* menu tap behavior */
+  function bindMobileMenus() {
+    qsa(".menu-item").forEach((menu) => {
+      if (menu.dataset.mobileUiBound === "1") return;
+      menu.dataset.mobileUiBound = "1";
+
+      menu.addEventListener("click", (e) => {
+        if (!isMobile()) return;
+
+        const hasDropdown = !!menu.querySelector(".dropdown");
+        const label = String(menu.childNodes[0]?.textContent || "").trim().toLowerCase();
+        const wasActive = menu.classList.contains("active");
+
+        e.stopPropagation();
+
+        closeSidebarMobile();
+        closeCopilotMobile();
+        closeSettingsMobile();
+        closePaletteMobile();
+        closeTerminalMobile();
+
+        qsa(".menu-item").forEach((m) => m.classList.remove("active"));
+
+        if (hasDropdown) {
+          if (!wasActive) menu.classList.add("active");
+          syncBackdrop();
+          return;
+        }
+
+        if (label === "copilot") {
+          openCopilotMobile();
+          syncBackdrop();
+        }
+      });
+    });
+
+    qsa(".dropdown").forEach((drop) => {
+      if (drop.dataset.mobileUiBound === "1") return;
+      drop.dataset.mobileUiBound = "1";
+      drop.addEventListener("click", (e) => {
+        if (!isMobile()) return;
+        e.stopPropagation();
+        setTimeout(syncBackdrop, 20);
+      });
+    });
+  }
+
+  /* close on backdrop tap */
+  backdrop.addEventListener("click", () => {
+    if (!isMobile()) return;
+    closeAllMobilePanels();
   });
 
-  /* ===== SIDEBAR ===== */
-  window.openSidebar = function (type) {
-    closeAll();
+  /* outside click fallback */
+  if (!document.body.dataset.mobileUiOutsideBound) {
+    document.body.dataset.mobileUiOutsideBound = "1";
 
-    if (type === "explorer") {
-      sidebar?.classList.add("mobile-open");
+    document.addEventListener("click", (e) => {
+      if (!isMobile()) return;
+
+      const target = e.target;
+      const clickedMenu = target.closest(".menu-item");
+      const clickedSidebar = target.closest(".sidebar-panel");
+      const clickedCopilot = target.closest("#copilotSidebar");
+      const clickedSettings = target.closest("#settingsPanel");
+      const clickedActivity = target.closest(".activity-icon");
+      const clickedPalette = target.closest("#paletteBox");
+
+      if (!clickedMenu) closeMenus();
+
+      if (
+        getSidebar()?.classList.contains("mobile-open") &&
+        !clickedSidebar &&
+        !clickedActivity
+      ) {
+        closeSidebarMobile();
+      }
+
+      if (
+        getCopilot()?.classList.contains("mobile-open") &&
+        !clickedCopilot &&
+        !target.closest(".copilot-box") &&
+        !target.closest('[onclick*="toggleCopilot"]')
+      ) {
+        closeCopilotMobile();
+      }
+
+      if (
+        getSettings()?.classList.contains("mobile-open") &&
+        !clickedSettings &&
+        !target.closest(".settings-btn")
+      ) {
+        closeSettingsMobile();
+      }
+
+      if (getPalette()?.classList.contains("open") && !clickedPalette && !target.closest("#openPaletteBtn")) {
+        closePaletteMobile();
+      }
+
+      syncBackdrop();
+    });
+  }
+
+  /* bottom nav explicit mapping */
+  function bindActivityBar() {
+    const icons = qsa(".activity-icon");
+    if (!icons.length) return;
+
+    icons.forEach((icon, index) => {
+      if (icon.dataset.mobileUiBound === "1") return;
+      icon.dataset.mobileUiBound = "1";
+
+      icon.addEventListener("click", (e) => {
+        if (!isMobile()) return;
+        e.stopPropagation();
+
+        if (icon.classList.contains("settings-btn")) {
+          window.toggleSettings();
+          return;
+        }
+
+        switch (index) {
+          case 0:
+            window.openSidebar("explorer");
+            break;
+          case 1:
+            window.openSidebar("search");
+            break;
+          case 2:
+            window.openSidebar("git");
+            break;
+          case 3:
+            window.openSidebar("files");
+            break;
+          case 4:
+            window.openSidebar("copilot");
+            break;
+          default:
+            break;
+        }
+      });
+    });
+  }
+
+  /* swipe gestures */
+  function bindSwipeGestures() {
+    if (document.body.dataset.mobileUiSwipeBound === "1") return;
+    document.body.dataset.mobileUiSwipeBound = "1";
+
+    let startX = 0;
+    let startY = 0;
+    let endX = 0;
+    let endY = 0;
+
+    document.addEventListener(
+      "touchstart",
+      (e) => {
+        if (!isMobile()) return;
+        const t = e.changedTouches[0];
+        startX = t.clientX;
+        startY = t.clientY;
+        endX = startX;
+        endY = startY;
+      },
+      { passive: true }
+    );
+
+    document.addEventListener(
+      "touchmove",
+      (e) => {
+        if (!isMobile()) return;
+        const t = e.changedTouches[0];
+        endX = t.clientX;
+        endY = t.clientY;
+      },
+      { passive: true }
+    );
+
+    document.addEventListener("touchend", () => {
+      if (!isMobile()) return;
+
+      const dx = endX - startX;
+      const dy = endY - startY;
+      const absX = Math.abs(dx);
+      const absY = Math.abs(dy);
+
+      if (absX > 70 && absX > absY) {
+        if (startX < 22 && dx > 70) {
+          closeAllMobilePanels();
+          openSidebarMobile();
+          syncBackdrop();
+          return;
+        }
+
+        if (getSidebar()?.classList.contains("mobile-open") && dx < -70) {
+          closeSidebarMobile();
+          syncBackdrop();
+          return;
+        }
+      }
+
+      if (absY > 70 && absY > absX && dy > 70) {
+        if (getCopilot()?.classList.contains("mobile-open")) {
+          closeCopilotMobile();
+        }
+        if (getSettings()?.classList.contains("mobile-open")) {
+          closeSettingsMobile();
+        }
+        syncBackdrop();
+      }
+    });
+  }
+
+  function handleResizeMobile() {
+    if (!isMobile()) {
+      closeAllMobilePanels();
+      hideBackdrop();
+      qsa(".menu-item").forEach((m) => m.classList.remove("active"));
     }
+  }
 
-    if (type === "copilot") {
-      copilot?.classList.add("mobile-open");
-    }
-  };
+  function initRealMobileUi() {
+    bindMobileMenus();
+    bindActivityBar();
+    bindSwipeGestures();
+    handleResizeMobile();
+    syncBackdrop();
+  }
 
-  /* ===== SETTINGS ===== */
-  window.toggleSettings = function () {
-    closeAll();
-    settings?.classList.add("mobile-open");
-  };
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initRealMobileUi);
+  } else {
+    initRealMobileUi();
+  }
 
-  /* ===== COPILOT ===== */
-  window.toggleCopilotSidebar = function () {
-    closeAll();
-    copilot?.classList.add("mobile-open");
-  };
-
-  /* ===== CLICK OUTSIDE ===== */
-  document.addEventListener("click", closeAll);
-
-}
+  window.addEventListener("resize", handleResizeMobile);
+  window.addEventListener("orientationchange", () => {
+    setTimeout(handleResizeMobile, 120);
+  });
+})();
