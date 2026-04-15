@@ -1016,7 +1016,6 @@ function bindMenuEvents() {
     });
   });
 }
-  bindMenuEvents();
 
   /* ==========================================================================
      SIDEBAR FILE EVENTS
