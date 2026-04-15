@@ -3231,140 +3231,39 @@ textarea:-webkit-autofill {
 
 }
 
+/* ================= MOBILE FIX (FINAL) ================= */
 @media (max-width: 768px) {
-  :root {
-    --top-header-h: 46px;
-    --menu-bar-h: 34px;
-    --tabs-h: 40px;
-    --activity-w: 52px;
-    --sidebar-w: 250px;
-  }
 
-  html, body {
-    width: 100%;
-    height: 100%;
-    overflow-x: hidden;
+  body {
     overflow-y: auto;
   }
 
-  .app-shell {
-    min-height: 100vh;
-    height: auto;
-    overflow: visible;
-  }
-
   .vscode-layout {
-    display: flex;
     flex-direction: row;
-    min-height: calc(100vh - var(--top-header-h) - var(--menu-bar-h));
-    height: auto;
-    overflow: visible;
+    overflow: hidden;
   }
 
-  .top-header {
-    height: var(--top-header-h);
-    gap: 10px;
-    padding: 0 10px;
-  }
-
-  .header-feedback,
-  .header-spacer,
-  .trigger-right {
-    display: none !important;
-  }
-
-  .header-command-trigger {
-    max-width: none;
-    min-width: 0;
-    height: 30px;
-    padding: 0 8px;
-  }
-
-  .trigger-text {
-    font-size: 11px;
-  }
-
-  .menu-bar {
-    height: var(--menu-bar-h);
-    padding: 0 6px;
-    overflow-x: auto;
-    overflow-y: visible;
-    white-space: nowrap;
-    z-index: 3000;
-  }
-
-  .menu-item {
-    flex: 0 0 auto;
-    padding: 0 10px;
-    font-size: 12px;
-    position: relative;
-  }
-
-  .dropdown {
-    top: calc(100% + 4px);
-    left: 0;
-    min-width: 190px;
-    max-width: 86vw;
-    z-index: 5000;
-  }
-
-  /* keep navigation on the LEFT on mobile */
+  /* 🔹 ACTIVITY BAR (LEFT ALWAYS) */
   .activity-bar {
     position: fixed;
-    top: calc(var(--top-header-h) + var(--menu-bar-h));
     left: 0;
+    top: 70px;
     bottom: 0;
-    width: var(--activity-w);
-    height: auto;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center;
-    justify-content: flex-start;
-    padding-top: 6px;
-    background: var(--bg-activity);
-    border-right: 1px solid var(--line);
-    border-top: none;
-    z-index: 3100;
+    width: 52px;
+    z-index: 2000;
   }
 
-  .activity-icon {
-    width: 100%;
-    height: 48px;
-    font-size: 22px;
-  }
-
-  .activity-icon::before {
-    display: block;
-  }
-
-  .activity-bottom {
-    margin-top: auto;
-    width: 100%;
-    padding-bottom: 6px;
-    display: block !important;
-  }
-
-  .settings-btn {
-    display: grid !important;
-    place-items: center;
-  }
-
-  /* sidebar drawer separate from copilot */
+  /* 🔹 SIDEBAR (DRAWER FIX) */
   .sidebar-panel {
-    position: fixed !important;
-    top: calc(var(--top-header-h) + var(--menu-bar-h));
-    left: var(--activity-w);
-    width: var(--sidebar-w);
-    min-width: var(--sidebar-w);
-    max-width: var(--sidebar-w);
-    height: calc(100vh - var(--top-header-h) - var(--menu-bar-h));
-    display: flex !important;
+    position: fixed;
+    top: 70px;
+    left: 52px;
+    width: 240px;
+    height: calc(100vh - 70px);
     transform: translateX(-100%);
-    opacity: 1 !important;
-    border-right: 1px solid var(--line);
-    box-shadow: 18px 0 40px rgba(0,0,0,.45);
-    transition: transform .24s ease;
-    z-index: 3200;
+    transition: transform 0.25s ease;
+    z-index: 2100;
+    display: flex !important;
   }
 
   .sidebar-panel.show {
@@ -3373,152 +3272,54 @@ textarea:-webkit-autofill {
 
   .sidebar-panel.hide {
     transform: translateX(-100%);
-    width: var(--sidebar-w);
-    min-width: var(--sidebar-w);
-    opacity: 1;
-    border-right: 1px solid var(--line);
   }
 
-  .file {
-    min-height: 42px;
-    font-size: 14px;
+  /* 🔹 EDITOR */
+  .editor-area {
+    margin-left: 52px;
+    width: calc(100% - 52px);
   }
 
-  .editor-area,
-  .editor-area.with-copilot {
-    width: 100%;
-    margin-left: var(--activity-w) !important;
-    margin-right: 0 !important;
-    min-height: calc(100vh - var(--top-header-h) - var(--menu-bar-h));
-    overflow: visible;
+  /* 🔹 FIX MENU DROPDOWN */
+  .dropdown {
+    z-index: 9999 !important;
   }
 
-  .editor-tabs {
-    height: var(--tabs-h);
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-
-  .tab {
-    min-width: 112px;
-    max-width: 170px;
-    padding: 0 10px;
-  }
-
-  .tab-label {
-    font-size: 12px;
-  }
-
-  .editor-content {
-    padding: 16px 14px 32px;
-    overflow-x: hidden;
-    overflow-y: auto;
-  }
-
-  .home-grid {
-    display: flex !important;
-    flex-direction: column;
-    gap: 22px;
-    align-items: center;
-  }
-
-  .home-right {
-    order: -1;
-  }
-
-  .profile-wrapper {
-    width: 240px;
-    height: 300px;
-  }
-
-  .hero-name {
-    font-size: 44px;
-    line-height: .95;
-    text-align: center;
-  }
-
-  .hero-desc,
-  .code-line {
-    text-align: center;
-  }
-
-  .roles {
-    justify-content: center;
-    gap: 8px;
-  }
-
-  .project-grid,
-  .focus-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  /* copilot stays separate as a right/overlay panel, not bottom */
+  /* 🔹 COPILOT (BOTTOM SHEET) */
   .copilot-sidebar {
     position: fixed !important;
-    top: calc(var(--top-header-h) + var(--menu-bar-h));
-    right: 0;
-    left: auto;
     bottom: 0;
-    width: min(88vw, 360px) !important;
-    height: calc(100vh - var(--top-header-h) - var(--menu-bar-h));
-    border-left: 1px solid var(--line);
-    border-top: none;
-    border-radius: 0;
-    transform: translateX(100%);
-    transition: transform .24s ease;
-    z-index: 3300;
-    overflow: hidden;
+    left: 0;
+    width: 100%;
+    height: 60vh;
+    border-radius: 16px 16px 0 0;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+    z-index: 1500;
   }
 
   .copilot-sidebar.open {
-    transform: translateX(0);
-  }
-
-  .copilot-side-header,
-  .copilot-workspace-row,
-  .copilot-side-hero,
-  .copilot-suggest-grid,
-  .copilot-side-messages,
-  .copilot-side-input-wrap {
-    padding-left: 14px;
-    padding-right: 14px;
-  }
-
-  .copilot-suggest-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-  }
-
-  .copilot-suggest {
-    font-size: 11px;
-    padding: 10px 8px;
-  }
-
-  .settings-panel {
-    position: fixed !important;
-    left: 72px;
-    right: 10px;
-    bottom: 10px;
-    width: auto;
-    max-height: 60vh;
-    display: block !important;
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(14px);
-    z-index: 3400;
-  }
-
-  .settings-panel.open {
-    opacity: 1;
-    pointer-events: auto;
     transform: translateY(0);
   }
 
-  .terminal-panel {
-    left: var(--activity-w);
-    right: 0;
-    bottom: 0;
-    height: 40vh;
-    z-index: 3350;
+  /* 🔹 SETTINGS PANEL FIX */
+  .settings-panel {
+    left: 10px !important;
+    right: 10px !important;
+    width: auto !important;
+    bottom: 80px;
+    z-index: 3000;
   }
+
+  /* 🔹 TEXT SCALING */
+  .hero-name {
+    font-size: 42px;
+    text-align: center;
+  }
+
+  .home-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+
 }
