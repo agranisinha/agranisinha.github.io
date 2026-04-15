@@ -1498,33 +1498,31 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function startVoiceAssistant() {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    const chatInput = document.getElementById("copilotInput");
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const chatInput = document.getElementById("copilotInput");
 
-    if (!SpeechRecognition) {
-      appendCopilotMessage("Voice assistant is not supported in this browser.", "assistant");
-      return;
-    }
-
-    const recognition = new SpeechRecognition();
-    recognition.lang = "en-US";
-    recognition.interimResults = false;
-    recognition.maxAlternatives = 1;
-
-    recognition.onresult = (event) => {
-      const text = event.results[0][0].transcript;
-      if (chatInput) {
-        chatInput.value = text;
-      }
-      sendCopilotPrompt();
-    };
-
-    recognition.onerror = () => {
-      appendCopilotMessage("I couldn't catch that. Please try again.", "assistant");
-    };
-
-    recognition.start();
+  if (!SpeechRecognition) {
+    appendCopilotMessage("Voice assistant not supported in this browser.", "assistant");
+    return;
   }
+
+  const recognition = new SpeechRecognition();
+  recognition.lang = "en-US";
+
+  recognition.start();
+
+  recognition.onresult = (event) => {
+    const text = event.results[0][0].transcript;
+    if (chatInput) {
+      chatInput.value = text;
+    }
+    sendCopilotPrompt(); // auto send
+  };
+
+  recognition.onerror = () => {
+    appendCopilotMessage("Voice input failed. Try again.", "assistant");
+  };
+}
 
   function bindCopilotEvents() {
     const chatInput = document.getElementById("copilotInput");
