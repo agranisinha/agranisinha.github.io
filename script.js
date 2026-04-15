@@ -1972,22 +1972,22 @@ function getReadme() {
 function minimizeCopilot() {
   const sidebar = document.getElementById("copilotSidebar");
   const editor = document.querySelector(".editor-area");
+  if (!sidebar) return;
 
   const isMinimized = sidebar.classList.contains("minimized");
 
   if (!isMinimized) {
-    // 👇 minimize to bottom
     sidebar.classList.add("minimized");
-    sidebar.classList.remove("open");
+    sidebar.classList.add("open");
     editor && editor.classList.remove("with-copilot");
+    isCopilotOpen = true;
   } else {
-    // 👆 restore
     sidebar.classList.remove("minimized");
     sidebar.classList.add("open");
     editor && editor.classList.add("with-copilot");
+    isCopilotOpen = true;
   }
 }
-
 function getResume() {
   return `
     <div class="about-container">
