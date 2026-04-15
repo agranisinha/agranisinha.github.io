@@ -3231,19 +3231,22 @@ textarea:-webkit-autofill {
 
 }
 
-/* ================= MOBILE FIX (FINAL) ================= */
+/* ======================================================
+   🔥 FINAL MOBILE VERSION (STABLE)
+====================================================== */
 @media (max-width: 768px) {
 
   body {
     overflow-y: auto;
+    overflow-x: hidden;
   }
 
   .vscode-layout {
+    display: flex;
     flex-direction: row;
-    overflow: hidden;
   }
 
-  /* 🔹 ACTIVITY BAR (LEFT ALWAYS) */
+  /* ===== ACTIVITY BAR ===== */
   .activity-bar {
     position: fixed;
     left: 0;
@@ -3253,13 +3256,18 @@ textarea:-webkit-autofill {
     z-index: 2000;
   }
 
-  /* 🔹 SIDEBAR (DRAWER FIX) */
+  .activity-icon {
+    height: 50px;
+  }
+
+  /* ===== SIDEBAR ===== */
   .sidebar-panel {
     position: fixed;
     top: 70px;
     left: 52px;
     width: 240px;
     height: calc(100vh - 70px);
+    background: var(--bg-sidebar);
     transform: translateX(-100%);
     transition: transform 0.25s ease;
     z-index: 2100;
@@ -3270,22 +3278,47 @@ textarea:-webkit-autofill {
     transform: translateX(0);
   }
 
-  .sidebar-panel.hide {
-    transform: translateX(-100%);
-  }
-
-  /* 🔹 EDITOR */
+  /* ===== EDITOR ===== */
   .editor-area {
     margin-left: 52px;
     width: calc(100% - 52px);
   }
 
-  /* 🔹 FIX MENU DROPDOWN */
-  .dropdown {
-    z-index: 9999 !important;
+  /* ===== MENU ===== */
+  .menu-bar {
+    overflow-x: auto;
+    white-space: nowrap;
+    z-index: 3000;
   }
 
-  /* 🔹 COPILOT (BOTTOM SHEET) */
+  .dropdown {
+    position: absolute;
+    z-index: 4000 !important;
+  }
+
+  /* ===== COMMAND PALETTE ===== */
+  .command-palette {
+    z-index: 6000 !important;
+  }
+
+  .command-palette:not(.open) {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* ===== SETTINGS ===== */
+  .settings-panel {
+    position: fixed !important;
+    left: 10px !important;
+    right: 10px !important;
+    bottom: 80px;
+    width: auto !important;
+    max-height: 60vh;
+    overflow-y: auto;
+    z-index: 5000;
+  }
+
+  /* ===== COPILOT ===== */
   .copilot-sidebar {
     position: fixed !important;
     bottom: 0;
@@ -3295,23 +3328,14 @@ textarea:-webkit-autofill {
     border-radius: 16px 16px 0 0;
     transform: translateY(100%);
     transition: transform 0.3s ease;
-    z-index: 1500;
+    z-index: 5500;
   }
 
   .copilot-sidebar.open {
     transform: translateY(0);
   }
 
-  /* 🔹 SETTINGS PANEL FIX */
-  .settings-panel {
-    left: 10px !important;
-    right: 10px !important;
-    width: auto !important;
-    bottom: 80px;
-    z-index: 3000;
-  }
-
-  /* 🔹 TEXT SCALING */
+  /* ===== TEXT FIX ===== */
   .hero-name {
     font-size: 42px;
     text-align: center;
