@@ -1560,21 +1560,21 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   bindCopilotEvents();
-
+   const copilotSidebarEl = document.getElementById("copilotSidebar");
+   
+   if (copilotSidebarEl) {
+     copilotSidebarEl.addEventListener("click", (e) => {
+       if (copilotSidebarEl.classList.contains("minimized")) {
+         minimizeCopilot();
+       }
+     });
+   }
 
   window.quickAsk = quickAsk;
   window.sendCopilotPrompt = sendCopilotPrompt;
   window.startVoiceAssistant = startVoiceAssistant;
 
-   const copilotSidebarEl = document.getElementById("copilotSidebar");
 
-      if (copilotSidebarEl) {
-        copilotSidebarEl.addEventListener("click", (e) => {
-          if (copilotSidebarEl.classList.contains("minimized")) {
-            minimizeCopilot();
-          }
-        });
-      }
   /* ==========================================================================
      RESPONSIVE HELPERS
      ========================================================================== */
