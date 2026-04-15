@@ -1355,31 +1355,35 @@ document.addEventListener("DOMContentLoaded", () => {
      COPILOT ENGINE
      ========================================================================== */
 
-  function appendCopilotMessage(text, role = "assistant") {
-    const chatBody = document.getElementById("copilotMessages");
-    if (!chatBody) return;
+ function appendCopilotMessage(text, sender = "assistant") {
+  const container = document.getElementById("copilotMessages");
 
-    const msg = document.createElement("div");
-    msg.className = `copilot-message ${role}`;
-    chatBody.appendChild(msg);
+  const msg = document.createElement("div");
+  msg.className = `copilot-message ${sender}`;
 
-    if (role === "assistant") {
-      let i = 0;
-      function type() {
-        if (i < text.length) {
-          msg.textContent += text.charAt(i);
-          i += 1;
-          chatBody.scrollTop = chatBody.scrollHeight;
-          setTimeout(type, 10);
-        }
-      }
-      type();
+  container.appendChild(msg);
+
+  // USER message (no typing animation)
+  if (sender === "user") {
+    msg.textContent = text;
+    container.scrollTop = container.scrollHeight;
+    return;
+  }
+
+  // ✨ Typing animation for assistant
+  let i = 0;
+  function type() {
+    if (i < text.length) {
+      msg.textContent += text.charAt(i);
+      i++;
+      setTimeout(type, 15); // speed (lower = faster)
     } else {
-      msg.textContent = text;
-      chatBody.scrollTop = chatBody.scrollHeight;
+      container.scrollTop = container.scrollHeight;
     }
   }
 
+  type();
+}
    function smartNavigate(query) {
   query = query.toLowerCase();
 
