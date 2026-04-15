@@ -3085,10 +3085,26 @@ textarea:-webkit-autofill {
   width: 60px;
 }
 
-.copilot-sidebar.minimized *:not(.copilot-side-header) {
+.copilot-sidebar.minimized .copilot-side-hero,
+.copilot-sidebar.minimized .copilot-suggest-grid,
+.copilot-sidebar.minimized .copilot-side-messages,
+.copilot-sidebar.minimized .copilot-side-input-wrap {
   display: none;
 }
 
+.copilot-side-minimize {
+  background: transparent;
+  border: none;
+  color: #aaa;
+  font-size: 18px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.copilot-side-minimize:hover {
+  color: white;
+  transform: scale(1.1);
+}
 /* ========================================================================== */
 /*                              END OF FILE                                   */
 /* ========================================================================== */
