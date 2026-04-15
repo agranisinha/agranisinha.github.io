@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
     projects: "🟨 projects.js",
     skills: "🟩 skills.json",
     experience: "🟦 experience.ts",
-    lor: "📜 lor.pdf"
+    lor: "📜 lor.pdf",
     contact: "🎨 contact.css",
     readme: "📄 README.md",
     resume: "📕 Resume.pdf"
@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "projects",
     "skills",
     "experience",
-     "lor"
+     "lor",
     "contact",
     "readme",
     "resume"
