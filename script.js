@@ -2121,137 +2121,71 @@ function getResume() {
   `;
 }
 
-/* ================= PREMIUM MOBILE JS ================= */
-
+/* ================= HARD MOBILE OVERRIDE ================= */
 (function () {
 
-  const isMobile = () => window.innerWidth <= 768;
+  if (window.innerWidth > 768) return;
+
+  console.log("🔥 Mobile override active");
 
   const qs = s => document.querySelector(s);
   const qsa = s => document.querySelectorAll(s);
 
-  /* ===== CREATE BACKDROP ===== */
-  const backdrop = document.createElement("div");
-  backdrop.className = "mobile-backdrop";
-  document.body.appendChild(backdrop);
+  const sidebar = qs(".sidebar-panel");
+  const copilot = qs("#copilotSidebar");
+  const settings = qs("#settingsPanel");
 
   function closeAll() {
-    qs(".sidebar-panel")?.classList.remove("open");
-    qs("#copilotSidebar")?.classList.remove("open");
-    qs("#settingsPanel")?.classList.remove("open");
-    backdrop.classList.remove("show");
-  }
-
-  backdrop.addEventListener("click", closeAll);
-
-  /* ===== SIDEBAR ===== */
-  window.toggleSidebar = function () {
-    if (!isMobile()) return;
-
-    const sidebar = qs(".sidebar-panel");
-
-    if (!sidebar) return;
-
-    const open = sidebar.classList.contains("open");
-
-    closeAll();
-
-    if (!open) {
-      sidebar.classList.add("open");
-      backdrop.classList.add("show");
-    }
-  };
-
-  /* ===== COPILOT ===== */
-  window.toggleCopilotSidebar = function () {
-    if (!isMobile()) return;
-
-    const copilot = qs("#copilotSidebar");
-
-    if (!copilot) return;
-
-    const open = copilot.classList.contains("open");
-
-    closeAll();
-
-    if (!open) {
-      copilot.classList.add("open");
-      backdrop.classList.add("show");
-    }
-  };
-
-  /* ===== SETTINGS ===== */
-  window.toggleSettings = function () {
-    if (!isMobile()) return;
-
-    const panel = qs("#settingsPanel");
-
-    if (!panel) return;
-
-    const open = panel.classList.contains("open");
-
-    closeAll();
-
-    if (!open) {
-      panel.classList.add("open");
-      backdrop.classList.add("show");
-    }
-  };
-
-  /* ===== MENU FIX ===== */
-  qsa(".menu-item").forEach(menu => {
-    menu.addEventListener("click", (e) => {
-      if (!isMobile()) return;
-
-      e.stopPropagation();
-
-      const isActive = menu.classList.contains("active");
-
-      qsa(".menu-item").forEach(m => m.classList.remove("active"));
-
-      if (!isActive) {
-        menu.classList.add("active");
-      }
-    });
-  });
-
-  document.addEventListener("click", () => {
-    if (!isMobile()) return;
+    sidebar?.classList.remove("mobile-open");
+    copilot?.classList.remove("mobile-open");
+    settings?.classList.remove("mobile-open");
 
     qsa(".menu-item").forEach(m => m.classList.remove("active"));
-  });
+  }
 
-  /* ===== BOTTOM ICON ACTIONS ===== */
-  qsa(".activity-icon").forEach((icon, index) => {
-    icon.addEventListener("click", () => {
+  /* ===== FIX MENU (FILE / EDIT / VIEW) ===== */
+  qsa(".menu-item").forEach(menu => {
+    menu.onclick = function (e) {
+      e.stopPropagation();
 
-      switch(index) {
-        case 0: toggleSidebar(); break;   // 📁
-        case 4: toggleCopilotSidebar(); break; // ✨
-        case 5: toggleSettings(); break;  // ⚙️
+      const isOpen = menu.classList.contains("active");
+
+      closeAll();
+
+      if (!isOpen) {
+        menu.classList.add("active");
       }
-
-    });
+    };
   });
 
-  /* ===== SWIPE SIDEBAR ===== */
-  let startX = 0;
-
-  document.addEventListener("touchstart", e => {
-    startX = e.touches[0].clientX;
+  /* ===== CLICK OUTSIDE ===== */
+  document.addEventListener("click", () => {
+    closeAll();
   });
 
-  document.addEventListener("touchend", e => {
-    let endX = e.changedTouches[0].clientX;
+  /* ===== FIX BOTTOM ICONS ===== */
+  qsa(".activity-icon").forEach((icon, i) => {
+    icon.onclick = function () {
 
-    if (startX < 20 && endX > 120) {
-      toggleSidebar(); // swipe right → open
-    }
+      closeAll();
 
-    if (startX > 200 && endX < 100) {
-      qs(".sidebar-panel")?.classList.remove("open");
-      backdrop.classList.remove("show");
-    }
+      if (i === 0) sidebar?.classList.add("mobile-open");     // 📁
+      if (i === 4) copilot?.classList.add("mobile-open");     // ✨
+      if (i === 5) settings?.classList.add("mobile-open");    // ⚙️
+
+    };
   });
+
+  /* ===== FIX TOP MENU COPILOT ===== */
+  const copilotBtn = Array.from(qsa(".menu-item"))
+    .find(el => el.innerText.includes("Copilot"));
+
+  if (copilotBtn) {
+    copilotBtn.onclick = function (e) {
+      e.stopPropagation();
+      closeAll();
+      copilot?.classList.add("mobile-open");
+    };
+  }
 
 })();
