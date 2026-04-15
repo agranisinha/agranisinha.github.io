@@ -3067,6 +3067,27 @@ textarea:-webkit-autofill {
   transform: translateX(0) !important;
 }
 
+.copilot-side-close {
+  background: transparent;
+  border: none;
+  color: #aaa;
+  font-size: 18px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.copilot-side-close:hover {
+  color: white;
+  transform: scale(1.1);
+}
+
+.copilot-sidebar.minimized {
+  width: 60px;
+}
+
+.copilot-sidebar.minimized *:not(.copilot-side-header) {
+  display: none;
+}
 
 /* ========================================================================== */
 /*                              END OF FILE                                   */
