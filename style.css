@@ -3231,35 +3231,38 @@ textarea:-webkit-autofill {
 
 }
 
-/* ===== FORCE SETTINGS BUTTON VISIBLE ON MOBILE ===== */
+/* ===== FINAL SETTINGS FIX (VISIBLE + MOBILE FRIENDLY) ===== */
+
+.settings-panel {
+  display: block !important;   /* override hidden */
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  z-index: 2000;
+}
+
+/* SHOW STATE */
+.settings-panel.open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* ===== MOBILE POSITION ===== */
 @media (max-width: 768px) {
-
-  .activity-bar {
-    display: flex !important;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 55px;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    background: var(--bg-activity);
-    border-top: 1px solid var(--line);
-    z-index: 999;
+  .settings-panel {
+    position: fixed !important;
+    left: 10px;
+    right: 10px;
+    bottom: 70px; /* above bottom nav */
+    top: auto;
+    width: auto;
+    max-height: 70vh;
+    overflow-y: auto;
+    border-radius: 14px;
+    box-shadow: 0 -10px 40px rgba(0,0,0,0.6);
   }
-
-  .activity-bottom {
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .settings-btn {
-    font-size: 22px;
-    color: var(--text-strong);
-  }
-
 }
 /* ========================================================================== */
 /*                              END OF FILE                                   */
