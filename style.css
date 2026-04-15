@@ -3081,25 +3081,50 @@ textarea:-webkit-autofill {
   transform: scale(1.1);
 }
 
+/* ================= MINIMIZE TO BOTTOM ================= */
+
 .copilot-sidebar.minimized {
-  width: 70px !important;
-  overflow: hidden;
+  position: fixed;
+  bottom: 0;
+  right: 20px;
+
+  width: 260px;
+  height: 50px;
+
+  border-radius: 12px 12px 0 0;
+
+  transform: none !important;
+  opacity: 1 !important;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(135deg, #7c4dff, #5c6bc0);
+  color: white;
+
+  cursor: pointer;
+  z-index: 9999;
 }
 
-/* Hide everything except header */
-.copilot-sidebar.minimized .copilot-workspace-row,
-.copilot-sidebar.minimized .copilot-side-hero,
-.copilot-sidebar.minimized .copilot-suggest-grid,
-.copilot-sidebar.minimized .copilot-side-messages,
-.copilot-sidebar.minimized .copilot-side-input-wrap {
+/* Hide all inner content */
+.copilot-sidebar.minimized *:not(.copilot-side-header) {
   display: none !important;
 }
 
-/* Center header */
+/* Header becomes dock title */
 .copilot-sidebar.minimized .copilot-side-header {
+  display: flex !important;
   justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
+/* Title style */
+.copilot-sidebar.minimized .copilot-side-title {
+  font-size: 14px;
+  color: white;
+}
 .copilot-side-minimize {
   background: transparent;
   border: none;
