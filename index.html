@@ -46,21 +46,25 @@
     <!-- ================= MENU BAR ================= -->
     <div class="menu-bar">
       <div class="menu-item">
-        File
-        <div class="dropdown">
-          <div onclick="openTab('home')">New File</div>
-          <div onclick="openPalette()">Open File...</div>
-          <hr />
-          <div onclick="openTab('home')">home.tsx</div>
-          <div onclick="openTab('about')">about.html</div>
-          <div onclick="openTab('projects')">projects.js</div>
-          <div onclick="openTab('skills')">skills.json</div>
-          <div onclick="openTab('experience')">experience.ts</div>
-          <div onclick="openTab('contact')">contact.css</div>
-          <hr />
-          <div onclick="openTab('resume')">Resume.pdf</div>
+          File
+          <div class="dropdown">
+            <div onclick="openTab('home')">New Tab <span style="margin-left:auto;opacity:.6;">Ctrl+T</span></div>
+            <div onclick="openPalette()">Open File... <span style="margin-left:auto;opacity:.6;">Ctrl+P</span></div>
+            <hr />
+            <div onclick="closeCurrentTab()">Close Tab <span style="margin-left:auto;opacity:.6;">Ctrl+W</span></div>
+            <div onclick="closeOtherTabs()">Close Other Tabs</div>
+            <div onclick="closeAllTabs()">Close All Tabs</div>
+            <hr />
+            <div onclick="openTab('home')">home.tsx</div>
+            <div onclick="openTab('about')">about.html</div>
+            <div onclick="openTab('projects')">projects.js</div>
+            <div onclick="openTab('skills')">skills.json</div>
+            <div onclick="openTab('experience')">experience.ts</div>
+            <div onclick="openTab('contact')">contact.css</div>
+            <hr />
+            <div onclick="downloadResume()">Download Resume</div>
+          </div>
         </div>
-      </div>
 
       <div class="menu-item">
         Edit
