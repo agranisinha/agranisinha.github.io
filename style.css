@@ -3082,14 +3082,22 @@ textarea:-webkit-autofill {
 }
 
 .copilot-sidebar.minimized {
-  width: 60px;
+  width: 70px !important;
+  overflow: hidden;
 }
 
+/* Hide everything except header */
+.copilot-sidebar.minimized .copilot-workspace-row,
 .copilot-sidebar.minimized .copilot-side-hero,
 .copilot-sidebar.minimized .copilot-suggest-grid,
 .copilot-sidebar.minimized .copilot-side-messages,
 .copilot-sidebar.minimized .copilot-side-input-wrap {
-  display: none;
+  display: none !important;
+}
+
+/* Center header */
+.copilot-sidebar.minimized .copilot-side-header {
+  justify-content: center;
 }
 
 .copilot-side-minimize {
