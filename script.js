@@ -1601,6 +1601,18 @@ function bindCopilotEvents() {
         });
       }
 
+      const settingsPanelEl = document.getElementById("settingsPanel");
+      
+      if (settingsPanelEl) {
+        settingsPanelEl.addEventListener("click", (e) => {
+          if (
+            settingsPanelEl.classList.contains("minimized") &&
+            !e.target.closest("button")
+          ) {
+            minimizeSettings();
+          }
+        });
+      }
   window.quickAsk = quickAsk;
   window.sendCopilotPrompt = sendCopilotPrompt;
   window.startVoiceAssistant = startVoiceAssistant;
