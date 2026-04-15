@@ -890,6 +890,11 @@ a:hover ~ .cursor-square {
   overflow: hidden;
 }
 
+.editor-area.with-copilot {
+  margin-right: 380px;
+  transition: margin-right 0.3s ease;
+}
+
 .editor-tabs {
   height: var(--tabs-h);
   display: flex;
@@ -1842,6 +1847,26 @@ a:hover ~ .cursor-square {
 /* ========================================================================== */
 /*                                  COPILOT                                   */
 /* ========================================================================== */
+
+/* ================= RIGHT SIDE COPILOT PANEL ================= */
+
+.copilot-sidebar {
+  position: fixed;
+  top: calc(var(--top-header-h) + var(--menu-bar-h));
+  right: 0;
+  width: 380px;
+  height: calc(100vh - var(--top-header-h) - var(--menu-bar-h));
+  background: var(--bg-copilot);
+  border-left: 1px solid var(--line);
+  box-shadow: -10px 0 40px rgba(0,0,0,0.4);
+  display: flex;
+  flex-direction: column;
+  z-index: 40;
+
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+}
+
 .copilot-card {
   margin-top: 20px;
   min-height: calc(100vh - 220px);
@@ -2446,6 +2471,13 @@ textarea:-webkit-autofill {
     max-width: 90%;
   }
 }
+.copilot-sidebar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 10%, rgba(124,77,255,0.2), transparent 40%);
+  pointer-events: none;
+}
 
 /* ========================================================================== */
 /*                               RESPONSIVE SMALL                             */
@@ -2461,6 +2493,14 @@ textarea:-webkit-autofill {
   .menu-bar {
     overflow-x: auto;
     white-space: nowrap;
+  }
+  
+  .copilot-sidebar {
+  width: 100%;
+  }
+  
+  .editor-area.with-copilot {
+    margin-right: 0;
   }
 
   .menu-item {
