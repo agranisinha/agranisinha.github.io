@@ -1960,7 +1960,16 @@ function getReadme() {
 
 function minimizeCopilot() {
   const sidebar = document.getElementById("copilotSidebar");
+  const editor = document.querySelector(".editor-area");
+
   sidebar.classList.toggle("minimized");
+
+  // Fix editor shifting
+  if (sidebar.classList.contains("minimized")) {
+    editor.classList.remove("with-copilot");
+  } else {
+    editor.classList.add("with-copilot");
+  }
 }
 
 function getResume() {
