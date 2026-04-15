@@ -2121,36 +2121,68 @@ function getResume() {
   `;
 }
 
-/* =========================================
-   COMPLETE MOBILE + DESKTOP LOGIC
-========================================= */
+/* ===== CLEAN SYSTEM ===== */
 
 const sidebar = document.querySelector(".sidebar-panel");
 const copilot = document.querySelector(".copilot-sidebar");
 const settingsPanel = document.getElementById("settingsPanel");
 
 /* ===== SIDEBAR ===== */
-window.openSidebar = function (type) {
+window.openSidebar = function(type) {
   if (type === "copilot") {
     toggleCopilot();
     return;
   }
-
   sidebar?.classList.add("show");
 };
 
-window.toggleSidebar = function () {
+window.toggleSidebar = function() {
   sidebar?.classList.toggle("show");
 };
 
-/* ===== SWIPE GESTURE ===== */
+/* ===== MENU ===== */
+document.querySelectorAll(".menu-item").forEach(menu => {
+  menu.addEventListener("click", (e) => {
+    e.stopPropagation();
+
+    const isActive = menu.classList.contains("active");
+
+    document.querySelectorAll(".menu-item")
+      .forEach(m => m.classList.remove("active"));
+
+    if (!isActive) menu.classList.add("active");
+  });
+});
+
+document.addEventListener("click", () => {
+  document.querySelectorAll(".menu-item")
+    .forEach(m => m.classList.remove("active"));
+});
+
+/* ===== COPILOT ===== */
+window.toggleCopilot = function() {
+  copilot?.classList.toggle("open");
+};
+
+/* ===== SETTINGS ===== */
+window.toggleSettings = function() {
+  settingsPanel?.classList.toggle("open");
+};
+
+/* ===== CLOSE BUTTON ===== */
+document.querySelector(".dot.red")?.addEventListener("click", () => {
+  sidebar?.classList.remove("show");
+  copilot?.classList.remove("open");
+});
+
+/* ===== SWIPE ===== */
 let startX = 0;
 
-document.addEventListener("touchstart", (e) => {
+document.addEventListener("touchstart", e => {
   startX = e.touches[0].clientX;
 });
 
-document.addEventListener("touchend", (e) => {
+document.addEventListener("touchend", e => {
   let endX = e.changedTouches[0].clientX;
 
   if (startX < 50 && endX - startX > 80) {
@@ -2162,81 +2194,4 @@ document.addEventListener("touchend", (e) => {
   }
 });
 
-/* ===== MENU (VS CODE STYLE) ===== */
-function bindMenuEvents() {
-  const menus = document.querySelectorAll(".menu-item");
 
-  menus.forEach(menu => {
-    menu.addEventListener("click", (e) => {
-      e.stopPropagation();
-
-      const isActive = menu.classList.contains("active");
-
-      menus.forEach(m => m.classList.remove("active"));
-
-      if (!isActive) {
-        menu.classList.add("active");
-      }
-    });
-  });
-
-  document.addEventListener("click", () => {
-    menus.forEach(m => m.classList.remove("active"));
-  });
-
-  document.querySelectorAll(".dropdown").forEach(drop => {
-    drop.addEventListener("click", (e) => e.stopPropagation());
-  });
-}
-
-bindMenuEvents();
-
-/* ===== COPILOT ===== */
-window.toggleCopilot = function () {
-  copilot?.classList.toggle("open");
-};
-
-/* ===== SETTINGS ===== */
-window.toggleSettings = function () {
-  settingsPanel?.classList.toggle("open");
-};
-
-/* ===== CLOSE ON OUTSIDE CLICK ===== */
-document.addEventListener("click", (e) => {
-
-  if (
-    sidebar?.classList.contains("show") &&
-    !sidebar.contains(e.target) &&
-    !e.target.closest(".activity-icon")
-  ) {
-    sidebar.classList.remove("show");
-  }
-
-  if (
-    settingsPanel?.classList.contains("open") &&
-    !settingsPanel.contains(e.target) &&
-    !e.target.closest(".settings-btn")
-  ) {
-    settingsPanel.classList.remove("open");
-  }
-
-});
-
-/* ===== RED BUTTON ===== */
-document.querySelector(".dot.red")?.addEventListener("click", () => {
-  sidebar?.classList.remove("show");
-  copilot?.classList.remove("open");
-});
-
-/* ===== SMALL UX ===== */
-const observer = new MutationObserver(() => {
-  if (copilot?.classList.contains("open")) {
-    document.body.style.overflow = "hidden";
-  } else {
-    document.body.style.overflow = "";
-  }
-});
-
-if (copilot) {
-  observer.observe(copilot, { attributes: true });
-}
