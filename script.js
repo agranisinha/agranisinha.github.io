@@ -2121,71 +2121,60 @@ function getResume() {
   `;
 }
 
-/* ================= HARD MOBILE OVERRIDE ================= */
-(function () {
+/* ================= MOBILE CONTROL FIX ================= */
+if (window.innerWidth <= 768) {
 
-  if (window.innerWidth > 768) return;
-
-  console.log("🔥 Mobile override active");
-
-  const qs = s => document.querySelector(s);
-  const qsa = s => document.querySelectorAll(s);
-
-  const sidebar = qs(".sidebar-panel");
-  const copilot = qs("#copilotSidebar");
-  const settings = qs("#settingsPanel");
+  const sidebar = document.getElementById("sidebarPanel");
+  const copilot = document.getElementById("copilotSidebar");
+  const settings = document.getElementById("settingsPanel");
 
   function closeAll() {
     sidebar?.classList.remove("mobile-open");
     copilot?.classList.remove("mobile-open");
     settings?.classList.remove("mobile-open");
 
-    qsa(".menu-item").forEach(m => m.classList.remove("active"));
+    document.querySelectorAll(".menu-item")
+      .forEach(m => m.classList.remove("active"));
   }
 
-  /* ===== FIX MENU (FILE / EDIT / VIEW) ===== */
-  qsa(".menu-item").forEach(menu => {
+  /* ===== MENU FIX ===== */
+  document.querySelectorAll(".menu-item").forEach(menu => {
     menu.onclick = function (e) {
       e.stopPropagation();
 
-      const isOpen = menu.classList.contains("active");
-
+      const open = menu.classList.contains("active");
       closeAll();
 
-      if (!isOpen) {
-        menu.classList.add("active");
-      }
+      if (!open) menu.classList.add("active");
     };
   });
+
+  /* ===== SIDEBAR ===== */
+  window.openSidebar = function (type) {
+    closeAll();
+
+    if (type === "explorer") {
+      sidebar?.classList.add("mobile-open");
+    }
+
+    if (type === "copilot") {
+      copilot?.classList.add("mobile-open");
+    }
+  };
+
+  /* ===== SETTINGS ===== */
+  window.toggleSettings = function () {
+    closeAll();
+    settings?.classList.add("mobile-open");
+  };
+
+  /* ===== COPILOT ===== */
+  window.toggleCopilotSidebar = function () {
+    closeAll();
+    copilot?.classList.add("mobile-open");
+  };
 
   /* ===== CLICK OUTSIDE ===== */
-  document.addEventListener("click", () => {
-    closeAll();
-  });
+  document.addEventListener("click", closeAll);
 
-  /* ===== FIX BOTTOM ICONS ===== */
-  qsa(".activity-icon").forEach((icon, i) => {
-    icon.onclick = function () {
-
-      closeAll();
-
-      if (i === 0) sidebar?.classList.add("mobile-open");     // 📁
-      if (i === 4) copilot?.classList.add("mobile-open");     // ✨
-      if (i === 5) settings?.classList.add("mobile-open");    // ⚙️
-
-    };
-  });
-
-  /* ===== FIX TOP MENU COPILOT ===== */
-  const copilotBtn = Array.from(qsa(".menu-item"))
-    .find(el => el.innerText.includes("Copilot"));
-
-  if (copilotBtn) {
-    copilotBtn.onclick = function (e) {
-      e.stopPropagation();
-      closeAll();
-      copilot?.classList.add("mobile-open");
-    };
-  }
-
-})();
+}
