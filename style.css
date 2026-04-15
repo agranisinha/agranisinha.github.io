@@ -3263,7 +3263,6 @@ textarea:-webkit-autofill {
   border-radius: 12px;
 }
 
-/* NAV BUTTONS */
 .nav {
   position: absolute;
   top: 50%;
@@ -3280,7 +3279,6 @@ textarea:-webkit-autofill {
 .prev { left: -50px; }
 .next { right: -50px; }
 
-/* DOTS */
 .dots {
   position: absolute;
   bottom: -30px;
@@ -3300,7 +3298,6 @@ textarea:-webkit-autofill {
   background: #4fc3f7;
 }
 
-/* CLOSE BUTTON */
 .close-modal {
   position: absolute;
   top: -15px;
