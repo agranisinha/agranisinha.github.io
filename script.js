@@ -487,24 +487,35 @@ document.addEventListener("DOMContentLoaded", () => {
      ========================================================================== */
 
   function toggleCopilotSidebar(forceState) {
-    if (!copilotSidebar) return;
+  if (!copilotSidebar) return;
 
-    if (typeof forceState === "boolean") {
-      isCopilotOpen = forceState;
-    } else {
-      isCopilotOpen = !isCopilotOpen;
-    }
+  const editor = document.querySelector(".editor-area");
 
-    copilotSidebar.classList.toggle("open", isCopilotOpen);
-    copilotSidebar.setAttribute("aria-hidden", String(!isCopilotOpen));
-
-    const closeBtn = document.getElementById("copilotSideClose");
-    if (closeBtn) {
-      closeBtn.onclick = () => toggleCopilotSidebar(false);
-    }
-
-    persistState();
+  // FORCE OPEN (only when clicking Copilot)
+  if (forceState === true) {
+    isCopilotOpen = true;
   }
+
+  // FORCE CLOSE
+  else if (forceState === false) {
+    isCopilotOpen = false;
+  }
+
+  // TOGGLE (only if no force)
+  else {
+    isCopilotOpen = !isCopilotOpen;
+  }
+
+  // Apply UI changes
+  copilotSidebar.classList.toggle("open", isCopilotOpen);
+  copilotSidebar.setAttribute("aria-hidden", String(!isCopilotOpen));
+
+  if (editor) {
+    editor.classList.toggle("with-copilot", isCopilotOpen);
+  }
+
+  persistState();
+}
 
   window.toggleCopilotSidebar = toggleCopilotSidebar;
 
@@ -1596,9 +1607,6 @@ document.addEventListener("DOMContentLoaded", () => {
   renderContent(activeTab);
   toggleCopilotSidebar(false);
 
-  if (isCopilotOpen) {
-    toggleCopilotSidebar(true);
-  }
 
   persistState();
 });
