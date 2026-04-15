@@ -2006,6 +2006,22 @@ function minimizeCopilot() {
     isCopilotOpen = true;
   }
 }
+
+function minimizeSettings() {
+  const panel = document.getElementById("settingsPanel");
+
+  if (!panel) return;
+
+  const isMinimized = panel.classList.contains("minimized");
+
+  if (!isMinimized) {
+    panel.classList.add("minimized");
+    panel.classList.add("open"); // keep visible
+  } else {
+    panel.classList.remove("minimized");
+    panel.classList.add("open");
+  }
+}
 function getResume() {
   return `
     <div class="about-container">
