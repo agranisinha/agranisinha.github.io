@@ -2122,104 +2122,85 @@ function getResume() {
   `;
 }
 
-/* ================= MOBILE HARD FIX ================= */
+/* ================= MOBILE-FIRST LAYER ================= */
 (function () {
 
-  const isMobile = () => window.innerWidth <= 768;
-  if (!isMobile()) return;
+  if (!IS_MOBILE) return;
 
-  console.log("🔥 REAL MOBILE MODE ACTIVATED");
+  console.log("📱 Mobile-first UI activated");
 
   const qs = s => document.querySelector(s);
   const qsa = s => document.querySelectorAll(s);
 
-  const sidebar = document.getElementById("sidebarPanel");
-  const copilot = document.getElementById("copilotSidebar");
-  const settings = document.getElementById("settingsPanel");
+  const sidebar = qs("#sidebarPanel");
+  const copilot = qs("#copilotSidebar");
+  const settings = qs("#settingsPanel");
+  const terminal = qs("#terminalPanel");
 
-  /* ===== RESET ALL ===== */
-  function closeAll() {
-    sidebar?.classList.remove("mobile-open");
-    copilot?.classList.remove("mobile-open");
-    settings?.classList.remove("mobile-open");
-
-    sidebar?.classList.remove("hide"); // IMPORTANT
+  /* ===== GLOBAL RESET ===== */
+  function closeAllPanels() {
+    sidebar?.classList.remove("m-open");
+    copilot?.classList.remove("m-open");
+    settings?.classList.remove("m-open");
+    terminal?.classList.remove("open");
 
     qsa(".menu-item").forEach(m => m.classList.remove("active"));
 
-    // REMOVE DESKTOP EFFECT
+    // remove desktop layout shifts
     qs(".editor-area")?.classList.remove("with-copilot");
   }
 
-  /* ===== FIX SIDEBAR ===== */
-  window.openSidebar = function (type) {
-    closeAll();
-
-    if (type === "explorer" || type === "files") {
-      sidebar?.classList.add("mobile-open");
-    }
-
-    if (type === "copilot") {
-      copilot?.classList.add("mobile-open");
-    }
-
-    if (type === "search") {
-      window.openPalette?.();
-    }
-
-    if (type === "git") {
-      qs("#terminalPanel")?.classList.add("open");
-    }
+  /* ===== SIDEBAR ===== */
+  window.openSidebar = function () {
+    closeAllPanels();
+    sidebar?.classList.add("m-open");
   };
 
   window.toggleSidebar = function () {
-    const isOpen = sidebar.classList.contains("mobile-open");
-    closeAll();
-    if (!isOpen) sidebar.classList.add("mobile-open");
+    const open = sidebar.classList.contains("m-open");
+    closeAllPanels();
+    if (!open) sidebar.classList.add("m-open");
   };
 
-  /* ===== FIX COPILOT ===== */
+  /* ===== COPILOT ===== */
   window.toggleCopilotSidebar = function () {
-    const isOpen = copilot.classList.contains("mobile-open");
-    closeAll();
-    if (!isOpen) copilot.classList.add("mobile-open");
+    const open = copilot.classList.contains("m-open");
+    closeAllPanels();
+    if (!open) copilot.classList.add("m-open");
   };
 
-  /* ===== FIX SETTINGS ===== */
+  /* ===== SETTINGS ===== */
   window.toggleSettings = function () {
-    const isOpen = settings.classList.contains("mobile-open");
-    closeAll();
-    if (!isOpen) settings.classList.add("mobile-open");
+    const open = settings.classList.contains("m-open");
+    closeAllPanels();
+    if (!open) settings.classList.add("m-open");
   };
 
-  /* ===== FIX MENU BAR ===== */
+  /* ===== FILE MENU FIX ===== */
+  window.openTab = function (name) {
+    closeAllPanels();
+    console.log("📂 Open:", name);
+  };
+
+  /* ===== MENU BAR ===== */
   qsa(".menu-item").forEach(menu => {
-    menu.onclick = function (e) {
+    menu.addEventListener("click", (e) => {
       e.stopPropagation();
 
       const isActive = menu.classList.contains("active");
 
       qsa(".menu-item").forEach(m => m.classList.remove("active"));
 
-      if (!isActive) {
-        menu.classList.add("active");
-      }
-    };
+      if (!isActive) menu.classList.add("active");
+    });
   });
 
-  /* ===== FIX MAC BUTTONS ===== */
-  document.getElementById("btnRed")?.addEventListener("click", (e) => {
-    e.stopPropagation();
-    closeAll();
-  });
+  /* ===== MAC BUTTONS ===== */
+  qs("#btnRed")?.addEventListener("click", closeAllPanels);
 
-  document.getElementById("btnYellow")?.addEventListener("click", (e) => {
-    e.stopPropagation();
-    closeAll();
-  });
+  qs("#btnYellow")?.addEventListener("click", closeAllPanels);
 
-  document.getElementById("btnGreen")?.addEventListener("click", async (e) => {
-    e.stopPropagation();
+  qs("#btnGreen")?.addEventListener("click", async () => {
     if (!document.fullscreenElement) {
       await document.documentElement.requestFullscreen();
     } else {
@@ -2228,9 +2209,9 @@ function getResume() {
   });
 
   /* ===== CLICK OUTSIDE ===== */
-  document.addEventListener("click", closeAll);
+  document.addEventListener("click", closeAllPanels);
 
-  /* ===== SWIPE SUPPORT ===== */
+  /* ===== SWIPE ===== */
   let startX = 0;
 
   document.addEventListener("touchstart", e => {
@@ -2241,14 +2222,24 @@ function getResume() {
     const endX = e.changedTouches[0].clientX;
 
     // swipe right → open sidebar
-    if (startX < 30 && endX > 100) {
-      closeAll();
-      sidebar?.classList.add("mobile-open");
+    if (startX < 40 && endX > 120) {
+      sidebar?.classList.add("m-open");
     }
 
     // swipe left → close
     if (endX < startX - 80) {
-      closeAll();
+      closeAllPanels();
+    }
+  });
+
+  /* ===== MIC FIX (IMPORTANT) ===== */
+  const mic = qs("#copilotVoice");
+
+  mic?.addEventListener("click", () => {
+    if (typeof startVoiceAssistant === "function") {
+      startVoiceAssistant();
+    } else {
+      alert("Mic not supported");
     }
   });
 
