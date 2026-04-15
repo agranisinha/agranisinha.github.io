@@ -1387,8 +1387,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+   function smartNavigate(query) {
+  query = query.toLowerCase();
+
+        if (query.includes("project")) openTab("projects");
+        else if (query.includes("skill")) openTab("skills");
+        else if (query.includes("contact")) openTab("contact");
+        else if (query.includes("about")) openTab("about");
+      }
   function getCopilotReply(prompt) {
     const q = prompt.toLowerCase();
+      smartNavigate(q); 
 
     if (q.includes("project")) {
       openTab("projects");
