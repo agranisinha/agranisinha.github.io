@@ -2121,53 +2121,29 @@ function getResume() {
   `;
 }
 
-/* ================================
-   FINAL MOBILE + DESKTOP BEHAVIOR
-================================ */
+/* =========================================
+   COMPLETE MOBILE + DESKTOP LOGIC
+========================================= */
 
-/* ===== MENU (File/Edit/View like VS Code) ===== */
-const menus = document.querySelectorAll(".menu-item");
-
-menus.forEach(menu => {
-  menu.addEventListener("click", (e) => {
-    e.stopPropagation();
-
-    const isActive = menu.classList.contains("active");
-
-    // close all
-    menus.forEach(m => m.classList.remove("active"));
-
-    // toggle current
-    if (!isActive) menu.classList.add("active");
-  });
-});
-
-// click outside → close menus
-document.addEventListener("click", () => {
-  menus.forEach(m => m.classList.remove("active"));
-});
-
-
-/* ===== SIDEBAR TOGGLE ===== */
 const sidebar = document.querySelector(".sidebar-panel");
+const copilot = document.querySelector(".copilot-sidebar");
+const settingsPanel = document.getElementById("settingsPanel");
+
+/* ===== SIDEBAR ===== */
+window.openSidebar = function (type) {
+  if (type === "copilot") {
+    toggleCopilot();
+    return;
+  }
+
+  sidebar?.classList.add("show");
+};
 
 window.toggleSidebar = function () {
   sidebar?.classList.toggle("show");
 };
 
-// close sidebar on outside tap (mobile)
-document.addEventListener("click", (e) => {
-  if (
-    sidebar?.classList.contains("show") &&
-    !sidebar.contains(e.target) &&
-    !e.target.closest(".activity-icon")
-  ) {
-    sidebar.classList.remove("show");
-  }
-});
-
-
-/* ===== SWIPE GESTURE (LIKE MOBILE APPS) ===== */
+/* ===== SWIPE GESTURE ===== */
 let startX = 0;
 
 document.addEventListener("touchstart", (e) => {
@@ -2177,36 +2153,65 @@ document.addEventListener("touchstart", (e) => {
 document.addEventListener("touchend", (e) => {
   let endX = e.changedTouches[0].clientX;
 
-  // swipe right → open sidebar
   if (startX < 50 && endX - startX > 80) {
     sidebar?.classList.add("show");
   }
 
-  // swipe left → close sidebar
   if (startX > 200 && startX - endX > 80) {
     sidebar?.classList.remove("show");
   }
 });
 
+/* ===== MENU (VS CODE STYLE) ===== */
+function bindMenuEvents() {
+  const menus = document.querySelectorAll(".menu-item");
 
-/* ===== RED BUTTON (LIKE CLOSE PANEL) ===== */
-document.querySelector(".dot.red")?.addEventListener("click", () => {
-  sidebar?.classList.remove("show");
+  menus.forEach(menu => {
+    menu.addEventListener("click", (e) => {
+      e.stopPropagation();
 
-  // also close copilot if open
-  document.querySelector(".copilot-sidebar")?.classList.remove("open");
-});
+      const isActive = menu.classList.contains("active");
 
+      menus.forEach(m => m.classList.remove("active"));
 
-/* ===== SETTINGS TOGGLE ===== */
-const settingsPanel = document.getElementById("settingsPanel");
+      if (!isActive) {
+        menu.classList.add("active");
+      }
+    });
+  });
 
+  document.addEventListener("click", () => {
+    menus.forEach(m => m.classList.remove("active"));
+  });
+
+  document.querySelectorAll(".dropdown").forEach(drop => {
+    drop.addEventListener("click", (e) => e.stopPropagation());
+  });
+}
+
+bindMenuEvents();
+
+/* ===== COPILOT ===== */
+window.toggleCopilot = function () {
+  copilot?.classList.toggle("open");
+};
+
+/* ===== SETTINGS ===== */
 window.toggleSettings = function () {
   settingsPanel?.classList.toggle("open");
 };
 
-// close settings if tapped outside
+/* ===== CLOSE ON OUTSIDE CLICK ===== */
 document.addEventListener("click", (e) => {
+
+  if (
+    sidebar?.classList.contains("show") &&
+    !sidebar.contains(e.target) &&
+    !e.target.closest(".activity-icon")
+  ) {
+    sidebar.classList.remove("show");
+  }
+
   if (
     settingsPanel?.classList.contains("open") &&
     !settingsPanel.contains(e.target) &&
@@ -2214,20 +2219,16 @@ document.addEventListener("click", (e) => {
   ) {
     settingsPanel.classList.remove("open");
   }
+
 });
 
+/* ===== RED BUTTON ===== */
+document.querySelector(".dot.red")?.addEventListener("click", () => {
+  sidebar?.classList.remove("show");
+  copilot?.classList.remove("open");
+});
 
-/* ===== COPILOT TOGGLE ===== */
-const copilot = document.querySelector(".copilot-sidebar");
-
-window.toggleCopilot = function () {
-  copilot?.classList.toggle("open");
-};
-
-
-/* ===== SMALL UX POLISH ===== */
-
-// prevent background scroll when copilot open
+/* ===== SMALL UX ===== */
 const observer = new MutationObserver(() => {
   if (copilot?.classList.contains("open")) {
     document.body.style.overflow = "hidden";
