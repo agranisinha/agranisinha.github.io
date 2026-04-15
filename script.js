@@ -77,8 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
     experience: getExperience(),
     contact: getContact(),
     readme: getReadme(),
-    resume: getResume(),
-    copilot: getCopilot()
+    resume: getResume()
   };
 
   function normalizeName(name) {
@@ -1033,32 +1032,60 @@ function getResume() {
   `;
 }
 
-function getCopilot() {
-  return `
-    <div class="about-container">
-      <p class="code-line">// copilot.md</p>
-      <h1 class="hero-name">AI Copilot</h1>
+function quickAsk(type) {
+  sendCopilot(type);
 
-      <div class="copilot-card">
-        <div class="copilot-messages" id="copilotMessages">
-          <div class="copilot-message assistant">
-            Hi — I’m Agrani’s portfolio copilot. Ask about projects, experience, skills, education, healthcare AI work, or contact details.
-          </div>
-        </div>
+  if (type === "projects") openTab("projects");
+  if (type === "experience") openTab("experience");
+  if (type === "skills") openTab("skills");
+  if (type === "contact") openTab("contact");
+}
 
-        <div class="copilot-chips">
-          <button class="copilot-chip">Projects</button>
-          <button class="copilot-chip">Experience</button>
-          <button class="copilot-chip">Skills</button>
-          <button class="copilot-chip">Education</button>
-          <button class="copilot-chip">Contact</button>
-        </div>
+function startVoice() {
+  const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+  recognition.lang = "en-US";
 
-        <div class="copilot-input-row">
-          <input id="copilotInput" type="text" placeholder="Ask about Agrani..." />
-          <button id="copilotSend">Send</button>
-        </div>
-      </div>
-    </div>
-  `;
+  recognition.onresult = function (event) {
+    const text = event.results[0][0].transcript;
+    document.getElementById("copilotInput").value = text;
+    sendCopilot();
+  };
+
+  recognition.start();
+}
+
+function sendCopilot() {
+  const input = document.getElementById("copilotInput");
+  const msg = input.value.trim();
+  if (!msg) return;
+
+  appendMessage(msg, "user");
+
+  setTimeout(() => {
+    appendMessage(getReply(msg), "assistant");
+  }, 300);
+
+  input.value = "";
+}
+
+function appendMessage(text, role) {
+  const container = document.getElementById("copilotMessages");
+  const div = document.createElement("div");
+
+  div.className = `msg ${role}`;
+  div.textContent = text;
+
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+}
+
+function getReply(q) {
+  q = q.toLowerCase();
+
+  if (q.includes("project")) return "Opening projects 🚀";
+  if (q.includes("experience")) return "Showing experience 💼";
+  if (q.includes("skills")) return "Here are skills 🧠";
+  if (q.includes("contact")) return "Contact info 📩";
+
+  return "Ask me about Agrani!";
 }
