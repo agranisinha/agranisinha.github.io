@@ -3232,107 +3232,78 @@ textarea:-webkit-autofill {
 }
 
 /* =========================================================
-   MOBILE ONLY STYLES
+   CLEAN MOBILE LAYER ONLY
    Add this at the VERY END of style.css
-   Desktop stays unchanged
 ========================================================= */
 @media (max-width: 768px) {
   :root {
-    --top-header-h: 52px;
-    --menu-bar-h: 40px;
-    --tabs-h: 42px;
+    --top-header-h: 46px;
+    --menu-bar-h: 34px;
+    --tabs-h: 40px;
   }
 
   html,
   body {
     width: 100%;
     height: 100%;
-    min-height: 100%;
     overflow-x: hidden;
     overflow-y: auto;
-    -webkit-text-size-adjust: 100%;
   }
 
   body {
-    position: relative;
+    min-height: 100vh;
   }
 
   .app-shell {
-    width: 100%;
     min-height: 100vh;
     height: auto;
     overflow: visible;
   }
 
   .vscode-layout {
-    width: 100%;
-    min-height: calc(100vh - var(--top-header-h) - var(--menu-bar-h));
-    height: auto;
     display: block;
+    height: auto;
+    min-height: calc(100vh - var(--top-header-h) - var(--menu-bar-h));
     overflow: visible;
   }
 
-  /* ------------------------------
-     Header
-  ------------------------------ */
   .top-header {
     height: var(--top-header-h);
     gap: 10px;
     padding: 0 10px;
-    position: sticky;
-    top: 0;
-    z-index: 1200;
   }
 
   .mac-dots {
     min-width: auto;
-    gap: 7px;
   }
 
-  .dot {
-    width: 12px;
-    height: 12px;
+  .header-feedback,
+  .header-spacer,
+  .trigger-right {
+    display: none !important;
   }
 
   .header-command-trigger {
-    max-width: none;
     min-width: 0;
-    flex: 1;
-    height: 34px;
-    padding: 0 10px;
+    max-width: none;
+    height: 30px;
+    padding: 0 8px;
   }
 
   .trigger-text {
     font-size: 11px;
   }
 
-  .trigger-right {
-    display: none;
-  }
-
-  .header-spacer,
-  .header-feedback {
-    display: none;
-  }
-
-  /* ------------------------------
-     Menu bar
-  ------------------------------ */
   .menu-bar {
     height: var(--menu-bar-h);
     padding: 0 6px;
-    gap: 0;
     overflow-x: auto;
-    overflow-y: hidden;
     white-space: nowrap;
-    position: sticky;
-    top: var(--top-header-h);
-    z-index: 1190;
   }
 
   .menu-item {
     flex: 0 0 auto;
-    padding: 0 12px;
+    padding: 0 10px;
     font-size: 12px;
     position: relative;
   }
@@ -3340,44 +3311,34 @@ textarea:-webkit-autofill {
   .dropdown {
     top: calc(100% + 4px);
     left: 0;
-    min-width: 210px;
+    min-width: 190px;
     max-width: 86vw;
-    z-index: 3000;
-    border-radius: 10px;
+    z-index: 4000;
   }
 
-  .dropdown div {
-    min-height: 38px;
-    font-size: 13px;
-  }
-
-  /* ------------------------------
-     Activity bar -> bottom nav
-  ------------------------------ */
+  /* bottom nav */
   .activity-bar {
-    display: flex !important;
     position: fixed;
     left: 0;
     right: 0;
     bottom: 0;
     width: 100%;
-    height: 62px;
-    flex-direction: row !important;
+    height: 58px;
+    display: flex !important;
+    flex-direction: row;
     align-items: center;
     justify-content: space-around;
     padding-top: 0;
     background: var(--bg-activity);
     border-right: none;
     border-top: 1px solid var(--line);
-    z-index: 2500;
-    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.28);
+    z-index: 3000;
   }
 
   .activity-icon {
     width: 46px;
     height: 46px;
-    font-size: 24px;
-    flex: 0 0 auto;
+    font-size: 22px;
   }
 
   .activity-icon::before {
@@ -3396,29 +3357,24 @@ textarea:-webkit-autofill {
   .settings-btn {
     display: grid !important;
     place-items: center;
-    font-size: 22px;
   }
 
-  /* ------------------------------
-     Sidebar -> drawer
-  ------------------------------ */
+  /* drawer sidebar */
   .sidebar-panel {
-    display: flex !important;
     position: fixed !important;
     top: calc(var(--top-header-h) + var(--menu-bar-h));
     left: 0;
-    width: min(82vw, 320px);
-    min-width: min(82vw, 320px);
-    max-width: min(82vw, 320px);
-    height: calc(100vh - var(--top-header-h) - var(--menu-bar-h) - 62px);
-    z-index: 2600;
+    width: min(82vw, 300px);
+    min-width: min(82vw, 300px);
+    max-width: min(82vw, 300px);
+    height: calc(100vh - var(--top-header-h) - var(--menu-bar-h) - 58px);
+    display: flex !important;
     transform: translateX(-100%);
     opacity: 1 !important;
-    visibility: visible !important;
     border-right: 1px solid var(--line);
     box-shadow: 18px 0 40px rgba(0, 0, 0, 0.45);
-    transition: transform 0.28s ease;
-    overflow: hidden;
+    transition: transform 0.24s ease;
+    z-index: 3100;
   }
 
   .sidebar-panel.show {
@@ -3427,18 +3383,16 @@ textarea:-webkit-autofill {
 
   .sidebar-panel.hide {
     transform: translateX(-100%);
-    width: min(82vw, 320px);
-    min-width: min(82vw, 320px);
-    max-width: min(82vw, 320px);
+    width: min(82vw, 300px);
+    min-width: min(82vw, 300px);
     opacity: 1;
     border-right: 1px solid var(--line);
   }
 
   .sidebar-header {
-    min-height: 40px;
+    min-height: 38px;
     padding: 0 14px;
     font-size: 11px;
-    letter-spacing: 1px;
   }
 
   .file-list {
@@ -3447,27 +3401,23 @@ textarea:-webkit-autofill {
   }
 
   .file {
-    min-height: 44px;
+    min-height: 42px;
     font-size: 14px;
     padding: 0 12px;
   }
 
   .copilot-box {
     margin: 10px;
-    min-height: 58px;
-    padding: 0 14px;
+    min-height: 56px;
     font-size: 14px;
   }
 
-  /* ------------------------------
-     Editor
-  ------------------------------ */
   .editor-area,
   .editor-area.with-copilot {
     width: 100%;
     min-width: 0;
     margin: 0 !important;
-    min-height: calc(100vh - var(--top-header-h) - var(--menu-bar-h) - 62px);
+    min-height: calc(100vh - var(--top-header-h) - var(--menu-bar-h) - 58px);
     padding-bottom: 72px;
     overflow: visible;
   }
@@ -3475,16 +3425,12 @@ textarea:-webkit-autofill {
   .editor-tabs {
     height: var(--tabs-h);
     overflow-x: auto;
-    overflow-y: hidden;
     white-space: nowrap;
-    position: sticky;
-    top: calc(var(--top-header-h) + var(--menu-bar-h));
-    z-index: 1100;
   }
 
   .tab {
-    min-width: 118px;
-    max-width: 180px;
+    min-width: 112px;
+    max-width: 170px;
     padding: 0 10px;
   }
 
@@ -3493,18 +3439,9 @@ textarea:-webkit-autofill {
   }
 
   .editor-content {
-    padding: 16px 14px 96px;
+    padding: 16px 14px 92px;
     overflow-x: hidden;
     overflow-y: auto;
-  }
-
-  /* ------------------------------
-     Home page layout
-  ------------------------------ */
-  .home-container {
-    width: 100%;
-    min-height: auto;
-    padding: 0;
   }
 
   .home-grid {
@@ -3512,121 +3449,85 @@ textarea:-webkit-autofill {
     flex-direction: column;
     gap: 22px;
     align-items: center;
-    width: 100%;
-  }
-
-  .home-left,
-  .home-right {
-    width: 100%;
-    min-width: 0;
   }
 
   .home-right {
     order: -1;
-    display: flex;
-    justify-content: center;
   }
 
   .profile-wrapper {
-    width: min(78vw, 290px);
-    height: auto;
-    aspect-ratio: 4 / 5;
-    margin: 0 auto;
+    width: 240px;
+    height: 300px;
   }
 
   .code-line {
     font-size: 14px;
-    line-height: 1.5;
+    min-height: 22px;
     text-align: center;
-    margin-bottom: 14px;
   }
 
   .hero-name {
-    font-size: clamp(38px, 14vw, 64px);
+    font-size: 44px;
     line-height: 0.95;
+    letter-spacing: -1.5px;
     text-align: center;
-    margin-bottom: 14px;
   }
 
   .roles {
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
   }
 
   .roles span {
-    min-height: 34px;
-    padding: 0 12px;
+    min-height: 30px;
+    padding: 0 10px;
     font-size: 12px;
   }
 
   .hero-desc {
     font-size: 16px;
-    line-height: 1.7;
+    line-height: 1.65;
     text-align: center;
-    margin-bottom: 18px;
   }
 
   .home-buttons {
-    flex-direction: column;
-    gap: 10px;
+    width: 100%;
   }
 
   .home-buttons button {
     width: 100%;
-    min-width: 0;
+    min-width: 100%;
   }
 
   .stats {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 12px;
+    flex-direction: column;
   }
 
   .stat-card {
-    min-width: 0;
-    min-height: auto;
+    min-width: 100%;
   }
 
-  .stat-card strong {
-    font-size: 28px;
-  }
-
-  /* ------------------------------
-     General cards / grids
-  ------------------------------ */
-  .focus-grid,
-  .project-grid {
+  .project-grid,
+  .focus-grid {
     grid-template-columns: 1fr !important;
   }
 
-  .about-card,
-  .project-card {
-    padding: 16px;
-  }
-
-  .skills-grid {
-    gap: 8px;
-  }
-
-  /* ------------------------------
-     Copilot -> bottom sheet
-  ------------------------------ */
+  /* bottom sheet copilot */
   .copilot-sidebar {
     position: fixed !important;
     left: 0;
     right: 0;
-    bottom: 62px;
+    bottom: 58px;
     top: auto;
     width: 100% !important;
-    height: 62vh !important;
-    max-height: 62vh;
+    height: 58vh;
+    max-height: 58vh;
     border-left: none;
     border-top: 1px solid var(--line);
-    border-radius: 18px 18px 0 0;
+    border-radius: 16px 16px 0 0;
     transform: translateY(100%);
-    transition: transform 0.28s ease;
-    z-index: 2700;
-    box-shadow: 0 -16px 40px rgba(0, 0, 0, 0.45);
+    transition: transform 0.24s ease;
+    z-index: 3200;
     overflow: hidden;
   }
 
@@ -3635,110 +3536,71 @@ textarea:-webkit-autofill {
   }
 
   .copilot-side-header {
-    padding: 14px 16px 10px;
     margin-bottom: 0;
+    padding: 14px 14px 8px;
   }
 
   .copilot-workspace-row {
-    padding: 0 16px;
-    margin-bottom: 12px;
+    padding: 0 14px;
+    margin-bottom: 10px;
     flex-wrap: wrap;
   }
 
   .copilot-side-hero {
-    padding: 0 16px;
-    margin-bottom: 12px;
-  }
-
-  .copilot-avatar-ring {
-    width: 62px;
-    height: 62px;
-  }
-
-  .copilot-side-hero h3 {
-    font-size: 15px;
-  }
-
-  .copilot-side-hero p {
-    font-size: 13px;
-    line-height: 1.5;
+    padding: 0 14px;
+    margin-bottom: 10px;
   }
 
   .copilot-suggest-grid {
-    display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 8px;
-    padding: 0 16px;
-    margin-bottom: 12px;
+    padding: 0 14px;
+    margin-bottom: 10px;
   }
 
   .copilot-suggest {
     font-size: 11px;
     padding: 10px 8px;
-    min-height: 66px;
   }
 
-  .copilot-side-messages,
-  .copilot-messages {
-    flex: 1;
-    min-height: 0;
-    padding: 0 16px;
+  .copilot-side-messages {
+    padding: 0 14px;
     overflow-y: auto;
   }
 
-  .copilot-message {
-    max-width: 88%;
-    font-size: 13px;
-    padding: 10px 12px;
-  }
-
   .copilot-side-input-wrap {
-    padding: 10px 16px 14px;
-    background: var(--bg-copilot);
-    border-top: 1px solid var(--line-soft);
+    padding: 10px 14px 12px;
   }
 
   .copilot-input-row {
-    display: flex;
     gap: 8px;
-    align-items: center;
-    margin-top: 0;
-    flex-direction: row;
   }
 
   #copilotInput {
-    min-height: 42px;
+    min-height: 40px;
     font-size: 13px;
   }
 
   #copilotSend,
   #copilotVoice {
-    width: 42px;
-    min-width: 42px;
-    height: 42px;
-    flex: 0 0 42px;
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
   }
 
-  .copilot-side-note {
-    font-size: 11px;
-  }
-
-  /* ------------------------------
-     Settings panel
-  ------------------------------ */
+  /* settings modal */
   .settings-panel {
     position: fixed !important;
     left: 10px;
     right: 10px;
-    bottom: 72px;
+    bottom: 68px;
     width: auto;
-    max-height: 62vh;
-    z-index: 2800;
+    max-height: 60vh;
     display: block !important;
     opacity: 0;
     pointer-events: none;
     transform: translateY(14px);
-    overflow-y: auto;
+    z-index: 3300;
   }
 
   .settings-panel.open {
@@ -3747,27 +3609,11 @@ textarea:-webkit-autofill {
     transform: translateY(0);
   }
 
-  .settings-header {
-    min-height: 44px;
-    padding: 0 14px;
-  }
-
-  .settings-section {
-    padding: 12px 10px 6px;
-  }
-
-  /* ------------------------------
-     Terminal
-  ------------------------------ */
   .terminal-panel {
     left: 0;
     right: 0;
-    bottom: 62px;
-    height: 42vh;
-    z-index: 2750;
-  }
-
-  .terminal-input-line {
-    padding-bottom: 8px;
+    bottom: 58px;
+    height: 40vh;
+    z-index: 3250;
   }
 }
