@@ -350,7 +350,6 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
 
       <div class="copilot-side-messages" id="copilotMessages"></div>
-      </div>
 
       <div class="copilot-side-input-wrap">
         <div class="copilot-input-row">
@@ -1436,10 +1435,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return COPILOT_REPLIES.resume;
     }
 
-    if (q.includes("who are you")) {
-      return COPILOT_REPLIES.intro;
-    }
-
+   
     if (q.includes("open home")) {
       openTab("home");
       return "Opening Home.";
