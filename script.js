@@ -2121,19 +2121,26 @@ function getResume() {
   `;
 }
 
-/* ================= MOBILE FIX JS (FINAL) ================= */
+/* ======================================================
+   🔥 FINAL MOBILE JS (STABLE)
+====================================================== */
 (function () {
 
-  function isMobile() {
-    return window.innerWidth <= 768;
-  }
-
+  const isMobile = () => window.innerWidth <= 768;
   const qs = (s) => document.querySelector(s);
   const qsa = (s) => document.querySelectorAll(s);
 
-  /* 🔹 FIX SIDEBAR */
+  /* ===== CLOSE COMMAND PALETTE ===== */
+  function closePalette() {
+    const p = qs(".command-palette");
+    if (p) p.classList.remove("open");
+  }
+
+  /* ===== SIDEBAR ===== */
   window.toggleSidebar = function () {
     if (!isMobile()) return;
+
+    closePalette();
 
     const panel = qs(".sidebar-panel");
     if (!panel) return;
@@ -2144,47 +2151,23 @@ function getResume() {
   window.openSidebar = function (type) {
     if (!isMobile()) return;
 
+    closePalette();
+
     const panel = qs(".sidebar-panel");
+    if (panel) panel.classList.add("show");
 
-    if (panel) {
-      panel.classList.add("show");
-    }
-
-    // ONLY open copilot separately
     if (type === "copilot") {
       toggleCopilotSidebar(true);
     }
   };
 
-  /* 🔹 FIX MENU (FILE / VIEW) */
-  qsa(".menu-item").forEach(menu => {
-    menu.addEventListener("click", (e) => {
-      if (!isMobile()) return;
-
-      e.stopPropagation();
-
-      const isActive = menu.classList.contains("active");
-
-      qsa(".menu-item").forEach(m => m.classList.remove("active"));
-
-      if (!isActive) {
-        menu.classList.add("active");
-      }
-    });
-  });
-
-  document.addEventListener("click", () => {
-    if (!isMobile()) return;
-
-    qsa(".menu-item").forEach(m => m.classList.remove("active"));
-  });
-
-  /* 🔹 FIX COPILOT */
+  /* ===== COPILOT ===== */
   window.toggleCopilotSidebar = function (force) {
-    const panel = document.getElementById("copilotSidebar");
+    const panel = qs("#copilotSidebar");
     if (!panel) return;
 
     if (force === true) {
+      closePalette();
       panel.classList.add("open");
       return;
     }
@@ -2197,13 +2180,47 @@ function getResume() {
     panel.classList.toggle("open");
   };
 
-  /* 🔹 CLOSE EVERYTHING ON OUTSIDE CLICK */
+  /* ===== SETTINGS ===== */
+  window.toggleSettings = function () {
+    if (!isMobile()) return;
+
+    closePalette();
+
+    const panel = qs("#settingsPanel");
+    if (!panel) return;
+
+    panel.classList.toggle("open");
+  };
+
+  /* ===== MENU FIX ===== */
+  qsa(".menu-item").forEach(menu => {
+    menu.addEventListener("click", (e) => {
+      if (!isMobile()) return;
+
+      e.stopPropagation();
+      closePalette();
+
+      const isActive = menu.classList.contains("active");
+
+      qsa(".menu-item").forEach(m => m.classList.remove("active"));
+
+      if (!isActive) {
+        menu.classList.add("active");
+      }
+    });
+  });
+
+  /* ===== CLICK OUTSIDE ===== */
   document.addEventListener("click", (e) => {
     if (!isMobile()) return;
 
     const sidebar = qs(".sidebar-panel");
     const copilot = qs("#copilotSidebar");
 
+    // close menus
+    qsa(".menu-item").forEach(m => m.classList.remove("active"));
+
+    // close sidebar
     if (
       sidebar &&
       sidebar.classList.contains("show") &&
@@ -2213,6 +2230,7 @@ function getResume() {
       sidebar.classList.remove("show");
     }
 
+    // close copilot
     if (
       copilot &&
       copilot.classList.contains("open") &&
