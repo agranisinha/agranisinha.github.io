@@ -2122,7 +2122,7 @@ function getResume() {
 }
 /* =========================
    REAL VS CODE MOBILE UI
-   add at very end of script.js
+   append at very end of script.js
 ========================= */
 (() => {
   const MOBILE_BP = 768;
@@ -2164,31 +2164,20 @@ function getResume() {
     return document.getElementById("settingsPanel");
   }
 
-  function getPalette() {
+  function getPaletteOverlay() {
     return document.getElementById("paletteOverlay");
+  }
+
+  function getPaletteBox() {
+    return document.getElementById("paletteBox");
   }
 
   function getTerminal() {
     return document.getElementById("terminalPanel");
   }
 
-  function anySheetOpen() {
-    return (
-      getSidebar()?.classList.contains("mobile-open") ||
-      getCopilot()?.classList.contains("mobile-open") ||
-      getSettings()?.classList.contains("mobile-open") ||
-      getPalette()?.classList.contains("open") ||
-      getTerminal()?.classList.contains("open")
-    );
-  }
-
-  function showBackdrop() {
-    if (!isMobile()) return;
-    backdrop.classList.add("show");
-  }
-
-  function hideBackdrop() {
-    backdrop.classList.remove("show");
+  function getEditor() {
+    return qs(".editor-area");
   }
 
   function closeMenus() {
@@ -2215,7 +2204,7 @@ function getResume() {
     panel.classList.remove("open");
     panel.classList.remove("minimized");
     panel.setAttribute("aria-hidden", "true");
-    qs(".editor-area")?.classList.remove("with-copilot");
+    getEditor()?.classList.remove("with-copilot");
   }
 
   function openCopilotMobile() {
@@ -2225,7 +2214,7 @@ function getResume() {
     panel.classList.add("open");
     panel.classList.remove("minimized");
     panel.setAttribute("aria-hidden", "false");
-    qs(".editor-area")?.classList.remove("with-copilot");
+    getEditor()?.classList.remove("with-copilot");
   }
 
   function closeSettingsMobile() {
@@ -2245,7 +2234,7 @@ function getResume() {
   }
 
   function closePaletteMobile() {
-    const overlay = getPalette();
+    const overlay = getPaletteOverlay();
     if (!overlay) return;
     overlay.classList.remove("open");
     overlay.setAttribute("aria-hidden", "true");
@@ -2255,7 +2244,7 @@ function getResume() {
     if (typeof window.openPalette === "function") {
       window.openPalette();
     } else {
-      const overlay = getPalette();
+      const overlay = getPaletteOverlay();
       if (!overlay) return;
       overlay.classList.add("open");
       overlay.setAttribute("aria-hidden", "false");
@@ -2266,13 +2255,22 @@ function getResume() {
     getTerminal()?.classList.remove("open");
   }
 
+  function anyPanelOpen() {
+    return (
+      getSidebar()?.classList.contains("mobile-open") ||
+      getCopilot()?.classList.contains("mobile-open") ||
+      getSettings()?.classList.contains("mobile-open") ||
+      getPaletteOverlay()?.classList.contains("open") ||
+      getTerminal()?.classList.contains("open")
+    );
+  }
+
   function syncBackdrop() {
     if (!isMobile()) {
-      hideBackdrop();
+      backdrop.classList.remove("show");
       return;
     }
-    if (anySheetOpen()) showBackdrop();
-    else hideBackdrop();
+    backdrop.classList.toggle("show", anyPanelOpen());
   }
 
   function closeAllMobilePanels({ keepMenus = false } = {}) {
@@ -2285,7 +2283,7 @@ function getResume() {
     syncBackdrop();
   }
 
-  /* public overrides */
+  /* ========= mobile overrides ========= */
 
   window.openSidebar = function mobileOpenSidebar(type) {
     if (!isMobile()) return;
@@ -2293,8 +2291,7 @@ function getResume() {
     const normalized = String(type || "").toLowerCase();
 
     qsa(".activity-icon").forEach((icon) => icon.classList.remove("active"));
-
-    const map = {
+    const iconMap = {
       explorer: 0,
       search: 1,
       git: 2,
@@ -2302,8 +2299,8 @@ function getResume() {
       copilot: 4,
     };
     const icons = qsa(".activity-icon");
-    if (typeof map[normalized] === "number" && icons[map[normalized]]) {
-      icons[map[normalized]].classList.add("active");
+    if (typeof iconMap[normalized] === "number" && icons[iconMap[normalized]]) {
+      icons[iconMap[normalized]].classList.add("active");
     }
 
     if (normalized === "search") {
@@ -2402,6 +2399,67 @@ function getResume() {
     syncBackdrop();
   };
 
+  window.toggleFullscreen = async function mobileToggleFullscreen() {
+    try {
+      if (!document.fullscreenElement) {
+        await document.documentElement.requestFullscreen();
+      } else {
+        await document.exitFullscreen();
+      }
+    } catch (_err) {
+      /* ignore */
+    }
+  };
+
+  /* top buttons */
+  function bindTopButtons() {
+    const red = document.getElementById("btnRed");
+    const yellow = document.getElementById("btnYellow");
+    const green = document.getElementById("btnGreen");
+
+    if (red && red.dataset.mobileBound !== "1") {
+      red.dataset.mobileBound = "1";
+      red.onclick = (e) => {
+        if (!isMobile()) return;
+        e.preventDefault();
+        e.stopPropagation();
+        closeAllMobilePanels();
+      };
+    }
+
+    if (yellow && yellow.dataset.mobileBound !== "1") {
+      yellow.dataset.mobileBound = "1";
+      yellow.onclick = (e) => {
+        if (!isMobile()) return;
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (getCopilot()?.classList.contains("mobile-open")) {
+          closeCopilotMobile();
+        } else if (getSettings()?.classList.contains("mobile-open")) {
+          closeSettingsMobile();
+        } else if (getSidebar()?.classList.contains("mobile-open")) {
+          closeSidebarMobile();
+        } else if (getTerminal()?.classList.contains("open")) {
+          closeTerminalMobile();
+        } else {
+          closeMenus();
+        }
+        syncBackdrop();
+      };
+    }
+
+    if (green && green.dataset.mobileBound !== "1") {
+      green.dataset.mobileBound = "1";
+      green.onclick = async (e) => {
+        if (!isMobile()) return;
+        e.preventDefault();
+        e.stopPropagation();
+        await window.toggleFullscreen();
+      };
+    }
+  }
+
   /* menu tap behavior */
   function bindMobileMenus() {
     qsa(".menu-item").forEach((menu) => {
@@ -2449,63 +2507,7 @@ function getResume() {
     });
   }
 
-  /* close on backdrop tap */
-  backdrop.addEventListener("click", () => {
-    if (!isMobile()) return;
-    closeAllMobilePanels();
-  });
-
-  /* outside click fallback */
-  if (!document.body.dataset.mobileUiOutsideBound) {
-    document.body.dataset.mobileUiOutsideBound = "1";
-
-    document.addEventListener("click", (e) => {
-      if (!isMobile()) return;
-
-      const target = e.target;
-      const clickedMenu = target.closest(".menu-item");
-      const clickedSidebar = target.closest(".sidebar-panel");
-      const clickedCopilot = target.closest("#copilotSidebar");
-      const clickedSettings = target.closest("#settingsPanel");
-      const clickedActivity = target.closest(".activity-icon");
-      const clickedPalette = target.closest("#paletteBox");
-
-      if (!clickedMenu) closeMenus();
-
-      if (
-        getSidebar()?.classList.contains("mobile-open") &&
-        !clickedSidebar &&
-        !clickedActivity
-      ) {
-        closeSidebarMobile();
-      }
-
-      if (
-        getCopilot()?.classList.contains("mobile-open") &&
-        !clickedCopilot &&
-        !target.closest(".copilot-box") &&
-        !target.closest('[onclick*="toggleCopilot"]')
-      ) {
-        closeCopilotMobile();
-      }
-
-      if (
-        getSettings()?.classList.contains("mobile-open") &&
-        !clickedSettings &&
-        !target.closest(".settings-btn")
-      ) {
-        closeSettingsMobile();
-      }
-
-      if (getPalette()?.classList.contains("open") && !clickedPalette && !target.closest("#openPaletteBtn")) {
-        closePaletteMobile();
-      }
-
-      syncBackdrop();
-    });
-  }
-
-  /* bottom nav explicit mapping */
+  /* bottom nav */
   function bindActivityBar() {
     const icons = qsa(".activity-icon");
     if (!icons.length) return;
@@ -2543,6 +2545,120 @@ function getResume() {
             break;
         }
       });
+    });
+  }
+
+  /* copilot microphone + controls */
+  function bindMobileCopilotEvents() {
+    const input = document.getElementById("copilotInput");
+    const send = document.getElementById("copilotSend");
+    const voice = document.getElementById("copilotVoice");
+    const close = document.getElementById("copilotSideClose");
+    const minimize = document.getElementById("copilotSideMinimize");
+
+    if (send && send.dataset.mobileUiBound !== "1") {
+      send.dataset.mobileUiBound = "1";
+      send.onclick = () => {
+        if (typeof window.sendCopilotPrompt === "function") {
+          window.sendCopilotPrompt();
+        }
+      };
+    }
+
+    if (input && input.dataset.mobileUiBound !== "1") {
+      input.dataset.mobileUiBound = "1";
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && typeof window.sendCopilotPrompt === "function") {
+          window.sendCopilotPrompt();
+        }
+      });
+    }
+
+    if (voice && voice.dataset.mobileUiBound !== "1") {
+      voice.dataset.mobileUiBound = "1";
+      voice.onclick = () => {
+        if (typeof window.startVoiceAssistant === "function") {
+          window.startVoiceAssistant();
+        }
+      };
+    }
+
+    if (close && close.dataset.mobileUiBound !== "1") {
+      close.dataset.mobileUiBound = "1";
+      close.onclick = () => window.toggleCopilotSidebar(false);
+    }
+
+    if (minimize && minimize.dataset.mobileUiBound !== "1") {
+      minimize.dataset.mobileUiBound = "1";
+      minimize.onclick = (e) => {
+        e.stopPropagation();
+        window.minimizeCopilot();
+      };
+    }
+
+    const sidebar = getCopilot();
+    if (sidebar) {
+      qsa(".copilot-suggest", sidebar).forEach((btn) => {
+        if (btn.dataset.mobileUiBound === "1") return;
+        btn.dataset.mobileUiBound = "1";
+        btn.onclick = () => {
+          if (typeof window.quickAsk === "function") {
+            window.quickAsk(btn.dataset.quick || btn.textContent);
+          }
+        };
+      });
+    }
+  }
+
+  /* backdrop + outside click */
+  backdrop.addEventListener("click", () => {
+    if (!isMobile()) return;
+    closeAllMobilePanels();
+  });
+
+  if (!document.body.dataset.mobileUiOutsideBound) {
+    document.body.dataset.mobileUiOutsideBound = "1";
+
+    document.addEventListener("click", (e) => {
+      if (!isMobile()) return;
+
+      const target = e.target;
+      const clickedMenu = target.closest(".menu-item");
+      const clickedSidebar = target.closest(".sidebar-panel");
+      const clickedCopilot = target.closest("#copilotSidebar");
+      const clickedSettings = target.closest("#settingsPanel");
+      const clickedActivity = target.closest(".activity-icon");
+      const clickedPalette = target.closest("#paletteBox");
+      const clickedPaletteBtn = target.closest("#openPaletteBtn");
+
+      if (!clickedMenu) closeMenus();
+
+      if (getSidebar()?.classList.contains("mobile-open") && !clickedSidebar && !clickedActivity) {
+        closeSidebarMobile();
+      }
+
+      if (
+        getCopilot()?.classList.contains("mobile-open") &&
+        !clickedCopilot &&
+        !target.closest(".copilot-box") &&
+        !target.closest('[onclick*="toggleCopilot"]')
+      ) {
+        closeCopilotMobile();
+      }
+
+      if (
+        getSettings()?.classList.contains("mobile-open") &&
+        !clickedSettings &&
+        !target.closest(".settings-btn")
+      ) {
+        closeSettingsMobile();
+      }
+
+      if (getPaletteOverlay()?.classList.contains("open") && !clickedPalette && !clickedPaletteBtn) {
+        closePaletteMobile();
+      }
+
+      syncBackdrop();
     });
   }
 
@@ -2618,14 +2734,18 @@ function getResume() {
   function handleResizeMobile() {
     if (!isMobile()) {
       closeAllMobilePanels();
-      hideBackdrop();
+      backdrop.classList.remove("show");
       qsa(".menu-item").forEach((m) => m.classList.remove("active"));
+    } else {
+      syncBackdrop();
     }
   }
 
   function initRealMobileUi() {
+    bindTopButtons();
     bindMobileMenus();
     bindActivityBar();
+    bindMobileCopilotEvents();
     bindSwipeGestures();
     handleResizeMobile();
     syncBackdrop();
