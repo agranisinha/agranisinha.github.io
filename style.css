@@ -2950,6 +2950,21 @@ textarea:-webkit-autofill {
     width: 100%;
   }
 }
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.copilot-sidebar.open {
+  animation: slideInRight 0.35s ease;
+}
 /* ========================================================================== */
 /*                              END OF FILE                                   */
 /* ========================================================================== */
