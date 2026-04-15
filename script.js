@@ -1887,7 +1887,6 @@ function getAbout() {
     </div>
   `;
 }
-
 function getProjects() {
   return `
     <div class="projects-container">
@@ -1908,34 +1907,29 @@ function getProjects() {
           <p>Flutter app with Google Sheets backend.</p>
         </div>
 
-        <div class="project-card clickable" onclick="openProjectCarousel([
-                 'assets/images/bio1.png',
-                 'assets/images/bio2.png',
-                 'assets/images/bio3.png'
-               ])">
-                 <h3>Bio Calculator App</h3>
-                 <p>Lab calculation tool published on Play Store.</p>
-                 <span class="view-btn">👁 View</span>
-         </div>
-         
-         <div class="project-card clickable" onclick="openProjectCarousel([
-              'assets/images/chat1.png',
-              'assets/images/chat2.png',
-              'assets/images/chat3.png'
-            ])">
-              <h3>Respiratory Health Chatbot</h3>
-              <p>Interactive healthcare chatbot using Vue.js.</p>
-              <span class="view-btn">👁 View</span>
-         </div>
+        <!-- ✅ SAFE SINGLE LINE ARRAY -->
+        <div class="project-card clickable"
+          onclick="openProjectCarousel(['assets/images/bio1.png','assets/images/bio2.png','assets/images/bio3.png'])">
+          <h3>Bio Calculator App</h3>
+          <p>Lab calculation tool published on Play Store.</p>
+          <span class="view-btn">👁 View</span>
+        </div>
+
+        <div class="project-card clickable"
+          onclick="openProjectCarousel(['assets/images/chat1.png','assets/images/chat2.png','assets/images/chat3.png'])">
+          <h3>Respiratory Health Chatbot</h3>
+          <p>Interactive healthcare chatbot using Vue.js.</p>
+          <span class="view-btn">👁 View</span>
+        </div>
 
         <div class="project-card">
           <h3>AI Plant Identification</h3>
-          <p>TensorFlow vision system with voice feedback.</p>
+          <p>TensorFlow system for plant detection.</p>
         </div>
 
         <div class="project-card">
           <h3>AI Games</h3>
-          <p>Chess, Checkers, and Connect4 AI systems.</p>
+          <p>Chess, Checkers and Connect4 AI systems.</p>
         </div>
 
       </div>
@@ -1943,79 +1937,7 @@ function getProjects() {
   `;
 }
 
-window.openProjectCarousel = function (images) {
-  let current = 0;
 
-  const modal = document.createElement("div");
-  modal.className = "image-modal";
-
-  modal.innerHTML = `
-    <div class="carousel-container">
-      <span class="close-modal">&times;</span>
-
-      <button class="nav prev">❮</button>
-      <img class="carousel-img" src="${images[0]}" />
-      <button class="nav next">❯</button>
-
-      <div class="dots"></div>
-    </div>
-  `;
-
-  document.body.appendChild(modal);
-
-  const img = modal.querySelector(".carousel-img");
-  const dotsContainer = modal.querySelector(".dots");
-
-  // create dots
-  images.forEach((_, i) => {
-    const dot = document.createElement("span");
-    dot.className = "dot" + (i === 0 ? " active" : "");
-    dot.onclick = () => update(i);
-    dotsContainer.appendChild(dot);
-  });
-
-  function update(index) {
-    current = index;
-    img.src = images[current];
-
-    modal.querySelectorAll(".dot").forEach((d, i) => {
-      d.classList.toggle("active", i === current);
-    });
-  }
-
-  modal.querySelector(".prev").onclick = () => {
-    update((current - 1 + images.length) % images.length);
-  };
-
-  modal.querySelector(".next").onclick = () => {
-    update((current + 1) % images.length);
-  };
-
-  modal.querySelector(".close-modal").onclick = () => modal.remove();
-
-  modal.onclick = (e) => {
-    if (e.target === modal) modal.remove();
-  };
-
-  /* 🔥 MOBILE SWIPE SUPPORT */
-  let startX = 0;
-
-  img.addEventListener("touchstart", (e) => {
-    startX = e.touches[0].clientX;
-  });
-
-  img.addEventListener("touchend", (e) => {
-    const endX = e.changedTouches[0].clientX;
-
-    if (endX < startX - 50) {
-      update((current + 1) % images.length);
-    }
-
-    if (endX > startX + 50) {
-      update((current - 1 + images.length) % images.length);
-    }
-  });
-};
 
 function getLOR() {
   return `
@@ -2405,3 +2327,60 @@ function getResume() {
   });
 
 })();
+
+/* ================= PROJECT CAROUSEL ================= */
+
+window.openProjectCarousel = function (images) {
+  let current = 0;
+
+  const modal = document.createElement("div");
+  modal.className = "image-modal";
+
+  modal.innerHTML = `
+    <div class="carousel-container">
+      <span class="close-modal">&times;</span>
+
+      <button class="nav prev">❮</button>
+      <img class="carousel-img" src="${images[0]}" />
+      <button class="nav next">❯</button>
+
+      <div class="dots"></div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  const img = modal.querySelector(".carousel-img");
+  const dotsContainer = modal.querySelector(".dots");
+
+  // create dots safely
+  images.forEach((_, i) => {
+    const dot = document.createElement("span");
+    dot.className = "dot" + (i === 0 ? " active" : "");
+    dot.onclick = () => update(i);
+    dotsContainer.appendChild(dot);
+  });
+
+  function update(index) {
+    current = index;
+    img.src = images[current];
+
+    modal.querySelectorAll(".dot").forEach((d, i) => {
+      d.classList.toggle("active", i === current);
+    });
+  }
+
+  modal.querySelector(".prev").onclick = () => {
+    update((current - 1 + images.length) % images.length);
+  };
+
+  modal.querySelector(".next").onclick = () => {
+    update((current + 1) % images.length);
+  };
+
+  modal.querySelector(".close-modal").onclick = () => modal.remove();
+
+  modal.onclick = (e) => {
+    if (e.target === modal) modal.remove();
+  };
+};
