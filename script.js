@@ -349,11 +349,7 @@ document.addEventListener("DOMContentLoaded", () => {
         </button>
       </div>
 
-      <div class="copilot-side-messages" id="copilotMessages">
-        <div class="copilot-message assistant">
-          Hi — I’m Agrani’s portfolio copilot. Ask about projects, experience, skills,
-          healthcare AI work, education, leadership, resume, or contact details.
-        </div>
+      <div class="copilot-side-messages" id="copilotMessages"></div>
       </div>
 
       <div class="copilot-side-input-wrap">
@@ -1564,6 +1560,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   bindCopilotEvents();
+
+  appendCopilotMessage(COPILOT_REPLIES.intro, "assistant");
 
   window.quickAsk = quickAsk;
   window.sendCopilotPrompt = sendCopilotPrompt;
