@@ -3232,7 +3232,7 @@ textarea:-webkit-autofill {
 }
 
 /* =========================================
-   COMPLETE MOBILE UI SYSTEM (FINAL)
+   FINAL MOBILE SYSTEM (NO CONFLICTS)
 ========================================= */
 @media (max-width: 768px) {
 
@@ -3242,17 +3242,11 @@ textarea:-webkit-autofill {
     overflow-y: auto;
   }
 
-  .app-shell {
-    min-height: 100vh;
-    height: auto;
-  }
-
   .vscode-layout {
     display: block;
-    height: auto;
   }
 
-  /* ===== EDITOR ===== */
+  /* ===== FULL WIDTH CONTENT ===== */
   .editor-area,
   .editor-area.with-copilot {
     width: 100%;
@@ -3260,91 +3254,47 @@ textarea:-webkit-autofill {
     padding-bottom: 70px;
   }
 
-  .editor-content {
-    padding: 16px 12px 100px;
-  }
-
-  /* ===== MENU BAR ===== */
-  .menu-bar {
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-
-  .menu-item {
-    flex: 0 0 auto;
-    padding: 0 10px;
-    font-size: 12px;
-    position: relative;
-  }
-
-  .dropdown {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    z-index: 3000;
-    min-width: 200px;
-  }
-
-  /* ===== BOTTOM NAV ===== */
-  .activity-bar {
-    display: flex !important;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 60px;
-    justify-content: space-around;
-    align-items: center;
-    background: #111;
-    border-top: 1px solid var(--line);
-    z-index: 2000;
-  }
-
-  .activity-icon {
-    width: 45px;
-    height: 45px;
-    font-size: 22px;
-  }
-
-  .settings-btn {
-    display: block !important;
-  }
-
-  /* ===== SIDEBAR (DRAWER) ===== */
+  /* ===== SIDEBAR (ONLY DRAWER) ===== */
   .sidebar-panel {
-    position: fixed !important;
-    top: calc(var(--top-header-h) + var(--menu-bar-h));
+    position: fixed;
+    top: 100px;
     left: 0;
     width: 80%;
     max-width: 300px;
-    height: calc(100vh - 120px);
-    background: var(--bg-sidebar);
-    z-index: 2100;
-
+    height: calc(100vh - 160px);
     transform: translateX(-100%);
     transition: transform 0.3s ease;
+    z-index: 2000;
   }
 
   .sidebar-panel.show {
     transform: translateX(0);
   }
 
-  /* ===== COPILOT ===== */
+  /* ===== ACTIVITY BAR (BOTTOM ONLY) ===== */
+  .activity-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: #111;
+    z-index: 2100;
+  }
+
+  /* ===== COPILOT (BOTTOM SHEET ONLY) ===== */
   .copilot-sidebar {
-    position: fixed !important;
+    position: fixed;
     left: 0;
     right: 0;
     bottom: 60px;
-    width: 100%;
     height: 60vh;
-    background: var(--bg-copilot);
-    z-index: 2200;
-
     transform: translateY(100%);
     transition: transform 0.3s ease;
-
-    border-radius: 16px 16px 0 0;
-    overflow-y: auto;
+    z-index: 2200;
   }
 
   .copilot-sidebar.open {
@@ -3353,25 +3303,19 @@ textarea:-webkit-autofill {
 
   /* ===== SETTINGS ===== */
   .settings-panel {
-    position: fixed !important;
+    position: fixed;
+    bottom: 70px;
     left: 10px;
     right: 10px;
-    bottom: 70px;
-    max-height: 60vh;
-    overflow-y: auto;
-    z-index: 2300;
-
     display: block !important;
     opacity: 0;
     pointer-events: none;
-    transform: translateY(20px);
-    transition: all 0.3s ease;
+    transition: 0.3s;
   }
 
   .settings-panel.open {
     opacity: 1;
     pointer-events: auto;
-    transform: translateY(0);
   }
 
 }
