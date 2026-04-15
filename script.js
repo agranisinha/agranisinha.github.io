@@ -541,62 +541,87 @@ function runTerminalCommand(raw) {
     });
   }
 
-  function initCopilotUI() {
-    const chatInput = document.getElementById("copilotInput");
-    const chatSend = document.getElementById("copilotSend");
-    const chatBody = document.getElementById("copilotMessages");
-    const chipButtons = document.querySelectorAll(".copilot-chip");
+ function initCopilotUI() {
+  const chatInput = document.getElementById("copilotInput");
+  const chatSend = document.getElementById("copilotSend");
+  const chatBody = document.getElementById("copilotMessages");
+  const chipButtons = document.querySelectorAll(".copilot-chip");
 
-    if (!chatInput || !chatSend || !chatBody) return;
+  if (!chatInput || !chatSend || !chatBody) return;
 
-    function appendMessage(text, role = "assistant") {
-      const msg = document.createElement("div");
-      msg.className = `copilot-message ${role}`;
+  function appendMessage(text, role = "assistant") {
+    const msg = document.createElement("div");
+    msg.className = `copilot-message ${role}`;
+    chatBody.appendChild(msg);
+
+    // typing effect for AI
+    if (role === "assistant") {
+      let i = 0;
+      function type() {
+        if (i < text.length) {
+          msg.textContent += text.charAt(i);
+          i++;
+          setTimeout(type, 12);
+        }
+      }
+      type();
+    } else {
       msg.textContent = text;
-      chatBody.appendChild(msg);
-      chatBody.scrollTop = chatBody.scrollHeight;
     }
 
-    function answer(prompt) {
-      const q = prompt.toLowerCase();
+    chatBody.scrollTop = chatBody.scrollHeight;
+  }
 
-      if (q.includes("project")) return COPILOT_REPLIES.projects;
-      if (q.includes("experience")) return COPILOT_REPLIES.experience;
-      if (q.includes("skill")) return COPILOT_REPLIES.skills;
-      if (q.includes("education")) return COPILOT_REPLIES.education;
-      if (q.includes("contact")) return COPILOT_REPLIES.contact;
-      if (q.includes("healthcare") || q.includes("ai")) return COPILOT_REPLIES.healthcare;
-      return COPILOT_REPLIES.default;
-    }
+  function answer(prompt) {
+    const q = prompt.toLowerCase();
 
-    function sendPrompt(text) {
-      const cleaned = text.trim();
-      if (!cleaned) return;
-      appendMessage(cleaned, "user");
+    if (q.includes("project"))
+      return "🚀 Agrani has built ML drug discovery systems, healthcare chatbots, Flutter apps, and AI pipelines.";
 
-      setTimeout(() => {
-        appendMessage(answer(cleaned), "assistant");
-      }, 350);
-    }
+    if (q.includes("experience"))
+      return "💼 Experience includes Alivia Care (Clinical Informatics), BluCognition (Data Science), and research roles.";
 
-    chatSend.onclick = () => {
+    if (q.includes("skill"))
+      return "🧠 Skills: Python, ML, Flutter, TensorFlow, Healthcare Analytics, Computer Vision.";
+
+    if (q.includes("education"))
+      return "🎓 MS Health Informatics (UNF) + Integrated M.Tech Biotechnology (JIIT).";
+
+    if (q.includes("contact"))
+      return "📩 Email: agbrian521@gmail.com | 📍 Jacksonville, FL";
+
+    return "🤖 Ask me about projects, experience, skills, or healthcare AI!";
+  }
+
+  function sendPrompt(text) {
+    const cleaned = text.trim();
+    if (!cleaned) return;
+
+    appendMessage(cleaned, "user");
+
+    setTimeout(() => {
+      appendMessage(answer(cleaned), "assistant");
+    }, 300);
+  }
+
+  chatSend.onclick = () => {
+    sendPrompt(chatInput.value);
+    chatInput.value = "";
+  };
+
+  chatInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
       sendPrompt(chatInput.value);
       chatInput.value = "";
-    };
+    }
+  });
 
-    chatInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        sendPrompt(chatInput.value);
-        chatInput.value = "";
-      }
+  chipButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      sendPrompt(btn.textContent);
     });
-
-    chipButtons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        sendPrompt(btn.textContent);
-      });
-    });
-  }
+  });
+}
 
   function showMessage(msg) {
     if (!feedback) return;
