@@ -3231,3 +3231,104 @@ textarea:-webkit-autofill {
 
 }
 
+/* =========================================
+   MOBILE ONLY (DOES NOT TOUCH DESKTOP)
+========================================= */
+@media (max-width: 768px) {
+
+  /* ===== LAYOUT ===== */
+  .vscode-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+
+  .editor-area {
+    width: 100%;
+    margin: 0 !important;
+    overflow-y: auto;
+    padding-bottom: 70px;
+  }
+
+  /* ===== ACTIVITY BAR → BOTTOM ===== */
+  .activity-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 2000;
+    background: #111;
+    border-top: 1px solid var(--line);
+  }
+
+  .settings-btn {
+    display: block !important;
+  }
+
+  /* ===== SIDEBAR DRAWER ===== */
+  .sidebar-panel {
+    position: fixed;
+    top: calc(var(--top-header-h) + var(--menu-bar-h));
+    left: 0;
+    width: 280px;
+    height: calc(100vh - 120px);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 2100;
+  }
+
+  .sidebar-panel.show {
+    transform: translateX(0);
+  }
+
+  /* ===== COPILOT ===== */
+  .copilot-sidebar {
+    position: fixed;
+    bottom: 60px;
+    left: 0;
+    right: 0;
+    height: 60vh;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+    z-index: 2200;
+  }
+
+  .copilot-sidebar.open {
+    transform: translateY(0);
+  }
+
+  /* ===== SETTINGS ===== */
+  .settings-panel {
+    position: fixed;
+    bottom: 70px;
+    left: 10px;
+    right: 10px;
+    z-index: 2300;
+
+    display: block !important;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(20px);
+  }
+
+  .settings-panel.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  /* ===== MENU FIX ===== */
+  .menu-bar {
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .dropdown {
+    z-index: 3000;
+  }
+
+}
