@@ -960,48 +960,62 @@ document.addEventListener("DOMContentLoaded", () => {
      MENU BAR
      ========================================================================== */
 
-  function bindMenuEvents() {
-    menuItems = qsa(".menu-item");
+function bindMenuEvents() {
+  menuItems = qsa(".menu-item");
 
-    menuItems.forEach((menu) => {
-      menu.addEventListener("click", (e) => {
-        const label = safeText(
-          e.currentTarget.childNodes[0]?.textContent || ""
-        ).toLowerCase();
+  menuItems.forEach((menu) => {
+    menu.addEventListener("click", (e) => {
+      e.stopPropagation(); // ✅ IMPORTANT
 
-        switch (label) {
-          case "file":
-            break;
-          case "edit":
-            openPalette();
-            break;
-          case "view":
-            toggleSidebar();
-            break;
-          case "go":
-            openPalette();
-            break;
-          case "run":
-            toggleTerminal();
-            setTimeout(() => terminalInput?.focus(), 80);
-            break;
-          case "terminal":
-            toggleTerminal();
-            setTimeout(() => terminalInput?.focus(), 80);
-            break;
-          case "help":
-            openTab("readme");
-            break;
-          case "copilot":
-            toggleCopilotSidebar(true);
-            break;
-          default:
-            break;
-        }
-      });
+      // ✅ Close all menus first
+      menuItems.forEach((m) => m.classList.remove("active"));
+
+      // ✅ Open current menu
+      menu.classList.add("active");
+
+      const label = safeText(
+        e.currentTarget.childNodes[0]?.textContent || ""
+      ).toLowerCase();
+
+      switch (label) {
+        case "file":
+          break;
+        case "edit":
+          openPalette();
+          break;
+        case "view":
+          toggleSidebar();
+          break;
+        case "go":
+          openPalette();
+          break;
+        case "run":
+        case "terminal":
+          toggleTerminal();
+          setTimeout(() => terminalInput?.focus(), 80);
+          break;
+        case "help":
+          openTab("readme");
+          break;
+        case "copilot":
+          toggleCopilotSidebar(true);
+          break;
+      }
     });
-  }
+  });
 
+  // ✅ CLICK OUTSIDE → CLOSE MENU
+  document.addEventListener("click", () => {
+    menuItems.forEach((m) => m.classList.remove("active"));
+  });
+
+  // ✅ PREVENT DROPDOWN CLICK FROM CLOSING
+  document.querySelectorAll(".dropdown").forEach((drop) => {
+    drop.addEventListener("click", (e) => {
+      e.stopPropagation();
+    });
+  });
+}
   bindMenuEvents();
 
   /* ==========================================================================
