@@ -195,17 +195,30 @@
     <!-- ================= RIGHT COPILOT SIDEBAR ================= -->
     <aside id="copilotSidebar" class="copilot-sidebar" aria-hidden="true">
       <div class="copilot-side-header">
-        <div class="copilot-side-title">✨ Agrani's Copilot</div>
-        <button
-          class="copilot-side-close"
-          id="copilotSideClose"
-          type="button"
-          aria-label="Close Copilot"
-          onclick="toggleCopilotSidebar(false)"
-        >
-          ×
-        </button>
-      </div>
+          <div class="copilot-side-title">✨ Agrani's Copilot</div>
+        
+          <div style="display:flex; gap:8px;">
+            
+            <!-- MINIMIZE BUTTON -->
+            <button
+              class="copilot-side-minimize"
+              onclick="minimizeCopilot()"
+              type="button"
+            >
+              —
+            </button>
+        
+            <!-- CLOSE BUTTON -->
+            <button
+              class="copilot-side-close"
+              id="copilotSideClose"
+              type="button"
+            >
+              ×
+            </button>
+        
+          </div>
+        </div>
 
       <div class="copilot-workspace-row">
         <span class="copilot-workspace-label">WORKSPACE</span>
