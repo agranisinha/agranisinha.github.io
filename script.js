@@ -965,58 +965,99 @@ function bindMenuEvents() {
 
   menuItems.forEach((menu) => {
     menu.addEventListener("click", (e) => {
-      e.stopPropagation(); // ✅ IMPORTANT
-
-      // ✅ Close all menus first
-      menuItems.forEach((m) => m.classList.remove("active"));
-
-      // ✅ Open current menu
-      menu.classList.add("active");
+      e.stopPropagation();
 
       const label = safeText(
         e.currentTarget.childNodes[0]?.textContent || ""
       ).toLowerCase();
 
+      const isActive = menu.classList.contains("active");
+
+      // ✅ Close all menus first
+      menuItems.forEach((m) => m.classList.remove("active"));
+
+      // ✅ Toggle current menu (VS Code behavior)
+      if (!isActive) {
+        menu.classList.add("active");
+      }
+
+      // ✅ ONLY run actions that should trigger immediately
       switch (label) {
-        case "file":
-          break;
         case "edit":
-          openPalette();
-          break;
-        case "view":
-          toggleSidebar();
-          break;
         case "go":
           openPalette();
           break;
+
+        case "view":
+          toggleSidebar();
+          break;
+
         case "run":
         case "terminal":
           toggleTerminal();
           setTimeout(() => terminalInput?.focus(), 80);
           break;
+
         case "help":
           openTab("readme");
           break;
+
         case "copilot":
           toggleCopilotSidebar(true);
           break;
+
+        // ❌ IMPORTANT: DO NOTHING for "file"
+        // File menu should only open dropdown
       }
     });
   });
 
-  // ✅ CLICK OUTSIDE → CLOSE MENU
+  // ✅ CLICK OUTSIDE → CLOSE ALL MENUS
   document.addEventListener("click", () => {
     menuItems.forEach((m) => m.classList.remove("active"));
   });
 
-  // ✅ PREVENT DROPDOWN CLICK FROM CLOSING
+  // ✅ PREVENT DROPDOWN FROM CLOSING WHEN CLICKING INSIDE
   document.querySelectorAll(".dropdown").forEach((drop) => {
     drop.addEventListener("click", (e) => {
       e.stopPropagation();
     });
   });
-}
 
+  // ✅ HANDLE DROPDOWN ITEMS (VERY IMPORTANT FIX)
+  document.querySelectorAll(".dropdown-item").forEach((item) => {
+    item.addEventListener("click", (e) => {
+      const action = item.dataset.action;
+
+      switch (action) {
+        case "home":
+          openTab("home");
+          break;
+        case "about":
+          openTab("about");
+          break;
+        case "projects":
+          openTab("projects");
+          break;
+        case "skills":
+          openTab("skills");
+          break;
+        case "experience":
+          openTab("experience");
+          break;
+        case "contact":
+          openTab("contact");
+          break;
+        case "resume":
+          window.open("Resume.pdf", "_blank");
+          break;
+      }
+
+      // ✅ Close menu after click
+      menuItems.forEach((m) => m.classList.remove("active"));
+    });
+  });
+}
   /* ==========================================================================
      SIDEBAR FILE EVENTS
      ========================================================================== */
