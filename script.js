@@ -2148,3 +2148,21 @@ document.addEventListener("touchend", () => {
     sidebar.classList.remove("show");
   }
 });
+
+/* ===== MENU CLICK (MOBILE) ===== */
+document.querySelectorAll(".menu-item").forEach(menu => {
+  menu.addEventListener("click", (e) => {
+    e.stopPropagation();
+
+    document.querySelectorAll(".menu-item")
+      .forEach(m => m.classList.remove("active"));
+
+    menu.classList.toggle("active");
+  });
+});
+
+/* Close menu on outside click */
+document.addEventListener("click", () => {
+  document.querySelectorAll(".menu-item")
+    .forEach(m => m.classList.remove("active"));
+});
