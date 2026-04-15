@@ -449,125 +449,89 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  function printToTerminal(text) {
-    if (!terminalBody) return;
-    const line = document.createElement("div");
-    line.textContent = text;
-    terminalBody.appendChild(line);
-    terminalBody.scrollTop = terminalBody.scrollHeight;
+ function printToTerminal(text, type = "normal") {
+  if (!terminalBody) return;
+
+  const line = document.createElement("div");
+
+  if (type === "success") line.classList.add("success");
+  if (type === "error") line.classList.add("error");
+  if (type === "warning") line.classList.add("warning");
+
+  line.textContent = text;
+  terminalBody.appendChild(line);
+  terminalBody.scrollTop = terminalBody.scrollHeight;
+}
+
+function runTerminalCommand(raw) {
+  const cmd = raw.trim();
+  if (!cmd) return;
+
+  printToTerminal(`agrani@portfolio:${currentDir}$ ${cmd}`);
+
+  const parts = cmd.split(" ");
+  const first = parts[0].toLowerCase();
+
+  switch (first) {
+    case "help":
+      printToTerminal("📘 Available commands:", "success");
+      printToTerminal("ls, cd, pwd, open <file>, whoami, clear, date");
+      break;
+
+    case "ls":
+      printToTerminal("📂 Files:");
+      printToTerminal("home.tsx  about.html  projects.js  skills.json  experience.ts  contact.css");
+      break;
+
+    case "pwd":
+      printToTerminal(`/portfolio/${currentDir === "~" ? "" : currentDir}`);
+      break;
+
+    case "cd":
+      if (!parts[1] || parts[1] === "~") {
+        currentDir = "~";
+      } else if (parts[1] === "..") {
+        currentDir = "~";
+      } else {
+        currentDir = parts[1];
+      }
+      printToTerminal(`📁 moved to ${currentDir}`, "success");
+      break;
+
+    case "open":
+    case "cat":
+      if (parts[1]) {
+        openTab(parts[1]);
+        printToTerminal(`📄 opening ${parts[1]}`, "success");
+      } else {
+        printToTerminal("usage: open <file>", "error");
+      }
+      break;
+
+    case "whoami":
+      printToTerminal("👩‍💻 Agrani Sinha — AI + Health Informatics Engineer", "success");
+      break;
+
+    case "date":
+      printToTerminal(new Date().toString());
+      break;
+
+    case "clear":
+      clearTerminal();
+      break;
+
+    case "projects":
+    case "about":
+    case "skills":
+    case "experience":
+    case "contact":
+      openTab(first);
+      break;
+
+    default:
+      printToTerminal(`❌ command not found: ${cmd}`, "error");
   }
-
-  function runTerminalCommand(raw) {
-    const cmd = raw.trim();
-    if (!cmd) return;
-
-    printToTerminal(`agrani@portfolio:${currentDir}$ ${cmd}`);
-
-    const parts = cmd.split(" ");
-    const first = parts[0].toLowerCase();
-
-    switch (first) {
-      case "help":
-        printToTerminal("Available commands:");
-        printToTerminal("ls — list files");
-        printToTerminal("pwd — print working directory");
-        printToTerminal("cd <dir> — change directory");
-        printToTerminal("cat <file> — open a file");
-        printToTerminal("open <file> — open a file");
-        printToTerminal("whoami — who am I?");
-        printToTerminal("echo <text> — print text");
-        printToTerminal("date — current date & time");
-        printToTerminal("git log — show recent commits");
-        printToTerminal("python --version — show Python version");
-        printToTerminal("clear — clear terminal");
-        break;
-
-      case "ls":
-        printToTerminal("home.tsx  about.html  projects.js  skills.json  experience.ts  contact.css  README.md  Resume.pdf");
-        break;
-
-      case "pwd":
-        printToTerminal(`/portfolio/${currentDir === "~" ? "" : currentDir}`.replace(/\/$/, ""));
-        break;
-
-      case "cd":
-        if (!parts[1]) {
-          currentDir = "~";
-        } else if (parts[1] === "..") {
-          currentDir = "~";
-        } else {
-          currentDir = parts[1];
-        }
-        break;
-
-      case "cat":
-      case "open":
-        if (parts[1]) {
-          openTab(parts[1]);
-        } else {
-          printToTerminal("usage: cat <file>");
-        }
-        break;
-
-      case "whoami":
-        printToTerminal("Agrani Sinha");
-        break;
-
-      case "echo":
-        printToTerminal(parts.slice(1).join(" "));
-        break;
-
-      case "date":
-        printToTerminal(new Date().toString());
-        break;
-
-      case "git":
-        if (parts[1] === "log") {
-          printToTerminal("commit 9f2e1a2 - Upgrade premium portfolio UI");
-          printToTerminal("commit 51af89d - Add VS Code tabs and command palette");
-          printToTerminal("commit 3b21d9a - Initial portfolio structure");
-        } else {
-          printToTerminal("git: command not recognized");
-        }
-        break;
-
-      case "python":
-        if (parts[1] === "--version") {
-          printToTerminal("Python 3.11.8");
-        } else {
-          printToTerminal("python: unsupported argument");
-        }
-        break;
-
-      case "projects":
-        openTab("projects");
-        break;
-
-      case "about":
-        openTab("about");
-        break;
-
-      case "skills":
-        openTab("skills");
-        break;
-
-      case "experience":
-        openTab("experience");
-        break;
-
-      case "contact":
-        openTab("contact");
-        break;
-
-      case "clear":
-        clearTerminal();
-        break;
-
-      default:
-        printToTerminal(`command not found: ${cmd} — type 'help' for commands`);
-    }
-  }
-
+}
   if (terminalInput) {
     terminalInput.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
