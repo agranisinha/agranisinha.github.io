@@ -315,7 +315,10 @@ document.addEventListener("DOMContentLoaded", () => {
     panel.innerHTML = `
       <div class="copilot-side-header">
         <div class="copilot-side-title">✨ Agrani's Copilot</div>
-        <button class="copilot-side-close" id="copilotSideClose" type="button" aria-label="Close Copilot">×</button>
+        <div class="copilot-side-actions">
+          <button class="copilot-side-minimize" id="copilotSideMinimize" type="button" aria-label="Minimize Copilot">—</button>
+          <button class="copilot-side-close" id="copilotSideClose" type="button" aria-label="Close Copilot">×</button>
+        </div>
       </div>
 
       <div class="copilot-workspace-row">
