@@ -486,35 +486,33 @@ document.addEventListener("DOMContentLoaded", () => {
      COPILOT SIDEBAR CONTROL
      ========================================================================== */
 
-  function toggleCopilotSidebar(forceState) {
-  if (!copilotSidebar) return;
-
+ function toggleCopilotSidebar(force) {
+  const sidebar = document.getElementById("copilotSidebar");
   const editor = document.querySelector(".editor-area");
 
-  // FORCE OPEN (only when clicking Copilot)
-  if (forceState === true) {
+  if (!sidebar) return;
+
+  // FORCE OPEN
+  if (force === true) {
     isCopilotOpen = true;
+    sidebar.classList.add("open");
+    editor && editor.classList.add("with-copilot");
+    return;
   }
 
   // FORCE CLOSE
-  else if (forceState === false) {
+  if (force === false) {
     isCopilotOpen = false;
+    sidebar.classList.remove("open");
+    editor && editor.classList.remove("with-copilot");
+    return;
   }
 
-  // TOGGLE (only if no force)
-  else {
-    isCopilotOpen = !isCopilotOpen;
-  }
+  // TOGGLE
+  isCopilotOpen = !sidebar.classList.contains("open");
 
-  // Apply UI changes
-  copilotSidebar.classList.toggle("open", isCopilotOpen);
-  copilotSidebar.setAttribute("aria-hidden", String(!isCopilotOpen));
-
-  if (editor) {
-    editor.classList.toggle("with-copilot", isCopilotOpen);
-  }
-
-  persistState();
+  sidebar.classList.toggle("open", isCopilotOpen);
+  editor && editor.classList.toggle("with-copilot", isCopilotOpen);
 }
 
   window.toggleCopilotSidebar = toggleCopilotSidebar;
@@ -699,6 +697,9 @@ document.addEventListener("DOMContentLoaded", () => {
     renderTabs();
     setActiveSidebar(activeTab);
     renderContent(activeTab);
+      if (isCopilotOpen) {
+        toggleCopilotSidebar(true);
+      }
   }
 
   function closeCurrentTab() {
@@ -935,16 +936,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (e.key === "Escape") {
-      closePalette();
-
-      if (settingsPanel) {
-        settingsPanel.classList.remove("open");
+        closePalette();
+      
+        if (settingsPanel) {
+          settingsPanel.classList.remove("open");
+        }
       }
-
-      if (isCopilotOpen && window.innerWidth < 900) {
-        toggleCopilotSidebar(false);
-      }
-    }
   });
 
   /* ==========================================================================
@@ -1612,7 +1609,6 @@ document.addEventListener("DOMContentLoaded", () => {
   renderTabs();
   setActiveSidebar(activeTab);
   renderContent(activeTab);
-  toggleCopilotSidebar(false);
 
 
   persistState();
