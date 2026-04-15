@@ -3231,56 +3231,57 @@ textarea:-webkit-autofill {
 
 }
 
+/* ================= MOBILE MASTER FIX ================= */
 @media (max-width: 768px) {
 
-  /* RESET EVERYTHING THAT BREAKS */
-  .sidebar-panel,
-  .copilot-sidebar,
-  .settings-panel,
-  .dropdown {
-    transition: all 0.25s ease !important;
+  body {
+    overflow-y: auto;
   }
 
-  /* SIDEBAR */
+  /* ===== SIDEBAR → SLIDE DRAWER ===== */
   .sidebar-panel {
     position: fixed;
-    left: 0;
     top: 70px;
-    bottom: 60px;
-    width: 240px;
-    background: #111;
+    bottom: 0;
+    left: 0;
+    width: 260px;
     transform: translateX(-100%);
-    z-index: 3000;
+    z-index: 2000;
+    transition: transform 0.3s ease;
   }
 
   .sidebar-panel.mobile-open {
     transform: translateX(0);
   }
 
-  /* COPILOT */
+  /* ===== COPILOT → FULL BOTTOM SHEET ===== */
   .copilot-sidebar {
-    position: fixed;
+    position: fixed !important;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 70vh;
+    height: 80vh;
     transform: translateY(100%);
-    background: #0d1117;
-    z-index: 4000;
+    z-index: 3000;
+    transition: transform 0.3s ease;
   }
 
   .copilot-sidebar.mobile-open {
     transform: translateY(0);
   }
 
-  /* SETTINGS */
+  /* REMOVE DESKTOP PUSH */
+  .editor-area.with-copilot {
+    margin-right: 0 !important;
+  }
+
+  /* ===== SETTINGS ===== */
   .settings-panel {
     position: fixed;
     top: 80px;
     left: 10px;
     right: 10px;
-    background: #111;
-    z-index: 5000;
+    z-index: 4000;
     display: none;
   }
 
@@ -3288,14 +3289,13 @@ textarea:-webkit-autofill {
     display: block;
   }
 
-  /* DROPDOWN (FILE/EDIT) */
+  /* ===== MENU DROPDOWN FIX ===== */
   .dropdown {
     position: fixed !important;
     top: 70px;
     left: 10px;
     right: 10px;
-    background: #1a1a1a;
-    z-index: 6000;
+    z-index: 5000;
     display: none;
   }
 
