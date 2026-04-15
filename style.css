@@ -3128,6 +3128,53 @@ textarea:-webkit-autofill {
   justify-content: space-between;
   padding: 0 14px;
 }
+
+/* ================= SETTINGS MINIMIZE ================= */
+
+.settings-panel.minimized {
+  position: fixed;
+  bottom: 0;
+  right: 100px; /* offset from Copilot */
+
+  width: 240px;
+  height: 50px;
+
+  border-radius: 12px 12px 0 0;
+
+  background: linear-gradient(135deg, #444, #222);
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  z-index: 9999;
+}
+
+/* Hide inner content */
+.settings-panel.minimized *:not(.settings-header) {
+  display: none !important;
+}
+
+/* Header layout */
+.settings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.settings-actions button {
+  background: transparent;
+  border: none;
+  color: #aaa;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.settings-actions button:hover {
+  color: white;
+}
 /* Title style */
 .copilot-sidebar.minimized .copilot-side-title {
   font-size: 14px;
