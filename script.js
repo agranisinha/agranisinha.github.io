@@ -2121,98 +2121,137 @@ function getResume() {
   `;
 }
 
-/* ================= MOBILE LOGIC (FINAL FIX) ================= */
+/* ================= PREMIUM MOBILE JS ================= */
 
-function isMobile() {
-  return window.innerWidth <= 768;
-}
+(function () {
 
-/* ===== MENU FIX ===== */
-function bindMenuEventsMobile() {
-  const menuItems = document.querySelectorAll(".menu-item");
+  const isMobile = () => window.innerWidth <= 768;
 
-  menuItems.forEach(menu => {
+  const qs = s => document.querySelector(s);
+  const qsa = s => document.querySelectorAll(s);
+
+  /* ===== CREATE BACKDROP ===== */
+  const backdrop = document.createElement("div");
+  backdrop.className = "mobile-backdrop";
+  document.body.appendChild(backdrop);
+
+  function closeAll() {
+    qs(".sidebar-panel")?.classList.remove("open");
+    qs("#copilotSidebar")?.classList.remove("open");
+    qs("#settingsPanel")?.classList.remove("open");
+    backdrop.classList.remove("show");
+  }
+
+  backdrop.addEventListener("click", closeAll);
+
+  /* ===== SIDEBAR ===== */
+  window.toggleSidebar = function () {
+    if (!isMobile()) return;
+
+    const sidebar = qs(".sidebar-panel");
+
+    if (!sidebar) return;
+
+    const open = sidebar.classList.contains("open");
+
+    closeAll();
+
+    if (!open) {
+      sidebar.classList.add("open");
+      backdrop.classList.add("show");
+    }
+  };
+
+  /* ===== COPILOT ===== */
+  window.toggleCopilotSidebar = function () {
+    if (!isMobile()) return;
+
+    const copilot = qs("#copilotSidebar");
+
+    if (!copilot) return;
+
+    const open = copilot.classList.contains("open");
+
+    closeAll();
+
+    if (!open) {
+      copilot.classList.add("open");
+      backdrop.classList.add("show");
+    }
+  };
+
+  /* ===== SETTINGS ===== */
+  window.toggleSettings = function () {
+    if (!isMobile()) return;
+
+    const panel = qs("#settingsPanel");
+
+    if (!panel) return;
+
+    const open = panel.classList.contains("open");
+
+    closeAll();
+
+    if (!open) {
+      panel.classList.add("open");
+      backdrop.classList.add("show");
+    }
+  };
+
+  /* ===== MENU FIX ===== */
+  qsa(".menu-item").forEach(menu => {
     menu.addEventListener("click", (e) => {
       if (!isMobile()) return;
 
       e.stopPropagation();
 
-      menuItems.forEach(m => {
-        if (m !== menu) m.classList.remove("active");
-      });
+      const isActive = menu.classList.contains("active");
 
-      menu.classList.toggle("active");
+      qsa(".menu-item").forEach(m => m.classList.remove("active"));
+
+      if (!isActive) {
+        menu.classList.add("active");
+      }
     });
   });
 
   document.addEventListener("click", () => {
     if (!isMobile()) return;
 
-    menuItems.forEach(m => m.classList.remove("active"));
+    qsa(".menu-item").forEach(m => m.classList.remove("active"));
   });
-}
 
-/* ===== SIDEBAR FIX ===== */
-window.openSidebar = function () {
-  const sidebar = document.getElementById("sidebarPanel");
+  /* ===== BOTTOM ICON ACTIONS ===== */
+  qsa(".activity-icon").forEach((icon, index) => {
+    icon.addEventListener("click", () => {
 
-  if (!sidebar) return;
+      switch(index) {
+        case 0: toggleSidebar(); break;   // 📁
+        case 4: toggleCopilotSidebar(); break; // ✨
+        case 5: toggleSettings(); break;  // ⚙️
+      }
 
-  if (isMobile()) {
-    sidebar.classList.toggle("show");
-  } else {
-    sidebar.classList.toggle("hide");
-  }
-};
+    });
+  });
 
-/* ===== COPILOT FIX ===== */
-window.toggleCopilotSidebar = function (force) {
-  const copilot = document.getElementById("copilotSidebar");
+  /* ===== SWIPE SIDEBAR ===== */
+  let startX = 0;
 
-  if (!copilot) return;
+  document.addEventListener("touchstart", e => {
+    startX = e.touches[0].clientX;
+  });
 
-  if (isMobile()) {
-    if (force === true) {
-      copilot.classList.add("open");
-    } else if (force === false) {
-      copilot.classList.remove("open");
-    } else {
-      copilot.classList.toggle("open");
+  document.addEventListener("touchend", e => {
+    let endX = e.changedTouches[0].clientX;
+
+    if (startX < 20 && endX > 120) {
+      toggleSidebar(); // swipe right → open
     }
-    return;
-  }
 
-  /* desktop fallback */
-  copilot.classList.toggle("open");
-};
+    if (startX > 200 && endX < 100) {
+      qs(".sidebar-panel")?.classList.remove("open");
+      backdrop.classList.remove("show");
+    }
+  });
 
-/* ===== SETTINGS FIX ===== */
-window.toggleSettings = function () {
-  const panel = document.getElementById("settingsPanel");
-  if (!panel) return;
-
-  panel.classList.toggle("open");
-};
-
-/* ===== PREVENT OVERLAP ===== */
-document.addEventListener("click", (e) => {
-  if (!isMobile()) return;
-
-  const sidebar = document.getElementById("sidebarPanel");
-  const copilot = document.getElementById("copilotSidebar");
-
-  if (!e.target.closest(".sidebar-panel") &&
-      !e.target.closest(".activity-icon")) {
-    sidebar?.classList.remove("show");
-  }
-
-  if (!e.target.closest(".copilot-sidebar") &&
-      !e.target.closest(".copilot-box")) {
-    copilot?.classList.remove("open");
-  }
-});
-
-/* ===== INIT ===== */
-document.addEventListener("DOMContentLoaded", () => {
-  bindMenuEventsMobile();
-});
+})();
