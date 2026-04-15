@@ -2121,46 +2121,37 @@ function getResume() {
   `;
 }
 
-/* =========================================================
-   CLEAN MOBILE OVERRIDE
-   Add this at the VERY END of script.js
-========================================================= */
 (() => {
-  const MOBILE_BREAKPOINT = 768;
+  const MOBILE = 768;
 
   function isMobile() {
-    return window.innerWidth <= MOBILE_BREAKPOINT;
+    return window.innerWidth <= MOBILE;
   }
 
-  function el(q) {
-    return document.querySelector(q);
-  }
-
-  function els(q) {
-    return Array.from(document.querySelectorAll(q));
-  }
+  const q = (s) => document.querySelector(s);
+  const qa = (s) => Array.from(document.querySelectorAll(s));
 
   function closeMenus() {
-    els(".menu-item").forEach((m) => m.classList.remove("active"));
+    qa(".menu-item").forEach((m) => m.classList.remove("active"));
   }
 
-  function openMobileSidebar() {
-    const panel = el(".sidebar-panel");
+  function openSidebarDrawer() {
+    const panel = q(".sidebar-panel");
     if (!panel) return;
     panel.classList.add("show");
     panel.classList.remove("hide");
   }
 
-  function closeMobileSidebar() {
-    const panel = el(".sidebar-panel");
+  function closeSidebarDrawer() {
+    const panel = q(".sidebar-panel");
     if (!panel) return;
     panel.classList.remove("show");
     panel.classList.add("hide");
   }
 
-  function openMobileCopilot() {
+  function openCopilotPanel() {
     const panel = document.getElementById("copilotSidebar");
-    const editor = el(".editor-area");
+    const editor = q(".editor-area");
     if (!panel) return;
     panel.classList.add("open");
     panel.classList.remove("minimized");
@@ -2168,49 +2159,38 @@ function getResume() {
     editor?.classList.remove("with-copilot");
   }
 
-  function closeMobileCopilot() {
+  function closeCopilotPanel() {
     const panel = document.getElementById("copilotSidebar");
-    const editor = el(".editor-area");
+    const editor = q(".editor-area");
     if (!panel) return;
     panel.classList.remove("open", "minimized");
     panel.setAttribute("aria-hidden", "true");
     editor?.classList.remove("with-copilot");
   }
 
-  function toggleMobileSettings() {
-    const panel = document.getElementById("settingsPanel");
-    if (!panel) return;
-    const willOpen = !panel.classList.contains("open");
-    panel.classList.toggle("open", willOpen);
-    panel.classList.remove("minimized");
-  }
-
-  window.openSidebar = function mobileOpenSidebar(type) {
+  window.openSidebar = function(type) {
     if (!isMobile()) return;
-
     const t = String(type || "").toLowerCase();
-
-    els(".activity-icon").forEach((icon) => icon.classList.remove("active"));
 
     if (t === "copilot") {
       closeMenus();
-      closeMobileSidebar();
-      openMobileCopilot();
+      closeSidebarDrawer();
+      openCopilotPanel();
       return;
     }
 
     if (t === "search") {
       closeMenus();
-      closeMobileSidebar();
-      closeMobileCopilot();
+      closeSidebarDrawer();
+      closeCopilotPanel();
       if (typeof window.openPalette === "function") window.openPalette();
       return;
     }
 
     if (t === "git") {
       closeMenus();
-      closeMobileSidebar();
-      closeMobileCopilot();
+      closeSidebarDrawer();
+      closeCopilotPanel();
       if (typeof window.printToTerminal === "function") {
         window.printToTerminal("Git panel is simulated. Use `git log` in terminal.", "warning");
       }
@@ -2219,94 +2199,96 @@ function getResume() {
 
     if (t === "files") {
       closeMenus();
-      openMobileSidebar();
+      openSidebarDrawer();
       if (typeof window.openTab === "function") window.openTab("readme");
       return;
     }
 
     closeMenus();
-    closeMobileCopilot();
-    openMobileSidebar();
+    closeCopilotPanel();
+    openSidebarDrawer();
   };
 
-  window.toggleSidebar = function mobileToggleSidebar() {
+  window.toggleSidebar = function() {
     if (!isMobile()) return;
-    const panel = el(".sidebar-panel");
+    const panel = q(".sidebar-panel");
     if (!panel) return;
-
-    const willOpen = !panel.classList.contains("show");
-    closeMenus();
-
-    if (willOpen) openMobileSidebar();
-    else closeMobileSidebar();
+    if (panel.classList.contains("show")) closeSidebarDrawer();
+    else openSidebarDrawer();
   };
 
-  window.toggleSettings = function mobileToggleSettings() {
-    if (!isMobile()) return;
-    closeMenus();
-    closeMobileSidebar();
-    closeMobileCopilot();
-    toggleMobileSettings();
-  };
-
-  window.toggleCopilotSidebar = function mobileToggleCopilot(force) {
+  window.toggleCopilotSidebar = function(force) {
     if (!isMobile()) return;
 
     if (force === true) {
       closeMenus();
-      closeMobileSidebar();
-      openMobileCopilot();
+      closeSidebarDrawer();
+      openCopilotPanel();
       return;
     }
 
     if (force === false) {
-      closeMobileCopilot();
+      closeCopilotPanel();
       return;
     }
 
     const panel = document.getElementById("copilotSidebar");
     if (!panel) return;
 
-    if (panel.classList.contains("open")) closeMobileCopilot();
+    if (panel.classList.contains("open")) closeCopilotPanel();
     else {
       closeMenus();
-      closeMobileSidebar();
-      openMobileCopilot();
+      closeSidebarDrawer();
+      openCopilotPanel();
     }
   };
 
+  window.toggleSettings = function() {
+    if (!isMobile()) return;
+    const panel = document.getElementById("settingsPanel");
+    if (!panel) return;
+
+    closeMenus();
+    closeSidebarDrawer();
+    closeCopilotPanel();
+
+    const willOpen = !panel.classList.contains("open");
+    panel.classList.toggle("open", willOpen);
+    panel.classList.remove("minimized");
+  };
+
   function bindMobileMenus() {
-    els(".menu-item").forEach((menu) => {
-      if (menu.dataset.mobileBound === "1") return;
-      menu.dataset.mobileBound = "1";
+    qa(".menu-item").forEach((menu) => {
+      if (menu.dataset.mobileFixed === "1") return;
+      menu.dataset.mobileFixed = "1";
 
       menu.addEventListener("click", (e) => {
         if (!isMobile()) return;
 
         const hasDropdown = !!menu.querySelector(".dropdown");
-        const isActive = menu.classList.contains("active");
+        const wasActive = menu.classList.contains("active");
         const label = String(menu.childNodes[0]?.textContent || "").trim().toLowerCase();
 
         e.stopPropagation();
 
-        closeMobileSidebar();
+        closeSidebarDrawer();
 
-        els(".menu-item").forEach((m) => m.classList.remove("active"));
+        qa(".menu-item").forEach((m) => m.classList.remove("active"));
 
-        if (hasDropdown && !isActive) {
-          menu.classList.add("active");
+        if (hasDropdown) {
+          if (!wasActive) menu.classList.add("active");
           return;
         }
 
-        if (!hasDropdown && label === "copilot") {
-          openMobileCopilot();
+        if (label === "copilot") {
+          openCopilotPanel();
         }
       });
     });
 
-    els(".dropdown").forEach((drop) => {
-      if (drop.dataset.mobileBound === "1") return;
-      drop.dataset.mobileBound = "1";
+    qa(".dropdown").forEach((drop) => {
+      if (drop.dataset.mobileFixed === "1") return;
+      drop.dataset.mobileFixed = "1";
       drop.addEventListener("click", (e) => {
         if (!isMobile()) return;
         e.stopPropagation();
@@ -2314,15 +2296,15 @@ function getResume() {
     });
   }
 
-  function bindOutsideClick() {
-    if (document.body.dataset.mobileOutsideBound === "1") return;
-    document.body.dataset.mobileOutsideBound = "1";
+  function bindOutsideClose() {
+    if (document.body.dataset.mobileOutsideClose === "1") return;
+    document.body.dataset.mobileOutsideClose = "1";
 
     document.addEventListener("click", (e) => {
       if (!isMobile()) return;
 
       const target = e.target;
-      const sidebar = el(".sidebar-panel");
+      const sidebar = q(".sidebar-panel");
       const settings = document.getElementById("settingsPanel");
       const copilot = document.getElementById("copilotSidebar");
 
@@ -2335,7 +2317,7 @@ function getResume() {
         !target.closest(".sidebar-panel") &&
         !target.closest(".activity-icon")
       ) {
-        closeMobileSidebar();
+        closeSidebarDrawer();
       }
 
       if (
@@ -2353,91 +2335,69 @@ function getResume() {
         !target.closest('[onclick*="toggleCopilot"]') &&
         !target.closest('[onclick*="toggleCopilotSidebar"]')
       ) {
-        closeMobileCopilot();
+        closeCopilotPanel();
       }
     });
   }
 
-  function bindTopButtons() {
+  function bindRedButton() {
     const red = document.getElementById("btnRed");
-    if (red && red.dataset.mobileBound !== "1") {
-      red.dataset.mobileBound = "1";
-      red.addEventListener("click", (e) => {
-        if (!isMobile()) return;
-        e.preventDefault();
-        e.stopPropagation();
-        closeMenus();
-        closeMobileSidebar();
-        closeMobileCopilot();
-        document.getElementById("settingsPanel")?.classList.remove("open");
-      });
-    }
+    if (!red || red.dataset.mobileFixed === "1") return;
+    red.dataset.mobileFixed = "1";
+
+    red.addEventListener("click", (e) => {
+      if (!isMobile()) return;
+      e.preventDefault();
+      e.stopPropagation();
+      closeMenus();
+      closeSidebarDrawer();
+      closeCopilotPanel();
+      document.getElementById("settingsPanel")?.classList.remove("open");
+    });
   }
 
   function bindSwipe() {
-    if (document.body.dataset.mobileSwipeBound === "1") return;
-    document.body.dataset.mobileSwipeBound = "1";
+    if (document.body.dataset.mobileSwipeFixed === "1") return;
+    document.body.dataset.mobileSwipeFixed = "1";
 
     let startX = 0;
-    let startY = 0;
     let endX = 0;
-    let endY = 0;
 
     document.addEventListener("touchstart", (e) => {
       if (!isMobile()) return;
-      const t = e.changedTouches[0];
-      startX = t.clientX;
-      startY = t.clientY;
+      startX = e.changedTouches[0].clientX;
       endX = startX;
-      endY = startY;
     }, { passive: true });
 
     document.addEventListener("touchmove", (e) => {
       if (!isMobile()) return;
-      const t = e.changedTouches[0];
-      endX = t.clientX;
-      endY = t.clientY;
+      endX = e.changedTouches[0].clientX;
     }, { passive: true });
 
     document.addEventListener("touchend", () => {
       if (!isMobile()) return;
-
       const dx = endX - startX;
-      const dy = endY - startY;
-      const absX = Math.abs(dx);
-      const absY = Math.abs(dy);
 
-      if (absX < 70 || absX < absY) return;
-
-      const sidebar = el(".sidebar-panel");
-      const copilot = document.getElementById("copilotSidebar");
-
-      if (startX < 24 && dx > 70) {
-        openMobileSidebar();
-        return;
+      if (startX < 22 && dx > 70) {
+        openSidebarDrawer();
       }
 
-      if (sidebar?.classList.contains("show") && dx < -70) {
-        closeMobileSidebar();
-        return;
-      }
-
-      if (copilot?.classList.contains("open") && dy > 70) {
-        closeMobileCopilot();
+      if (q(".sidebar-panel")?.classList.contains("show") && dx < -70) {
+        closeSidebarDrawer();
       }
     });
   }
 
-  function initMobileLayer() {
+  function initMobileFix() {
     bindMobileMenus();
-    bindOutsideClick();
-    bindTopButtons();
+    bindOutsideClose();
+    bindRedButton();
     bindSwipe();
   }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initMobileLayer);
+    document.addEventListener("DOMContentLoaded", initMobileFix);
   } else {
-    initMobileLayer();
+    initMobileFix();
   }
 })();
