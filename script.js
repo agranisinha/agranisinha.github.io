@@ -2161,6 +2161,27 @@ document.querySelectorAll(".menu-item").forEach(menu => {
   });
 });
 
+/* ===== VS CODE MENU FIX ===== */
+document.querySelectorAll(".menu-item").forEach(menu => {
+  menu.addEventListener("click", (e) => {
+    e.stopPropagation();
+
+    // close others
+    document.querySelectorAll(".menu-item").forEach(m => {
+      if (m !== menu) m.classList.remove("active");
+    });
+
+    // toggle current
+    menu.classList.toggle("active");
+  });
+});
+
+/* close on outside click */
+document.addEventListener("click", () => {
+  document.querySelectorAll(".menu-item")
+    .forEach(m => m.classList.remove("active"));
+});
+
 /* Close menu on outside click */
 document.addEventListener("click", () => {
   document.querySelectorAll(".menu-item")
