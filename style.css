@@ -3229,6 +3229,88 @@ textarea:-webkit-autofill {
   0%, 100% { opacity: 0; }
   50% { opacity: 1; }
 }
+
+/* ================= 🔥 UNIVERSAL MOBILE + RESPONSIVE FIX ================= */
+
+@media (max-width: 1024px) {
+
+  /* FIX LAYOUT OVERFLOW */
+  body {
+    overflow: auto !important;
+  }
+
+  .vscode-layout {
+    flex-direction: column;
+    height: auto;
+  }
+
+  /* HIDE LEFT SIDE FOR MOBILE */
+  .activity-bar {
+    display: none;
+  }
+
+  .sidebar-panel {
+    display: none;
+  }
+
+  /* FULL WIDTH EDITOR */
+  .editor-area {
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  /* FIX TERMINAL POSITION */
+  .terminal-panel {
+    left: 0 !important;
+    width: 100%;
+  }
+
+  /* FIX COPILOT PANEL */
+  .copilot-sidebar {
+    width: 100% !important;
+    height: 100vh;
+    top: 0;
+  }
+
+  /* REMOVE SHIFT ISSUE */
+  .editor-area.with-copilot {
+    margin-right: 0 !important;
+  }
+
+  /* HOME GRID STACK */
+  .home-grid {
+    grid-template-columns: 1fr !important;
+    gap: 30px;
+    text-align: center;
+  }
+
+  /* FIX HERO TEXT */
+  .hero-name {
+    font-size: clamp(32px, 8vw, 60px);
+  }
+
+  /* FIX PROFILE IMAGE */
+  .profile-wrapper {
+    width: 90%;
+    max-width: 300px;
+    height: auto;
+  }
+
+  /* FIX PROJECT GRID */
+  .project-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* FIX FOCUS GRID */
+  .focus-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* FIX STATS */
+  .stats {
+    justify-content: center;
+  }
+}
 /* ========================================================================== */
 /*                              END OF FILE                                   */
 /* ========================================================================== */
