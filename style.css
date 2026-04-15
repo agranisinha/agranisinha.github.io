@@ -3113,6 +3113,23 @@ textarea:-webkit-autofill {
   color: white;
   transform: scale(1.1);
 }
+
+.copilot-avatar-ring {
+  position: relative;
+  border: 2px solid rgba(124,77,255,0.4);
+  box-shadow: 0 0 25px rgba(124,77,255,0.3);
+}
+
+.copilot-avatar-core {
+  font-size: 28px;
+  animation: floatMagic 2.5s ease-in-out infinite;
+}
+
+@keyframes floatMagic {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+  100% { transform: translateY(0px); }
+}
 /* ========================================================================== */
 /*                              END OF FILE                                   */
 /* ========================================================================== */
