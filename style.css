@@ -3231,122 +3231,76 @@ textarea:-webkit-autofill {
 
 }
 
-/* ================= PREMIUM MOBILE UI ================= */
 @media (max-width: 768px) {
 
-  body {
-    overflow-x: hidden;
+  /* RESET EVERYTHING THAT BREAKS */
+  .sidebar-panel,
+  .copilot-sidebar,
+  .settings-panel,
+  .dropdown {
+    transition: all 0.25s ease !important;
   }
 
-  /* ===== BOTTOM NAV BAR ===== */
-  .activity-bar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 65px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    background: var(--bg-sidebar);
-    border-top: 1px solid var(--line);
-    z-index: 2000;
-  }
-
-  .activity-icon {
-    font-size: 22px;
-    flex: 1;
-    text-align: center;
-  }
-
-  /* ===== SIDEBAR (SWIPE DRAWER) ===== */
+  /* SIDEBAR */
   .sidebar-panel {
     position: fixed;
-    top: 70px;
     left: 0;
-    bottom: 65px;
-    width: 260px;
-    background: var(--bg-sidebar);
+    top: 70px;
+    bottom: 60px;
+    width: 240px;
+    background: #111;
     transform: translateX(-100%);
-    transition: transform 0.3s ease;
     z-index: 3000;
   }
 
-  .sidebar-panel.open {
+  .sidebar-panel.mobile-open {
     transform: translateX(0);
   }
 
-  /* ===== BACKDROP ===== */
-  .mobile-backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.5);
-    opacity: 0;
-    pointer-events: none;
-    transition: 0.3s;
-    z-index: 2500;
-  }
-
-  .mobile-backdrop.show {
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  /* ===== COPILOT (DRAG SHEET STYLE) ===== */
+  /* COPILOT */
   .copilot-sidebar {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 75vh;
-    background: var(--bg-panel);
-    border-radius: 20px 20px 0 0;
+    height: 70vh;
     transform: translateY(100%);
-    transition: transform 0.35s ease;
+    background: #0d1117;
     z-index: 4000;
   }
 
-  .copilot-sidebar.open {
+  .copilot-sidebar.mobile-open {
     transform: translateY(0);
   }
 
-  /* drag handle */
-  .copilot-sidebar::before {
-    content: "";
-    width: 50px;
-    height: 5px;
-    background: #aaa;
-    border-radius: 10px;
-    position: absolute;
-    top: 8px;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  /* ===== SETTINGS ===== */
+  /* SETTINGS */
   .settings-panel {
     position: fixed;
-    bottom: 80px;
+    top: 80px;
     left: 10px;
     right: 10px;
-    max-height: 60vh;
-    overflow-y: auto;
-    z-index: 4500;
+    background: #111;
+    z-index: 5000;
+    display: none;
   }
 
-  /* ===== MENU ===== */
+  .settings-panel.mobile-open {
+    display: block;
+  }
+
+  /* DROPDOWN (FILE/EDIT) */
   .dropdown {
     position: fixed !important;
     top: 70px;
     left: 10px;
     right: 10px;
-    z-index: 5000;
+    background: #1a1a1a;
+    z-index: 6000;
+    display: none;
   }
 
-  /* ===== EDITOR ===== */
-  .editor-area {
-    margin: 0;
-    padding-bottom: 90px;
+  .menu-item.active .dropdown {
+    display: block;
   }
 
 }
