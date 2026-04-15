@@ -3228,6 +3228,22 @@ textarea:-webkit-autofill {
 @keyframes blink {
   0%, 100% { opacity: 0; }
   50% { opacity: 1; }
+
+}
+
+/* ===== FIX SETTINGS PANEL (FORCE VISIBILITY) ===== */
+.settings-panel {
+  display: block !important;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+}
+
+.settings-panel.open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
 }
 /* ========================================================================== */
 /*                              END OF FILE                                   */
