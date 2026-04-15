@@ -3311,6 +3311,13 @@ textarea:-webkit-autofill {
     justify-content: center;
   }
 }
+
+/* ================= FORCE DESKTOP LAYOUT ON MOBILE ================= */
+@media (max-width: 1100px) {
+  .app-shell {
+    min-width: 1200px;
+  }
+}
 /* ========================================================================== */
 /*                              END OF FILE                                   */
 /* ========================================================================== */
