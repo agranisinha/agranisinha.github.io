@@ -3231,47 +3231,33 @@ textarea:-webkit-autofill {
 
 }
 
-/* ======================================================
-   🔥 FINAL MOBILE VERSION (STABLE)
-====================================================== */
 @media (max-width: 768px) {
 
   body {
-    overflow-y: auto;
     overflow-x: hidden;
   }
 
-  .vscode-layout {
-    display: flex;
-    flex-direction: row;
-  }
-
-  /* ===== ACTIVITY BAR ===== */
+  /* ===== LEFT ICON BAR ===== */
   .activity-bar {
     position: fixed;
     left: 0;
     top: 70px;
     bottom: 0;
     width: 52px;
-    z-index: 2000;
-  }
-
-  .activity-icon {
-    height: 50px;
+    z-index: 1000;
   }
 
   /* ===== SIDEBAR ===== */
   .sidebar-panel {
     position: fixed;
-    top: 70px;
     left: 52px;
+    top: 70px;
     width: 240px;
     height: calc(100vh - 70px);
     background: var(--bg-sidebar);
     transform: translateX(-100%);
     transition: transform 0.25s ease;
-    z-index: 2100;
-    display: flex !important;
+    z-index: 1500;
   }
 
   .sidebar-panel.show {
@@ -3281,69 +3267,45 @@ textarea:-webkit-autofill {
   /* ===== EDITOR ===== */
   .editor-area {
     margin-left: 52px;
-    width: calc(100% - 52px);
   }
 
-  /* ===== MENU ===== */
-  .menu-bar {
-    overflow-x: auto;
-    white-space: nowrap;
-    z-index: 3000;
-  }
-
+  /* ===== MENU (TOP PRIORITY) ===== */
   .dropdown {
-    position: absolute;
-    z-index: 4000 !important;
+    z-index: 9999 !important;
   }
 
   /* ===== COMMAND PALETTE ===== */
   .command-palette {
-    z-index: 6000 !important;
+    z-index: 10000 !important;
   }
 
   .command-palette:not(.open) {
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  /* ===== SETTINGS ===== */
-  .settings-panel {
-    position: fixed !important;
-    left: 10px !important;
-    right: 10px !important;
-    bottom: 80px;
-    width: auto !important;
-    max-height: 60vh;
-    overflow-y: auto;
-    z-index: 5000;
+    display: none;
   }
 
   /* ===== COPILOT ===== */
   .copilot-sidebar {
-    position: fixed !important;
+    position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 60vh;
-    border-radius: 16px 16px 0 0;
+    height: 55vh;
     transform: translateY(100%);
-    transition: transform 0.3s ease;
-    z-index: 5500;
+    transition: 0.3s;
+    z-index: 2000;
   }
 
   .copilot-sidebar.open {
     transform: translateY(0);
   }
 
-  /* ===== TEXT FIX ===== */
-  .hero-name {
-    font-size: 42px;
-    text-align: center;
-  }
-
-  .home-grid {
-    flex-direction: column;
-    align-items: center;
+  /* ===== SETTINGS ===== */
+  .settings-panel {
+    position: fixed;
+    bottom: 60px;
+    left: 10px;
+    right: 10px;
+    z-index: 3000;
   }
 
 }
