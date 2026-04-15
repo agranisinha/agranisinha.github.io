@@ -101,6 +101,34 @@ document.addEventListener("DOMContentLoaded", () => {
     "resume"
   ];
 
+   // AFTER initialization (BOTTOM of DOMContentLoaded)
+
+   const copilotSidebarEl = document.getElementById("copilotSidebar");
+   
+   if (copilotSidebarEl) {
+     copilotSidebarEl.addEventListener("click", (e) => {
+       if (
+         copilotSidebarEl.classList.contains("minimized") &&
+         e.target.closest(".copilot-side-header")
+       ) {
+         minimizeCopilot();
+       }
+     });
+   }
+   
+   const settingsPanelEl = document.getElementById("settingsPanel");
+   
+   if (settingsPanelEl) {
+     settingsPanelEl.addEventListener("click", (e) => {
+       if (
+         settingsPanelEl.classList.contains("minimized") &&
+         e.target.closest(".settings-header")
+       ) {
+         minimizeSettings();
+       }
+     });
+   }
+
   const COPILOT_REPLIES = {
     intro:
       "Hi — I’m Agrani’s portfolio copilot. Ask about projects, experience, skills, education, healthcare AI work, or contact details.",
@@ -1605,69 +1633,43 @@ function bindCopilotEvents() {
   const closeBtn = document.getElementById("copilotSideClose");
   const minimizeBtn = document.getElementById("copilotSideMinimize");
 
-    if (chatSend) {
-      chatSend.onclick = () => sendCopilotPrompt();
-    }
+  if (chatSend) {
+    chatSend.onclick = () => sendCopilotPrompt();
+  }
 
-    if (chatInput) {
-      chatInput.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-          sendCopilotPrompt();
-        }
-      });
-    }
+  if (chatInput) {
+    chatInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        sendCopilotPrompt();
+      }
+    });
+  }
 
-    if (voiceBtn) {
-      voiceBtn.onclick = startVoiceAssistant;
-    }
+  if (voiceBtn) {
+    voiceBtn.onclick = startVoiceAssistant;
+  }
 
-    if (closeBtn) {
-      closeBtn.onclick = () => toggleCopilotSidebar(false);
-    }
+  if (closeBtn) {
+    closeBtn.onclick = () => toggleCopilotSidebar(false);
+  }
 
-     if (minimizeBtn) {
+  if (minimizeBtn) {
     minimizeBtn.onclick = (e) => {
       e.stopPropagation();
       minimizeCopilot();
     };
   }
 
-   const sidebar = document.getElementById("copilotSidebar");
+  // Suggestions
+  const sidebar = document.getElementById("copilotSidebar");
 
-if (sidebar) {
-  qsa(".copilot-suggest", sidebar).forEach((btn) => {
-    btn.addEventListener("click", () => {
-      quickAsk(btn.dataset.quick || btn.textContent);
+  if (sidebar) {
+    qsa(".copilot-suggest", sidebar).forEach((btn) => {
+      btn.onclick = () => {
+        quickAsk(btn.dataset.quick || btn.textContent);
+      };
     });
-  });
-}
-
-setTimeout(bindCopilotEvents, 0);
-
-const copilotSidebarEl = document.getElementById("copilotSidebar");
-
-if (copilotSidebarEl) {
-  copilotSidebarEl.addEventListener("click", (e) => {
-    if (
-      copilotSidebarEl.classList.contains("minimized") &&
-      e.target.closest(".copilot-side-header")
-    ) {
-      minimizeCopilot();
-    }
-  });
-}
-
-const settingsPanelEl = document.getElementById("settingsPanel");
-
-if (settingsPanelEl) {
-  settingsPanelEl.addEventListener("click", (e) => {
-    if (
-      settingsPanelEl.classList.contains("minimized") &&
-      e.target.closest(".settings-header")
-    ) {
-      minimizeSettings();
-    }
-  });
+  }
 }
   window.quickAsk = quickAsk;
   window.sendCopilotPrompt = sendCopilotPrompt;
@@ -1702,6 +1704,7 @@ if (settingsPanelEl) {
   bindMenuEvents();
   bindPaletteEvents();
   applyTheme(currentTheme);
+  bindCopilotEvents();   // ✅ MISSING LINE
 
   if (!openTabs.length) {
     openTabs = ["home"];
