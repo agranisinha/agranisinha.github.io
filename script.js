@@ -2121,84 +2121,81 @@ function getResume() {
   `;
 }
 
-/* ======================================================
-   🔥 FINAL MOBILE JS (STABLE)
-====================================================== */
 (function () {
 
   const isMobile = () => window.innerWidth <= 768;
-  const qs = (s) => document.querySelector(s);
-  const qsa = (s) => document.querySelectorAll(s);
 
-  /* ===== CLOSE COMMAND PALETTE ===== */
-  function closePalette() {
-    const p = qs(".command-palette");
-    if (p) p.classList.remove("open");
+  const qs = s => document.querySelector(s);
+  const qsa = s => document.querySelectorAll(s);
+
+  function closeAll() {
+    qsa(".menu-item").forEach(m => m.classList.remove("active"));
+    qs(".sidebar-panel")?.classList.remove("show");
+    qs("#copilotSidebar")?.classList.remove("open");
+    qs("#settingsPanel")?.classList.remove("open");
+    qs(".command-palette")?.classList.remove("open");
   }
 
   /* ===== SIDEBAR ===== */
-  window.toggleSidebar = function () {
+  window.openSidebar = function () {
     if (!isMobile()) return;
 
-    closePalette();
+    closeAll();
+    qs(".sidebar-panel")?.classList.add("show");
+  };
+
+  window.toggleSidebar = function () {
+    if (!isMobile()) return;
 
     const panel = qs(".sidebar-panel");
     if (!panel) return;
 
-    panel.classList.toggle("show");
-  };
-
-  window.openSidebar = function (type) {
-    if (!isMobile()) return;
-
-    closePalette();
-
-    const panel = qs(".sidebar-panel");
-    if (panel) panel.classList.add("show");
-
-    if (type === "copilot") {
-      toggleCopilotSidebar(true);
+    if (panel.classList.contains("show")) {
+      panel.classList.remove("show");
+    } else {
+      closeAll();
+      panel.classList.add("show");
     }
   };
 
   /* ===== COPILOT ===== */
-  window.toggleCopilotSidebar = function (force) {
+  window.toggleCopilotSidebar = function () {
+    if (!isMobile()) return;
+
     const panel = qs("#copilotSidebar");
+
     if (!panel) return;
 
-    if (force === true) {
-      closePalette();
-      panel.classList.add("open");
-      return;
-    }
-
-    if (force === false) {
+    if (panel.classList.contains("open")) {
       panel.classList.remove("open");
-      return;
+    } else {
+      closeAll();
+      panel.classList.add("open");
     }
-
-    panel.classList.toggle("open");
   };
 
   /* ===== SETTINGS ===== */
   window.toggleSettings = function () {
     if (!isMobile()) return;
 
-    closePalette();
-
     const panel = qs("#settingsPanel");
+
     if (!panel) return;
 
-    panel.classList.toggle("open");
+    if (panel.classList.contains("open")) {
+      panel.classList.remove("open");
+    } else {
+      closeAll();
+      panel.classList.add("open");
+    }
   };
 
-  /* ===== MENU FIX ===== */
+  /* ===== MENU (FILE / EDIT / VIEW) ===== */
   qsa(".menu-item").forEach(menu => {
     menu.addEventListener("click", (e) => {
       if (!isMobile()) return;
 
       e.stopPropagation();
-      closePalette();
 
       const isActive = menu.classList.contains("active");
 
@@ -2214,30 +2211,21 @@ function getResume() {
   document.addEventListener("click", (e) => {
     if (!isMobile()) return;
 
-    const sidebar = qs(".sidebar-panel");
-    const copilot = qs("#copilotSidebar");
-
-    // close menus
-    qsa(".menu-item").forEach(m => m.classList.remove("active"));
-
-    // close sidebar
-    if (
-      sidebar &&
-      sidebar.classList.contains("show") &&
-      !e.target.closest(".sidebar-panel") &&
-      !e.target.closest(".activity-icon")
-    ) {
-      sidebar.classList.remove("show");
+    if (!e.target.closest(".menu-item")) {
+      qsa(".menu-item").forEach(m => m.classList.remove("active"));
     }
 
-    // close copilot
-    if (
-      copilot &&
-      copilot.classList.contains("open") &&
-      !e.target.closest("#copilotSidebar") &&
-      !e.target.closest(".copilot-box")
-    ) {
-      copilot.classList.remove("open");
+    if (!e.target.closest(".sidebar-panel") &&
+        !e.target.closest(".activity-icon")) {
+      qs(".sidebar-panel")?.classList.remove("show");
+    }
+
+    if (!e.target.closest("#copilotSidebar")) {
+      qs("#copilotSidebar")?.classList.remove("open");
+    }
+
+    if (!e.target.closest("#settingsPanel")) {
+      qs("#settingsPanel")?.classList.remove("open");
     }
   });
 
