@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const editorContent = document.getElementById("editorContent");
   const tabsContainer = document.getElementById("editorTabs");
+  const IS_MOBILE = window.innerWidth <= 768;
 
   const paletteOverlay = document.getElementById("paletteOverlay");
   const paletteBackdrop = document.getElementById("paletteBackdrop");
