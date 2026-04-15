@@ -2211,89 +2211,185 @@ textarea:-webkit-autofill {
   background: var(--accent-bright);
 }
 
-/* ========================================================================== */
-/*                            COPILOT-LIKE PROMPT FX                          */
-/* ========================================================================== */
-.copilot-card::before {
-  content: "";
-  display: block;
-  height: 1px;
-  width: 100%;
-  background: linear-gradient(90deg, transparent, rgba(124, 77, 255, 0.18), transparent);
+
+/* ================= AHANA COPILOT EXACT UI ================= */
+
+.copilot-sidebar {
+  width: 360px;
+  background: #1e1e1e;
+  border-left: 1px solid rgba(255,255,255,0.06);
+  padding: 16px;
 }
 
-.copilot-card::after {
-  content: "";
-  position: absolute;
-  display: none;
+/* HEADER */
+.copilot-side-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ddd;
+  margin-bottom: 10px;
 }
 
-.copilot-card {
-  position: relative;
+/* WORKSPACE */
+.copilot-workspace-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
 }
 
-.copilot-input-row::after {
-  content: "AI can make mistakes • Contact Agrani directly for important info";
-  position: absolute;
-  left: 18px;
-  right: 18px;
-  bottom: -30px;
-  color: var(--text-muted);
+.copilot-workspace-label {
+  font-size: 11px;
+  color: #888;
+}
+
+.copilot-workspace-pill {
+  background: #2a2d2e;
+  padding: 4px 10px;
+  border-radius: 8px;
   font-size: 12px;
-  line-height: 1.4;
+  color: #4fc3f7;
+}
+
+/* HERO SECTION */
+.copilot-side-hero {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.copilot-avatar-ring {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 12px;
+  border-radius: 50%;
+  border: 2px solid rgba(124,77,255,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.copilot-avatar-core {
+  font-size: 26px;
+}
+
+.copilot-side-hero h3 {
+  font-size: 16px;
+  margin-bottom: 6px;
+}
+
+.copilot-side-hero p {
+  font-size: 13px;
+  color: #aaa;
+}
+
+/* SUGGESTIONS GRID */
+.copilot-suggest-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.copilot-suggest {
+  background: #252526;
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 12px;
+  color: #ccc;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.copilot-suggest:hover {
+  background: #2d2d2d;
+  border-color: #7c4dff;
+  transform: translateY(-1px);
+}
+
+/* CHAT MESSAGES */
+.copilot-side-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.copilot-message {
+  font-size: 13px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  line-height: 1.5;
+}
+
+.copilot-message.assistant {
+  background: #2a2d2e;
+  color: #ddd;
+}
+
+.copilot-message.user {
+  background: #7c4dff;
+  color: white;
+  align-self: flex-end;
+}
+
+/* INPUT SECTION */
+.copilot-side-input-wrap {
+  margin-top: auto;
 }
 
 .copilot-input-row {
-  position: relative;
-  margin-bottom: 22px;
-}
-
-/* ================= AHANA STYLE COPILOT ================= */
-
-.copilot-sidebar {
-  position: fixed;
-  top: calc(var(--top-header-h) + var(--menu-bar-h));
-  right: 0;
-  width: 380px;
-  height: calc(100vh - var(--top-header-h) - var(--menu-bar-h));
-
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.04), transparent),
-    rgba(20, 20, 28, 0.95);
-
-  backdrop-filter: blur(20px);
-
-  border-left: 1px solid rgba(255,255,255,0.08);
-
-  box-shadow:
-    -20px 0 60px rgba(0,0,0,0.6),
-    -5px 0 20px rgba(124,77,255,0.15);
-
   display: flex;
-  flex-direction: column;
-
-  transform: translateX(100%);
-  opacity: 0;
-
-  transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
-
-  z-index: 50;
+  gap: 8px;
+  margin-top: 10px;
 }
 
-.copilot-sidebar.open {
-  transform: translateX(0);
-  opacity: 1;
+#copilotInput {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  background: #2a2d2e;
+  border: 1px solid rgba(255,255,255,0.06);
+  color: white;
+  font-size: 13px;
 }
 
-/* Glow effect */
-.copilot-sidebar::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 20% 10%, rgba(124,77,255,0.25), transparent 40%),
-    radial-gradient(circle at 80% 80%, rgba(0,122,204,0.2), transparent 50%);
-  pointer-events: none;
+#copilotInput::placeholder {
+  color: #888;
+}
+
+/* SEND BUTTON */
+#copilotSend {
+  width: 44px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #7c4dff, #5c6bc0);
+  color: white;
+  cursor: pointer;
+}
+
+/* VOICE BUTTON */
+#copilotVoice {
+  width: 44px;
+  border-radius: 10px;
+  border: none;
+  background: #2a2d2e;
+  color: #ccc;
+  cursor: pointer;
+}
+
+#copilotVoice:hover {
+  background: #333;
+}
+
+/* FOOTER NOTE */
+.copilot-side-note {
+  font-size: 11px;
+  color: #888;
+  margin-top: 6px;
+  text-align: center;
 }
 
 /* ================= EDITOR SHIFT ================= */
