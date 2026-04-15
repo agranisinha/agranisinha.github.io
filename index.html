@@ -148,7 +148,26 @@
           <div class="file" data-tab="resume" onclick="openTab('resume')">📕 Resume.pdf</div>
           <div class="file" data-tab="copilot" onclick="openTab('copilot')">✨ copilot.md</div>
         </div>
-
+        <div id="copilotSidebar" class="copilot-sidebar open">
+          <div class="copilot-header">
+            🤖 Agrani's AI Assistant
+          </div>
+        
+          <div id="copilotMessages" class="copilot-messages"></div>
+        
+          <div class="copilot-chips">
+            <button onclick="quickAsk('projects')">Projects</button>
+            <button onclick="quickAsk('experience')">Experience</button>
+            <button onclick="quickAsk('skills')">Skills</button>
+            <button onclick="quickAsk('contact')">Contact</button>
+          </div>
+        
+          <div class="copilot-input-row">
+            <input id="copilotInput" placeholder="Ask about Agrani..." />
+            <button onclick="sendCopilot()">➤</button>
+            <button onclick="startVoice()">🎤</button>
+          </div>
+        </div>
         <div class="copilot-box" onclick="openTab('copilot')">
           ✨ Agrani&apos;s Copilot
         </div>
