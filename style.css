@@ -3130,6 +3130,22 @@ textarea:-webkit-autofill {
   50% { transform: translateY(-6px); }
   100% { transform: translateY(0px); }
 }
+
+.copilot-message.assistant::after {
+  content: "";
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  margin-left: 6px;
+  border-radius: 50%;
+  background: #7c4dff;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
 /* ========================================================================== */
 /*                              END OF FILE                                   */
 /* ========================================================================== */
