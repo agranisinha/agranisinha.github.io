@@ -3231,424 +3231,123 @@ textarea:-webkit-autofill {
 
 }
 
-/* ================================
-   FINAL CLEAN MOBILE LAYOUT
-   add at very end of style.css
-================================ */
+/* =========================================
+   FINAL MOBILE UI (CLEAN + NON-CLUSTERED)
+========================================= */
 @media (max-width: 768px) {
-  :root {
-    --top-header-h: 54px;
-    --menu-bar-h: 42px;
-    --tabs-h: 42px;
-  }
 
-  html,
-  body {
-    width: 100%;
+  html, body {
     height: 100%;
     overflow-x: hidden;
     overflow-y: auto;
   }
 
-  body {
-    min-height: 100vh;
-  }
-
   .app-shell {
-    height: auto !important;
     min-height: 100vh;
-    overflow: visible !important;
+    height: auto;
   }
 
   .vscode-layout {
-    height: auto !important;
-    min-height: calc(100vh - var(--top-header-h) - var(--menu-bar-h));
-    display: block !important;
-    overflow: visible !important;
+    display: block;
+    height: auto;
   }
 
-  /* top header */
-  .top-header {
-    height: var(--top-header-h);
-    padding: 0 10px;
-    gap: 10px;
+  /* ===== EDITOR FULL WIDTH ===== */
+  .editor-area,
+  .editor-area.with-copilot {
+    width: 100%;
+    margin: 0 !important;
+    padding-bottom: 70px;
   }
 
-  .mac-dots {
-    min-width: auto;
-    gap: 7px;
+  .editor-content {
+    padding: 16px 12px 100px;
   }
 
-  .header-command-trigger {
-    max-width: none;
-    min-width: 0;
-    height: 36px;
-    padding: 0 10px;
-  }
-
-  .trigger-text {
-    font-size: 11px;
-  }
-
-  .header-spacer,
-  .trigger-right {
-    display: none !important;
-  }
-
-  /* top menu */
-  .menu-bar {
-    height: var(--menu-bar-h);
-    padding: 0 6px;
-    gap: 0;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-
-  .menu-item {
-    flex: 0 0 auto;
-    padding: 0 12px;
-    font-size: 12px;
-  }
-
-  .dropdown {
-    top: calc(100% + 4px);
-    left: 0;
-    min-width: 200px;
-    max-width: 85vw;
-    z-index: 3000;
-  }
-
-  /* bottom mobile nav instead of left activity bar */
+  /* ===== BOTTOM NAV (ACTIVITY BAR) ===== */
   .activity-bar {
-    position: fixed !important;
+    display: flex !important;
+    position: fixed;
+    bottom: 0;
     left: 0;
     right: 0;
-    bottom: 0;
-    width: 100%;
-    height: 58px;
+    height: 60px;
     flex-direction: row !important;
-    align-items: center;
     justify-content: space-around;
-    padding-top: 0;
-    background: var(--bg-activity);
-    border-right: none;
+    align-items: center;
+    background: #111;
+    z-index: 2000;
     border-top: 1px solid var(--line);
-    z-index: 2500;
   }
 
   .activity-icon {
-    width: 48px;
-    height: 48px;
-    font-size: 24px;
-  }
-
-  .activity-icon::before {
-    display: none;
-  }
-
-  .activity-bottom {
-    margin-top: 0;
-    width: auto;
-    padding-bottom: 0;
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .settings-btn {
-    display: grid !important;
-    place-items: center;
+    width: 45px;
+    height: 45px;
     font-size: 22px;
   }
 
-  /* sidebar becomes drawer */
+  .activity-bottom {
+    display: flex !important;
+  }
+
+  .settings-btn {
+    display: block !important;
+    font-size: 22px;
+  }
+
+  /* ===== SIDEBAR (DRAWER) ===== */
   .sidebar-panel {
-    position: fixed !important;
+    display: flex !important;
+    position: fixed;
     top: calc(var(--top-header-h) + var(--menu-bar-h));
     left: 0;
-    width: min(82vw, 320px);
-    min-width: min(82vw, 320px);
-    height: calc(100vh - var(--top-header-h) - var(--menu-bar-h) - 58px);
-    z-index: 2600;
+    width: 80%;
+    max-width: 300px;
+    height: calc(100vh - 120px);
+    z-index: 2100;
     transform: translateX(-100%);
-    opacity: 1 !important;
-    border-right: 1px solid var(--line);
-    box-shadow: 18px 0 40px rgba(0, 0, 0, 0.45);
+    transition: transform 0.3s ease;
+    background: var(--bg-sidebar);
   }
 
   .sidebar-panel.show {
     transform: translateX(0);
   }
 
-  .sidebar-panel.hide {
-    transform: translateX(-100%);
-    width: min(82vw, 320px);
-    min-width: min(82vw, 320px);
-    opacity: 1;
-    border-right: 1px solid var(--line);
-  }
-
-  .sidebar-header {
-    min-height: 42px;
-    font-size: 11px;
-    padding: 0 14px;
-  }
-
-  .file-list {
-    padding: 8px;
-    gap: 4px;
-  }
-
-  .file {
-    min-height: 44px;
-    font-size: 14px;
-    padding: 0 12px;
-  }
-
-  .copilot-box {
-    margin: 10px;
-    min-height: 58px;
-    font-size: 14px;
-  }
-
-  /* editor full width */
-  .editor-area,
-  .editor-area.with-copilot {
-    width: 100%;
-    margin: 0 !important;
-    min-height: calc(100vh - var(--top-header-h) - var(--menu-bar-h) - 58px);
-    padding-bottom: 70px;
-  }
-
-  .editor-tabs {
-    height: var(--tabs-h);
-    overflow-x: auto;
-    overflow-y: hidden;
-  }
-
-  .tab {
-    min-width: 118px;
-    max-width: 180px;
-    padding: 0 10px;
-  }
-
-  .tab-label {
-    font-size: 12px;
-  }
-
-  .editor-content {
-    padding: 16px 14px 90px;
-    overflow-x: hidden;
-    overflow-y: auto;
-  }
-
-  /* home page becomes clear mobile stack */
-  .home-container {
-    padding: 0;
-  }
-
-  .home-grid {
-    display: flex !important;
-    flex-direction: column;
-    gap: 22px;
-    align-items: center;
-  }
-
-  .home-left,
-  .home-right {
-    width: 100%;
-  }
-
-  .home-right {
-    order: -1;
-  }
-
-  .profile-wrapper {
-    width: min(78vw, 290px);
-    height: auto;
-    aspect-ratio: 4 / 5;
-    margin: 0 auto;
-  }
-
-  .code-line {
-    font-size: 14px;
-    line-height: 1.5;
-    text-align: center;
-    margin-bottom: 14px;
-  }
-
-  .hero-name {
-    font-size: clamp(38px, 14vw, 64px);
-    line-height: 0.95;
-    text-align: center;
-    margin-bottom: 14px;
-  }
-
-  .roles {
-    justify-content: center;
-    gap: 10px;
-  }
-
-  .roles span {
-    font-size: 12px;
-    padding: 0 12px;
-    min-height: 34px;
-  }
-
-  .hero-desc {
-    font-size: 16px;
-    line-height: 1.7;
-    text-align: center;
-    margin-bottom: 18px;
-  }
-
-  .home-buttons {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .home-buttons button {
-    width: 100%;
-    min-width: 0;
-  }
-
-  .stats {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  .stat-card {
-    min-width: 0;
-    min-height: auto;
-  }
-
-  .stat-card strong {
-    font-size: 28px;
-  }
-
-  /* general cards/grids */
-  .focus-grid,
-  .project-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  .about-card,
-  .project-card {
-    padding: 16px;
-  }
-
-  /* copilot becomes bottom sheet */
+  /* ===== COPILOT (BOTTOM SHEET) ===== */
   .copilot-sidebar {
     position: fixed !important;
     left: 0;
     right: 0;
-    bottom: 58px;
-    top: auto;
+    bottom: 60px;
     width: 100% !important;
-    height: 64vh !important;
-    max-height: 64vh;
-    border-left: none;
-    border-top: 1px solid var(--line);
-    border-radius: 18px 18px 0 0;
+    height: 60vh;
     transform: translateY(100%);
-    z-index: 2700;
-    box-shadow: 0 -16px 40px rgba(0, 0, 0, 0.45);
-    overflow: hidden;
+    transition: transform 0.3s ease;
+    z-index: 2200;
+    border-radius: 16px 16px 0 0;
+    overflow-y: auto;
   }
 
   .copilot-sidebar.open {
     transform: translateY(0);
   }
 
-  .copilot-side-header {
-    padding: 14px 16px 10px;
-    margin-bottom: 0;
-  }
-
-  .copilot-workspace-row {
-    padding: 0 16px;
-    margin-bottom: 12px;
-  }
-
-  .copilot-side-hero {
-    margin-bottom: 10px;
-    padding: 0 16px;
-  }
-
-  .copilot-side-hero h3 {
-    font-size: 15px;
-  }
-
-  .copilot-side-hero p {
-    font-size: 13px;
-    line-height: 1.5;
-  }
-
-  .copilot-suggest-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    padding: 0 16px;
-    margin-bottom: 12px;
-  }
-
-  .copilot-suggest {
-    font-size: 11px;
-    padding: 10px 8px;
-  }
-
-  .copilot-side-messages {
-    flex: 1;
-    min-height: 0;
-    padding: 0 16px;
-    overflow-y: auto;
-  }
-
-  .copilot-message {
-    max-width: 88%;
-    font-size: 13px;
-    padding: 10px 12px;
-  }
-
-  .copilot-side-input-wrap {
-    padding: 10px 16px 14px;
-    background: var(--bg-copilot);
-    border-top: 1px solid var(--line-soft);
-  }
-
-  .copilot-input-row {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    margin-top: 0;
-  }
-
-  #copilotInput {
-    min-height: 42px;
-    font-size: 13px;
-  }
-
-  #copilotSend,
-  #copilotVoice {
-    width: 42px;
-    min-width: 42px;
-    height: 42px;
-    flex: 0 0 42px;
-  }
-
-  /* settings panel mobile */
+  /* ===== SETTINGS PANEL ===== */
   .settings-panel {
     position: fixed !important;
     left: 10px;
     right: 10px;
     bottom: 70px;
-    width: auto;
-    max-height: 62vh;
-    z-index: 2800;
+    max-height: 60vh;
+    overflow-y: auto;
+    z-index: 2300;
+
     display: block !important;
     opacity: 0;
     pointer-events: none;
-    transform: translateY(14px);
+    transform: translateY(20px);
+    transition: all 0.3s ease;
   }
 
   .settings-panel.open {
@@ -3657,16 +3356,23 @@ textarea:-webkit-autofill {
     transform: translateY(0);
   }
 
-  /* terminal mobile */
-  .terminal-panel {
-    left: 0;
-    right: 0;
-    bottom: 58px;
-    height: 42vh;
-    z-index: 2750;
+  /* ===== MENU SCROLL ===== */
+  .menu-bar {
+    overflow-x: auto;
+    white-space: nowrap;
   }
-}
 
+  .menu-item {
+    flex: 0 0 auto;
+    font-size: 12px;
+    padding: 0 10px;
+  }
+
+  .dropdown {
+    z-index: 3000;
+  }
+
+}
 /* ========================================================================== */
 /*                              END OF FILE                                   */
 /* ========================================================================== */
