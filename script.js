@@ -2121,3 +2121,596 @@ function getResume() {
   `;
 }
 
+/* =========================================================
+   MOBILE ONLY OVERRIDES
+   Add this at the VERY END of script.js
+   Desktop stays unchanged
+========================================================= */
+(() => {
+  const MOBILE_BREAKPOINT = 768;
+
+  function isMobileView() {
+    return window.innerWidth <= MOBILE_BREAKPOINT;
+  }
+
+  function getEls() {
+    return {
+      sidebar: document.getElementById("sidebarPanel") || document.querySelector(".sidebar-panel"),
+      copilot: document.getElementById("copilotSidebar") || document.querySelector(".copilot-sidebar"),
+      settings: document.getElementById("settingsPanel"),
+      activityIcons: Array.from(document.querySelectorAll(".activity-icon")),
+      settingsBtn: document.querySelector(".settings-btn"),
+      menuItems: Array.from(document.querySelectorAll(".menu-item")),
+      redBtn: document.getElementById("btnRed") || document.querySelector(".dot.red"),
+      yellowBtn: document.getElementById("btnYellow") || document.querySelector(".dot.yellow"),
+      greenBtn: document.getElementById("btnGreen") || document.querySelector(".dot.green"),
+      editorArea: document.querySelector(".editor-area"),
+      openPaletteBtn: document.getElementById("openPaletteBtn"),
+      paletteOverlay: document.getElementById("paletteOverlay"),
+      terminal: document.getElementById("terminalPanel"),
+    };
+  }
+
+  function stopIfDesktop() {
+    return !isMobileView();
+  }
+
+  function closeMenus() {
+    const { menuItems } = getEls();
+    menuItems.forEach((m) => m.classList.remove("active"));
+  }
+
+  function closeSidebar() {
+    const { sidebar } = getEls();
+    if (!sidebar) return;
+    sidebar.classList.remove("show");
+    sidebar.classList.add("hide");
+  }
+
+  function openSidebarPanel() {
+    const { sidebar } = getEls();
+    if (!sidebar) return;
+    sidebar.classList.add("show");
+    sidebar.classList.remove("hide");
+  }
+
+  function closeCopilot() {
+    const { copilot, editorArea } = getEls();
+    if (!copilot) return;
+    copilot.classList.remove("open", "minimized");
+    copilot.setAttribute("aria-hidden", "true");
+    editorArea?.classList.remove("with-copilot");
+  }
+
+  function openCopilot() {
+    const { copilot, editorArea } = getEls();
+    if (!copilot) return;
+    copilot.classList.add("open");
+    copilot.classList.remove("minimized");
+    copilot.setAttribute("aria-hidden", "false");
+    editorArea?.classList.remove("with-copilot");
+  }
+
+  function closeSettings() {
+    const { settings } = getEls();
+    if (!settings) return;
+    settings.classList.remove("open", "minimized");
+  }
+
+  function openSettings() {
+    const { settings } = getEls();
+    if (!settings) return;
+    settings.classList.add("open");
+    settings.classList.remove("minimized");
+  }
+
+  function closeTerminalMobile() {
+    const { terminal } = getEls();
+    terminal?.classList.remove("open");
+  }
+
+  function updateBodyScrollLock() {
+    const { copilot, settings, paletteOverlay, terminal } = getEls();
+    const anyOverlayOpen =
+      copilot?.classList.contains("open") ||
+      settings?.classList.contains("open") ||
+      paletteOverlay?.classList.contains("open") ||
+      terminal?.classList.contains("open");
+
+    document.body.style.overflow = anyOverlayOpen && isMobileView() ? "hidden" : "";
+  }
+
+  /* -----------------------------
+     Public function overrides
+  ----------------------------- */
+  window.toggleSidebar = function toggleSidebarMobileOverride() {
+    if (stopIfDesktop()) return;
+    const { sidebar } = getEls();
+    if (!sidebar) return;
+
+    const willOpen = !sidebar.classList.contains("show");
+    closeMenus();
+    closeSettings();
+    closeCopilot();
+
+    if (willOpen) {
+      openSidebarPanel();
+    } else {
+      closeSidebar();
+    }
+
+    updateBodyScrollLock();
+  };
+
+  window.openSidebar = function openSidebarMobileOverride(type) {
+    if (stopIfDesktop()) return;
+
+    const normalized = String(type || "").toLowerCase();
+
+    if (normalized === "copilot") {
+      closeMenus();
+      closeSidebar();
+      closeSettings();
+      openCopilot();
+      updateBodyScrollLock();
+      return;
+    }
+
+    if (normalized === "search") {
+      closeMenus();
+      closeSidebar();
+      closeSettings();
+      closeCopilot();
+      if (typeof window.openPalette === "function") {
+        window.openPalette();
+      }
+      updateBodyScrollLock();
+      return;
+    }
+
+    if (normalized === "git") {
+      closeMenus();
+      closeSidebar();
+      closeSettings();
+      closeCopilot();
+      if (typeof window.printToTerminal === "function") {
+        window.printToTerminal("Git panel is simulated. Use `git log` in terminal.", "warning");
+      }
+      updateBodyScrollLock();
+      return;
+    }
+
+    if (normalized === "files") {
+      closeMenus();
+      closeSettings();
+      closeCopilot();
+      openSidebarPanel();
+      if (typeof window.openTab === "function") {
+        window.openTab("readme");
+      }
+      updateBodyScrollLock();
+      return;
+    }
+
+    closeMenus();
+    closeSettings();
+    closeCopilot();
+    openSidebarPanel();
+    updateBodyScrollLock();
+  };
+
+  window.toggleCopilot = function toggleCopilotMobileOverride() {
+    if (stopIfDesktop()) return;
+    const { copilot } = getEls();
+    if (!copilot) return;
+
+    const willOpen = !copilot.classList.contains("open");
+    closeMenus();
+    closeSidebar();
+    closeSettings();
+
+    if (willOpen) {
+      openCopilot();
+    } else {
+      closeCopilot();
+    }
+
+    updateBodyScrollLock();
+  };
+
+  window.toggleCopilotSidebar = function toggleCopilotSidebarMobileOverride(force) {
+    if (stopIfDesktop()) return;
+
+    if (force === true) {
+      closeMenus();
+      closeSidebar();
+      closeSettings();
+      openCopilot();
+      updateBodyScrollLock();
+      return;
+    }
+
+    if (force === false) {
+      closeCopilot();
+      updateBodyScrollLock();
+      return;
+    }
+
+    window.toggleCopilot();
+  };
+
+  window.toggleSettings = function toggleSettingsMobileOverride() {
+    if (stopIfDesktop()) return;
+    const { settings } = getEls();
+    if (!settings) return;
+
+    const willOpen = !settings.classList.contains("open");
+    closeMenus();
+    closeSidebar();
+    closeCopilot();
+
+    if (willOpen) {
+      openSettings();
+    } else {
+      closeSettings();
+    }
+
+    updateBodyScrollLock();
+  };
+
+  window.minimizeCopilot = function minimizeCopilotMobileOverride() {
+    if (stopIfDesktop()) return;
+    closeCopilot();
+    updateBodyScrollLock();
+  };
+
+  window.minimizeSettings = function minimizeSettingsMobileOverride() {
+    if (stopIfDesktop()) return;
+    closeSettings();
+    updateBodyScrollLock();
+  };
+
+  /* -----------------------------
+     Mobile menu behavior
+  ----------------------------- */
+  function bindMobileMenus() {
+    const { menuItems } = getEls();
+    if (!menuItems.length) return;
+
+    menuItems.forEach((menu) => {
+      if (menu.dataset.mobileBound === "true") return;
+      menu.dataset.mobileBound = "true";
+
+      menu.addEventListener("click", (e) => {
+        if (!isMobileView()) return;
+
+        const hasDropdown = !!menu.querySelector(".dropdown");
+        const label = (menu.childNodes[0]?.textContent || "").trim().toLowerCase();
+        const wasActive = menu.classList.contains("active");
+
+        e.stopPropagation();
+
+        closeSettings();
+        closeSidebar();
+        closeCopilot();
+
+        menuItems.forEach((m) => m.classList.remove("active"));
+
+        if (hasDropdown) {
+          if (!wasActive) {
+            menu.classList.add("active");
+          }
+        } else if (label === "copilot") {
+          openCopilot();
+        }
+
+        updateBodyScrollLock();
+      });
+    });
+
+    document.querySelectorAll(".dropdown").forEach((drop) => {
+      if (drop.dataset.mobileBound === "true") return;
+      drop.dataset.mobileBound = "true";
+
+      drop.addEventListener("click", (e) => {
+        if (!isMobileView()) return;
+        e.stopPropagation();
+      });
+    });
+  }
+
+  /* -----------------------------
+     Top buttons mobile behavior
+  ----------------------------- */
+  function bindTopButtons() {
+    const { redBtn, yellowBtn, greenBtn } = getEls();
+
+    if (redBtn && redBtn.dataset.mobileBound !== "true") {
+      redBtn.dataset.mobileBound = "true";
+      redBtn.addEventListener("click", (e) => {
+        if (!isMobileView()) return;
+        e.preventDefault();
+        e.stopPropagation();
+        closeMenus();
+        closeSidebar();
+        closeCopilot();
+        closeSettings();
+        closeTerminalMobile();
+        updateBodyScrollLock();
+      });
+    }
+
+    if (yellowBtn && yellowBtn.dataset.mobileBound !== "true") {
+      yellowBtn.dataset.mobileBound = "true";
+      yellowBtn.addEventListener("click", (e) => {
+        if (!isMobileView()) return;
+        e.preventDefault();
+        e.stopPropagation();
+
+        const { copilot, settings, sidebar, terminal } = getEls();
+
+        if (copilot?.classList.contains("open")) closeCopilot();
+        else if (settings?.classList.contains("open")) closeSettings();
+        else if (sidebar?.classList.contains("show")) closeSidebar();
+        else if (terminal?.classList.contains("open")) closeTerminalMobile();
+
+        closeMenus();
+        updateBodyScrollLock();
+      });
+    }
+
+    if (greenBtn && greenBtn.dataset.mobileBound !== "true") {
+      greenBtn.dataset.mobileBound = "true";
+      greenBtn.addEventListener("click", async (e) => {
+        if (!isMobileView()) return;
+        e.preventDefault();
+        e.stopPropagation();
+
+        try {
+          if (!document.fullscreenElement) {
+            await document.documentElement.requestFullscreen();
+          } else {
+            await document.exitFullscreen();
+          }
+        } catch (_err) {
+          /* ignore */
+        }
+      });
+    }
+  }
+
+  /* -----------------------------
+     Activity bar buttons
+  ----------------------------- */
+  function bindActivityButtons() {
+    const { activityIcons, settingsBtn } = getEls();
+    if (!activityIcons.length) return;
+
+    activityIcons.forEach((btn, index) => {
+      if (btn.dataset.mobileBound === "true") return;
+      btn.dataset.mobileBound = "true";
+
+      btn.addEventListener("click", (e) => {
+        if (!isMobileView()) return;
+        e.stopPropagation();
+
+        const typeMap = ["explorer", "search", "git", "files", "copilot"];
+        const isSettings = btn.classList.contains("settings-btn");
+
+        if (isSettings || btn === settingsBtn) {
+          window.toggleSettings();
+          return;
+        }
+
+        const type = typeMap[index];
+        if (!type) return;
+        window.openSidebar(type);
+      });
+    });
+  }
+
+  /* -----------------------------
+     Outside click handling
+  ----------------------------- */
+  function bindOutsideClose() {
+    if (document.body.dataset.mobileOutsideBound === "true") return;
+    document.body.dataset.mobileOutsideBound = "true";
+
+    document.addEventListener("click", (e) => {
+      if (!isMobileView()) return;
+
+      const { sidebar, settings, copilot, menuItems, settingsBtn } = getEls();
+      const target = e.target;
+
+      const clickedMenu = target.closest(".menu-item");
+      const clickedSidebar = sidebar && sidebar.contains(target);
+      const clickedCopilot = copilot && copilot.contains(target);
+      const clickedSettings = settings && settings.contains(target);
+      const clickedActivity = target.closest(".activity-icon");
+      const clickedSettingsBtn = target.closest(".settings-btn") || target === settingsBtn;
+      const clickedPaletteButton = target.closest("#openPaletteBtn");
+
+      if (!clickedMenu) {
+        menuItems.forEach((m) => m.classList.remove("active"));
+      }
+
+      if (
+        sidebar?.classList.contains("show") &&
+        !clickedSidebar &&
+        !clickedActivity &&
+        !clickedMenu
+      ) {
+        closeSidebar();
+      }
+
+      if (
+        copilot?.classList.contains("open") &&
+        !clickedCopilot &&
+        !target.closest(".copilot-box") &&
+        !target.closest('[onclick*="toggleCopilot"]') &&
+        !target.closest('[onclick*="toggleCopilotSidebar"]')
+      ) {
+        closeCopilot();
+      }
+
+      if (
+        settings?.classList.contains("open") &&
+        !clickedSettings &&
+        !clickedSettingsBtn
+      ) {
+        closeSettings();
+      }
+
+      if (!clickedPaletteButton) {
+        updateBodyScrollLock();
+      }
+    });
+  }
+
+  /* -----------------------------
+     Swipe gestures
+  ----------------------------- */
+  function bindSwipeGestures() {
+    if (document.body.dataset.mobileSwipeBound === "true") return;
+    document.body.dataset.mobileSwipeBound = "true";
+
+    let startX = 0;
+    let startY = 0;
+    let endX = 0;
+    let endY = 0;
+
+    document.addEventListener(
+      "touchstart",
+      (e) => {
+        if (!isMobileView()) return;
+        const touch = e.changedTouches[0];
+        startX = touch.clientX;
+        startY = touch.clientY;
+        endX = startX;
+        endY = startY;
+      },
+      { passive: true }
+    );
+
+    document.addEventListener(
+      "touchmove",
+      (e) => {
+        if (!isMobileView()) return;
+        const touch = e.changedTouches[0];
+        endX = touch.clientX;
+        endY = touch.clientY;
+      },
+      { passive: true }
+    );
+
+    document.addEventListener("touchend", () => {
+      if (!isMobileView()) return;
+
+      const dx = endX - startX;
+      const dy = endY - startY;
+      const absX = Math.abs(dx);
+      const absY = Math.abs(dy);
+
+      if (absX < 70 || absX < absY) return;
+
+      const { sidebar, copilot } = getEls();
+
+      // swipe from left edge -> open sidebar
+      if (startX < 28 && dx > 70) {
+        closeMenus();
+        closeSettings();
+        closeCopilot();
+        openSidebarPanel();
+        updateBodyScrollLock();
+        return;
+      }
+
+      // swipe left while sidebar open -> close sidebar
+      if (sidebar?.classList.contains("show") && dx < -70) {
+        closeSidebar();
+        updateBodyScrollLock();
+        return;
+      }
+
+      // swipe down on lower half when copilot open -> close copilot
+      if (copilot?.classList.contains("open") && startY > window.innerHeight * 0.35 && dy > 70) {
+        closeCopilot();
+        updateBodyScrollLock();
+      }
+    });
+  }
+
+  /* -----------------------------
+     Menu item commands that should
+     close mobile panels after use
+  ----------------------------- */
+  function bindGlobalCommandClose() {
+    document.querySelectorAll(".dropdown div, .file, .copilot-box").forEach((el) => {
+      if (el.dataset.mobileActionBound === "true") return;
+      el.dataset.mobileActionBound = "true";
+
+      el.addEventListener("click", () => {
+        if (!isMobileView()) return;
+
+        // Keep sidebar open when just browsing files, but close menus.
+        closeMenus();
+
+        // If opening copilot from box, let copilot handler manage itself.
+        if (el.classList.contains("copilot-box")) {
+          return;
+        }
+
+        // Slight delay lets existing onclick finish.
+        setTimeout(() => {
+          updateBodyScrollLock();
+        }, 30);
+      });
+    });
+  }
+
+  /* -----------------------------
+     Resize safety
+  ----------------------------- */
+  function handleResize() {
+    if (!isMobileView()) {
+      document.body.style.overflow = "";
+      return;
+    }
+
+    const { sidebar, copilot, settings, menuItems } = getEls();
+
+    sidebar?.classList.remove("hide");
+    menuItems.forEach((m) => m.classList.remove("active"));
+
+    // Prevent stacked overlays after orientation changes
+    if (window.innerHeight < 430) {
+      settings?.classList.remove("open");
+    }
+
+    updateBodyScrollLock();
+  }
+
+  /* -----------------------------
+     Init
+  ----------------------------- */
+  function initMobileOverrides() {
+    bindMobileMenus();
+    bindTopButtons();
+    bindActivityButtons();
+    bindOutsideClose();
+    bindSwipeGestures();
+    bindGlobalCommandClose();
+    handleResize();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initMobileOverrides);
+  } else {
+    initMobileOverrides();
+  }
+
+  window.addEventListener("resize", handleResize);
+  window.addEventListener("orientationchange", () => {
+    setTimeout(handleResize, 120);
+  });
+})();
