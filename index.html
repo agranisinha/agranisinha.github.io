@@ -29,7 +29,7 @@
         <span id="headerFeedback" class="header-feedback" aria-live="polite"></span>
       </div>
 
-      <button class="header-command-trigger" id="openPaletteBtn" type="button">
+      <button class="header-command-trigger" id="openPaletteBtn" type="button" aria-label="Open command palette">
         <span class="trigger-left">
           <span class="search-icon">⌕</span>
           <span class="trigger-text">agrani-sinha : portfolio</span>
@@ -45,71 +45,78 @@
 
     <!-- ================= MENU BAR ================= -->
     <div class="menu-bar">
+      <div class="menu-item">
+        File
+        <div class="dropdown">
+          <div onclick="openTab('home')">New File</div>
+          <div onclick="openPalette()">Open File...</div>
+          <hr />
+          <div onclick="openTab('home')">home.tsx</div>
+          <div onclick="openTab('about')">about.html</div>
+          <div onclick="openTab('projects')">projects.js</div>
+          <div onclick="openTab('skills')">skills.json</div>
+          <div onclick="openTab('experience')">experience.ts</div>
+          <div onclick="openTab('contact')">contact.css</div>
+          <hr />
+          <div onclick="openTab('resume')">Resume.pdf</div>
+        </div>
+      </div>
 
-  <div class="menu-item">File
-    <div class="dropdown">
-      <div onclick="openTab('home')">New Tab</div>
-      <div onclick="openPalette()">Open File...</div>
-      <hr>
-      <div onclick="closeTab()">Close Tab</div>
-      <div onclick="closeAllTabs()">Close All Tabs</div>
-      <hr>
-      <div onclick="openTab('home')">home.tsx</div>
-      <div onclick="openTab('about')">about.html</div>
-      <div onclick="openTab('projects')">projects.js</div>
-      <hr>
-      <div onclick="downloadResume()">Download Resume</div>
+      <div class="menu-item">
+        Edit
+        <div class="dropdown">
+          <div onclick="openPalette()">Find...</div>
+          <div>Select All</div>
+          <div>Copy</div>
+        </div>
+      </div>
+
+      <div class="menu-item">
+        View
+        <div class="dropdown">
+          <div onclick="openPalette()">Command Palette</div>
+          <div onclick="toggleSidebar()">Toggle Sidebar</div>
+          <div onclick="toggleTerminal()">Toggle Terminal</div>
+          <div onclick="openTab('copilot')">Open Copilot</div>
+          <hr />
+          <div onclick="toggleFullscreen()">Enter Full Screen</div>
+        </div>
+      </div>
+
+      <div class="menu-item">
+        Go
+        <div class="dropdown">
+          <div onclick="openPalette()">Go to File...</div>
+          <hr />
+          <div onclick="openTab('home')">home.tsx</div>
+          <div onclick="openTab('about')">about.html</div>
+          <div onclick="openTab('projects')">projects.js</div>
+          <div onclick="openTab('skills')">skills.json</div>
+          <div onclick="openTab('experience')">experience.ts</div>
+        </div>
+      </div>
+
+      <div class="menu-item">
+        Terminal
+        <div class="dropdown">
+          <div onclick="toggleTerminal()">New Terminal</div>
+          <div onclick="toggleTerminal()">Toggle Terminal</div>
+          <hr />
+          <div onclick="clearTerminal()">Clear Terminal</div>
+        </div>
+      </div>
+
+      <div class="menu-item">
+        Help
+        <div class="dropdown">
+          <div onclick="openPalette()">Command Palette</div>
+          <div onclick="openTab('readme')">README</div>
+          <div onclick="openTab('about')">About</div>
+        </div>
+      </div>
+
+      <div class="menu-item" onclick="openTab('copilot')">Copilot</div>
     </div>
-  </div>
-
-  <div class="menu-item">Edit
-    <div class="dropdown">
-      <div onclick="openPalette()">Find...</div>
-      <div>Select All</div>
-      <div>Copy</div>
-    </div>
-  </div>
-
-  <div class="menu-item">View
-    <div class="dropdown">
-      <div onclick="openPalette()">Command Palette</div>
-      <div onclick="toggleSidebar()">Toggle Sidebar</div>
-      <div onclick="toggleTerminal()">Toggle Terminal</div>
-      <div onclick="toggleTerminal()">✨ Agrani's Copilot</div>
-      <hr>
-      <div onclick="toggleFullscreen()">Enter Full Screen</div>
-    </div>
-  </div>
-
-  <div class="menu-item">Go
-    <div class="dropdown">
-      <div onclick="openPalette()">Go to File...</div>
-      <hr>
-      <div onclick="openTab('home')">home.tsx</div>
-      <div onclick="openTab('about')">about.html</div>
-      <div onclick="openTab('projects')">projects.js</div>
-      <div onclick="openTab('skills')">skills.json</div>
-    </div>
-  </div>
-
-  <div class="menu-item">Terminal
-    <div class="dropdown">
-      <div onclick="toggleTerminal()">New Terminal</div>
-      <div onclick="toggleTerminal()">Toggle Terminal</div>
-      <hr>
-      <div onclick="clearTerminal()">Clear Terminal</div>
-    </div>
-  </div>
-
-  <div class="menu-item">Help
-    <div class="dropdown">
-      <div onclick="openPalette()">Command Palette</div>
-      <hr>
-      <div onclick="openTab('about')">About</div>
-    </div>
-  </div>
-
-</div>
 
     <!-- ================= MAIN LAYOUT ================= -->
     <div class="vscode-layout">
@@ -139,72 +146,38 @@
           <div class="file" data-tab="contact" onclick="openTab('contact')">🎨 contact.css</div>
           <div class="file" data-tab="readme" onclick="openTab('readme')">📄 README.md</div>
           <div class="file" data-tab="resume" onclick="openTab('resume')">📕 Resume.pdf</div>
+          <div class="file" data-tab="copilot" onclick="openTab('copilot')">✨ copilot.md</div>
         </div>
 
-        <div class="copilot-box" onclick="openPalette()">✨ Agrani's Copilot</div>
+        <div class="copilot-box" onclick="openTab('copilot')">
+          ✨ Agrani&apos;s Copilot
+        </div>
       </aside>
 
       <!-- EDITOR -->
       <main class="editor-area">
-        <!-- 🔥 VS CODE TABS -->
-        <div class="editor-tabs" id="editorTabs">
-        
-          <div class="tab active" data-tab="home">
-            ⚛ home.tsx
-            <span class="close-tab">×</span>
-          </div>
-        </div>
-        <div class="editor-content" id="editorContent">
-          <!-- Initial Home Content -->
-          <div class="home-container">
-            <p class="code-line" id="typingText">// hello world !! Welcome to my portfolio</p>
+        <!-- JS controls tabs -->
+        <div class="editor-tabs" id="editorTabs"></div>
 
-            <h1 class="hero-name">
-              Agrani <span>Sinha</span>
-            </h1>
-
-            <div class="roles">
-              <span>AI Engineer</span>
-              <span>Clinical Informatics</span>
-              <span>Data Scientist</span>
-              <span>Healthcare Systems</span>
-            </div>
-
-            <p class="hero-desc">
-              I build intelligent healthcare systems using AI, machine learning,
-              and clinical informatics to solve real-world problems. My focus is on
-              scalable, impactful, and real-world solutions.
-            </p>
-
-            <div class="home-buttons">
-              <button type="button" onclick="openTab('projects')">📁 Projects</button>
-              <button type="button" onclick="openTab('about')">👤 About Me</button>
-              <button type="button" onclick="openTab('contact')">✉️ Contact</button>
-            </div>
-
-            <div class="stats">
-              <div><strong>10+</strong><span>Projects</span></div>
-              <div><strong>6+</strong><span>Experience</span></div>
-              <div><strong>96.8%</strong><span>Accuracy</span></div>
-            </div>
-          </div>
-        </div>
+        <!-- JS injects active view -->
+        <div class="editor-content" id="editorContent"></div>
       </main>
     </div>
 
+    <!-- ================= TERMINAL ================= -->
     <div class="terminal-panel" id="terminalPanel">
-  <div class="terminal-header">TERMINAL</div>
+      <div class="terminal-header">TERMINAL</div>
 
-  <div class="terminal-body" id="terminalBody">
-    <div>Welcome! Type 'help' to see available commands.</div>
-  </div>
+      <div class="terminal-body" id="terminalBody">
+        <div>Welcome! Type &apos;help&apos; to see available commands.</div>
+      </div>
 
-  <div class="terminal-input-line">
-    <span class="prompt">agrani@portfolio:~$</span>
-    <input id="terminalInput" type="text" autocomplete="off" />
-  </div>
-</div>
-    
+      <div class="terminal-input-line">
+        <span class="prompt">agrani@portfolio:~$</span>
+        <input id="terminalInput" type="text" autocomplete="off" />
+      </div>
+    </div>
+
     <!-- ================= SETTINGS PANEL ================= -->
     <div class="settings-panel" id="settingsPanel">
       <div class="settings-header">SETTINGS</div>
@@ -222,9 +195,10 @@
       <div class="settings-section">
         <div class="section-title">⚡ QUICK ACTIONS</div>
         <div class="action" onclick="openPalette()">🔍 Command Palette (Ctrl + P)</div>
-        <div class="action" onclick="openSidebar('copilot')">💬 Copilot Chat</div>
+        <div class="action" onclick="openTab('copilot')">💬 Copilot Chat</div>
         <div class="action" onclick="openTab('resume')">📥 Download Resume</div>
-        <div class="action" onclick="document.getElementById('btnGreen').click()">🖥 Toggle Fullscreen</div>
+        <div class="action" onclick="toggleTerminal()">🖥 Toggle Terminal</div>
+        <div class="action" onclick="document.getElementById('btnGreen').click()">🧩 Toggle Fullscreen</div>
       </div>
     </div>
   </div>
@@ -233,7 +207,13 @@
   <div class="palette-overlay" id="paletteOverlay" aria-hidden="true">
     <div class="palette-backdrop" id="paletteBackdrop"></div>
 
-    <div class="palette-box" id="paletteBox" role="dialog" aria-modal="true" aria-label="Command palette">
+    <div
+      class="palette-box"
+      id="paletteBox"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Command palette"
+    >
       <div class="palette-top">
         <div class="palette-feedback" id="paletteFeedback"></div>
         <span class="palette-leading">›</span>
@@ -250,17 +230,17 @@
       <div class="palette-list" id="paletteList">
         <div class="palette-section-label">COMMANDS</div>
 
-        <button class="palette-item active" data-index="0" type="button" onclick="openSidebar('copilot'); closePalette();">
+        <button class="palette-item active" data-index="0" type="button">
           <span class="palette-left">
             <span class="palette-icon star">✧</span>
-            <span class="palette-text">Open Agrani's Copilot</span>
+            <span class="palette-text">Open Agrani&apos;s Copilot</span>
           </span>
           <span class="palette-meta shortcut">Ctrl+Shift+C</span>
         </button>
 
         <div class="palette-section-label">FILES</div>
 
-        <button class="palette-item" data-index="1" type="button" onclick="openTab('home'); closePalette();">
+        <button class="palette-item" data-index="1" type="button">
           <span class="palette-left">
             <span class="palette-icon react">⚛</span>
             <span class="palette-text">home.tsx</span>
@@ -268,7 +248,7 @@
           <span class="palette-meta">src/</span>
         </button>
 
-        <button class="palette-item" data-index="2" type="button" onclick="openTab('about'); closePalette();">
+        <button class="palette-item" data-index="2" type="button">
           <span class="palette-left">
             <span class="palette-icon html">◫</span>
             <span class="palette-text">about.html</span>
@@ -276,7 +256,7 @@
           <span class="palette-meta">src/</span>
         </button>
 
-        <button class="palette-item" data-index="3" type="button" onclick="openTab('projects'); closePalette();">
+        <button class="palette-item" data-index="3" type="button">
           <span class="palette-left">
             <span class="palette-icon js">JS</span>
             <span class="palette-text">projects.js</span>
@@ -284,7 +264,7 @@
           <span class="palette-meta">src/</span>
         </button>
 
-        <button class="palette-item" data-index="4" type="button" onclick="openTab('skills'); closePalette();">
+        <button class="palette-item" data-index="4" type="button">
           <span class="palette-left">
             <span class="palette-icon json">{ }</span>
             <span class="palette-text">skills.json</span>
@@ -292,7 +272,7 @@
           <span class="palette-meta">data/</span>
         </button>
 
-        <button class="palette-item" data-index="5" type="button" onclick="openTab('experience'); closePalette();">
+        <button class="palette-item" data-index="5" type="button">
           <span class="palette-left">
             <span class="palette-icon ts">TS</span>
             <span class="palette-text">experience.ts</span>
@@ -300,7 +280,7 @@
           <span class="palette-meta">src/</span>
         </button>
 
-        <button class="palette-item" data-index="6" type="button" onclick="openTab('contact'); closePalette();">
+        <button class="palette-item" data-index="6" type="button">
           <span class="palette-left">
             <span class="palette-icon css">◧</span>
             <span class="palette-text">contact.css</span>
@@ -308,12 +288,20 @@
           <span class="palette-meta">src/</span>
         </button>
 
-        <button class="palette-item" data-index="7" type="button" onclick="openTab('readme'); closePalette();">
+        <button class="palette-item" data-index="7" type="button">
           <span class="palette-left">
             <span class="palette-icon md">≣</span>
             <span class="palette-text">README.md</span>
           </span>
           <span class="palette-meta">./</span>
+        </button>
+
+        <button class="palette-item" data-index="8" type="button">
+          <span class="palette-left">
+            <span class="palette-icon star">✦</span>
+            <span class="palette-text">copilot</span>
+          </span>
+          <span class="palette-meta">ai/</span>
         </button>
       </div>
 
@@ -321,7 +309,7 @@
         <span>↑↓ navigate</span>
         <span>↵ open</span>
         <span>Esc close</span>
-        <span class="palette-footer-tip">Tip: type "copilot" to open AI chat</span>
+        <span class="palette-footer-tip">Tip: type “copilot” to open AI chat</span>
       </div>
     </div>
   </div>
