@@ -2248,6 +2248,107 @@ textarea:-webkit-autofill {
   margin-bottom: 22px;
 }
 
+/* ================= AHANA STYLE COPILOT ================= */
+
+.copilot-sidebar {
+  position: fixed;
+  top: calc(var(--top-header-h) + var(--menu-bar-h));
+  right: 0;
+  width: 380px;
+  height: calc(100vh - var(--top-header-h) - var(--menu-bar-h));
+
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.04), transparent),
+    rgba(20, 20, 28, 0.95);
+
+  backdrop-filter: blur(20px);
+
+  border-left: 1px solid rgba(255,255,255,0.08);
+
+  box-shadow:
+    -20px 0 60px rgba(0,0,0,0.6),
+    -5px 0 20px rgba(124,77,255,0.15);
+
+  display: flex;
+  flex-direction: column;
+
+  transform: translateX(100%);
+  opacity: 0;
+
+  transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+  z-index: 50;
+}
+
+.copilot-sidebar.open {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+/* Glow effect */
+.copilot-sidebar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(124,77,255,0.25), transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(0,122,204,0.2), transparent 50%);
+  pointer-events: none;
+}
+
+/* ================= EDITOR SHIFT ================= */
+
+.editor-area.with-copilot {
+  margin-right: 380px;
+  transition: margin-right 0.35s ease;
+}
+
+/* ================= SMOOTH TAB ANIMATION ================= */
+
+.tab {
+  transition: all 0.2s ease;
+}
+
+.tab:hover {
+  transform: translateY(-1px);
+}
+
+/* ================= GLASS EFFECT ================= */
+
+.editor-area {
+  backdrop-filter: blur(6px);
+}
+
+/* ================= COPILOT INPUT MODERN ================= */
+
+#copilotInput {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+#copilotInput:focus {
+  border-color: #7c4dff;
+  box-shadow: 0 0 20px rgba(124,77,255,0.3);
+}
+
+/* ================= BUTTON GLOW ================= */
+
+#copilotSend {
+  background: linear-gradient(135deg, #7c4dff, #4f46e5);
+  box-shadow: 0 10px 25px rgba(124,77,255,0.4);
+}
+
+#copilotSend:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 15px 30px rgba(124,77,255,0.6);
+}
+
+/* ================= SCROLL SMOOTH ================= */
+
+.copilot-sidebar * {
+  scroll-behavior: smooth;
+}
+
 /* ========================================================================== */
 /*                               COMMAND PALETTE FX                           */
 /* ========================================================================== */
