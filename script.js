@@ -413,10 +413,20 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   window.toggleSettings = function toggleSettings() {
-    if (settingsPanel) {
-      settingsPanel.classList.toggle("open");
-    }
-  };
+  const panel = document.getElementById("settingsPanel");
+
+  if (!panel) return;
+
+  const isOpen = panel.classList.contains("open");
+
+  if (isOpen) {
+    panel.classList.remove("open");
+    panel.classList.remove("minimized");
+  } else {
+    panel.classList.add("open");
+    panel.classList.remove("minimized");
+  }
+};
 
   /* ==========================================================================
      SIDEBAR / ACTIVITY BAR
