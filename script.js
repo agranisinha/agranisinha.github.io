@@ -490,26 +490,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!sidebar) return;
 
-  // FORCE OPEN
   if (force === true) {
     isCopilotOpen = true;
     sidebar.classList.add("open");
+    sidebar.classList.remove("minimized");
     editor && editor.classList.add("with-copilot");
     return;
   }
 
-  // FORCE CLOSE
   if (force === false) {
     isCopilotOpen = false;
     sidebar.classList.remove("open");
+    sidebar.classList.remove("minimized");
     editor && editor.classList.remove("with-copilot");
     return;
   }
 
-  // TOGGLE
   isCopilotOpen = !sidebar.classList.contains("open");
 
   sidebar.classList.toggle("open", isCopilotOpen);
+
+  if (!isCopilotOpen) {
+    sidebar.classList.remove("minimized");
+  }
+
   editor && editor.classList.toggle("with-copilot", isCopilotOpen);
 }
 
@@ -1529,11 +1533,13 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 }
 
-  function bindCopilotEvents() {
-    const chatInput = document.getElementById("copilotInput");
-    const chatSend = document.getElementById("copilotSend");
-    const voiceBtn = document.getElementById("copilotVoice");
-    const closeBtn = document.getElementById("copilotSideClose");
+   
+function bindCopilotEvents() {
+  const chatInput = document.getElementById("copilotInput");
+  const chatSend = document.getElementById("copilotSend");
+  const voiceBtn = document.getElementById("copilotVoice");
+  const closeBtn = document.getElementById("copilotSideClose");
+  const minimizeBtn = document.getElementById("copilotSideMinimize");
 
     if (chatSend) {
       chatSend.onclick = () => sendCopilotPrompt();
@@ -1555,23 +1561,35 @@ document.addEventListener("DOMContentLoaded", () => {
       closeBtn.onclick = () => toggleCopilotSidebar(false);
     }
 
+     if (minimizeBtn) {
+    minimizeBtn.onclick = (e) => {
+      e.stopPropagation();
+      minimizeCopilot();
+    };
+  }
+
     qsa(".copilot-suggest", copilotSidebar).forEach((btn) => {
       btn.addEventListener("click", () => {
         quickAsk(btn.dataset.quick || btn.textContent);
       });
     });
+   
   }
 
   bindCopilotEvents();
-   const copilotSidebarEl = document.getElementById("copilotSidebar");
-   
-   if (copilotSidebarEl) {
-     copilotSidebarEl.addEventListener("click", (e) => {
-       if (copilotSidebarEl.classList.contains("minimized")) {
-         minimizeCopilot();
-       }
-     });
-   }
+      const copilotSidebarEl = document.getElementById("copilotSidebar");
+      
+      if (copilotSidebarEl) {
+        copilotSidebarEl.addEventListener("click", (e) => {
+          if (
+            copilotSidebarEl.classList.contains("minimized") &&
+            !e.target.closest(".copilot-side-close") &&
+            !e.target.closest(".copilot-side-minimize")
+          ) {
+            minimizeCopilot();
+          }
+        });
+      }
 
   window.quickAsk = quickAsk;
   window.sendCopilotPrompt = sendCopilotPrompt;
