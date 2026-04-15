@@ -1570,6 +1570,15 @@ document.addEventListener("DOMContentLoaded", () => {
   window.sendCopilotPrompt = sendCopilotPrompt;
   window.startVoiceAssistant = startVoiceAssistant;
 
+   const copilotSidebarEl = document.getElementById("copilotSidebar");
+
+      if (copilotSidebarEl) {
+        copilotSidebarEl.addEventListener("click", (e) => {
+          if (copilotSidebarEl.classList.contains("minimized")) {
+            minimizeCopilot();
+          }
+        });
+      }
   /* ==========================================================================
      RESPONSIVE HELPERS
      ========================================================================== */
