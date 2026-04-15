@@ -2121,283 +2121,106 @@ function getResume() {
   `;
 }
 
-(() => {
-  const MOBILE = 768;
+/* ================= MOBILE FIX JS (FINAL) ================= */
+(function () {
 
   function isMobile() {
-    return window.innerWidth <= MOBILE;
+    return window.innerWidth <= 768;
   }
 
-  const q = (s) => document.querySelector(s);
-  const qa = (s) => Array.from(document.querySelectorAll(s));
+  const qs = (s) => document.querySelector(s);
+  const qsa = (s) => document.querySelectorAll(s);
 
-  function closeMenus() {
-    qa(".menu-item").forEach((m) => m.classList.remove("active"));
-  }
-
-  function openSidebarDrawer() {
-    const panel = q(".sidebar-panel");
-    if (!panel) return;
-    panel.classList.add("show");
-    panel.classList.remove("hide");
-  }
-
-  function closeSidebarDrawer() {
-    const panel = q(".sidebar-panel");
-    if (!panel) return;
-    panel.classList.remove("show");
-    panel.classList.add("hide");
-  }
-
-  function openCopilotPanel() {
-    const panel = document.getElementById("copilotSidebar");
-    const editor = q(".editor-area");
-    if (!panel) return;
-    panel.classList.add("open");
-    panel.classList.remove("minimized");
-    panel.setAttribute("aria-hidden", "false");
-    editor?.classList.remove("with-copilot");
-  }
-
-  function closeCopilotPanel() {
-    const panel = document.getElementById("copilotSidebar");
-    const editor = q(".editor-area");
-    if (!panel) return;
-    panel.classList.remove("open", "minimized");
-    panel.setAttribute("aria-hidden", "true");
-    editor?.classList.remove("with-copilot");
-  }
-
-  window.openSidebar = function(type) {
+  /* 🔹 FIX SIDEBAR */
+  window.toggleSidebar = function () {
     if (!isMobile()) return;
-    const t = String(type || "").toLowerCase();
 
-    if (t === "copilot") {
-      closeMenus();
-      closeSidebarDrawer();
-      openCopilotPanel();
-      return;
+    const panel = qs(".sidebar-panel");
+    if (!panel) return;
+
+    panel.classList.toggle("show");
+  };
+
+  window.openSidebar = function (type) {
+    if (!isMobile()) return;
+
+    const panel = qs(".sidebar-panel");
+
+    if (panel) {
+      panel.classList.add("show");
     }
 
-    if (t === "search") {
-      closeMenus();
-      closeSidebarDrawer();
-      closeCopilotPanel();
-      if (typeof window.openPalette === "function") window.openPalette();
-      return;
+    // ONLY open copilot separately
+    if (type === "copilot") {
+      toggleCopilotSidebar(true);
     }
+  };
 
-    if (t === "git") {
-      closeMenus();
-      closeSidebarDrawer();
-      closeCopilotPanel();
-      if (typeof window.printToTerminal === "function") {
-        window.printToTerminal("Git panel is simulated. Use `git log` in terminal.", "warning");
+  /* 🔹 FIX MENU (FILE / VIEW) */
+  qsa(".menu-item").forEach(menu => {
+    menu.addEventListener("click", (e) => {
+      if (!isMobile()) return;
+
+      e.stopPropagation();
+
+      const isActive = menu.classList.contains("active");
+
+      qsa(".menu-item").forEach(m => m.classList.remove("active"));
+
+      if (!isActive) {
+        menu.classList.add("active");
       }
-      return;
-    }
+    });
+  });
 
-    if (t === "files") {
-      closeMenus();
-      openSidebarDrawer();
-      if (typeof window.openTab === "function") window.openTab("readme");
-      return;
-    }
-
-    closeMenus();
-    closeCopilotPanel();
-    openSidebarDrawer();
-  };
-
-  window.toggleSidebar = function() {
+  document.addEventListener("click", () => {
     if (!isMobile()) return;
-    const panel = q(".sidebar-panel");
+
+    qsa(".menu-item").forEach(m => m.classList.remove("active"));
+  });
+
+  /* 🔹 FIX COPILOT */
+  window.toggleCopilotSidebar = function (force) {
+    const panel = document.getElementById("copilotSidebar");
     if (!panel) return;
-    if (panel.classList.contains("show")) closeSidebarDrawer();
-    else openSidebarDrawer();
-  };
-
-  window.toggleCopilotSidebar = function(force) {
-    if (!isMobile()) return;
 
     if (force === true) {
-      closeMenus();
-      closeSidebarDrawer();
-      openCopilotPanel();
+      panel.classList.add("open");
       return;
     }
 
     if (force === false) {
-      closeCopilotPanel();
+      panel.classList.remove("open");
       return;
     }
 
-    const panel = document.getElementById("copilotSidebar");
-    if (!panel) return;
-
-    if (panel.classList.contains("open")) closeCopilotPanel();
-    else {
-      closeMenus();
-      closeSidebarDrawer();
-      openCopilotPanel();
-    }
+    panel.classList.toggle("open");
   };
 
-  window.toggleSettings = function() {
+  /* 🔹 CLOSE EVERYTHING ON OUTSIDE CLICK */
+  document.addEventListener("click", (e) => {
     if (!isMobile()) return;
-    const panel = document.getElementById("settingsPanel");
-    if (!panel) return;
 
-    closeMenus();
-    closeSidebarDrawer();
-    closeCopilotPanel();
+    const sidebar = qs(".sidebar-panel");
+    const copilot = qs("#copilotSidebar");
 
-    const willOpen = !panel.classList.contains("open");
-    panel.classList.toggle("open", willOpen);
-    panel.classList.remove("minimized");
-  };
+    if (
+      sidebar &&
+      sidebar.classList.contains("show") &&
+      !e.target.closest(".sidebar-panel") &&
+      !e.target.closest(".activity-icon")
+    ) {
+      sidebar.classList.remove("show");
+    }
 
-  function bindMobileMenus() {
-    qa(".menu-item").forEach((menu) => {
-      if (menu.dataset.mobileFixed === "1") return;
-      menu.dataset.mobileFixed = "1";
+    if (
+      copilot &&
+      copilot.classList.contains("open") &&
+      !e.target.closest("#copilotSidebar") &&
+      !e.target.closest(".copilot-box")
+    ) {
+      copilot.classList.remove("open");
+    }
+  });
 
-      menu.addEventListener("click", (e) => {
-        if (!isMobile()) return;
-
-        const hasDropdown = !!menu.querySelector(".dropdown");
-        const wasActive = menu.classList.contains("active");
-        const label = String(menu.childNodes[0]?.textContent || "").trim().toLowerCase();
-
-        e.stopPropagation();
-
-        closeSidebarDrawer();
-
-        qa(".menu-item").forEach((m) => m.classList.remove("active"));
-
-        if (hasDropdown) {
-          if (!wasActive) menu.classList.add("active");
-          return;
-        }
-
-        if (label === "copilot") {
-          openCopilotPanel();
-        }
-      });
-    });
-
-    qa(".dropdown").forEach((drop) => {
-      if (drop.dataset.mobileFixed === "1") return;
-      drop.dataset.mobileFixed = "1";
-      drop.addEventListener("click", (e) => {
-        if (!isMobile()) return;
-        e.stopPropagation();
-      });
-    });
-  }
-
-  function bindOutsideClose() {
-    if (document.body.dataset.mobileOutsideClose === "1") return;
-    document.body.dataset.mobileOutsideClose = "1";
-
-    document.addEventListener("click", (e) => {
-      if (!isMobile()) return;
-
-      const target = e.target;
-      const sidebar = q(".sidebar-panel");
-      const settings = document.getElementById("settingsPanel");
-      const copilot = document.getElementById("copilotSidebar");
-
-      if (!target.closest(".menu-item")) {
-        closeMenus();
-      }
-
-      if (
-        sidebar?.classList.contains("show") &&
-        !target.closest(".sidebar-panel") &&
-        !target.closest(".activity-icon")
-      ) {
-        closeSidebarDrawer();
-      }
-
-      if (
-        settings?.classList.contains("open") &&
-        !target.closest("#settingsPanel") &&
-        !target.closest(".settings-btn")
-      ) {
-        settings.classList.remove("open");
-      }
-
-      if (
-        copilot?.classList.contains("open") &&
-        !target.closest("#copilotSidebar") &&
-        !target.closest(".copilot-box") &&
-        !target.closest('[onclick*="toggleCopilot"]') &&
-        !target.closest('[onclick*="toggleCopilotSidebar"]')
-      ) {
-        closeCopilotPanel();
-      }
-    });
-  }
-
-  function bindRedButton() {
-    const red = document.getElementById("btnRed");
-    if (!red || red.dataset.mobileFixed === "1") return;
-    red.dataset.mobileFixed = "1";
-
-    red.addEventListener("click", (e) => {
-      if (!isMobile()) return;
-      e.preventDefault();
-      e.stopPropagation();
-      closeMenus();
-      closeSidebarDrawer();
-      closeCopilotPanel();
-      document.getElementById("settingsPanel")?.classList.remove("open");
-    });
-  }
-
-  function bindSwipe() {
-    if (document.body.dataset.mobileSwipeFixed === "1") return;
-    document.body.dataset.mobileSwipeFixed = "1";
-
-    let startX = 0;
-    let endX = 0;
-
-    document.addEventListener("touchstart", (e) => {
-      if (!isMobile()) return;
-      startX = e.changedTouches[0].clientX;
-      endX = startX;
-    }, { passive: true });
-
-    document.addEventListener("touchmove", (e) => {
-      if (!isMobile()) return;
-      endX = e.changedTouches[0].clientX;
-    }, { passive: true });
-
-    document.addEventListener("touchend", () => {
-      if (!isMobile()) return;
-      const dx = endX - startX;
-
-      if (startX < 22 && dx > 70) {
-        openSidebarDrawer();
-      }
-
-      if (q(".sidebar-panel")?.classList.contains("show") && dx < -70) {
-        closeSidebarDrawer();
-      }
-    });
-  }
-
-  function initMobileFix() {
-    bindMobileMenus();
-    bindOutsideClose();
-    bindRedButton();
-    bindSwipe();
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initMobileFix);
-  } else {
-    initMobileFix();
-  }
 })();
