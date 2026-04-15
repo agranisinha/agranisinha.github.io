@@ -3231,132 +3231,122 @@ textarea:-webkit-autofill {
 
 }
 
-/* ================= MOBILE FIX (FINAL) ================= */
+/* ================= PREMIUM MOBILE UI ================= */
 @media (max-width: 768px) {
 
   body {
-    overflow-y: auto;
+    overflow-x: hidden;
   }
 
-  .app-shell {
-    overflow-y: auto;
-  }
-
-  /* ===== HEADER ===== */
-  .top-header {
-    padding: 0 10px;
-  }
-
-  .header-command-trigger {
-    max-width: 100%;
-    font-size: 11px;
-  }
-
-  .keycap {
-    display: none;
-  }
-
-  /* ===== MENU BAR ===== */
-  .menu-bar {
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-
-  .menu-item {
-    padding: 0 8px;
-    font-size: 12px;
-  }
-
-  .dropdown {
-    position: fixed !important;
-    top: 70px;
-    left: 10px;
-    right: 10px;
-    max-height: 60vh;
-    overflow-y: auto;
-    z-index: 9999;
-  }
-
-  /* ===== ACTIVITY BAR ===== */
+  /* ===== BOTTOM NAV BAR ===== */
   .activity-bar {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 60px;
-    flex-direction: row;
+    height: 65px;
+    display: flex;
     justify-content: space-around;
+    align-items: center;
+    background: var(--bg-sidebar);
     border-top: 1px solid var(--line);
     z-index: 2000;
   }
 
   .activity-icon {
-    height: 100%;
-    font-size: 20px;
+    font-size: 22px;
+    flex: 1;
+    text-align: center;
   }
 
-  /* ===== SIDEBAR ===== */
+  /* ===== SIDEBAR (SWIPE DRAWER) ===== */
   .sidebar-panel {
-    position: fixed !important;
+    position: fixed;
     top: 70px;
     left: 0;
-    bottom: 60px;
-    width: 240px;
-    transform: translateX(-110%);
-    transition: 0.3s ease;
+    bottom: 65px;
+    width: 260px;
+    background: var(--bg-sidebar);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
     z-index: 3000;
   }
 
-  .sidebar-panel.show {
+  .sidebar-panel.open {
     transform: translateX(0);
   }
 
-  /* ===== EDITOR ===== */
-  .editor-area {
-    margin: 0 !important;
-    width: 100%;
+  /* ===== BACKDROP ===== */
+  .mobile-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.3s;
+    z-index: 2500;
   }
 
-  .editor-content {
-    padding: 20px 14px 100px;
+  .mobile-backdrop.show {
+    opacity: 1;
+    pointer-events: auto;
   }
 
-  .editor-tabs {
-    overflow-x: auto;
-  }
-
-  /* ===== COPILOT ===== */
+  /* ===== COPILOT (DRAG SHEET STYLE) ===== */
   .copilot-sidebar {
-    position: fixed !important;
+    position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 55%;
-    transform: translateY(100%);
-    transition: 0.3s ease;
-    z-index: 4000;
+    height: 75vh;
+    background: var(--bg-panel);
     border-radius: 20px 20px 0 0;
+    transform: translateY(100%);
+    transition: transform 0.35s ease;
+    z-index: 4000;
   }
 
   .copilot-sidebar.open {
     transform: translateY(0);
   }
 
+  /* drag handle */
+  .copilot-sidebar::before {
+    content: "";
+    width: 50px;
+    height: 5px;
+    background: #aaa;
+    border-radius: 10px;
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
   /* ===== SETTINGS ===== */
   .settings-panel {
-    position: fixed !important;
-    top: 80px;
+    position: fixed;
+    bottom: 80px;
     left: 10px;
     right: 10px;
-    max-height: 70vh;
+    max-height: 60vh;
     overflow-y: auto;
+    z-index: 4500;
+  }
+
+  /* ===== MENU ===== */
+  .dropdown {
+    position: fixed !important;
+    top: 70px;
+    left: 10px;
+    right: 10px;
     z-index: 5000;
   }
 
-  /* ===== IMAGE FIX ===== */
-  .profile-wrapper img {
-    width: 100%;
-    height: auto;
+  /* ===== EDITOR ===== */
+  .editor-area {
+    margin: 0;
+    padding-bottom: 90px;
   }
 
 }
