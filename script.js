@@ -1561,7 +1561,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   bindCopilotEvents();
 
-  appendCopilotMessage(COPILOT_REPLIES.intro, "assistant");
 
   window.quickAsk = quickAsk;
   window.sendCopilotPrompt = sendCopilotPrompt;
