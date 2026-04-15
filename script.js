@@ -1965,13 +1965,18 @@ function minimizeCopilot() {
   const sidebar = document.getElementById("copilotSidebar");
   const editor = document.querySelector(".editor-area");
 
-  sidebar.classList.toggle("minimized");
+  const isMinimized = sidebar.classList.contains("minimized");
 
-  // Fix editor shifting
-  if (sidebar.classList.contains("minimized")) {
-    editor.classList.remove("with-copilot");
+  if (!isMinimized) {
+    // 👇 minimize to bottom
+    sidebar.classList.add("minimized");
+    sidebar.classList.remove("open");
+    editor && editor.classList.remove("with-copilot");
   } else {
-    editor.classList.add("with-copilot");
+    // 👆 restore
+    sidebar.classList.remove("minimized");
+    sidebar.classList.add("open");
+    editor && editor.classList.add("with-copilot");
   }
 }
 
