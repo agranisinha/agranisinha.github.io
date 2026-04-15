@@ -2121,69 +2121,121 @@ function getResume() {
   `;
 }
 
-/* ===== SWIPE SIDEBAR ===== */
+/* ================================
+   FINAL MOBILE + DESKTOP BEHAVIOR
+================================ */
+
+/* ===== MENU (File/Edit/View like VS Code) ===== */
+const menus = document.querySelectorAll(".menu-item");
+
+menus.forEach(menu => {
+  menu.addEventListener("click", (e) => {
+    e.stopPropagation();
+
+    const isActive = menu.classList.contains("active");
+
+    // close all
+    menus.forEach(m => m.classList.remove("active"));
+
+    // toggle current
+    if (!isActive) menu.classList.add("active");
+  });
+});
+
+// click outside → close menus
+document.addEventListener("click", () => {
+  menus.forEach(m => m.classList.remove("active"));
+});
+
+
+/* ===== SIDEBAR TOGGLE ===== */
+const sidebar = document.querySelector(".sidebar-panel");
+
+window.toggleSidebar = function () {
+  sidebar?.classList.toggle("show");
+};
+
+// close sidebar on outside tap (mobile)
+document.addEventListener("click", (e) => {
+  if (
+    sidebar?.classList.contains("show") &&
+    !sidebar.contains(e.target) &&
+    !e.target.closest(".activity-icon")
+  ) {
+    sidebar.classList.remove("show");
+  }
+});
+
+
+/* ===== SWIPE GESTURE (LIKE MOBILE APPS) ===== */
 let startX = 0;
-let currentX = 0;
 
 document.addEventListener("touchstart", (e) => {
   startX = e.touches[0].clientX;
 });
 
-document.addEventListener("touchmove", (e) => {
-  currentX = e.touches[0].clientX;
-});
+document.addEventListener("touchend", (e) => {
+  let endX = e.changedTouches[0].clientX;
 
-document.addEventListener("touchend", () => {
-  const sidebar = document.querySelector(".sidebar-panel");
-
-  if (!sidebar) return;
-
-  // Swipe right → open
-  if (startX < 50 && currentX - startX > 80) {
-    sidebar.classList.add("show");
+  // swipe right → open sidebar
+  if (startX < 50 && endX - startX > 80) {
+    sidebar?.classList.add("show");
   }
 
-  // Swipe left → close
-  if (startX > 200 && startX - currentX > 80) {
-    sidebar.classList.remove("show");
+  // swipe left → close sidebar
+  if (startX > 200 && startX - endX > 80) {
+    sidebar?.classList.remove("show");
   }
 });
 
-/* ===== MENU CLICK (MOBILE) ===== */
-document.querySelectorAll(".menu-item").forEach(menu => {
-  menu.addEventListener("click", (e) => {
-    e.stopPropagation();
 
-    document.querySelectorAll(".menu-item")
-      .forEach(m => m.classList.remove("active"));
+/* ===== RED BUTTON (LIKE CLOSE PANEL) ===== */
+document.querySelector(".dot.red")?.addEventListener("click", () => {
+  sidebar?.classList.remove("show");
 
-    menu.classList.toggle("active");
-  });
+  // also close copilot if open
+  document.querySelector(".copilot-sidebar")?.classList.remove("open");
 });
 
-/* ===== VS CODE MENU FIX ===== */
-document.querySelectorAll(".menu-item").forEach(menu => {
-  menu.addEventListener("click", (e) => {
-    e.stopPropagation();
 
-    // close others
-    document.querySelectorAll(".menu-item").forEach(m => {
-      if (m !== menu) m.classList.remove("active");
-    });
+/* ===== SETTINGS TOGGLE ===== */
+const settingsPanel = document.getElementById("settingsPanel");
 
-    // toggle current
-    menu.classList.toggle("active");
-  });
+window.toggleSettings = function () {
+  settingsPanel?.classList.toggle("open");
+};
+
+// close settings if tapped outside
+document.addEventListener("click", (e) => {
+  if (
+    settingsPanel?.classList.contains("open") &&
+    !settingsPanel.contains(e.target) &&
+    !e.target.closest(".settings-btn")
+  ) {
+    settingsPanel.classList.remove("open");
+  }
 });
 
-/* close on outside click */
-document.addEventListener("click", () => {
-  document.querySelectorAll(".menu-item")
-    .forEach(m => m.classList.remove("active"));
+
+/* ===== COPILOT TOGGLE ===== */
+const copilot = document.querySelector(".copilot-sidebar");
+
+window.toggleCopilot = function () {
+  copilot?.classList.toggle("open");
+};
+
+
+/* ===== SMALL UX POLISH ===== */
+
+// prevent background scroll when copilot open
+const observer = new MutationObserver(() => {
+  if (copilot?.classList.contains("open")) {
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "";
+  }
 });
 
-/* Close menu on outside click */
-document.addEventListener("click", () => {
-  document.querySelectorAll(".menu-item")
-    .forEach(m => m.classList.remove("active"));
-});
+if (copilot) {
+  observer.observe(copilot, { attributes: true });
+}
