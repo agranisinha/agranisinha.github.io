@@ -2120,3 +2120,31 @@ function getResume() {
     </div>
   `;
 }
+
+/* ===== SWIPE SIDEBAR ===== */
+let startX = 0;
+let currentX = 0;
+
+document.addEventListener("touchstart", (e) => {
+  startX = e.touches[0].clientX;
+});
+
+document.addEventListener("touchmove", (e) => {
+  currentX = e.touches[0].clientX;
+});
+
+document.addEventListener("touchend", () => {
+  const sidebar = document.querySelector(".sidebar-panel");
+
+  if (!sidebar) return;
+
+  // Swipe right → open
+  if (startX < 50 && currentX - startX > 80) {
+    sidebar.classList.add("show");
+  }
+
+  // Swipe left → close
+  if (startX > 200 && startX - currentX > 80) {
+    sidebar.classList.remove("show");
+  }
+});
