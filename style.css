@@ -2274,3 +2274,34 @@ body.theme-tokyo {
     color: #000 !important;
   }
 }
+
+/* ===== FORCE DESKTOP UI ON MOBILE ===== */
+@media (max-width: 768px) {
+
+  .activity-bar {
+    display: flex !important;
+  }
+
+  .sidebar-panel {
+    position: relative !important;
+    transform: translateX(0) !important;
+    opacity: 1 !important;
+    width: 220px !important;
+    min-width: 220px !important;
+  }
+
+  .editor-area {
+    margin-left: 220px !important;
+  }
+
+  .copilot-sidebar {
+    transform: translateX(0) !important;
+    position: relative !important;
+    width: 260px !important;
+  }
+
+  .editor-area.with-copilot {
+    margin-right: 260px !important;
+  }
+
+}
