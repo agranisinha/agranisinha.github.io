@@ -1958,6 +1958,11 @@ function getReadme() {
   `;
 }
 
+function minimizeCopilot() {
+  const sidebar = document.getElementById("copilotSidebar");
+  sidebar.classList.toggle("minimized");
+}
+
 function getResume() {
   return `
     <div class="about-container">
