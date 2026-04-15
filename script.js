@@ -283,6 +283,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (value.includes("project")) return "projects";
     if (value.includes("skill")) return "skills";
     if (value.includes("experience")) return "experience";
+    if (value.includes("lor")) return "lor";
     if (value.includes("contact")) return "contact";
     if (value.includes("readme")) return "readme";
     if (value.includes("resume")) return "resume";
@@ -863,6 +864,10 @@ document.addEventListener("DOMContentLoaded", () => {
       openTab("experience");
       return;
     }
+     if (txt.includes("lor")) {
+        openTab("lor");
+        return;
+      }
     if (txt.includes("contact")) {
       openTab("contact");
       return;
