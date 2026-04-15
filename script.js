@@ -1,4 +1,29 @@
+/* ==========================================================================
+   AGRANI PORTFOLIO - FULL UPDATED SCRIPT.JS
+   ==========================================================================
+   FEATURES
+   --------------------------------------------------------------------------
+   1. VS Code-style tab system
+   2. Copilot opens ONLY on right side
+   3. copilot.md / copilot file item auto-removed
+   4. File menu close tab / close all / close others
+   5. Command palette
+   6. Sidebar and activity bar sync
+   7. Voice assistant
+   8. Smart navigation from Copilot
+   9. Real JS execution in terminal
+   10. Python execution via Pyodide if available
+   11. Motion.dev animation hooks if loaded
+   12. Responsive safety helpers
+   ========================================================================== */
+
 document.addEventListener("DOMContentLoaded", () => {
+  "use strict";
+
+  /* ==========================================================================
+     DOM REFERENCES
+     ========================================================================== */
+
   const editorContent = document.getElementById("editorContent");
   const tabsContainer = document.getElementById("editorTabs");
 
@@ -6,17 +31,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const paletteBackdrop = document.getElementById("paletteBackdrop");
   const openPaletteBtn = document.getElementById("openPaletteBtn");
   const paletteInput = document.getElementById("paletteInput");
-  const paletteItems = Array.from(document.querySelectorAll(".palette-item"));
-
   const settingsPanel = document.getElementById("settingsPanel");
 
   const red = document.getElementById("btnRed");
   const yellow = document.getElementById("btnYellow");
   const green = document.getElementById("btnGreen");
   const feedback = document.getElementById("headerFeedback");
-
-  const sidebarFiles = document.querySelectorAll(".file");
-  const menuItems = document.querySelectorAll(".menu-item");
 
   const cursorSquare = document.getElementById("cursorSquare");
   const cursorDot = document.getElementById("cursorDot");
@@ -25,10 +45,31 @@ document.addEventListener("DOMContentLoaded", () => {
   const terminalBody = document.getElementById("terminalBody");
   const terminalInput = document.getElementById("terminalInput");
 
+  let sidebarFiles = [];
+  let menuItems = [];
+  let paletteItems = [];
+
+  /* ==========================================================================
+     GLOBAL STATE
+     ========================================================================== */
+
   let openTabs = [];
   let activeTab = "";
   let currentPaletteIndex = 0;
   let currentDir = "~";
+  let terminalHistory = [];
+  let terminalHistoryIndex = -1;
+  let pyodideInstance = null;
+  let isCopilotOpen = false;
+  let currentTheme = "dark";
+
+  const STORAGE_KEYS = {
+    theme: "agrani_portfolio_theme_v2",
+    tabs: "agrani_portfolio_tabs_v2",
+    activeTab: "agrani_portfolio_active_tab_v2",
+    terminalHistory: "agrani_portfolio_terminal_history_v2",
+    copilotOpen: "agrani_portfolio_copilot_open_v2"
+  };
 
   const funnyQuotes = [
     "Nice try 😏 but I’ll stay open.",
@@ -46,42 +87,165 @@ document.addEventListener("DOMContentLoaded", () => {
     experience: "🟦 experience.ts",
     contact: "🎨 contact.css",
     readme: "📄 README.md",
-    resume: "📕 Resume.pdf",
-    copilot: "✨ copilot.md"
+    resume: "📕 Resume.pdf"
   };
+
+  const TAB_ORDER = [
+    "home",
+    "about",
+    "projects",
+    "skills",
+    "experience",
+    "contact",
+    "readme",
+    "resume"
+  ];
 
   const COPILOT_REPLIES = {
     intro:
-      "Hi — I’m Agrani’s portfolio copilot. Ask about projects, experience, skills, healthcare AI work, education, or contact details.",
+      "Hi — I’m Agrani’s portfolio copilot. Ask about projects, experience, skills, education, healthcare AI work, or contact details.",
     projects:
-      "Agrani has built projects across ML drug discovery, Flutter inventory systems, healthcare chatbots, AI plant identification, bioinformatics, and AI game systems.",
+      "Agrani has built projects across ML drug discovery, Flutter inventory systems, healthcare chatbots, AI plant identification, bioinformatics, AI game systems, and practical healthcare technology solutions.",
     experience:
-      "Agrani’s experience includes Clinical Informatics Intern at Alivia Care, Data Science Analyst at BluCognition, Academic Research Associate at Digiversal, and research roles in bioinformatics and diagnostics.",
+      "Agrani’s experience includes Clinical Informatics Intern at Alivia Care, Data Science Analyst at BluCognition, Academic Research Associate at Digiversal, and research work in bioinformatics and diagnostics.",
     skills:
-      "Core skills include Python, Java, C/C++, JavaScript, HTML/CSS, Flutter, TensorFlow, Machine Learning, Computer Vision, SAS, Excel, EHRGo, WellSky, Android Studio, and GitHub.",
+      "Core skills include Python, Java, C/C++, JavaScript, HTML/CSS, Flutter, TensorFlow, Machine Learning, Computer Vision, SAS, Excel, EHRGo, WellSky, Android Studio, GitHub, and healthcare analytics.",
     education:
       "Agrani is pursuing an M.S. in Health Informatics at the University of North Florida and completed an Integrated Master of Technology in Biotechnology from JIIT.",
     contact:
       "You can contact Agrani at agbrian521@gmail.com, phone (904) 228-1179, based in Jacksonville, FL.",
     healthcare:
-      "Agrani’s work focuses on AI-driven healthcare systems, clinical informatics, healthcare analytics, digital health solutions, and EHR-centered workflows.",
+      "Agrani’s work focuses on AI-driven healthcare systems, clinical informatics, healthcare analytics, digital health solutions, EHR-centered workflows, and practical intelligent systems.",
+    leadership:
+      "Agrani has served as Marketing Chair in the Health Informatics & Analytics Club and has worked on healthcare outreach, podcast coordination, and student engagement initiatives.",
+    resume:
+      "You can open the Resume tab or use the File menu to download Agrani’s latest resume.",
     default:
-      "I can answer questions about Agrani’s projects, experience, skills, education, healthcare AI focus, and contact details."
+      "I can answer questions about Agrani’s projects, experience, skills, education, healthcare AI focus, leadership, resume, and contact details."
   };
 
-  const views = {
-    home: getHome(),
-    about: getAbout(),
-    projects: getProjects(),
-    skills: getSkills(),
-    experience: getExperience(),
-    contact: getContact(),
-    readme: getReadme(),
-    resume: getResume()
-  };
+  /* ==========================================================================
+     DYNAMIC VIEW REGISTRY
+     ========================================================================== */
+
+  function getViews() {
+    return {
+      home: getHome(),
+      about: getAbout(),
+      projects: getProjects(),
+      skills: getSkills(),
+      experience: getExperience(),
+      contact: getContact(),
+      readme: getReadme(),
+      resume: getResume()
+    };
+  }
+
+  /* ==========================================================================
+     BASIC HELPERS
+     ========================================================================== */
+
+  function qs(selector, root = document) {
+    return root.querySelector(selector);
+  }
+
+  function qsa(selector, root = document) {
+    return Array.from(root.querySelectorAll(selector));
+  }
+
+  function safeText(value) {
+    return String(value ?? "").trim();
+  }
+
+  function clamp(num, min, max) {
+    return Math.max(min, Math.min(num, max));
+  }
+
+  function debounce(fn, delay = 150) {
+    let timer = null;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => fn(...args), delay);
+    };
+  }
+
+  function delay(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  function createElement(tag, className = "", html = "") {
+    const el = document.createElement(tag);
+    if (className) el.className = className;
+    if (html) el.innerHTML = html;
+    return el;
+  }
+
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function updateCollections() {
+    sidebarFiles = qsa(".file");
+    menuItems = qsa(".menu-item");
+    paletteItems = qsa(".palette-item");
+  }
+
+  function persistState() {
+    try {
+      localStorage.setItem(STORAGE_KEYS.theme, currentTheme);
+      localStorage.setItem(STORAGE_KEYS.tabs, JSON.stringify(openTabs));
+      localStorage.setItem(STORAGE_KEYS.activeTab, activeTab);
+      localStorage.setItem(STORAGE_KEYS.terminalHistory, JSON.stringify(terminalHistory.slice(-60)));
+      localStorage.setItem(STORAGE_KEYS.copilotOpen, JSON.stringify(isCopilotOpen));
+    } catch (_error) {
+      /* ignore */
+    }
+  }
+
+  function restoreState() {
+    try {
+      const storedTheme = localStorage.getItem(STORAGE_KEYS.theme);
+      const storedTabs = JSON.parse(localStorage.getItem(STORAGE_KEYS.tabs) || "[]");
+      const storedActive = localStorage.getItem(STORAGE_KEYS.activeTab);
+      const storedTerminalHistory = JSON.parse(localStorage.getItem(STORAGE_KEYS.terminalHistory) || "[]");
+      const storedCopilotOpen = JSON.parse(localStorage.getItem(STORAGE_KEYS.copilotOpen) || "false");
+
+      if (storedTheme) {
+        currentTheme = storedTheme;
+      }
+
+      if (Array.isArray(storedTabs) && storedTabs.length) {
+        openTabs = storedTabs.filter((tab) => TAB_ORDER.includes(tab));
+      }
+
+      if (storedActive && TAB_ORDER.includes(storedActive)) {
+        activeTab = storedActive;
+      }
+
+      if (Array.isArray(storedTerminalHistory)) {
+        terminalHistory = storedTerminalHistory;
+      }
+
+      if (typeof storedCopilotOpen === "boolean") {
+        isCopilotOpen = storedCopilotOpen;
+      }
+    } catch (_error) {
+      /* ignore */
+    }
+  }
+
+  /* ==========================================================================
+     NORMALIZATION
+     ========================================================================== */
 
   function normalizeName(name) {
     const value = String(name).toLowerCase().trim();
+
     if (value.includes("home")) return "home";
     if (value.includes("about")) return "about";
     if (value.includes("project")) return "projects";
@@ -90,7 +254,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (value.includes("contact")) return "contact";
     if (value.includes("readme")) return "readme";
     if (value.includes("resume")) return "resume";
-    if (value.includes("copilot")) return "copilot";
+
     return "home";
   }
 
@@ -101,6 +265,252 @@ document.addEventListener("DOMContentLoaded", () => {
   function getLabel(tab) {
     return TAB_LABELS[tab] || `📄 ${tab}`;
   }
+
+  function isValidTab(tab) {
+    return TAB_ORDER.includes(tab);
+  }
+
+  /* ==========================================================================
+     REMOVE COPILOT.MD / COPILOT FILE ITEM
+     ========================================================================== */
+
+  function removeCopilotFileEntries() {
+    qsa(".file").forEach((file) => {
+      const text = file.textContent.toLowerCase();
+      if (text.includes("copilot")) {
+        file.remove();
+      }
+    });
+
+    qsa(".palette-item").forEach((item) => {
+      const text = item.textContent.toLowerCase();
+      if (text.includes("copilot.md")) {
+        item.remove();
+      }
+    });
+
+    qsa(".dropdown div").forEach((item) => {
+      const text = item.textContent.toLowerCase();
+      if (text.includes("copilot.md")) {
+        item.remove();
+      }
+    });
+
+    updateCollections();
+  }
+
+  /* ==========================================================================
+     CREATE RIGHT-SIDE COPILOT PANEL IF NOT PRESENT
+     ========================================================================== */
+
+  function ensureCopilotSidebar() {
+    let panel = document.getElementById("copilotSidebar");
+
+    if (panel) return panel;
+
+    panel = createElement("aside", "copilot-sidebar");
+    panel.id = "copilotSidebar";
+    panel.setAttribute("aria-hidden", "true");
+
+    panel.innerHTML = `
+      <div class="copilot-side-header">
+        <div class="copilot-side-title">✨ Agrani's Copilot</div>
+        <button class="copilot-side-close" id="copilotSideClose" type="button" aria-label="Close Copilot">×</button>
+      </div>
+
+      <div class="copilot-workspace-row">
+        <span class="copilot-workspace-label">WORKSPACE</span>
+        <span class="copilot-workspace-pill">● portfolio · agrani-sinha</span>
+      </div>
+
+      <div class="copilot-side-hero">
+        <div class="copilot-avatar-ring">
+          <div class="copilot-avatar-core">🙂</div>
+        </div>
+        <h3>Hi! I'm Agrani's Copilot 👋</h3>
+        <p>
+          Ask me about projects, skills, experience, education, healthcare AI work,
+          leadership, resume, or contact details.
+        </p>
+      </div>
+
+      <div class="copilot-suggest-grid">
+        <button class="copilot-suggest" data-quick="Tell me about Agrani's projects">
+          Tell me about Agrani's projects
+        </button>
+        <button class="copilot-suggest" data-quick="What is Agrani's tech stack?">
+          What's her tech stack?
+        </button>
+        <button class="copilot-suggest" data-quick="Tell me about Agrani's experience">
+          Tell me about her experience
+        </button>
+        <button class="copilot-suggest" data-quick="How can I contact Agrani?">
+          How can I contact Agrani?
+        </button>
+      </div>
+
+      <div class="copilot-side-messages" id="copilotMessages">
+        <div class="copilot-message assistant">
+          Hi — I’m Agrani’s portfolio copilot. Ask about projects, experience, skills,
+          healthcare AI work, education, leadership, resume, or contact details.
+        </div>
+      </div>
+
+      <div class="copilot-side-input-wrap">
+        <div class="copilot-input-row">
+          <input
+            id="copilotInput"
+            type="text"
+            placeholder="Ask about Agrani..."
+            autocomplete="off"
+          />
+          <button id="copilotSend" type="button" aria-label="Send">➤</button>
+          <button id="copilotVoice" type="button" aria-label="Voice assistant">🎤</button>
+        </div>
+        <div class="copilot-side-note">
+          AI can make mistakes • Contact Agrani directly for important info
+        </div>
+      </div>
+    `;
+
+    const appShell = document.querySelector(".app-shell") || document.body;
+    appShell.appendChild(panel);
+
+    return panel;
+  }
+
+  const copilotSidebar = ensureCopilotSidebar();
+
+  /* ==========================================================================
+     THEME
+     ========================================================================== */
+
+  function applyTheme(theme) {
+    currentTheme = theme || "dark";
+
+    document.body.classList.remove("rose", "tokyo", "cat", "nord", "gruv");
+    if (currentTheme !== "dark") {
+      document.body.classList.add(currentTheme);
+    }
+
+    qsa(".theme-option").forEach((el) => el.classList.remove("active"));
+    qsa(".theme-option").forEach((el) => {
+      const text = el.textContent.toLowerCase();
+      const match =
+        (currentTheme === "dark" && text.includes("dark")) ||
+        (currentTheme === "rose" && text.includes("ros")) ||
+        (currentTheme === "tokyo" && text.includes("tokyo")) ||
+        (currentTheme === "cat" && text.includes("cat")) ||
+        (currentTheme === "nord" && text.includes("nord")) ||
+        (currentTheme === "gruv" && text.includes("gruv"));
+
+      if (match) el.classList.add("active");
+    });
+
+    persistState();
+  }
+
+  window.setTheme = function setTheme(theme) {
+    applyTheme(theme);
+  };
+
+  window.toggleSettings = function toggleSettings() {
+    if (settingsPanel) {
+      settingsPanel.classList.toggle("open");
+    }
+  };
+
+  /* ==========================================================================
+     SIDEBAR / ACTIVITY BAR
+     ========================================================================== */
+
+  function setActivityActive(type) {
+    qsa(".activity-icon").forEach((icon) => {
+      icon.classList.remove("active");
+    });
+
+    const map = {
+      explorer: 0,
+      search: 1,
+      git: 2,
+      files: 3,
+      copilot: 4
+    };
+
+    const index = map[type];
+    const icons = qsa(".activity-icon");
+
+    if (typeof index === "number" && icons[index]) {
+      icons[index].classList.add("active");
+    }
+  }
+
+  window.openSidebar = function openSidebar(type) {
+    setActivityActive(type);
+
+    if (type === "copilot") {
+      toggleCopilotSidebar(true);
+      return;
+    }
+
+    if (type === "explorer") {
+      const panel = document.querySelector(".sidebar-panel");
+      if (panel) panel.classList.remove("hide");
+      return;
+    }
+
+    if (type === "search") {
+      openPalette();
+      return;
+    }
+
+    if (type === "git") {
+      printToTerminal("Git panel is simulated. Use `git log` in terminal.", "warning");
+      return;
+    }
+
+    if (type === "files") {
+      openTab("readme");
+      return;
+    }
+  };
+
+  function toggleSidebar() {
+    const panel = document.querySelector(".sidebar-panel");
+    if (panel) panel.classList.toggle("hide");
+  }
+
+  window.toggleSidebar = toggleSidebar;
+
+  /* ==========================================================================
+     COPILOT SIDEBAR CONTROL
+     ========================================================================== */
+
+  function toggleCopilotSidebar(forceState) {
+    if (!copilotSidebar) return;
+
+    if (typeof forceState === "boolean") {
+      isCopilotOpen = forceState;
+    } else {
+      isCopilotOpen = !isCopilotOpen;
+    }
+
+    copilotSidebar.classList.toggle("open", isCopilotOpen);
+    copilotSidebar.setAttribute("aria-hidden", String(!isCopilotOpen));
+
+    const closeBtn = document.getElementById("copilotSideClose");
+    if (closeBtn) {
+      closeBtn.onclick = () => toggleCopilotSidebar(false);
+    }
+
+    persistState();
+  }
+
+  window.toggleCopilotSidebar = toggleCopilotSidebar;
+
+  /* ==========================================================================
+     TABS
+     ========================================================================== */
 
   function setActiveSidebar(tabName) {
     sidebarFiles.forEach((file) => {
@@ -114,21 +524,24 @@ document.addEventListener("DOMContentLoaded", () => {
         (tabName === "contact" && fileText.includes("contact")) ||
         (tabName === "readme" && fileText.includes("readme")) ||
         (tabName === "resume" && fileText.includes("resume"));
+
       file.classList.toggle("active", match);
     });
   }
 
   function renderTabs() {
     if (!tabsContainer) return;
+
     tabsContainer.innerHTML = "";
 
     openTabs.forEach((tab) => {
       const el = document.createElement("div");
       el.className = `tab ${tab === activeTab ? "active" : ""}`;
       el.dataset.tab = tab;
+
       el.innerHTML = `
         <span class="tab-icon">${getIcon(tab)}</span>
-        <span class="tab-label">${getLabel(tab).replace(/^[^\s]+\s/, "")}</span>
+        <span class="tab-label">${escapeHtml(getLabel(tab).replace(/^[^\s]+\s/, ""))}</span>
         <span class="tab-close" aria-label="Close tab">×</span>
       `;
 
@@ -149,8 +562,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function animateInsertedContent() {
+    if (!editorContent) return;
+
     const targets = editorContent.querySelectorAll(
-      ".hero-name, .roles span, .hero-desc, .home-buttons button, .stat-card, .about-card, .project-card, .timeline-item, .skills-chip, .profile-wrapper, .copilot-card"
+      ".hero-name, .roles span, .hero-desc, .home-buttons button, .stat-card, .about-card, .project-card, .timeline-item, .skills-chip, .profile-wrapper"
     );
 
     targets.forEach((el, index) => {
@@ -162,6 +577,40 @@ document.addEventListener("DOMContentLoaded", () => {
         el.style.transform = "translateY(0)";
       }, 40 + index * 35);
     });
+  }
+
+  function runMotionAnimations() {
+    if (!window.motionAnimate) return;
+
+    try {
+      window.motionAnimate(
+        ".tab",
+        { opacity: [0, 1], y: [-8, 0] },
+        { duration: 0.22 }
+      );
+
+      window.motionAnimate(
+        ".hero-name",
+        { opacity: [0, 1], y: [18, 0] },
+        { duration: 0.45 }
+      );
+
+      if (window.motionStagger) {
+        window.motionAnimate(
+          ".roles span",
+          { opacity: [0, 1], y: [10, 0] },
+          { duration: 0.3, delay: window.motionStagger(0.04) }
+        );
+
+        window.motionAnimate(
+          ".about-card, .project-card, .stat-card",
+          { opacity: [0, 1], y: [18, 0] },
+          { duration: 0.35, delay: window.motionStagger(0.05) }
+        );
+      }
+    } catch (_error) {
+      /* ignore */
+    }
   }
 
   function typeWriter(el, text, speed = 18) {
@@ -183,25 +632,36 @@ document.addEventListener("DOMContentLoaded", () => {
   function startTyping() {
     const typingEl = document.getElementById("typingText");
     if (typingEl) {
-      typeWriter(typingEl, "// hello world !! Welcome to my portfolio");
+      typeWriter(typingEl, "// hello world !! Welcome to my portfolio", 16);
     }
   }
 
   function renderContent(tabName) {
     if (!editorContent) return;
+
+    const views = getViews();
+    const safeTab = isValidTab(tabName) ? tabName : "home";
+
     editorContent.style.opacity = "0";
 
     setTimeout(() => {
-      editorContent.innerHTML = views[tabName] || views.home;
+      editorContent.innerHTML = views[safeTab] || views.home;
       editorContent.style.opacity = "1";
-      if (tabName === "home") startTyping();
+
+      if (safeTab === "home") {
+        startTyping();
+      }
+
       animateInsertedContent();
-      if (tabName === "copilot") initCopilotUI();
-    }, 160);
+      runMotionAnimations();
+      persistState();
+    }, 120);
   }
 
   function openTab(name) {
     const tabName = normalizeName(name);
+
+    if (!isValidTab(tabName)) return;
 
     if (!openTabs.includes(tabName)) {
       openTabs.push(tabName);
@@ -217,6 +677,10 @@ document.addEventListener("DOMContentLoaded", () => {
   function closeTab(tabName) {
     openTabs = openTabs.filter((t) => t !== tabName);
 
+    if (!openTabs.length) {
+      openTabs = ["home"];
+    }
+
     if (activeTab === tabName) {
       activeTab = openTabs[openTabs.length - 1] || "home";
     }
@@ -226,17 +690,61 @@ document.addEventListener("DOMContentLoaded", () => {
     renderContent(activeTab);
   }
 
+  function closeCurrentTab() {
+    if (!activeTab) return;
+    closeTab(activeTab);
+  }
+
+  function closeAllTabs() {
+    openTabs = ["home"];
+    activeTab = "home";
+    renderTabs();
+    setActiveSidebar("home");
+    renderContent("home");
+  }
+
+  function closeOtherTabs(tabName = activeTab) {
+    if (!tabName) return;
+    openTabs = [tabName];
+    activeTab = tabName;
+    renderTabs();
+    setActiveSidebar(tabName);
+    renderContent(tabName);
+  }
+
+  function closeTabsToRight(tabName = activeTab) {
+    if (!tabName) return;
+    const index = openTabs.indexOf(tabName);
+    if (index === -1) return;
+    openTabs = openTabs.slice(0, index + 1);
+    activeTab = tabName;
+    renderTabs();
+    setActiveSidebar(tabName);
+    renderContent(tabName);
+  }
+
   window.openTab = openTab;
+  window.closeCurrentTab = closeCurrentTab;
+  window.closeAllTabs = closeAllTabs;
+  window.closeOtherTabs = closeOtherTabs;
+  window.closeTabsToRight = closeTabsToRight;
+
+  /* ==========================================================================
+     COMMAND PALETTE
+     ========================================================================== */
 
   function openPalette() {
     if (!paletteOverlay) return;
+
     paletteOverlay.classList.add("open");
     paletteOverlay.setAttribute("aria-hidden", "false");
+
     if (paletteInput) {
       paletteInput.value = "";
       filterPalette("");
       setTimeout(() => paletteInput.focus(), 40);
     }
+
     highlightPaletteItem(0);
   }
 
@@ -256,9 +764,13 @@ document.addEventListener("DOMContentLoaded", () => {
   function highlightPaletteItem(index) {
     const visible = visiblePaletteItems();
     if (!visible.length) return;
-    currentPaletteIndex = Math.max(0, Math.min(index, visible.length - 1));
+
+    currentPaletteIndex = clamp(index, 0, visible.length - 1);
     paletteItems.forEach((item) => item.classList.remove("active"));
-    visible[currentPaletteIndex].classList.add("active");
+
+    if (visible[currentPaletteIndex]) {
+      visible[currentPaletteIndex].classList.add("active");
+    }
   }
 
   function filterPalette(query) {
@@ -275,10 +787,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function runPaletteItem(item) {
     const txt = item.innerText.toLowerCase();
 
-    if (txt.includes("copilot")) {
-      openTab("copilot");
-      return;
-    }
     if (txt.includes("home")) {
       openTab("home");
       return;
@@ -309,106 +817,465 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     if (txt.includes("resume")) {
       openTab("resume");
+      return;
+    }
+    if (txt.includes("copilot")) {
+      toggleCopilotSidebar(true);
+      return;
     }
   }
 
-  if (openPaletteBtn) openPaletteBtn.addEventListener("click", openPalette);
-  if (paletteBackdrop) paletteBackdrop.addEventListener("click", closePalette);
+  if (openPaletteBtn) {
+    openPaletteBtn.addEventListener("click", openPalette);
+  }
 
-  if (paletteInput) {
-    paletteInput.addEventListener("input", (e) => {
-      filterPalette(e.target.value);
-    });
+  if (paletteBackdrop) {
+    paletteBackdrop.addEventListener("click", closePalette);
+  }
 
-    paletteInput.addEventListener("keydown", (e) => {
-      const visible = visiblePaletteItems();
+  function bindPaletteEvents() {
+    paletteItems = qsa(".palette-item");
 
-      if (e.key === "ArrowDown") {
-        e.preventDefault();
-        if (visible.length) highlightPaletteItem((currentPaletteIndex + 1) % visible.length);
-      }
+    if (paletteInput) {
+      paletteInput.addEventListener("input", (e) => {
+        filterPalette(e.target.value);
+      });
 
-      if (e.key === "ArrowUp") {
-        e.preventDefault();
-        if (visible.length) {
-          highlightPaletteItem((currentPaletteIndex - 1 + visible.length) % visible.length);
+      paletteInput.addEventListener("keydown", (e) => {
+        const visible = visiblePaletteItems();
+
+        if (e.key === "ArrowDown") {
+          e.preventDefault();
+          if (visible.length) {
+            highlightPaletteItem((currentPaletteIndex + 1) % visible.length);
+          }
         }
-      }
 
-      if (e.key === "Enter") {
-        e.preventDefault();
-        if (visible.length) runPaletteItem(visible[currentPaletteIndex]);
-      }
+        if (e.key === "ArrowUp") {
+          e.preventDefault();
+          if (visible.length) {
+            highlightPaletteItem(
+              (currentPaletteIndex - 1 + visible.length) % visible.length
+            );
+          }
+        }
+
+        if (e.key === "Enter") {
+          e.preventDefault();
+          if (visible.length) {
+            runPaletteItem(visible[currentPaletteIndex]);
+          }
+        }
+      });
+    }
+
+    paletteItems.forEach((item, index) => {
+      item.addEventListener("mouseenter", () => {
+        const visible = visiblePaletteItems();
+        const visibleIndex = visible.indexOf(item);
+        if (visibleIndex !== -1) {
+          highlightPaletteItem(visibleIndex);
+        } else {
+          highlightPaletteItem(index);
+        }
+      });
+
+      item.addEventListener("click", () => {
+        runPaletteItem(item);
+      });
     });
   }
 
-  paletteItems.forEach((item, index) => {
-    item.addEventListener("mouseenter", () => {
-      highlightPaletteItem(index);
-    });
+  bindPaletteEvents();
 
-    item.addEventListener("click", () => {
-      runPaletteItem(item);
-    });
-  });
+  /* ==========================================================================
+     GLOBAL KEYBOARD SHORTCUTS
+     ========================================================================== */
 
   document.addEventListener("keydown", (e) => {
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "p") {
       e.preventDefault();
       openPalette();
+      return;
+    }
+
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "w") {
+      e.preventDefault();
+      closeCurrentTab();
+      return;
+    }
+
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === "w") {
+      e.preventDefault();
+      closeAllTabs();
+      return;
+    }
+
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "j") {
+      e.preventDefault();
+      toggleTerminal();
+      return;
+    }
+
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === "c") {
+      e.preventDefault();
+      toggleCopilotSidebar(true);
+      return;
     }
 
     if (e.key === "Escape") {
       closePalette();
-      if (settingsPanel) settingsPanel.classList.remove("open");
+
+      if (settingsPanel) {
+        settingsPanel.classList.remove("open");
+      }
+
+      if (isCopilotOpen && window.innerWidth < 900) {
+        toggleCopilotSidebar(false);
+      }
     }
   });
 
-  window.toggleSettings = function toggleSettings() {
-    if (settingsPanel) settingsPanel.classList.toggle("open");
-  };
+  /* ==========================================================================
+     MENU BAR
+     ========================================================================== */
 
-  window.setTheme = function setTheme(theme) {
-    document.body.className = theme === "dark" ? "" : theme;
-    document.querySelectorAll(".theme-option").forEach((el) => {
-      el.classList.remove("active");
+  function bindMenuEvents() {
+    menuItems = qsa(".menu-item");
+
+    menuItems.forEach((menu) => {
+      menu.addEventListener("click", (e) => {
+        const label = safeText(
+          e.currentTarget.childNodes[0]?.textContent || ""
+        ).toLowerCase();
+
+        switch (label) {
+          case "file":
+            break;
+          case "edit":
+            openPalette();
+            break;
+          case "view":
+            toggleSidebar();
+            break;
+          case "go":
+            openPalette();
+            break;
+          case "run":
+            toggleTerminal();
+            setTimeout(() => terminalInput?.focus(), 80);
+            break;
+          case "terminal":
+            toggleTerminal();
+            setTimeout(() => terminalInput?.focus(), 80);
+            break;
+          case "help":
+            openTab("readme");
+            break;
+          case "copilot":
+            toggleCopilotSidebar(true);
+            break;
+          default:
+            break;
+        }
+      });
     });
-
-    if (window.event && window.event.currentTarget) {
-      window.event.currentTarget.classList.add("active");
-    }
-  };
-
-  window.openSidebar = function openSidebar(type) {
-    document.querySelectorAll(".activity-icon").forEach((icon) => {
-      icon.classList.remove("active");
-    });
-
-    if (window.event && window.event.currentTarget) {
-      window.event.currentTarget.classList.add("active");
-    }
-
-    if (type === "copilot") {
-      openTab("copilot");
-    }
-  };
-
-  function toggleSidebar() {
-    const panel = document.querySelector(".sidebar-panel");
-    if (panel) panel.classList.toggle("hide");
   }
+
+  bindMenuEvents();
+
+  /* ==========================================================================
+     SIDEBAR FILE EVENTS
+     ========================================================================== */
+
+  function bindSidebarEvents() {
+    sidebarFiles = qsa(".file");
+
+    sidebarFiles.forEach((file) => {
+      file.addEventListener("click", () => {
+        const tabName = normalizeName(file.textContent);
+        openTab(tabName);
+      });
+    });
+
+    const copilotBox = qsa(".copilot-box")[0];
+    if (copilotBox) {
+      copilotBox.addEventListener("click", () => {
+        toggleCopilotSidebar(true);
+      });
+    }
+  }
+
+  bindSidebarEvents();
+
+  /* ==========================================================================
+     TERMINAL
+     ========================================================================== */
 
   function toggleTerminal() {
     if (!terminal) return;
+
     terminal.classList.toggle("open");
+
     if (terminal.classList.contains("open") && terminalInput) {
       terminalInput.focus();
     }
   }
 
   function clearTerminal() {
-    if (terminalBody) terminalBody.innerHTML = "";
+    if (terminalBody) {
+      terminalBody.innerHTML = "";
+    }
   }
+
+  function printToTerminal(text, type = "normal") {
+    if (!terminalBody) return;
+
+    const line = document.createElement("div");
+
+    if (type === "success") line.classList.add("success");
+    if (type === "error") line.classList.add("error");
+    if (type === "warning") line.classList.add("warning");
+
+    line.textContent = text;
+    terminalBody.appendChild(line);
+    terminalBody.scrollTop = terminalBody.scrollHeight;
+  }
+
+  async function initPyodideEngine() {
+    if (pyodideInstance) return pyodideInstance;
+
+    if (typeof loadPyodide === "undefined") {
+      throw new Error("Pyodide is not loaded. Add pyodide.js to your HTML.");
+    }
+
+    printToTerminal("Loading Python runtime...", "warning");
+    pyodideInstance = await loadPyodide();
+    printToTerminal("Python runtime ready.", "success");
+    return pyodideInstance;
+  }
+
+  async function runJavaScriptInTerminal(code) {
+    try {
+      const result = Function(`"use strict"; return (${code})`)();
+      printToTerminal(String(result), "success");
+    } catch (_error) {
+      try {
+        const result = Function(`"use strict"; ${code}`)();
+        if (result !== undefined) {
+          printToTerminal(String(result), "success");
+        } else {
+          printToTerminal("JavaScript executed.", "success");
+        }
+      } catch (err) {
+        printToTerminal(`JS Error: ${err.message}`, "error");
+      }
+    }
+  }
+
+  async function runPythonInTerminal(code) {
+    try {
+      const py = await initPyodideEngine();
+      const result = py.runPython(code);
+
+      if (result !== undefined) {
+        printToTerminal(String(result), "success");
+      } else {
+        printToTerminal("Python executed.", "success");
+      }
+    } catch (err) {
+      printToTerminal(`Python Error: ${err.message}`, "error");
+    }
+  }
+
+  async function runTerminalCommand(raw) {
+    const cmd = raw.trim();
+    if (!cmd) return;
+
+    terminalHistory.push(cmd);
+    terminalHistoryIndex = terminalHistory.length;
+    persistState();
+
+    printToTerminal(`agrani@portfolio:${currentDir}$ ${cmd}`);
+
+    const parts = cmd.split(" ");
+    const first = parts[0].toLowerCase();
+
+    switch (first) {
+      case "help":
+        printToTerminal("Available commands:", "success");
+        printToTerminal("ls — list files");
+        printToTerminal("pwd — print working directory");
+        printToTerminal("cd <dir> — change directory");
+        printToTerminal("cat <file> — open a file");
+        printToTerminal("open <file> — open a file");
+        printToTerminal("whoami — who am I?");
+        printToTerminal("echo <text> — print text");
+        printToTerminal("date — current date & time");
+        printToTerminal("git log — show recent commits");
+        printToTerminal("python --version — show Python runtime status");
+        printToTerminal("js <code> — execute JavaScript");
+        printToTerminal("py <code> — execute Python");
+        printToTerminal("copilot — open Agrani's Copilot");
+        printToTerminal("clear — clear terminal");
+        break;
+
+      case "ls":
+        printToTerminal(
+          "home.tsx  about.html  projects.js  skills.json  experience.ts  contact.css  README.md  Resume.pdf"
+        );
+        break;
+
+      case "pwd":
+        printToTerminal(`/portfolio/${currentDir === "~" ? "" : currentDir}`.replace(/\/$/, ""));
+        break;
+
+      case "cd":
+        if (!parts[1] || parts[1] === "~") {
+          currentDir = "~";
+        } else if (parts[1] === "..") {
+          currentDir = "~";
+        } else {
+          currentDir = parts[1];
+        }
+        printToTerminal(`moved to ${currentDir}`, "success");
+        break;
+
+      case "cat":
+      case "open":
+        if (parts[1]) {
+          const target = normalizeName(parts[1]);
+          if (isValidTab(target)) {
+            openTab(target);
+            printToTerminal(`opening ${parts[1]}`, "success");
+          } else {
+            printToTerminal(`file not found: ${parts[1]}`, "error");
+          }
+        } else {
+          printToTerminal(`usage: ${first} <file>`, "error");
+        }
+        break;
+
+      case "whoami":
+        printToTerminal("Agrani Sinha", "success");
+        break;
+
+      case "echo":
+        printToTerminal(parts.slice(1).join(" "));
+        break;
+
+      case "date":
+        printToTerminal(new Date().toString());
+        break;
+
+      case "git":
+        if (parts[1] === "log") {
+          printToTerminal("commit 9f2e1a2 - Upgrade premium portfolio UI");
+          printToTerminal("commit 51af89d - Add VS Code tabs and command palette");
+          printToTerminal("commit 3b21d9a - Initial portfolio structure");
+        } else {
+          printToTerminal("git: command not recognized", "error");
+        }
+        break;
+
+      case "python":
+        if (parts[1] === "--version") {
+          try {
+            await initPyodideEngine();
+            printToTerminal("Python runtime loaded via Pyodide", "success");
+          } catch (error) {
+            printToTerminal(error.message, "error");
+          }
+        } else {
+          printToTerminal("python: unsupported argument", "error");
+        }
+        break;
+
+      case "js": {
+        const jsCode = cmd.slice(3).trim();
+        if (!jsCode) {
+          printToTerminal("usage: js <code>", "error");
+        } else {
+          await runJavaScriptInTerminal(jsCode);
+        }
+        break;
+      }
+
+      case "py": {
+        const pyCode = cmd.slice(3).trim();
+        if (!pyCode) {
+          printToTerminal("usage: py <code>", "error");
+        } else {
+          await runPythonInTerminal(pyCode);
+        }
+        break;
+      }
+
+      case "projects":
+      case "about":
+      case "skills":
+      case "experience":
+      case "contact":
+      case "readme":
+      case "resume":
+      case "home":
+        openTab(first);
+        break;
+
+      case "copilot":
+        toggleCopilotSidebar(true);
+        printToTerminal("Agrani's Copilot opened.", "success");
+        break;
+
+      case "clear":
+        clearTerminal();
+        break;
+
+      default:
+        printToTerminal(`command not found: ${cmd} — type 'help' for commands`, "error");
+    }
+  }
+
+  function bindTerminalEvents() {
+    if (!terminalInput) return;
+
+    terminalInput.addEventListener("keydown", async (e) => {
+      if (e.key === "Enter") {
+        const value = terminalInput.value;
+        terminalInput.value = "";
+        await runTerminalCommand(value);
+      }
+
+      if (e.key === "ArrowUp") {
+        e.preventDefault();
+        if (!terminalHistory.length) return;
+        terminalHistoryIndex = Math.max(0, terminalHistoryIndex - 1);
+        terminalInput.value = terminalHistory[terminalHistoryIndex] || "";
+      }
+
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        if (!terminalHistory.length) return;
+
+        terminalHistoryIndex = Math.min(terminalHistory.length, terminalHistoryIndex + 1);
+
+        if (terminalHistoryIndex >= terminalHistory.length) {
+          terminalInput.value = "";
+        } else {
+          terminalInput.value = terminalHistory[terminalHistoryIndex] || "";
+        }
+      }
+    });
+  }
+
+  bindTerminalEvents();
+
+  window.toggleTerminal = toggleTerminal;
+  window.clearTerminal = clearTerminal;
+
+  /* ==========================================================================
+     RESUME / FULLSCREEN / WINDOW BUTTONS
+     ========================================================================== */
 
   function downloadResume() {
     window.open("Agrani Sinha Resume(1).docx", "_blank");
@@ -416,270 +1283,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function toggleFullscreen() {
     if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen();
+      document.documentElement.requestFullscreen().catch(() => {});
     } else {
-      document.exitFullscreen();
+      document.exitFullscreen().catch(() => {});
     }
   }
 
-  window.toggleSidebar = toggleSidebar;
-  window.toggleTerminal = toggleTerminal;
-  window.clearTerminal = clearTerminal;
   window.downloadResume = downloadResume;
   window.toggleFullscreen = toggleFullscreen;
-
-  menuItems.forEach((menu) => {
-  menu.addEventListener("click", (e) => {
-    const label = e.currentTarget.childNodes[0]?.textContent?.trim().toLowerCase() || "";
-
-    switch (label) {
-      case "file":
-        // keep dropdown behavior from HTML/CSS hover
-        break;
-
-      case "edit":
-        openPalette();
-        break;
-
-      case "view":
-        toggleSidebar();
-        break;
-
-      case "go":
-        openPalette();
-        break;
-
-      case "run":
-        toggleTerminal();
-        setTimeout(() => terminalInput?.focus(), 80);
-        break;
-
-      case "terminal":
-        toggleTerminal();
-        setTimeout(() => terminalInput?.focus(), 80);
-        break;
-
-      case "help":
-        openTab("readme");
-        break;
-
-      case "copilot":
-        toggleCopilotSidebar(true);
-        break;
-
-      default:
-        break;
-    }
-  });
-});
-
-sidebarFiles.forEach((file) => {
-  file.addEventListener("click", () => {
-    const tabName = normalizeName(file.textContent);
-    openTab(tabName);
-  });
-});
-
-  function closeCurrentTab() {
-  if (!activeTab) return;
-  closeTab(activeTab);
-}
-
-function closeAllTabs() {
-  openTabs = [];
-  activeTab = "home";
-  openTabs.push("home");
-  renderTabs();
-  setActiveSidebar("home");
-  renderContent("home");
-}
-
-function closeOtherTabs(tabName = activeTab) {
-  if (!tabName) return;
-  openTabs = [tabName];
-  activeTab = tabName;
-  renderTabs();
-  setActiveSidebar(tabName);
-  renderContent(tabName);
-}
-
-window.closeCurrentTab = closeCurrentTab;
-window.closeAllTabs = closeAllTabs;
-window.closeOtherTabs = closeOtherTabs;
-
- function printToTerminal(text, type = "normal") {
-  if (!terminalBody) return;
-
-  const line = document.createElement("div");
-
-  if (type === "success") line.classList.add("success");
-  if (type === "error") line.classList.add("error");
-  if (type === "warning") line.classList.add("warning");
-
-  line.textContent = text;
-  terminalBody.appendChild(line);
-  terminalBody.scrollTop = terminalBody.scrollHeight;
-}
-
-function runTerminalCommand(raw) {
-  const cmd = raw.trim();
-  if (!cmd) return;
-
-  printToTerminal(`agrani@portfolio:${currentDir}$ ${cmd}`);
-
-  const parts = cmd.split(" ");
-  const first = parts[0].toLowerCase();
-
-  switch (first) {
-    case "help":
-      printToTerminal("📘 Available commands:", "success");
-      printToTerminal("ls, cd, pwd, open <file>, whoami, clear, date");
-      break;
-
-    case "ls":
-      printToTerminal("📂 Files:");
-      printToTerminal("home.tsx  about.html  projects.js  skills.json  experience.ts  contact.css");
-      break;
-
-    case "pwd":
-      printToTerminal(`/portfolio/${currentDir === "~" ? "" : currentDir}`);
-      break;
-
-    case "cd":
-      if (!parts[1] || parts[1] === "~") {
-        currentDir = "~";
-      } else if (parts[1] === "..") {
-        currentDir = "~";
-      } else {
-        currentDir = parts[1];
-      }
-      printToTerminal(`📁 moved to ${currentDir}`, "success");
-      break;
-
-    case "open":
-    case "cat":
-      if (parts[1]) {
-        openTab(parts[1]);
-        printToTerminal(`📄 opening ${parts[1]}`, "success");
-      } else {
-        printToTerminal("usage: open <file>", "error");
-      }
-      break;
-
-    case "whoami":
-      printToTerminal("👩‍💻 Agrani Sinha — AI + Health Informatics Engineer", "success");
-      break;
-
-    case "date":
-      printToTerminal(new Date().toString());
-      break;
-
-    case "clear":
-      clearTerminal();
-      break;
-
-    case "projects":
-    case "about":
-    case "skills":
-    case "experience":
-    case "contact":
-      openTab(first);
-      break;
-
-    default:
-      printToTerminal(`❌ command not found: ${cmd}`, "error");
-  }
-}
-  if (terminalInput) {
-    terminalInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        runTerminalCommand(terminalInput.value);
-        terminalInput.value = "";
-      }
-    });
-  }
-
- function initCopilotUI() {
-  const chatInput = document.getElementById("copilotInput");
-  const chatSend = document.getElementById("copilotSend");
-  const chatBody = document.getElementById("copilotMessages");
-  const chipButtons = document.querySelectorAll(".copilot-chip");
-
-  if (!chatInput || !chatSend || !chatBody) return;
-
-  function appendMessage(text, role = "assistant") {
-    const msg = document.createElement("div");
-    msg.className = `copilot-message ${role}`;
-    chatBody.appendChild(msg);
-
-    // typing effect for AI
-    if (role === "assistant") {
-      let i = 0;
-      function type() {
-        if (i < text.length) {
-          msg.textContent += text.charAt(i);
-          i++;
-          setTimeout(type, 12);
-        }
-      }
-      type();
-    } else {
-      msg.textContent = text;
-    }
-
-    chatBody.scrollTop = chatBody.scrollHeight;
-  }
-
-  function answer(prompt) {
-    const q = prompt.toLowerCase();
-
-    if (q.includes("project"))
-      return "🚀 Agrani has built ML drug discovery systems, healthcare chatbots, Flutter apps, and AI pipelines.";
-
-    if (q.includes("experience"))
-      return "💼 Experience includes Alivia Care (Clinical Informatics), BluCognition (Data Science), and research roles.";
-
-    if (q.includes("skill"))
-      return "🧠 Skills: Python, ML, Flutter, TensorFlow, Healthcare Analytics, Computer Vision.";
-
-    if (q.includes("education"))
-      return "🎓 MS Health Informatics (UNF) + Integrated M.Tech Biotechnology (JIIT).";
-
-    if (q.includes("contact"))
-      return "📩 Email: agbrian521@gmail.com | 📍 Jacksonville, FL";
-
-    return "🤖 Ask me about projects, experience, skills, or healthcare AI!";
-  }
-
-  function sendPrompt(text) {
-    const cleaned = text.trim();
-    if (!cleaned) return;
-
-    appendMessage(cleaned, "user");
-
-    setTimeout(() => {
-      appendMessage(answer(cleaned), "assistant");
-    }, 300);
-  }
-
-  chatSend.onclick = () => {
-    sendPrompt(chatInput.value);
-    chatInput.value = "";
-  };
-
-  chatInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      sendPrompt(chatInput.value);
-      chatInput.value = "";
-    }
-  });
-
-  chipButtons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      sendPrompt(btn.textContent);
-    });
-  });
-}
 
   function showMessage(msg) {
     if (!feedback) return;
@@ -709,7 +1320,13 @@ function runTerminalCommand(raw) {
     green.addEventListener("click", toggleFullscreen);
   }
 
-  if (cursorSquare && cursorDot) {
+  /* ==========================================================================
+     CURSOR
+     ========================================================================== */
+
+  function bindCursorEffects() {
+    if (!cursorSquare || !cursorDot) return;
+
     document.addEventListener("mousemove", (e) => {
       cursorSquare.style.left = `${e.clientX}px`;
       cursorSquare.style.top = `${e.clientY}px`;
@@ -728,8 +1345,267 @@ function runTerminalCommand(raw) {
     });
   }
 
-  openTab("home");
+  bindCursorEffects();
+
+  /* ==========================================================================
+     COPILOT ENGINE
+     ========================================================================== */
+
+  function appendCopilotMessage(text, role = "assistant") {
+    const chatBody = document.getElementById("copilotMessages");
+    if (!chatBody) return;
+
+    const msg = document.createElement("div");
+    msg.className = `copilot-message ${role}`;
+    chatBody.appendChild(msg);
+
+    if (role === "assistant") {
+      let i = 0;
+      function type() {
+        if (i < text.length) {
+          msg.textContent += text.charAt(i);
+          i += 1;
+          chatBody.scrollTop = chatBody.scrollHeight;
+          setTimeout(type, 10);
+        }
+      }
+      type();
+    } else {
+      msg.textContent = text;
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+  }
+
+  function getCopilotReply(prompt) {
+    const q = prompt.toLowerCase();
+
+    if (q.includes("project")) {
+      openTab("projects");
+      return COPILOT_REPLIES.projects;
+    }
+
+    if (q.includes("experience")) {
+      openTab("experience");
+      return COPILOT_REPLIES.experience;
+    }
+
+    if (q.includes("skill") || q.includes("tech stack")) {
+      openTab("skills");
+      return COPILOT_REPLIES.skills;
+    }
+
+    if (q.includes("education")) {
+      openTab("about");
+      return COPILOT_REPLIES.education;
+    }
+
+    if (q.includes("contact") || q.includes("email") || q.includes("phone")) {
+      openTab("contact");
+      return COPILOT_REPLIES.contact;
+    }
+
+    if (q.includes("healthcare") || q.includes("ai")) {
+      openTab("about");
+      return COPILOT_REPLIES.healthcare;
+    }
+
+    if (q.includes("leadership") || q.includes("club")) {
+      openTab("about");
+      return COPILOT_REPLIES.leadership;
+    }
+
+    if (q.includes("resume") || q.includes("cv")) {
+      openTab("resume");
+      return COPILOT_REPLIES.resume;
+    }
+
+    if (q.includes("who are you")) {
+      return COPILOT_REPLIES.intro;
+    }
+
+    if (q.includes("open home")) {
+      openTab("home");
+      return "Opening Home.";
+    }
+
+    if (q.includes("open about")) {
+      openTab("about");
+      return "Opening About.";
+    }
+
+    if (q.includes("open projects")) {
+      openTab("projects");
+      return "Opening Projects.";
+    }
+
+    if (q.includes("open skills")) {
+      openTab("skills");
+      return "Opening Skills.";
+    }
+
+    if (q.includes("open experience")) {
+      openTab("experience");
+      return "Opening Experience.";
+    }
+
+    if (q.includes("open contact")) {
+      openTab("contact");
+      return "Opening Contact.";
+    }
+
+    if (q.includes("open resume")) {
+      openTab("resume");
+      return "Opening Resume.";
+    }
+
+    return COPILOT_REPLIES.default;
+  }
+
+  function sendCopilotPrompt(customText = "") {
+    const chatInput = document.getElementById("copilotInput");
+    if (!chatInput) return;
+
+    const cleaned = safeText(customText || chatInput.value);
+    if (!cleaned) return;
+
+    appendCopilotMessage(cleaned, "user");
+
+    if (!customText) {
+      chatInput.value = "";
+    } else {
+      chatInput.value = "";
+    }
+
+    setTimeout(() => {
+      appendCopilotMessage(getCopilotReply(cleaned), "assistant");
+    }, 260);
+  }
+
+  function quickAsk(text) {
+    toggleCopilotSidebar(true);
+    sendCopilotPrompt(text);
+  }
+
+  function startVoiceAssistant() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const chatInput = document.getElementById("copilotInput");
+
+    if (!SpeechRecognition) {
+      appendCopilotMessage("Voice assistant is not supported in this browser.", "assistant");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = "en-US";
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.onresult = (event) => {
+      const text = event.results[0][0].transcript;
+      if (chatInput) {
+        chatInput.value = text;
+      }
+      sendCopilotPrompt();
+    };
+
+    recognition.onerror = () => {
+      appendCopilotMessage("I couldn't catch that. Please try again.", "assistant");
+    };
+
+    recognition.start();
+  }
+
+  function bindCopilotEvents() {
+    const chatInput = document.getElementById("copilotInput");
+    const chatSend = document.getElementById("copilotSend");
+    const voiceBtn = document.getElementById("copilotVoice");
+    const closeBtn = document.getElementById("copilotSideClose");
+
+    if (chatSend) {
+      chatSend.onclick = () => sendCopilotPrompt();
+    }
+
+    if (chatInput) {
+      chatInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          sendCopilotPrompt();
+        }
+      });
+    }
+
+    if (voiceBtn) {
+      voiceBtn.onclick = startVoiceAssistant;
+    }
+
+    if (closeBtn) {
+      closeBtn.onclick = () => toggleCopilotSidebar(false);
+    }
+
+    qsa(".copilot-suggest", copilotSidebar).forEach((btn) => {
+      btn.addEventListener("click", () => {
+        quickAsk(btn.dataset.quick || btn.textContent);
+      });
+    });
+  }
+
+  bindCopilotEvents();
+
+  window.quickAsk = quickAsk;
+  window.sendCopilotPrompt = sendCopilotPrompt;
+  window.startVoiceAssistant = startVoiceAssistant;
+
+  /* ==========================================================================
+     RESPONSIVE HELPERS
+     ========================================================================== */
+
+  function handleResize() {
+    if (window.innerWidth < 560) {
+      if (cursorSquare) cursorSquare.style.display = "none";
+      if (cursorDot) cursorDot.style.display = "none";
+    } else {
+      if (cursorSquare) cursorSquare.style.display = "";
+      if (cursorDot) cursorDot.style.display = "";
+    }
+  }
+
+  window.addEventListener("resize", debounce(handleResize, 80));
+  handleResize();
+
+  /* ==========================================================================
+     INITIALIZATION
+     ========================================================================== */
+
+  restoreState();
+  removeCopilotFileEntries();
+  updateCollections();
+  bindSidebarEvents();
+  bindMenuEvents();
+  bindPaletteEvents();
+  applyTheme(currentTheme);
+
+  if (!openTabs.length) {
+    openTabs = ["home"];
+  }
+
+  if (!activeTab || !isValidTab(activeTab)) {
+    activeTab = openTabs[0] || "home";
+  }
+
+  renderTabs();
+  setActiveSidebar(activeTab);
+  renderContent(activeTab);
+  toggleCopilotSidebar(false);
+
+  if (isCopilotOpen) {
+    toggleCopilotSidebar(true);
+  }
+
+  persistState();
 });
+
+/* ==========================================================================
+   VIEW TEMPLATES
+   ========================================================================== */
 
 function getHome() {
   return `
@@ -1066,7 +1942,7 @@ function getReadme() {
         <p>
           This portfolio presents my work across
           <span class="highlight">health informatics, AI, machine learning, data analytics, and software systems</span>.
-          Use the sidebar or tabs to explore sections like About, Projects, Skills, Experience, and Contact.
+          Use the sidebar or tabs to explore sections like About, Projects, Skills, Experience, Contact, and Resume.
         </p>
       </div>
     </div>
@@ -1089,62 +1965,4 @@ function getResume() {
       </div>
     </div>
   `;
-}
-
-function quickAsk(type) {
-  sendCopilot(type);
-
-  if (type === "projects") openTab("projects");
-  if (type === "experience") openTab("experience");
-  if (type === "skills") openTab("skills");
-  if (type === "contact") openTab("contact");
-}
-
-function startVoice() {
-  const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-  recognition.lang = "en-US";
-
-  recognition.onresult = function (event) {
-    const text = event.results[0][0].transcript;
-    document.getElementById("copilotInput").value = text;
-    sendCopilot();
-  };
-
-  recognition.start();
-}
-
-function sendCopilot() {
-  const input = document.getElementById("copilotInput");
-  const msg = input.value.trim();
-  if (!msg) return;
-
-  appendMessage(msg, "user");
-
-  setTimeout(() => {
-    appendMessage(getReply(msg), "assistant");
-  }, 300);
-
-  input.value = "";
-}
-
-function appendMessage(text, role) {
-  const container = document.getElementById("copilotMessages");
-  const div = document.createElement("div");
-
-  div.className = `msg ${role}`;
-  div.textContent = text;
-
-  container.appendChild(div);
-  container.scrollTop = container.scrollHeight;
-}
-
-function getReply(q) {
-  q = q.toLowerCase();
-
-  if (q.includes("project")) return "Opening projects 🚀";
-  if (q.includes("experience")) return "Showing experience 💼";
-  if (q.includes("skills")) return "Here are skills 🧠";
-  if (q.includes("contact")) return "Contact info 📩";
-
-  return "Ask me about Agrani!";
 }
