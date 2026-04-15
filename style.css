@@ -3058,9 +3058,16 @@ textarea:-webkit-autofill {
   }
 }
 
-.copilot-sidebar.open {
-  animation: slideInRight 0.35s ease;
+.copilot-sidebar {
+  z-index: 9999 !important;
+  opacity: 1 !important;
 }
+
+.copilot-sidebar.open {
+  transform: translateX(0) !important;
+}
+
+
 /* ========================================================================== */
 /*                              END OF FILE                                   */
 /* ========================================================================== */
