@@ -429,24 +429,83 @@ document.addEventListener("DOMContentLoaded", () => {
   window.toggleFullscreen = toggleFullscreen;
 
   menuItems.forEach((menu) => {
-    menu.addEventListener("click", (e) => {
-      const text = e.currentTarget.firstChild.textContent.trim().toLowerCase();
+  menu.addEventListener("click", (e) => {
+    const label = e.currentTarget.childNodes[0]?.textContent?.trim().toLowerCase() || "";
 
-      if (text === "file") openTab("home");
-      if (text === "view") toggleSidebar();
-      if (text === "go") openPalette();
-      if (text === "run") openTab("projects");
-      if (text === "terminal") toggleTerminal();
-      if (text === "help") openTab("readme");
-      if (text === "copilot") openTab("copilot");
-    });
-  });
+    switch (label) {
+      case "file":
+        // keep dropdown behavior from HTML/CSS hover
+        break;
 
-  sidebarFiles.forEach((file) => {
-    file.addEventListener("click", () => {
-      openTab(file.textContent.toLowerCase());
-    });
+      case "edit":
+        openPalette();
+        break;
+
+      case "view":
+        toggleSidebar();
+        break;
+
+      case "go":
+        openPalette();
+        break;
+
+      case "run":
+        toggleTerminal();
+        setTimeout(() => terminalInput?.focus(), 80);
+        break;
+
+      case "terminal":
+        toggleTerminal();
+        setTimeout(() => terminalInput?.focus(), 80);
+        break;
+
+      case "help":
+        openTab("readme");
+        break;
+
+      case "copilot":
+        toggleCopilotSidebar(true);
+        break;
+
+      default:
+        break;
+    }
   });
+});
+
+sidebarFiles.forEach((file) => {
+  file.addEventListener("click", () => {
+    const tabName = normalizeName(file.textContent);
+    openTab(tabName);
+  });
+});
+
+  function closeCurrentTab() {
+  if (!activeTab) return;
+  closeTab(activeTab);
+}
+
+function closeAllTabs() {
+  openTabs = [];
+  activeTab = "home";
+  openTabs.push("home");
+  renderTabs();
+  setActiveSidebar("home");
+  renderContent("home");
+}
+
+function closeOtherTabs(tabName = activeTab) {
+  if (!tabName) return;
+  openTabs = [tabName];
+  activeTab = tabName;
+  renderTabs();
+  setActiveSidebar(tabName);
+  renderContent(tabName);
+}
+
+window.closeCurrentTab = closeCurrentTab;
+window.closeAllTabs = closeAllTabs;
+window.closeOtherTabs = closeOtherTabs;
 
  function printToTerminal(text, type = "normal") {
   if (!terminalBody) return;
