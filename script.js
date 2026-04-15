@@ -1578,41 +1578,43 @@ function bindCopilotEvents() {
     };
   }
 
-    qsa(".copilot-suggest", copilotSidebar).forEach((btn) => {
-      btn.addEventListener("click", () => {
-        quickAsk(btn.dataset.quick || btn.textContent);
-      });
+   const sidebar = document.getElementById("copilotSidebar");
+
+if (sidebar) {
+  qsa(".copilot-suggest", sidebar).forEach((btn) => {
+    btn.addEventListener("click", () => {
+      quickAsk(btn.dataset.quick || btn.textContent);
     });
-   
-  }
+  });
+}
 
-  bindCopilotEvents();
-      const copilotSidebarEl = document.getElementById("copilotSidebar");
-      
-      if (copilotSidebarEl) {
-        copilotSidebarEl.addEventListener("click", (e) => {
-          if (
-            copilotSidebarEl.classList.contains("minimized") &&
-            !e.target.closest(".copilot-side-close") &&
-            !e.target.closest(".copilot-side-minimize")
-          ) {
-            minimizeCopilot();
-          }
-        });
-      }
+setTimeout(bindCopilotEvents, 0);
 
-      const settingsPanelEl = document.getElementById("settingsPanel");
-      
-      if (settingsPanelEl) {
-        settingsPanelEl.addEventListener("click", (e) => {
-          if (
-            settingsPanelEl.classList.contains("minimized") &&
-            !e.target.closest("button")
-          ) {
-            minimizeSettings();
-          }
-        });
-      }
+const copilotSidebarEl = document.getElementById("copilotSidebar");
+
+if (copilotSidebarEl) {
+  copilotSidebarEl.addEventListener("click", (e) => {
+    if (
+      copilotSidebarEl.classList.contains("minimized") &&
+      e.target.closest(".copilot-side-header")
+    ) {
+      minimizeCopilot();
+    }
+  });
+}
+
+const settingsPanelEl = document.getElementById("settingsPanel");
+
+if (settingsPanelEl) {
+  settingsPanelEl.addEventListener("click", (e) => {
+    if (
+      settingsPanelEl.classList.contains("minimized") &&
+      e.target.closest(".settings-header")
+    ) {
+      minimizeSettings();
+    }
+  });
+}
   window.quickAsk = quickAsk;
   window.sendCopilotPrompt = sendCopilotPrompt;
   window.startVoiceAssistant = startVoiceAssistant;
