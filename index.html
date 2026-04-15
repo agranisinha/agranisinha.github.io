@@ -29,7 +29,12 @@
         <span id="headerFeedback" class="header-feedback" aria-live="polite"></span>
       </div>
 
-      <button class="header-command-trigger" id="openPaletteBtn" type="button" aria-label="Open command palette">
+      <button
+        class="header-command-trigger"
+        id="openPaletteBtn"
+        type="button"
+        aria-label="Open command palette"
+      >
         <span class="trigger-left">
           <span class="search-icon">⌕</span>
           <span class="trigger-text">agrani-sinha : portfolio</span>
@@ -46,25 +51,45 @@
     <!-- ================= MENU BAR ================= -->
     <div class="menu-bar">
       <div class="menu-item">
-          File
-          <div class="dropdown">
-            <div onclick="openTab('home')">New Tab <span style="margin-left:auto;opacity:.6;">Ctrl+T</span></div>
-            <div onclick="openPalette()">Open File... <span style="margin-left:auto;opacity:.6;">Ctrl+P</span></div>
-            <hr />
-            <div onclick="closeCurrentTab()">Close Tab <span style="margin-left:auto;opacity:.6;">Ctrl+W</span></div>
-            <div onclick="closeOtherTabs()">Close Other Tabs</div>
-            <div onclick="closeAllTabs()">Close All Tabs</div>
-            <hr />
-            <div onclick="openTab('home')">home.tsx</div>
-            <div onclick="openTab('about')">about.html</div>
-            <div onclick="openTab('projects')">projects.js</div>
-            <div onclick="openTab('skills')">skills.json</div>
-            <div onclick="openTab('experience')">experience.ts</div>
-            <div onclick="openTab('contact')">contact.css</div>
-            <hr />
-            <div onclick="downloadResume()">Download Resume</div>
+        File
+        <div class="dropdown">
+          <div onclick="openTab('home')">
+            <span>New Tab</span>
+            <span style="margin-left:auto;opacity:.6;">Ctrl+T</span>
           </div>
+
+          <div onclick="openPalette()">
+            <span>Open File...</span>
+            <span style="margin-left:auto;opacity:.6;">Ctrl+P</span>
+          </div>
+
+          <hr />
+
+          <div onclick="closeCurrentTab()">
+            <span>Close Tab</span>
+            <span style="margin-left:auto;opacity:.6;">Ctrl+W</span>
+          </div>
+
+          <div onclick="closeOtherTabs()">Close Other Tabs</div>
+          <div onclick="closeAllTabs()">Close All Tabs</div>
+          <div onclick="closeTabsToRight()">Close Tabs to Right</div>
+
+          <hr />
+
+          <div onclick="openTab('home')">home.tsx</div>
+          <div onclick="openTab('about')">about.html</div>
+          <div onclick="openTab('projects')">projects.js</div>
+          <div onclick="openTab('skills')">skills.json</div>
+          <div onclick="openTab('experience')">experience.ts</div>
+          <div onclick="openTab('contact')">contact.css</div>
+          <div onclick="openTab('readme')">README.md</div>
+          <div onclick="openTab('resume')">Resume.pdf</div>
+
+          <hr />
+
+          <div onclick="downloadResume()">Download Resume</div>
         </div>
+      </div>
 
       <div class="menu-item">
         Edit
@@ -81,7 +106,7 @@
           <div onclick="openPalette()">Command Palette</div>
           <div onclick="toggleSidebar()">Toggle Sidebar</div>
           <div onclick="toggleTerminal()">Toggle Terminal</div>
-          <div onclick="openTab('copilot')">Open Copilot</div>
+          <div onclick="toggleCopilotSidebar(true)">Open Copilot</div>
           <hr />
           <div onclick="toggleFullscreen()">Enter Full Screen</div>
         </div>
@@ -97,6 +122,9 @@
           <div onclick="openTab('projects')">projects.js</div>
           <div onclick="openTab('skills')">skills.json</div>
           <div onclick="openTab('experience')">experience.ts</div>
+          <div onclick="openTab('contact')">contact.css</div>
+          <div onclick="openTab('readme')">README.md</div>
+          <div onclick="openTab('resume')">Resume.pdf</div>
         </div>
       </div>
 
@@ -119,7 +147,7 @@
         </div>
       </div>
 
-      <div class="menu-item" onclick="openTab('copilot')">Copilot</div>
+      <div class="menu-item" onclick="toggleCopilotSidebar(true)">Copilot</div>
     </div>
 
     <!-- ================= MAIN LAYOUT ================= -->
@@ -150,49 +178,96 @@
           <div class="file" data-tab="contact" onclick="openTab('contact')">🎨 contact.css</div>
           <div class="file" data-tab="readme" onclick="openTab('readme')">📄 README.md</div>
           <div class="file" data-tab="resume" onclick="openTab('resume')">📕 Resume.pdf</div>
-          <div class="file" data-tab="copilot" onclick="openTab('copilot')">✨ copilot.md</div>
         </div>
-        <div id="copilotSidebar" class="copilot-sidebar open">
-          <div class="copilot-header">
-            🤖 Agrani's AI Assistant
-          </div>
-        
-          <div id="copilotMessages" class="copilot-messages"></div>
-        
-          <div class="copilot-chips">
-            <button onclick="quickAsk('projects')">Projects</button>
-            <button onclick="quickAsk('experience')">Experience</button>
-            <button onclick="quickAsk('skills')">Skills</button>
-            <button onclick="quickAsk('contact')">Contact</button>
-          </div>
-        
-          <div class="copilot-input-row">
-            <input id="copilotInput" placeholder="Ask about Agrani..." />
-            <button onclick="sendCopilot()">➤</button>
-            <button onclick="startVoice()">🎤</button>
-          </div>
-        </div>
-        <div class="copilot-box" onclick="openTab('copilot')">
+
+        <div class="copilot-box" onclick="toggleCopilotSidebar(true)">
           ✨ Agrani&apos;s Copilot
         </div>
       </aside>
 
       <!-- EDITOR -->
       <main class="editor-area">
-        <!-- JS controls tabs -->
         <div class="editor-tabs" id="editorTabs"></div>
-
-        <!-- JS injects active view -->
         <div class="editor-content" id="editorContent"></div>
       </main>
     </div>
+
+    <!-- ================= RIGHT COPILOT SIDEBAR ================= -->
+    <aside id="copilotSidebar" class="copilot-sidebar" aria-hidden="true">
+      <div class="copilot-side-header">
+        <div class="copilot-side-title">✨ Agrani's Copilot</div>
+        <button
+          class="copilot-side-close"
+          id="copilotSideClose"
+          type="button"
+          aria-label="Close Copilot"
+          onclick="toggleCopilotSidebar(false)"
+        >
+          ×
+        </button>
+      </div>
+
+      <div class="copilot-workspace-row">
+        <span class="copilot-workspace-label">WORKSPACE</span>
+        <span class="copilot-workspace-pill">● portfolio · agrani-sinha</span>
+      </div>
+
+      <div class="copilot-side-hero">
+        <div class="copilot-avatar-ring">
+          <div class="copilot-avatar-core">🙂</div>
+        </div>
+        <h3>Hi! I'm Agrani's Copilot 👋</h3>
+        <p>
+          Ask me about projects, experience, skills, education, healthcare AI work,
+          leadership, resume, or contact details.
+        </p>
+      </div>
+
+      <div class="copilot-suggest-grid">
+        <button class="copilot-suggest" data-quick="Tell me about Agrani's projects">
+          Tell me about Agrani's projects
+        </button>
+        <button class="copilot-suggest" data-quick="What is Agrani's tech stack?">
+          What's her tech stack?
+        </button>
+        <button class="copilot-suggest" data-quick="Tell me about Agrani's experience">
+          Tell me about her experience
+        </button>
+        <button class="copilot-suggest" data-quick="How can I contact Agrani?">
+          How can I contact Agrani?
+        </button>
+      </div>
+
+      <div class="copilot-side-messages" id="copilotMessages">
+        <div class="copilot-message assistant">
+          Hi — I’m Agrani’s portfolio copilot. Ask about projects, experience, skills,
+          healthcare AI work, education, leadership, resume, or contact details.
+        </div>
+      </div>
+
+      <div class="copilot-side-input-wrap">
+        <div class="copilot-input-row">
+          <input
+            id="copilotInput"
+            type="text"
+            placeholder="Ask about Agrani..."
+            autocomplete="off"
+          />
+          <button id="copilotSend" type="button" aria-label="Send message">➤</button>
+          <button id="copilotVoice" type="button" aria-label="Voice assistant">🎤</button>
+        </div>
+        <div class="copilot-side-note">
+          AI can make mistakes • Contact Agrani directly for important info
+        </div>
+      </div>
+    </aside>
 
     <!-- ================= TERMINAL ================= -->
     <div class="terminal-panel" id="terminalPanel">
       <div class="terminal-header">TERMINAL</div>
 
       <div class="terminal-body" id="terminalBody">
-        <div>Welcome! Type &apos;help&apos; to see available commands.</div>
+        <div>Welcome! Type 'help' to see available commands.</div>
       </div>
 
       <div class="terminal-input-line">
@@ -218,7 +293,7 @@
       <div class="settings-section">
         <div class="section-title">⚡ QUICK ACTIONS</div>
         <div class="action" onclick="openPalette()">🔍 Command Palette (Ctrl + P)</div>
-        <div class="action" onclick="openTab('copilot')">💬 Copilot Chat</div>
+        <div class="action" onclick="toggleCopilotSidebar(true)">💬 Copilot Chat</div>
         <div class="action" onclick="openTab('resume')">📥 Download Resume</div>
         <div class="action" onclick="toggleTerminal()">🖥 Toggle Terminal</div>
         <div class="action" onclick="document.getElementById('btnGreen').click()">🧩 Toggle Fullscreen</div>
@@ -256,7 +331,7 @@
         <button class="palette-item active" data-index="0" type="button">
           <span class="palette-left">
             <span class="palette-icon star">✧</span>
-            <span class="palette-text">Open Agrani&apos;s Copilot</span>
+            <span class="palette-text">Open Agrani's Copilot</span>
           </span>
           <span class="palette-meta shortcut">Ctrl+Shift+C</span>
         </button>
@@ -336,6 +411,18 @@
       </div>
     </div>
   </div>
+
+  <!-- Optional: Pyodide for Python terminal -->
+  <!-- <script src="https://cdn.jsdelivr.net/pyodide/v0.29.3/full/pyodide.js"></script> -->
+
+  <!-- Optional: Motion.dev for enhanced animations -->
+  <!--
+  <script type="module">
+    import { animate, stagger } from "https://cdn.jsdelivr.net/npm/motion@11/+esm";
+    window.motionAnimate = animate;
+    window.motionStagger = stagger;
+  </script>
+  -->
 
   <script src="script.js"></script>
 </body>
