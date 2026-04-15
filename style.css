@@ -166,8 +166,9 @@ a {
 body {
   min-width: 100%;
   min-height: 100%;
-  height: 100vh;
-  overflow: hidden;
+  height: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
   font-family: "Inter", sans-serif;
   color: var(--text);
   background:
@@ -176,7 +177,15 @@ body {
     radial-gradient(circle at 60% 80%, rgba(0, 122, 204, 0.06), transparent 30%),
     var(--bg);
 }
+html {
+  font-size: 16px;
+}
 
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+}
 body.dark {
   color: var(--text);
 }
@@ -408,8 +417,13 @@ a:hover ~ .cursor-square {
 /* ========================================================================== */
 .app-shell {
   display: grid;
-  grid-template-columns: 260px 1fr;
-  height: 100vh;
+  grid-template-columns: var(--sidebar-w) 1fr;
+}
+
+@media (max-width: 900px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Copilot overlay (NOT fixed column) */
@@ -670,11 +684,16 @@ a:hover ~ .cursor-square {
 /*                                MAIN LAYOUT                                 */
 /* ========================================================================== */
 .vscode-layout {
-  height: calc(100vh - var(--top-header-h) - var(--menu-bar-h));
+  height: auto; /* ❌ remove strict height */
+  min-height: calc(100vh - var(--top-header-h) - var(--menu-bar-h));
   display: flex;
-  width: 100%;
-  position: relative;
-  overflow: hidden;
+  flex-direction: row;
+}
+
+@media (max-width: 900px) {
+  .vscode-layout {
+    flex-direction: column;
+  }
 }
 
 /* ========================================================================== */
@@ -693,7 +712,11 @@ a:hover ~ .cursor-square {
   position: relative;
   z-index: 8;
 }
-
+@media (max-width: 768px) {
+  .activity-bar {
+    display: none;
+  }
+}
 .activity-icon {
   width: 100%;
   height: 50px;
@@ -773,6 +796,25 @@ a:hover ~ .cursor-square {
   overflow: hidden;
 }
 
+@media (max-width: 900px) {
+  .sidebar-panel {
+    position: fixed;
+    left: -260px;
+    top: 0;
+    height: 100%;
+    z-index: 999;
+  }
+
+  .sidebar-panel.open {
+    left: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .activity-bar {
+    display: none;
+  }
+}
 .sidebar-panel.hide {
   width: 0;
   min-width: 0;
@@ -907,11 +949,6 @@ a:hover ~ .cursor-square {
   overflow: hidden;
 }
 
-.editor-area.with-copilot {
-  margin-right: 380px;
-  transition: margin-right 0.3s ease;
-}
-
 .editor-tabs {
   height: var(--tabs-h);
   display: flex;
@@ -923,9 +960,6 @@ a:hover ~ .cursor-square {
   white-space: nowrap;
 }
 
-.editor-tabs::-webkit-scrollbar {
-  height: 8px;
-}
 
 .editor-tabs::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.08);
@@ -1047,6 +1081,11 @@ a:hover ~ .cursor-square {
   box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.32);
 }
 
+@media (max-width: 768px) {
+  .terminal-panel {
+    left: 0;
+  }
+}
 .terminal-panel.open {
   display: flex;
   animation: terminalUp 0.18s ease;
@@ -1433,13 +1472,20 @@ a:hover ~ .cursor-square {
 }
 
 .home-grid {
-  width: 100%;
-  max-width: 1280px;
-  margin: 0 auto;
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 380px);
-  align-items: center;
+  grid-template-columns: 1.2fr 0.8fr;
   gap: 62px;
+}
+
+@media (max-width: 1024px) {
+  .home-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .home-right {
+    order: -1;
+  }
 }
 
 .home-left {
@@ -1463,7 +1509,7 @@ a:hover ~ .cursor-square {
 
 .hero-name {
   color: var(--text-strong);
-  font-size: clamp(56px, 9vw, 112px);
+  font-size: clamp(36px, 8vw, 96px);
   line-height: 0.9;
   font-weight: 800;
   letter-spacing: -3px;
@@ -1597,8 +1643,10 @@ a:hover ~ .cursor-square {
 }
 
 .profile-wrapper {
-  width: 330px;
-  height: 420px;
+  width: 100%;
+  max-width: 320px;
+  aspect-ratio: 3 / 4;
+  height: auto; 
   border-radius: 24px;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent), var(--bg-elevated);
   border: 1px solid var(--line-strong);
@@ -1802,9 +1850,7 @@ a:hover ~ .cursor-square {
 
 .project-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
-  margin-top: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
 
 .project-card {
@@ -1861,6 +1907,39 @@ a:hover ~ .cursor-square {
   margin-top: 16px;
 }
 
+@media (max-width: 768px) {
+  .terminal-panel {
+    height: 40%;
+    left: 0;
+  }
+
+  .settings-panel {
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    border-radius: 16px 16px 0 0;
+  }
+}
+
+.menu-bar {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.editor-tabs {
+  scroll-behavior: smooth;
+}
+
+.editor-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .editor-area {
+    backdrop-filter: none;
+  }
+}
+
 /* ========================================================================== */
 /*                                  COPILOT                                   */
 /* ========================================================================== */
@@ -1869,19 +1948,23 @@ a:hover ~ .cursor-square {
 
 .copilot-sidebar {
   position: fixed;
-  top: calc(var(--top-header-h) + var(--menu-bar-h));
+  top: 0;
   right: 0;
-  width: 380px;
-  height: calc(100vh - var(--top-header-h) - var(--menu-bar-h));
-  background: var(--bg-copilot);
-  border-left: 1px solid var(--line);
-  box-shadow: -10px 0 40px rgba(0,0,0,0.4);
-  display: flex;
-  flex-direction: column;
-  z-index: 40;
-
+  width: min(380px, 100%);
+  height: 100vh;
+  z-index: 1000;
   transform: translateX(100%);
   transition: transform 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .copilot-sidebar {
+    width: 100%;
+  }
+}
+
+.copilot-sidebar.open {
+  transform: translateX(0);
 }
 
 .copilot-card {
@@ -2412,10 +2495,14 @@ textarea:-webkit-autofill {
 /* ================= EDITOR SHIFT ================= */
 
 .editor-area.with-copilot {
-  margin-right: 380px;
-  transition: margin-right 0.35s ease;
+  margin-right: min(380px, 100%);
 }
 
+@media (max-width: 768px) {
+  .editor-area.with-copilot {
+    margin-right: 0;
+  }
+}
 /* ================= SMOOTH TAB ANIMATION ================= */
 
 .tab {
@@ -2639,8 +2726,8 @@ textarea:-webkit-autofill {
   }
 
   .hero-name {
-    font-size: clamp(54px, 8vw, 92px);
-  }
+  font-size: clamp(36px, 8vw, 96px);
+}
 }
 
 /* ========================================================================== */
@@ -2997,18 +3084,7 @@ textarea:-webkit-autofill {
 }
 
 /* RIGHT COPILOT PANEL */
-.copilot-sidebar {
-  position: fixed;
-  right: 0;
-  top: 40px;
-  width: 340px;
-  height: calc(100vh - 40px);
-  background: #0f131a;
-  border-left: 1px solid #2a2f3a;
-  display: flex;
-  flex-direction: column;
-  z-index: 100;
-}
+
 
 .copilot-header {
   padding: 12px;
@@ -3242,6 +3318,95 @@ textarea:-webkit-autofill {
 @keyframes blink {
   0%, 100% { opacity: 0; }
   50% { opacity: 1; }
+}
+
+/* =========================================
+   MOBILE RESPONSIVE
+========================================= */
+
+@media (max-width: 1024px) {
+  .sidebar-panel {
+    width: 220px;
+  }
+
+  .copilot-sidebar {
+    width: 320px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar-panel {
+    position: fixed;
+    left: -260px;
+    top: 0;
+    height: 100%;
+    z-index: 999;
+    transition: left 0.3s ease;
+  }
+
+  .sidebar-panel.open {
+    left: 0;
+  }
+
+  .editor-area {
+    width: 100%;
+  }
+
+  .copilot-sidebar {
+    width: 100%;
+  }
+
+  .menu-bar {
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 560px) {
+  .hero-name {
+    font-size: 32px;
+  }
+
+  .roles span {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+
+  .home-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .home-buttons button {
+    width: 100%;
+  }
+
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-card {
+    padding: 14px;
+  }
+
+  .copilot-sidebar {
+    width: 100%;
+    height: 100%;
+  }
+
+  .copilot-side-hero h3 {
+    font-size: 18px;
+  }
+
+  .copilot-input-row input {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  #terminalPanel {
+    height: 40%;
+  }
 }
 /* ========================================================================== */
 /*                              END OF FILE                                   */
