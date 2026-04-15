@@ -86,6 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
     projects: "🟨 projects.js",
     skills: "🟩 skills.json",
     experience: "🟦 experience.ts",
+    lor: "📜 lor.pdf"
     contact: "🎨 contact.css",
     readme: "📄 README.md",
     resume: "📕 Resume.pdf"
@@ -97,6 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "projects",
     "skills",
     "experience",
+     "lor"
     "contact",
     "readme",
     "resume"
@@ -164,6 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
       projects: getProjects(),
       skills: getSkills(),
       experience: getExperience(),
+       lor: getLOR(),
       contact: getContact(),
       readme: getReadme(),
       resume: getResume()
@@ -1894,40 +1897,157 @@ function getProjects() {
       <p class="about-sub">// selected work • applied AI • healthcare + software</p>
 
       <div class="project-grid">
+
         <div class="project-card">
           <h3>ML Drug Discovery</h3>
-          <p>Built SVM models with 96.8% accuracy for tuberculosis inhibitor prediction using MATLAB and AutoDock.</p>
+          <p>Built SVM models with 96.8% accuracy for tuberculosis inhibitor prediction.</p>
         </div>
 
         <div class="project-card">
           <h3>Inventory Management App</h3>
-          <p>Flutter app with Google Sheets backend for real-time inventory tracking and operational workflows.</p>
+          <p>Flutter app with Google Sheets backend.</p>
         </div>
 
-        <div class="project-card">
-          <h3>Bio Calculator App</h3>
-          <p>Lab calculation tool built with HTML, CSS, and JavaScript and published on Google Play Store.</p>
-        </div>
-
-        <div class="project-card">
-          <h3>Respiratory Health Chatbot</h3>
-          <p>Healthcare chatbot built with HTML, CSS, and Vue.js for interactive respiratory guidance.</p>
-        </div>
+        <div class="project-card clickable" onclick="openProjectCarousel([
+                 'assets/images/bio1.png',
+                 'assets/images/bio2.png',
+                 'assets/images/bio3.png'
+               ])">
+                 <h3>Bio Calculator App</h3>
+                 <p>Lab calculation tool published on Play Store.</p>
+                 <span class="view-btn">👁 View</span>
+         </div>
+         
+         <div class="project-card clickable" onclick="openProjectCarousel([
+              'assets/images/chat1.png',
+              'assets/images/chat2.png',
+              'assets/images/chat3.png'
+            ])">
+              <h3>Respiratory Health Chatbot</h3>
+              <p>Interactive healthcare chatbot using Vue.js.</p>
+              <span class="view-btn">👁 View</span>
+         </div>
 
         <div class="project-card">
           <h3>AI Plant Identification</h3>
-          <p>TensorFlow computer vision system with voice feedback for plant detection and classification.</p>
+          <p>TensorFlow vision system with voice feedback.</p>
         </div>
 
         <div class="project-card">
           <h3>AI Games</h3>
-          <p>Chess and Checkers gameplay systems with AI functionality, plus Connect4 desktop implementation.</p>
+          <p>Chess, Checkers, and Connect4 AI systems.</p>
         </div>
+
       </div>
     </div>
   `;
 }
 
+window.openProjectCarousel = function (images) {
+  let current = 0;
+
+  const modal = document.createElement("div");
+  modal.className = "image-modal";
+
+  modal.innerHTML = `
+    <div class="carousel-container">
+      <span class="close-modal">&times;</span>
+
+      <button class="nav prev">❮</button>
+      <img class="carousel-img" src="${images[0]}" />
+      <button class="nav next">❯</button>
+
+      <div class="dots"></div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  const img = modal.querySelector(".carousel-img");
+  const dotsContainer = modal.querySelector(".dots");
+
+  // create dots
+  images.forEach((_, i) => {
+    const dot = document.createElement("span");
+    dot.className = "dot" + (i === 0 ? " active" : "");
+    dot.onclick = () => update(i);
+    dotsContainer.appendChild(dot);
+  });
+
+  function update(index) {
+    current = index;
+    img.src = images[current];
+
+    modal.querySelectorAll(".dot").forEach((d, i) => {
+      d.classList.toggle("active", i === current);
+    });
+  }
+
+  modal.querySelector(".prev").onclick = () => {
+    update((current - 1 + images.length) % images.length);
+  };
+
+  modal.querySelector(".next").onclick = () => {
+    update((current + 1) % images.length);
+  };
+
+  modal.querySelector(".close-modal").onclick = () => modal.remove();
+
+  modal.onclick = (e) => {
+    if (e.target === modal) modal.remove();
+  };
+
+  /* 🔥 MOBILE SWIPE SUPPORT */
+  let startX = 0;
+
+  img.addEventListener("touchstart", (e) => {
+    startX = e.touches[0].clientX;
+  });
+
+  img.addEventListener("touchend", (e) => {
+    const endX = e.changedTouches[0].clientX;
+
+    if (endX < startX - 50) {
+      update((current + 1) % images.length);
+    }
+
+    if (endX > startX + 50) {
+      update((current - 1 + images.length) % images.length);
+    }
+  });
+};
+
+function getLOR() {
+  return `
+    <div class="projects-container">
+      <p class="code-line">// LORs - Recommendations</p>
+
+      <h1 class="hero-name">Letters of Recommendation</h1>
+
+      <div class="project-grid">
+
+        <div class="project-card clickable" onclick="openLOR('assets/lors/lor1.pdf')">
+          <h3>Clinical Informatics Internship</h3>
+          <p>Alivia Care</p>
+          <span class="view-btn">📄 View LOR</span>
+        </div>
+
+        <div class="project-card clickable" onclick="openLOR('assets/lors/lor2.pdf')">
+          <h3>Academic Recommendation</h3>
+          <p>University Faculty</p>
+          <span class="view-btn">📄 View LOR</span>
+        </div>
+
+        <div class="project-card clickable" onclick="openLOR('assets/lors/lor3.pdf')">
+          <h3>Data Science Role</h3>
+          <p>BluCognition</p>
+          <span class="view-btn">📄 View LOR</span>
+        </div>
+
+      </div>
+    </div>
+  `;
+}
 function getSkills() {
   return `
     <div class="about-container">
@@ -2104,6 +2224,28 @@ function minimizeSettings() {
     panel.classList.add("open");
   }
 }
+
+/* ================= LOR MODAL ================= */
+
+window.openLOR = function (src) {
+  const modal = document.createElement("div");
+  modal.className = "image-modal";
+
+  modal.innerHTML = `
+    <div class="image-modal-content">
+      <span class="close-modal">&times;</span>
+      <iframe src="${src}" frameborder="0"></iframe>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  modal.querySelector(".close-modal").onclick = () => modal.remove();
+
+  modal.onclick = (e) => {
+    if (e.target === modal) modal.remove();
+  };
+};
 function getResume() {
   return `
     <div class="about-container">
