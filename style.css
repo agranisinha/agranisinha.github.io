@@ -3231,27 +3231,20 @@ textarea:-webkit-autofill {
 
 }
 
-/* =========================================================
-   CLEAN MOBILE LAYER ONLY
-   Add this at the VERY END of style.css
-========================================================= */
 @media (max-width: 768px) {
   :root {
     --top-header-h: 46px;
     --menu-bar-h: 34px;
     --tabs-h: 40px;
+    --activity-w: 52px;
+    --sidebar-w: 250px;
   }
 
-  html,
-  body {
+  html, body {
     width: 100%;
     height: 100%;
     overflow-x: hidden;
     overflow-y: auto;
-  }
-
-  body {
-    min-height: 100vh;
   }
 
   .app-shell {
@@ -3261,9 +3254,10 @@ textarea:-webkit-autofill {
   }
 
   .vscode-layout {
-    display: block;
-    height: auto;
+    display: flex;
+    flex-direction: row;
     min-height: calc(100vh - var(--top-header-h) - var(--menu-bar-h));
+    height: auto;
     overflow: visible;
   }
 
@@ -3273,10 +3267,6 @@ textarea:-webkit-autofill {
     padding: 0 10px;
   }
 
-  .mac-dots {
-    min-width: auto;
-  }
-
   .header-feedback,
   .header-spacer,
   .trigger-right {
@@ -3284,8 +3274,8 @@ textarea:-webkit-autofill {
   }
 
   .header-command-trigger {
-    min-width: 0;
     max-width: none;
+    min-width: 0;
     height: 30px;
     padding: 0 8px;
   }
@@ -3298,7 +3288,9 @@ textarea:-webkit-autofill {
     height: var(--menu-bar-h);
     padding: 0 6px;
     overflow-x: auto;
+    overflow-y: visible;
     white-space: nowrap;
+    z-index: 3000;
   }
 
   .menu-item {
@@ -3313,45 +3305,43 @@ textarea:-webkit-autofill {
     left: 0;
     min-width: 190px;
     max-width: 86vw;
-    z-index: 4000;
+    z-index: 5000;
   }
 
-  /* bottom nav */
+  /* keep navigation on the LEFT on mobile */
   .activity-bar {
     position: fixed;
+    top: calc(var(--top-header-h) + var(--menu-bar-h));
     left: 0;
-    right: 0;
     bottom: 0;
-    width: 100%;
-    height: 58px;
+    width: var(--activity-w);
+    height: auto;
     display: flex !important;
-    flex-direction: row;
+    flex-direction: column !important;
     align-items: center;
-    justify-content: space-around;
-    padding-top: 0;
+    justify-content: flex-start;
+    padding-top: 6px;
     background: var(--bg-activity);
-    border-right: none;
-    border-top: 1px solid var(--line);
-    z-index: 3000;
+    border-right: 1px solid var(--line);
+    border-top: none;
+    z-index: 3100;
   }
 
   .activity-icon {
-    width: 46px;
-    height: 46px;
+    width: 100%;
+    height: 48px;
     font-size: 22px;
   }
 
   .activity-icon::before {
-    display: none;
+    display: block;
   }
 
   .activity-bottom {
-    margin-top: 0;
-    width: auto;
-    padding-bottom: 0;
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
+    margin-top: auto;
+    width: 100%;
+    padding-bottom: 6px;
+    display: block !important;
   }
 
   .settings-btn {
@@ -3359,22 +3349,22 @@ textarea:-webkit-autofill {
     place-items: center;
   }
 
-  /* drawer sidebar */
+  /* sidebar drawer separate from copilot */
   .sidebar-panel {
     position: fixed !important;
     top: calc(var(--top-header-h) + var(--menu-bar-h));
-    left: 0;
-    width: min(82vw, 300px);
-    min-width: min(82vw, 300px);
-    max-width: min(82vw, 300px);
-    height: calc(100vh - var(--top-header-h) - var(--menu-bar-h) - 58px);
+    left: var(--activity-w);
+    width: var(--sidebar-w);
+    min-width: var(--sidebar-w);
+    max-width: var(--sidebar-w);
+    height: calc(100vh - var(--top-header-h) - var(--menu-bar-h));
     display: flex !important;
     transform: translateX(-100%);
     opacity: 1 !important;
     border-right: 1px solid var(--line);
-    box-shadow: 18px 0 40px rgba(0, 0, 0, 0.45);
-    transition: transform 0.24s ease;
-    z-index: 3100;
+    box-shadow: 18px 0 40px rgba(0,0,0,.45);
+    transition: transform .24s ease;
+    z-index: 3200;
   }
 
   .sidebar-panel.show {
@@ -3383,42 +3373,23 @@ textarea:-webkit-autofill {
 
   .sidebar-panel.hide {
     transform: translateX(-100%);
-    width: min(82vw, 300px);
-    min-width: min(82vw, 300px);
+    width: var(--sidebar-w);
+    min-width: var(--sidebar-w);
     opacity: 1;
     border-right: 1px solid var(--line);
   }
 
-  .sidebar-header {
-    min-height: 38px;
-    padding: 0 14px;
-    font-size: 11px;
-  }
-
-  .file-list {
-    padding: 8px;
-    gap: 4px;
-  }
-
   .file {
     min-height: 42px;
-    font-size: 14px;
-    padding: 0 12px;
-  }
-
-  .copilot-box {
-    margin: 10px;
-    min-height: 56px;
     font-size: 14px;
   }
 
   .editor-area,
   .editor-area.with-copilot {
     width: 100%;
-    min-width: 0;
-    margin: 0 !important;
-    min-height: calc(100vh - var(--top-header-h) - var(--menu-bar-h) - 58px);
-    padding-bottom: 72px;
+    margin-left: var(--activity-w) !important;
+    margin-right: 0 !important;
+    min-height: calc(100vh - var(--top-header-h) - var(--menu-bar-h));
     overflow: visible;
   }
 
@@ -3439,7 +3410,7 @@ textarea:-webkit-autofill {
   }
 
   .editor-content {
-    padding: 16px 14px 92px;
+    padding: 16px 14px 32px;
     overflow-x: hidden;
     overflow-y: auto;
   }
@@ -3460,16 +3431,14 @@ textarea:-webkit-autofill {
     height: 300px;
   }
 
-  .code-line {
-    font-size: 14px;
-    min-height: 22px;
+  .hero-name {
+    font-size: 44px;
+    line-height: .95;
     text-align: center;
   }
 
-  .hero-name {
-    font-size: 44px;
-    line-height: 0.95;
-    letter-spacing: -1.5px;
+  .hero-desc,
+  .code-line {
     text-align: center;
   }
 
@@ -3478,84 +3447,46 @@ textarea:-webkit-autofill {
     gap: 8px;
   }
 
-  .roles span {
-    min-height: 30px;
-    padding: 0 10px;
-    font-size: 12px;
-  }
-
-  .hero-desc {
-    font-size: 16px;
-    line-height: 1.65;
-    text-align: center;
-  }
-
-  .home-buttons {
-    width: 100%;
-  }
-
-  .home-buttons button {
-    width: 100%;
-    min-width: 100%;
-  }
-
-  .stats {
-    flex-direction: column;
-  }
-
-  .stat-card {
-    min-width: 100%;
-  }
-
   .project-grid,
   .focus-grid {
     grid-template-columns: 1fr !important;
   }
 
-  /* bottom sheet copilot */
+  /* copilot stays separate as a right/overlay panel, not bottom */
   .copilot-sidebar {
     position: fixed !important;
-    left: 0;
+    top: calc(var(--top-header-h) + var(--menu-bar-h));
     right: 0;
-    bottom: 58px;
-    top: auto;
-    width: 100% !important;
-    height: 58vh;
-    max-height: 58vh;
-    border-left: none;
-    border-top: 1px solid var(--line);
-    border-radius: 16px 16px 0 0;
-    transform: translateY(100%);
-    transition: transform 0.24s ease;
-    z-index: 3200;
+    left: auto;
+    bottom: 0;
+    width: min(88vw, 360px) !important;
+    height: calc(100vh - var(--top-header-h) - var(--menu-bar-h));
+    border-left: 1px solid var(--line);
+    border-top: none;
+    border-radius: 0;
+    transform: translateX(100%);
+    transition: transform .24s ease;
+    z-index: 3300;
     overflow: hidden;
   }
 
   .copilot-sidebar.open {
-    transform: translateY(0);
+    transform: translateX(0);
   }
 
-  .copilot-side-header {
-    margin-bottom: 0;
-    padding: 14px 14px 8px;
-  }
-
-  .copilot-workspace-row {
-    padding: 0 14px;
-    margin-bottom: 10px;
-    flex-wrap: wrap;
-  }
-
-  .copilot-side-hero {
-    padding: 0 14px;
-    margin-bottom: 10px;
+  .copilot-side-header,
+  .copilot-workspace-row,
+  .copilot-side-hero,
+  .copilot-suggest-grid,
+  .copilot-side-messages,
+  .copilot-side-input-wrap {
+    padding-left: 14px;
+    padding-right: 14px;
   }
 
   .copilot-suggest-grid {
     grid-template-columns: 1fr 1fr;
     gap: 8px;
-    padding: 0 14px;
-    margin-bottom: 10px;
   }
 
   .copilot-suggest {
@@ -3563,44 +3494,18 @@ textarea:-webkit-autofill {
     padding: 10px 8px;
   }
 
-  .copilot-side-messages {
-    padding: 0 14px;
-    overflow-y: auto;
-  }
-
-  .copilot-side-input-wrap {
-    padding: 10px 14px 12px;
-  }
-
-  .copilot-input-row {
-    gap: 8px;
-  }
-
-  #copilotInput {
-    min-height: 40px;
-    font-size: 13px;
-  }
-
-  #copilotSend,
-  #copilotVoice {
-    width: 40px;
-    min-width: 40px;
-    height: 40px;
-  }
-
-  /* settings modal */
   .settings-panel {
     position: fixed !important;
-    left: 10px;
+    left: 72px;
     right: 10px;
-    bottom: 68px;
+    bottom: 10px;
     width: auto;
     max-height: 60vh;
     display: block !important;
     opacity: 0;
     pointer-events: none;
     transform: translateY(14px);
-    z-index: 3300;
+    z-index: 3400;
   }
 
   .settings-panel.open {
@@ -3610,10 +3515,10 @@ textarea:-webkit-autofill {
   }
 
   .terminal-panel {
-    left: 0;
+    left: var(--activity-w);
     right: 0;
-    bottom: 58px;
+    bottom: 0;
     height: 40vh;
-    z-index: 3250;
+    z-index: 3350;
   }
 }
