@@ -1370,8 +1370,9 @@ document.addEventListener("touchend", (e) => {
   }
 
   // 👉 Swipe left → close sidebar
-  if (diff < -100) {
-    document.getElementById("sidebarPanel")?.classList.remove("show");
-    document.getElementById("mobileBackdrop")?.classList.remove("show");
-  }
+  // Swipe LEFT to close
+if (diff < -100) {
+  document.getElementById("sidebarPanel")?.classList.remove("show");
+  document.getElementById("mobileBackdrop")?.classList.remove("show");
+}
 });
