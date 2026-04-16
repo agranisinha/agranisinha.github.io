@@ -309,13 +309,16 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function openSidebar(type) {
-    setActivityActive(type);
-    if (type === "copilot") return toggleCopilotSidebar(true);
-    if (type === "explorer") return toggleSidebar();
-    if (type === "search") return openPalette();
-    if (type === "git") return printToTerminal("Git panel is simulated. Use 'git log' in terminal.", "warning");
-    if (type === "files") return openTab("readme");
+  setActivityActive(type);
+
+  if (window.innerWidth <= 768) {
+    return openMobilePanel(type);
   }
+
+  // Desktop
+  if (type === "copilot") return toggleCopilotSidebar(true);
+  if (type === "explorer") return sidebarPanel?.classList.toggle("hide");
+}
 
   window.openSidebar = openSidebar;
 
