@@ -3513,3 +3513,14 @@ iframe {
     display: none;
   }
 }
+.mobile-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 998;
+  display: none;
+}
+
+.mobile-overlay.show {
+  display: block;
+}
