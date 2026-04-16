@@ -282,9 +282,16 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function toggleSettings() {
-  
-  settingsPanel?.classList.toggle("open");
-  settingsPanel?.classList.remove("minimized");
+  const settings = document.getElementById("settingsPanel");
+  const backdrop = document.getElementById("mobileBackdrop");
+
+  if (window.innerWidth <= 768) {
+    settings.classList.toggle("open");
+    backdrop.classList.toggle("show");
+    return;
+  }
+
+  settings?.classList.toggle("open");
 }
 
   function minimizeSettings() {
