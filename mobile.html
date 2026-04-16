@@ -28,7 +28,7 @@
   <!-- ================= HEADER ================= -->
   <header class="m-header">
 
-    <button class="m-icon-btn" onclick="toggleSidebar()">☰</button>
+    <button class="m-icon-btn" onclick="openMobilePanel('explorer')">☰</button>
 
     <div class="m-title-wrap">
       <div class="m-title">agrani-portfolio</div>
@@ -60,22 +60,22 @@
       <span>Home</span>
     </button>
 
-    <button onclick="toggleSidebar()" class="m-nav-btn">
+    <button onclick="openMobilePanel('explorer')" class="m-nav-btn">
       📁
       <span>Files</span>
     </button>
 
-    <button onclick="toggleTerminal()" class="m-nav-btn">
+    <button onclick="openMobilePanel('terminal')" class="m-nav-btn">
       💻
       <span>Terminal</span>
     </button>
 
-    <button onclick="toggleCopilotSidebar(true)" class="m-nav-btn">
+    <button onclick="openMobilePanel('copilot')" class="m-nav-btn">
       ✨
       <span>Copilot</span>
     </button>
 
-    <button onclick="toggleSettings()" class="m-nav-btn">
+    <button onclick="openMobilePanel('settings')" class="m-nav-btn">
       ⚙️
       <span>Settings</span>
     </button>
@@ -204,7 +204,7 @@
 
 
   <!-- ================= FLOATING AI BUTTON ================= -->
-  <button class="m-fab" onclick="toggleCopilotSidebar(true)">
+  <button class="m-fab" onclick="openMobilePanel('copilot')">
     ✨
   </button>
 
