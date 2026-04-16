@@ -2154,7 +2154,7 @@ body {
   height: 100%;
 
   background: rgba(0,0,0,0.4);
-  z-index: 1500;
+  z-index: 90;
 
   opacity: 0;
   pointer-events: none;
@@ -2329,14 +2329,18 @@ body {
     z-index: 94;
   }
 
-  .settings-panel {
-    left: 50%;
-    bottom: 74px;
-    transform: translateX(-50%);
-    width: min(92vw, 380px);
-    z-index: 94;
-  }
-
+.settings-panel {
+  left: 50%;
+  bottom: 74px;
+  transform: translateX(-50%);
+  width: min(92vw, 380px);
+  z-index: 200;   /* above backdrop */
+}
+/* ✅ FIX CLICK ISSUE */
+.settings-panel,
+.settings-panel * {
+  pointer-events: auto;
+}
   .palette-box {
     top: 74px;
     width: calc(100vw - 18px);
