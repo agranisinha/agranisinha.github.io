@@ -663,6 +663,18 @@ a:hover ~ .cursor-square {
   overflow: hidden;
 }
 
+.lor-img {
+  max-width: 90vw;
+  max-height: 85vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: auto;
+  border-radius: 12px;
+  background: white; /* optional for document feel */
+}
+
 /* ========================================================================== */
 /*                               ACTIVITY BAR                                 */
 /* ========================================================================== */
