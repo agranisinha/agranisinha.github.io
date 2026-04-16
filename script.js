@@ -904,66 +904,20 @@ if (window.innerWidth <= 768) {
     });
   }
 
-  function appendCopilotMessage(text, sender = "assistant") {
-    const container = $("#copilotMessages");
-    if (!container) return;
-    const msg = document.createElement("div");
-    msg.className = `copilot-message ${sender}`;
-    container.appendChild(msg);
-    if (sender === "user") {
-      msg.textContent = text;
-      container.scrollTop = container.scrollHeight;
-      return;
-    }
-    let i = 0;
-    const type = () => {
-      if (i < text.length) {
-        msg.textContent += text.charAt(i++);
-        setTimeout(type, 12);
-      } else {
-        container.scrollTop = container.scrollHeight;
-      }
-    };
-    type();
-  }
+  
 
-  function smartNavigate(query) {
-    query = query.toLowerCase();
-    if (query.includes("project")) openTab("projects");
-    else if (query.includes("skill")) openTab("skills");
-    else if (query.includes("contact")) openTab("contact");
-    else if (query.includes("about")) openTab("about");
-    else if (query.includes("experience")) openTab("experience");
-    else if (query.includes("lor")) openTab("lor");
-  }
 
-  function getCopilotReply(prompt) {
-    const q = prompt.toLowerCase();
-    smartNavigate(q);
-    if (q.includes("project")) return COPILOT_REPLIES.projects;
-    if (q.includes("experience")) return COPILOT_REPLIES.experience;
-    if (q.includes("skill") || q.includes("tech stack")) return COPILOT_REPLIES.skills;
-    if (q.includes("education")) return COPILOT_REPLIES.education;
-    if (q.includes("contact") || q.includes("email") || q.includes("phone")) return COPILOT_REPLIES.contact;
-    if (q.includes("healthcare") || q.includes("ai")) return COPILOT_REPLIES.healthcare;
-    if (q.includes("leadership") || q.includes("club")) return COPILOT_REPLIES.leadership;
-    if (q.includes("resume") || q.includes("cv")) return COPILOT_REPLIES.resume;
-    if (q.includes("lor")) return COPILOT_REPLIES.lor;
-    return COPILOT_REPLIES.default;
-  }
 
- function sendCopilotPrompt(customText = "") {
+function sendCopilotPrompt(customText = "") {
   const { input } = getSiriElements();
-
   if (!input) return;
 
   const text = (customText || input.value || "").trim();
   if (!text) return;
 
-  // ✅ Set input value
   input.value = text;
 
-  // ✅ Use NEW Siri system
+  // ✅ ONLY THIS
   sendMessage();
 }
 
@@ -977,30 +931,10 @@ if (window.innerWidth <= 768) {
     }
   }
 
-  function startVoiceAssistant() {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    const chatInput = $("#copilotInput");
-    if (!SpeechRecognition) {
-      appendCopilotMessage("Voice assistant not supported in this browser.", "assistant");
-      return;
-    }
-    const recognition = new SpeechRecognition();
-    recognition.lang = "en-US";
-    recognition.start();
-    recognition.onresult = (event) => {
-      const text = event.results[0][0].transcript;
-      if (chatInput) chatInput.value = text;
-      sendCopilotPrompt();
-    };
-    recognition.onerror = () => appendCopilotMessage("Voice input failed. Try again.", "assistant");
-  }
+
 
   function bindCopilotEvents() {
-    $("#copilotSend")?.addEventListener("click", () => sendCopilotPrompt());
-    $("#copilotInput")?.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") sendCopilotPrompt();
-    });
-    $("#copilotVoice")?.addEventListener("click", startVoiceAssistant);
+    
     $("#copilotSideClose")?.addEventListener("click", () => toggleCopilotSidebar(false));
     $("#copilotSideMinimize")?.addEventListener("click", (e) => {
       e.stopPropagation();
@@ -1013,7 +947,7 @@ if (window.innerWidth <= 768) {
 
   window.quickAsk = quickAsk;
   window.sendCopilotPrompt = sendCopilotPrompt;
-  window.startVoiceAssistant = startVoiceAssistant;
+
 
   function handleResize() {
     if (isMobile()) {
