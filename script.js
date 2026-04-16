@@ -577,6 +577,7 @@ document.addEventListener("DOMContentLoaded", () => {
         (tabName === "projects" && fileText.includes("projects")) ||
         (tabName === "skills" && fileText.includes("skills")) ||
         (tabName === "experience" && fileText.includes("experience")) ||
+         (tabName === "lor" && fileText.includes("lor")) ||
         (tabName === "contact" && fileText.includes("contact")) ||
         (tabName === "readme" && fileText.includes("readme")) ||
         (tabName === "resume" && fileText.includes("resume"));
