@@ -1365,10 +1365,7 @@ body {
 .settings-section {
   padding: 14px 12px 6px;
 }
-.settings-panel {
-  position: relative;
-  z-index: 9999;
-}
+
 
 .section-title {
   font-size: 11px;
