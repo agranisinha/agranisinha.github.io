@@ -707,6 +707,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (safeTab === "home") {
         startTyping();
+        setTimeout(startHeroTyping, 500); // ✅ ADD THIS
       }
 
       animateInsertedContent();
@@ -715,6 +716,24 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 120);
   }
 
+function highlightKeywords() {
+  const el = document.getElementById("typingHero");
+  if (!el) return;
+
+  let html = el.innerHTML;
+
+  const words = ["AI", "Biotechnology", "Health Informatics", "Technology"];
+
+  words.forEach(word => {
+    const regex = new RegExp(word, "g");
+    html = html.replace(
+      regex,
+      `<span class="gradient-text">${word}</span>`
+    );
+  });
+
+  el.innerHTML = html;
+}
   function openTab(name) {
     const tabName = normalizeName(name);
 
@@ -1759,9 +1778,8 @@ function getHome() {
           </div>
 
           <p class="hero-desc desc-reveal">
-            I build intelligent healthcare systems using AI, machine learning,
-            clinical informatics, and data-driven workflows to solve real-world problems.
-          </p>
+           <span id="typingHero"></span>
+         </p>
 
           <div class="home-buttons button-reveal">
             <button onclick="openTab('projects')">📁 Projects</button>
@@ -1797,6 +1815,29 @@ function getHome() {
   `;
 }
 
+
+function startHeroTyping() {
+  const el = document.getElementById("typingHero");
+
+  if (!el) return;
+
+  const text = "I design and build intelligent solutions at the intersection of AI, Biotechnology, Health Informatics, and Technology—leveraging data to solve real-world healthcare challenges.";
+
+  let i = 0;
+  el.innerHTML = "";
+
+  function type() {
+    if (i < text.length) {
+      el.innerHTML += text.charAt(i);
+      i++;
+      setTimeout(type, 18);
+    } else {
+      highlightKeywords(); // ✅ apply gradient after typing
+    }
+  }
+
+  type();
+}
 function getAbout() {
   return `
     <div class="about-container">
