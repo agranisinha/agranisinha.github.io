@@ -1,7 +1,3 @@
-if (document.body.classList.contains("mobile-page")) {
-  console.log("📱 Mobile mode active → skipping desktop JS");
-  return; // ✅ STOP cleanly
-}
 
 const isMobileView = () => window.innerWidth <= 768;
 
