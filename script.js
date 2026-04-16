@@ -1327,3 +1327,26 @@ document.getElementById("mobileBackdrop")?.addEventListener("click", () => {
   document.getElementById("sidebarPanel")?.classList.remove("show");
   document.getElementById("mobileBackdrop")?.classList.remove("show");
 });
+
+let startX = 0;
+
+document.addEventListener("touchstart", (e) => {
+  startX = e.touches[0].clientX;
+});
+
+document.addEventListener("touchend", (e) => {
+  let endX = e.changedTouches[0].clientX;
+  let diff = endX - startX;
+
+  // 👉 Swipe right → open sidebar
+  if (diff > 100 && startX < 50) {
+    document.getElementById("sidebarPanel")?.classList.add("show");
+    document.getElementById("mobileBackdrop")?.classList.add("show");
+  }
+
+  // 👉 Swipe left → close sidebar
+  if (diff < -100) {
+    document.getElementById("sidebarPanel")?.classList.remove("show");
+    document.getElementById("mobileBackdrop")?.classList.remove("show");
+  }
+});
