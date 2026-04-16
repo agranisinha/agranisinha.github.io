@@ -219,12 +219,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   mobileBackdrop.addEventListener("click", closeMobilePanels);
 
-  function toggleSidebar() {
+ function toggleSidebar() {
   const sidebar = document.getElementById("sidebarPanel");
   const backdrop = document.getElementById("mobileBackdrop");
 
-  sidebar.classList.toggle("show");
-  backdrop.classList.toggle("show");
+  const isOpen = sidebar.classList.contains("show");
+
+  if (isOpen) {
+    sidebar.classList.remove("show");
+    backdrop.classList.remove("show");
+  } else {
+    sidebar.classList.add("show");
+    backdrop.classList.add("show");
+  }
 }
   function toggleCopilotSidebar(force) {
   
