@@ -1573,6 +1573,70 @@ function getNaturalReply(message) {
     };
   }
 }
+
+function sendMessage() {
+  const { input } = getSiriElements();
+  if (!input) return;
+
+  const raw = input.value.trim();
+  if (!raw) return;
+
+  // 👤 USER MESSAGE
+  addCopilotMessage(raw, "user");
+  input.value = "";
+
+  // 🧠 Thinking state
+  setSiriState("thinking", "Thinking…", "Working on that.");
+
+  let response = {};
+  try {
+    response = getNaturalReply(raw) || {};
+  } catch (e) {
+    console.error("Reply error:", e);
+  }
+
+  const reply =
+    response.reply ||
+    "You can ask about Agrani’s projects, skills, or experience.";
+  const action = response.action || null;
+
+  // ⚡ RESPONSE FLOW
+  setTimeout(() => {
+    try {
+      addCopilotMessage(reply, "bot");
+    } catch (e) {
+      console.error("Message error:", e);
+    }
+
+    // 🚀 Run action immediately
+    if (typeof action === "function") {
+      try {
+        action();
+      } catch (e) {
+        console.error("Action error:", e);
+      }
+    }
+
+    // 🎤 Speak (non-blocking)
+    setTimeout(() => {
+      try {
+        speak(reply);
+      } catch (e) {
+        console.error("Speak error:", e);
+      }
+    }, 100);
+
+    // ✅ Reset UI (prevents stuck)
+    setTimeout(() => {
+      setSiriState(
+        "idle",
+        "Hi! I’m Agrani’s Siri Copilot 👋",
+        "Tap the mic and ask about projects, skills, experience, resume, or contact."
+      );
+    }, 700);
+
+  }, 200);
+}
   
 function speak(text) {
   if (!("speechSynthesis" in window)) return;
