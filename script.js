@@ -2210,17 +2210,28 @@ window.openLOR = function (src) {
   const modal = document.createElement("div");
   modal.className = "image-modal";
 
+  // ✅ CHECK FILE TYPE
+  const isPDF = src.toLowerCase().endsWith(".pdf");
+
   modal.innerHTML = `
     <div class="image-modal-content">
       <span class="close-modal">&times;</span>
-      <iframe src="${src}" frameborder="0"></iframe>
+
+      ${
+        isPDF
+          ? `<iframe src="${src}" frameborder="0"></iframe>`
+          : `<img src="${src}" class="lor-img" />`
+      }
+
     </div>
   `;
 
   document.body.appendChild(modal);
 
+  // CLOSE BUTTON
   modal.querySelector(".close-modal").onclick = () => modal.remove();
 
+  // CLICK OUTSIDE CLOSE
   modal.onclick = (e) => {
     if (e.target === modal) modal.remove();
   };
