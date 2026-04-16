@@ -212,13 +212,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   mobileBackdrop.addEventListener("click", closeMobilePanels);
 
-  function toggleSidebar() {
-    if (isMobile()) {
-      const open = sidebarPanel?.classList.contains("m-show");
-      open ? closeMobilePanels() : openMobilePanel("sidebar");
-      return;
-    }
-    sidebarPanel?.classList.toggle("hide");
+   function toggleSidebar() {
+    if (isMobileView()) return; // prevent desktop logic in mobile
+    document.querySelector(".sidebar-panel")?.classList.toggle("hide");
   }
 
   function toggleCopilotSidebar(force) {
