@@ -224,16 +224,41 @@
         <span class="copilot-workspace-pill">● portfolio · agrani-sinha</span>
       </div>
 
-      <div class="copilot-side-hero">
-        <div class="copilot-avatar-ring">
-          <div class="copilot-avatar-core">✨</div>
-        </div>
-        <h3>Hi! I'm Agrani's Copilot 👋</h3>
-        <p>
-          Ask me about projects, experience, skills, education, healthcare AI work,
-          leadership, resume, or contact details.
-        </p>
-      </div>
+      <div class="copilot-side-hero siri-hero">
+  <div class="siri-orb-wrap">
+    <div id="siriOrb" class="siri-orb">
+      <div class="orb-core"></div>
+      <div class="orb-ring ring-1"></div>
+      <div class="orb-ring ring-2"></div>
+      <div class="orb-ring ring-3"></div>
+    </div>
+  </div>
+
+  <h3 id="siriStatus">Hi! I’m Agrani’s Siri Copilot 👋</h3>
+  <p id="siriHint">
+    Tap the mic and ask about projects, skills, experience, resume, or contact.
+  </p>
+</div>
+
+<div class="copilot-side-messages" id="copilotMessages">
+  <div class="bot-msg">Hi 👋 How can I help you today?</div>
+</div>
+
+<div class="copilot-side-input-wrap">
+  <div class="copilot-input-row siri-input-row">
+    <input
+      id="copilotInput"
+      type="text"
+      placeholder="Ask Siri Copilot..."
+      autocomplete="off"
+    />
+    <button id="copilotSend" type="button" aria-label="Send message">➤</button>
+    <button id="copilotVoice" type="button" aria-label="Voice assistant">🎤</button>
+  </div>
+  <div class="copilot-side-note">
+    Voice works best in Chrome/Safari on supported devices
+  </div>
+</div>
 
       <div class="copilot-suggest-grid">
         <button class="copilot-suggest" data-quick="Tell me about Agrani's projects">
