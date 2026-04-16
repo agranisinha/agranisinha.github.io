@@ -1590,11 +1590,28 @@ function sendMessage() {
 
   setSiriState("thinking", "Thinking…", "Working on that.");
 
-  const { reply, action } = getNaturalReply(raw);
+  // ✅ SAFE HANDLING (NO CRASH)
+  let response = {};
+  try {
+    response = getNaturalReply(raw) || {};
+  } catch (e) {
+    console.error("Reply error:", e);
+  }
+
+  const reply = response.reply || "You can ask about Agrani’s projects, skills, or experience.";
+  const action = response.action || null;
 
   setTimeout(() => {
     addCopilotMessage(reply, "bot");
-    if (typeof action === "function") action();
+
+    if (typeof action === "function") {
+      try {
+        action();
+      } catch (e) {
+        console.error("Action error:", e);
+      }
+    }
+
     speak(reply);
   }, 380);
 }
