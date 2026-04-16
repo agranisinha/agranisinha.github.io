@@ -167,7 +167,8 @@ body {
   min-width: 100%;
   min-height: 100%;
   height: 100vh;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   font-family: "Inter", sans-serif;
   color: var(--text);
   background:
@@ -994,6 +995,7 @@ a:hover ~ .cursor-square {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  padding-bottom: 80px; /* for bottom nav */
   overflow-x: hidden;
   padding: 28px 26px 36px;
   background:
@@ -3380,143 +3382,134 @@ iframe {
   }
 }
 
-/* ================= ULTRA MOBILE UI ================= */
+/* ================= MOBILE VS CODE UI ================= */
 @media (max-width: 768px) {
 
-  body {
-    overflow-x: hidden;
+  /* 🔥 FULL SCREEN APP */
+  .app-shell {
+    height: 100vh;
+    overflow: hidden;
   }
 
-  /* ===== BACKDROP ===== */
-  .mobile-backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.5);
-    opacity: 0;
-    pointer-events: none;
-    transition: 0.3s;
-    z-index: 2000;
+  /* 🔥 STACK LAYOUT */
+  .vscode-layout {
+    flex-direction: column;
   }
 
-  .mobile-backdrop.show {
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  /* ===== SIDEBAR ===== */
+  /* 🔥 HIDE SIDEBAR INITIALLY */
   .sidebar-panel {
-    position: fixed !important;
+    position: fixed;
+    top: 0;
     left: 0;
-    top: 70px;
-    bottom: 0;
-    width: 260px;
-    background: #111;
+    width: 75%;
+    height: 100%;
+    z-index: 999;
     transform: translateX(-100%);
     transition: 0.3s ease;
-    z-index: 3000;
   }
 
-  .sidebar-panel.m-show {
+  .sidebar-panel.show {
     transform: translateX(0);
   }
 
-  /* ===== COPILOT ===== */
-  .copilot-sidebar {
-    position: fixed !important;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 75vh;
-    background: #0f131a;
-    border-radius: 16px 16px 0 0;
-    transform: translateY(100%);
-    transition: 0.3s ease;
-    z-index: 4000;
+  /* 🔥 OVERLAY */
+  .mobile-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 998;
+    display: none;
   }
 
-  .copilot-sidebar.m-show {
-    transform: translateY(0);
+  .mobile-overlay.show {
+    display: block;
   }
 
-  /* ===== SETTINGS ===== */
-  .settings-panel {
+  /* 🔥 ACTIVITY BAR -> BOTTOM NAV */
+  .activity-bar {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 70vh;
-    background: #151a23;
-    border-radius: 16px 16px 0 0;
-    transform: translateY(100%);
-    transition: 0.3s;
-    z-index: 5000;
+    height: 55px;
+    flex-direction: row;
+    justify-content: space-around;
+    border-top: 1px solid var(--line);
+    z-index: 1000;
   }
 
-  .settings-panel.m-show {
-    transform: translateY(0);
+  .activity-icon {
+    height: 100%;
+    width: 100%;
+    font-size: 20px;
   }
 
-  /* ===== MENU ===== */
-  .dropdown {
-    position: fixed !important;
-    top: 70px;
-    left: 10px;
-    right: 10px;
-    display: none;
-    z-index: 6000;
-  }
-
-  .menu-item.active .dropdown {
-    display: block;
-  }
-
-  /* ===== FIX HIDDEN CONTENT ===== */
-  .editor-area.with-copilot {
+  /* 🔥 EDITOR FULL WIDTH */
+  .editor-area {
+    width: 100%;
+    height: calc(100vh - 95px);
     margin-right: 0 !important;
   }
 
-  /* ===== FIX PORTFOLIO VISIBILITY ===== */
-  .editor-content {
-    padding-bottom: 80px !important;
+  /* 🔥 TABS SCROLL */
+  .editor-tabs {
+    overflow-x: auto;
   }
 
-  /* ===== BOTTOM NAV FIX ===== */
-  .activity-bar {
-    position: fixed !important;
-    bottom: 0;
-    left: 0;
+  /* 🔥 HERO TEXT */
+  .hero-name {
+    font-size: 26px;
+    text-align: center;
+  }
+
+  .hero-desc {
+    font-size: 14px;
+    text-align: center;
+    padding: 0 10px;
+  }
+
+  /* 🔥 PROJECT CARDS */
+  .project-card {
+    width: 100%;
+    padding: 14px;
+  }
+
+  /* 🔥 BUTTON FULL WIDTH */
+  .github-btn {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  /* 🔥 MODAL FIX */
+  .carousel-container {
+    width: 95%;
+  }
+
+  .carousel-img {
+    width: 100%;
+    max-height: 60vh;
+  }
+
+  .prev { left: 5px; }
+  .next { right: 5px; }
+
+  /* 🔥 COPILOT FULL SCREEN */
+  .copilot-sidebar {
+    width: 100% !important;
     right: 0;
-    height: 60px;
-    display: flex;
-    justify-content: space-around;
-    background: #111;
-    z-index: 3500;
   }
 
-}
+  /* 🔥 HEADER COMPACT */
+  .header-command-trigger {
+    max-width: 180px;
+  }
 
-/* CENTER BUTTON */
-.project-actions {
-  display: flex;
-  justify-content: center;
-  margin-top: 12px;
-}
+  .trigger-text {
+    font-size: 10px;
+  }
 
-/* WHITE BUTTON */
-.github-btn {
-  background: white;
-  color: black;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: 0.25s ease;
-}
-
-/* HOVER EFFECT */
-.github-btn:hover {
-  background: #f3f3f3;
-  transform: scale(1.05);
+  .keycap {
+    display: none;
+  }
 }
