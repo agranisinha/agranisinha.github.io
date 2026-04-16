@@ -2605,17 +2605,24 @@ body.mobile-mode .mobile-nav {
   background: none;
   border: none;
 }
+
+/* DEBUG FIX */
+.sidebar-panel {
+  left: 0 !important;
+}
 /* MOBILE SIDEBAR FIX */
+/* ===== MOBILE SIDEBAR FINAL FIX ===== */
+
 body.mobile-mode .sidebar-panel {
-  position: fixed;
+  position: fixed !important;
   top: 0;
   left: -100%;
   width: 80%;
   height: 100%;
-  background: var(--bg-sidebar);
-  z-index: 1001;
+  background: #1e1e1e;
+  z-index: 2000;
   transition: left 0.3s ease;
-  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  display: block !important;
 }
 
 /* SHOW SIDEBAR */
@@ -2623,22 +2630,16 @@ body.mobile-mode .sidebar-panel.show {
   left: 0;
 }
 
+/* REMOVE DESKTOP HIDE CONFLICT */
+body.mobile-mode .sidebar-panel.hide {
+  display: block !important;
+  width: 80% !important;
+  left: -100% !important;
+}
+.sidebar-panel {
+  z-index: 2000 !important;
+}
+
 .mobile-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.5);
-  z-index: 900;
-  display: none;
-}
-
-.mobile-backdrop.show {
-  display: block;
-}
-
-
-.mobile-nav {
-  z-index: 1002;
+  z-index: 1500 !important;
 }
