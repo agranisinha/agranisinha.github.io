@@ -224,15 +224,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const backdrop = document.getElementById("mobileBackdrop");
 
   if (window.innerWidth <= 768) {
-
-    // 👉 TOGGLE BOTH
     const isOpen = sidebar.classList.contains("show");
 
     if (isOpen) {
       sidebar.classList.remove("show");
       backdrop.classList.remove("show");
     } else {
-      sidebar.classList.remove("hide"); // remove desktop hide
+      sidebar.classList.remove("hide"); // remove desktop conflict
       sidebar.classList.add("show");
       backdrop.classList.add("show");
     }
@@ -241,10 +239,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   sidebar.classList.toggle("hide");
-}
-
-  sidebar.classList.toggle("hide");
-}
+  }
 
   function toggleCopilotSidebar(force) {
   
