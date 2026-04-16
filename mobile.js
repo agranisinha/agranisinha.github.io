@@ -1,3 +1,11 @@
+function show(el) {
+  el?.classList.add("m-show");
+}
+
+function hide(el) {
+  el?.classList.remove("m-show");
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const body = document.body;
   if (!body.classList.contains("mobile-page")) return;
@@ -44,39 +52,15 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function openMobilePanel(type) {
-    closeAllMobilePanels();
+  closeAllMobilePanels();
 
-    if (type === "explorer") {
-      sidebar?.classList.add("m-show");
-      activePanel = "explorer";
-      setBottomNavActive("explorer");
-    }
+  if (type === "explorer") show(sidebar);
+  if (type === "copilot") show(copilot);
+  if (type === "terminal") show(terminal);
+  if (type === "settings") show(settings);
 
-    if (type === "copilot") {
-      copilot?.classList.add("m-show");
-      activePanel = "copilot";
-      setBottomNavActive("copilot");
-      setTimeout(() => copilotInput?.focus(), 220);
-    }
-
-    if (type === "terminal") {
-      terminal?.classList.add("m-show");
-      activePanel = "terminal";
-      setBottomNavActive("terminal");
-      setTimeout(() => terminalInput?.focus(), 220);
-    }
-
-    if (type === "settings") {
-      settings?.classList.add("m-show");
-      activePanel = "settings";
-      setBottomNavActive("settings");
-    }
-
-    if (type) {
-      backdrop?.classList.add("show");
-    }
-  }
-
+  backdrop?.classList.add("show");
+}
   window.closeAllMobilePanels = closeAllMobilePanels;
 
   window.toggleSidebar = function () {
@@ -347,6 +331,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }, { passive: true });
 
+  document.querySelector(".mobile-backdrop")?.addEventListener("click", () => {
+  closeAllMobilePanels();
+});
+
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
       closeAllMobilePanels();
@@ -365,3 +353,5 @@ document.addEventListener("DOMContentLoaded", () => {
   setBottomNavActive("home");
   closeAllMobilePanels();
 });
+
+window.openMobilePanel = openMobilePanel;
