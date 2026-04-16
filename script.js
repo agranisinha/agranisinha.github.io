@@ -1960,14 +1960,14 @@ function getProjects() {
 
         <!-- ✅ SAFE SINGLE LINE ARRAY -->
         <div class="project-card clickable"
-          onclick="openProjectCarousel(['assets/images/bio1.png','assets/images/bio2.png','assets/images/bio3.png'])">
+          onclick="openProjectCarousel(['assets/images/Biocalculator/bio1.webp','assets/images/Biocalculator/bio2.webp','assets/images/Biocalculator/bio3.webp','assets/images/Biocalculator/bio4.webp'])">
           <h3>Bio Calculator App</h3>
           <p>Lab calculation tool published on Play Store.</p>
           <span class="view-btn">👁 View</span>
         </div>
 
         <div class="project-card clickable"
-          onclick="openProjectCarousel(['assets/images/chat1.png','assets/images/chat2.png','assets/images/chat3.png'])">
+          onclick="openProjectCarousel(['assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (1).jpeg','assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (4).jpeg','assets/images/WhatsApp Image 2026-04-13 at 22.27.45.jpeg'])">
           <h3>Respiratory Health Chatbot</h3>
           <p>Interactive healthcare chatbot using Vue.js.</p>
           <span class="view-btn">👁 View</span>
@@ -1999,21 +1999,27 @@ function getLOR() {
 
       <div class="project-grid">
 
-        <div class="project-card clickable" onclick="openLOR('assets/lors/lor1.pdf')">
+        <div class="project-card clickable" onclick="openLOR('docs/Agrani Letter of Recommendation.pdf')">
           <h3>Clinical Informatics Internship</h3>
           <p>Alivia Care</p>
           <span class="view-btn">📄 View LOR</span>
         </div>
 
-        <div class="project-card clickable" onclick="openLOR('assets/lors/lor2.pdf')">
-          <h3>Academic Recommendation</h3>
-          <p>University Faculty</p>
+       <div class="project-card clickable" onclick="openLOR('docs/LemonadestandLOR.jpeg')">
+          <h3>Graphic Design & Game Development</h3>
+          <p>Lemonade Stand Bootcamp</p>
           <span class="view-btn">📄 View LOR</span>
         </div>
 
-        <div class="project-card clickable" onclick="openLOR('assets/lors/lor3.pdf')">
-          <h3>Data Science Role</h3>
-          <p>BluCognition</p>
+        <div class="project-card clickable" onclick="openLOR('docs/cdri-lor.jpeg')">
+          <h3>Academic Recommendation</h3>
+          <p>Central Drug Research Institute</p>
+          <span class="view-btn">📄 View LOR</span>
+        </div>
+
+        <div class="project-card clickable" onclick="openLOR('docs/sanfoundry-lor.jpeg')">
+          <h3>Content Developer Role</h3>
+          <p>Sanfoundry</p>
           <span class="view-btn">📄 View LOR</span>
         </div>
 
