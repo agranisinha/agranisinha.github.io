@@ -1,11 +1,11 @@
-/* ========================================================================== */
-/*                              AGRANI PORTFOLIO                              */
-/*                     FULL VS-CODE / COPILOT STYLE CSS                       */
-/* ========================================================================== */
+/* ========================================================================== 
+   AGRANI PORTFOLIO — CLEAN RESPONSIVE CSS
+   Matched to the current script.js structure
+   ========================================================================== */
 
-/* ========================================================================== */
-/*                                   RESET                                    */
-/* ========================================================================== */
+/* ========================================================================== 
+   01. RESET
+   ========================================================================== */
 *,
 *::before,
 *::after {
@@ -46,21 +46,9 @@ ol {
   list-style: none;
 }
 
-button,
-input,
-textarea {
-  font: inherit;
-}
-
-button {
-  background: none;
-  border: none;
-  outline: none;
-}
-
 img {
-  max-width: 100%;
   display: block;
+  max-width: 100%;
 }
 
 a {
@@ -68,9 +56,29 @@ a {
   text-decoration: none;
 }
 
-/* ========================================================================== */
-/*                                   ROOT                                     */
-/* ========================================================================== */
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+input,
+textarea {
+  outline: none;
+  border: none;
+  background: none;
+}
+
+/* ========================================================================== 
+   02. ROOT VARIABLES
+   ========================================================================== */
 :root {
   --bg: #1e1e1e;
   --bg-soft: #181818;
@@ -152,7 +160,7 @@ a {
   --menu-bar-h: 30px;
   --tabs-h: 38px;
   --activity-w: 56px;
-  --sidebar-w: 255px;
+  --sidebar-w: 280px;
   --terminal-h: 250px;
 
   --transition-fast: 0.16s ease;
@@ -160,28 +168,9 @@ a {
   --transition-slow: 0.36s ease;
 }
 
-/* ========================================================================== */
-/*                                 BODY BASE                                  */
-/* ========================================================================== */
-body {
-  min-width: 100%;
-  min-height: 100%;
-  height: 100vh;
-  overflow-x: hidden;
-  overflow-y: auto;
-  font-family: "Inter", sans-serif;
-  color: var(--text);
-  background:
-    radial-gradient(circle at 20% 10%, rgba(75, 140, 255, 0.10), transparent 20%),
-    radial-gradient(circle at 85% 12%, rgba(139, 92, 246, 0.10), transparent 18%),
-    radial-gradient(circle at 60% 80%, rgba(0, 122, 204, 0.06), transparent 30%),
-    var(--bg);
-}
-
-body.dark {
-  color: var(--text);
-}
-
+/* ========================================================================== 
+   03. OPTIONAL THEME MODES
+   ========================================================================== */
 body.rose {
   --bg: #191724;
   --bg-soft: #16141f;
@@ -367,9 +356,35 @@ body.gruv {
   --copilot-border: rgba(211, 134, 155, 0.32);
 }
 
-/* ========================================================================== */
-/*                               CUSTOM CURSOR                                */
-/* ========================================================================== */
+/* ========================================================================== 
+   04. BASE BODY / APP
+   ========================================================================== */
+body {
+  min-width: 100%;
+  min-height: 100%;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  font-family: "Inter", sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 20% 10%, rgba(75, 140, 255, 0.10), transparent 20%),
+    radial-gradient(circle at 85% 12%, rgba(139, 92, 246, 0.10), transparent 18%),
+    radial-gradient(circle at 60% 80%, rgba(0, 122, 204, 0.06), transparent 30%),
+    var(--bg);
+}
+
+.app-shell {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background: transparent;
+}
+
+/* ========================================================================== 
+   05. CUSTOM CURSOR
+   ========================================================================== */
 .cursor-square,
 .cursor-dot {
   position: fixed;
@@ -399,25 +414,9 @@ body.gruv {
   box-shadow: 0 0 12px rgba(255, 255, 255, 0.55);
 }
 
-button:hover ~ .cursor-square,
-a:hover ~ .cursor-square {
-  border-color: var(--accent-bright);
-}
-
-/* ========================================================================== */
-/*                                 APP SHELL                                  */
-/* ========================================================================== */
-.app-shell {
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-  position: relative;
-  background: transparent;
-}
-
-/* ========================================================================== */
-/*                                 TOP HEADER                                 */
-/* ========================================================================== */
+/* ========================================================================== 
+   06. HEADER
+   ========================================================================== */
 .top-header {
   height: var(--top-header-h);
   display: flex;
@@ -429,19 +428,19 @@ a:hover ~ .cursor-square {
     var(--bg-titlebar);
   border-bottom: 1px solid var(--line);
   position: relative;
-  z-index: 20;
+  z-index: 60;
 }
 
 .mac-dots {
   display: flex;
   gap: 10px;
   padding: 6px;
+  flex: 0 0 auto;
 }
 
-
 .dot {
-  width: 16px;
-  height: 16px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   display: inline-block;
   cursor: pointer;
@@ -453,41 +452,12 @@ a:hover ~ .cursor-square {
 }
 
 .dot:hover {
-  transform: scale(1.05);
-  filter: brightness(1.08);
+  transform: scale(1.06);
 }
 
-.dot.red {
-  background: #ff5f56;
-}
-
-.dot.yellow {
-  background: #ffbd2e;
-}
-
-.dot.green {
-  background: #27c93f;
-}
-
-.header-feedback {
-  margin-left: 8px;
-  color: var(--text-purple);
-  font-size: 12px;
-  opacity: 0;
-  transform: translateY(-3px);
-  transition:
-    opacity var(--transition-med),
-    transform var(--transition-med);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 320px;
-}
-
-.header-feedback.show {
-  opacity: 1;
-  transform: translateY(0);
-}
+.dot.red { background: #ff5f56; }
+.dot.yellow { background: #ffbd2e; }
+.dot.green { background: #27c93f; }
 
 .header-command-trigger {
   flex: 1;
@@ -517,14 +487,14 @@ a:hover ~ .cursor-square {
     0 0 0 3px rgba(0, 122, 204, 0.10);
 }
 
-.header-command-trigger:active {
-  transform: translateY(1px);
-}
-
-.trigger-left {
+.trigger-left,
+.trigger-right {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.trigger-left {
   min-width: 0;
 }
 
@@ -533,18 +503,16 @@ a:hover ~ .cursor-square {
   color: var(--text-muted);
 }
 
+.trigger-text,
+.keycap {
+  font-family: "Fira Code", monospace;
+}
+
 .trigger-text {
   font-size: 12px;
-  font-family: "Fira Code", monospace;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.trigger-right {
-  display: flex;
-  align-items: center;
-  gap: 4px;
 }
 
 .keycap {
@@ -559,17 +527,33 @@ a:hover ~ .cursor-square {
   align-items: center;
   justify-content: center;
   font-size: 11px;
-  font-family: "Fira Code", monospace;
-  letter-spacing: -0.2px;
+}
+
+.header-feedback {
+  margin-left: 8px;
+  color: var(--text-purple);
+  font-size: 12px;
+  opacity: 0;
+  transform: translateY(-3px);
+  transition: opacity var(--transition-med), transform var(--transition-med);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 320px;
+}
+
+.header-feedback.show {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .header-spacer {
   min-width: 140px;
 }
 
-/* ========================================================================== */
-/*                                  MENU BAR                                  */
-/* ========================================================================== */
+/* ========================================================================== 
+   07. MENU BAR
+   ========================================================================== */
 .menu-bar {
   height: var(--menu-bar-h);
   display: flex;
@@ -579,13 +563,13 @@ a:hover ~ .cursor-square {
   background: var(--bg-menubar);
   border-bottom: 1px solid var(--line);
   position: relative;
-  z-index: 2000; /* ✅ bring above overlay */
+  z-index: 70;
   user-select: none;
 }
 
 .menu-item {
   height: 100%;
-  padding: 10px 12px; /* bigger touch */
+  padding: 0 12px;
   display: inline-flex;
   align-items: center;
   color: var(--text);
@@ -593,12 +577,11 @@ a:hover ~ .cursor-square {
   font-family: "Fira Code", monospace;
   cursor: pointer;
   position: relative;
-  transition:
-    background var(--transition-fast),
-    color var(--transition-fast);
+  transition: background var(--transition-fast), color var(--transition-fast);
 }
 
-.menu-item:hover {
+.menu-item:hover,
+.menu-item.active {
   background: var(--bg-hover);
   color: var(--text-strong);
 }
@@ -616,12 +599,8 @@ a:hover ~ .cursor-square {
   border-radius: 10px;
   padding: 7px 0;
   display: none;
-  z-index: 50;
+  z-index: 9999;
   backdrop-filter: blur(14px);
-}
-
-.dropdown {
-  display: none;
 }
 
 .menu-item.active .dropdown {
@@ -635,10 +614,7 @@ a:hover ~ .cursor-square {
   align-items: center;
   color: var(--text);
   font-size: 13px;
-  transition:
-    background var(--transition-fast),
-    color var(--transition-fast),
-    padding-left var(--transition-fast);
+  transition: background var(--transition-fast), color var(--transition-fast), padding-left var(--transition-fast);
 }
 
 .dropdown div:hover {
@@ -653,9 +629,9 @@ a:hover ~ .cursor-square {
   margin: 6px 0;
 }
 
-/* ========================================================================== */
-/*                                MAIN LAYOUT                                 */
-/* ========================================================================== */
+/* ========================================================================== 
+   08. APP LAYOUT
+   ========================================================================== */
 .vscode-layout {
   height: calc(100vh - var(--top-header-h) - var(--menu-bar-h));
   display: flex;
@@ -664,11 +640,6 @@ a:hover ~ .cursor-square {
   overflow: hidden;
 }
 
-
-
-/* ========================================================================== */
-/*                               ACTIVITY BAR                                 */
-/* ========================================================================== */
 .activity-bar {
   width: var(--activity-w);
   height: 100%;
@@ -681,6 +652,7 @@ a:hover ~ .cursor-square {
   padding-top: 6px;
   position: relative;
   z-index: 8;
+  flex: 0 0 var(--activity-w);
 }
 
 .activity-icon {
@@ -708,20 +680,14 @@ a:hover ~ .cursor-square {
   width: 2px;
   background: transparent;
   transform: scaleY(0.45);
-  transition:
-    background var(--transition-fast),
-    transform var(--transition-fast);
+  transition: background var(--transition-fast), transform var(--transition-fast);
 }
 
-.activity-icon:hover {
-  opacity: 1;
-  color: var(--text-strong);
-  background: rgba(255, 255, 255, 0.03);
-}
-
+.activity-icon:hover,
 .activity-icon.active {
   opacity: 1;
   color: var(--text-strong);
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .activity-icon.active::before,
@@ -740,9 +706,6 @@ a:hover ~ .cursor-square {
   font-size: 24px;
 }
 
-/* ========================================================================== */
-/*                                 SIDEBAR                                    */
-/* ========================================================================== */
 .sidebar-panel {
   width: var(--sidebar-w);
   min-width: var(--sidebar-w);
@@ -754,12 +717,13 @@ a:hover ~ .cursor-square {
   display: flex;
   flex-direction: column;
   position: relative;
+  overflow: hidden;
   transition:
     width var(--transition-med),
     min-width var(--transition-med),
     opacity var(--transition-med),
     transform var(--transition-med);
-  overflow: hidden;
+  flex: 0 0 var(--sidebar-w);
 }
 
 .sidebar-panel.hide {
@@ -768,6 +732,7 @@ a:hover ~ .cursor-square {
   opacity: 0;
   transform: translateX(-18px);
   border-right: none;
+  flex-basis: 0;
 }
 
 .sidebar-header {
@@ -835,6 +800,23 @@ a:hover ~ .cursor-square {
   border-radius: 0 3px 3px 0;
 }
 
+.file::after {
+  content: "";
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  transition: background var(--transition-fast);
+}
+
+.file.active::after {
+  background: var(--accent-bright);
+}
+
 .copilot-box {
   margin: 12px;
   min-height: 66px;
@@ -850,7 +832,6 @@ a:hover ~ .cursor-square {
   color: #b997ff;
   font-size: 15px;
   font-weight: 600;
-  cursor: pointer;
   position: relative;
   overflow: hidden;
   transition:
@@ -878,15 +859,8 @@ a:hover ~ .cursor-square {
     0 0 26px rgba(124, 77, 255, 0.16);
 }
 
-.copilot-box:active {
-  transform: translateY(0);
-}
-
-/* ========================================================================== */
-/*                                EDITOR AREA                                 */
-/* ========================================================================== */
 .editor-area {
-  flex: 1;
+  flex: 1 1 auto;
   min-width: 0;
   height: 100%;
   display: flex;
@@ -894,27 +868,6 @@ a:hover ~ .cursor-square {
   background: var(--bg-editor);
   position: relative;
   overflow: hidden;
-}
-
-.editor-area.with-copilot {
-  margin-right: 380px;
-}
-
-.editor-area.with-copilot {
-  margin-right: 380px;
-}
-
-/* 🔥 ADD THIS EXACTLY BELOW */
-@media (max-width: 768px) {
-  .editor-area.with-copilot {
-    margin-right: 0 !important; /* ✅ FIX */
-  }
-}
-
-@media (max-width: 768px) {
-  .editor-area.with-copilot {
-    margin-right: 0 !important; /* ✅ FIX */
-  }
 }
 
 .editor-tabs {
@@ -926,6 +879,7 @@ a:hover ~ .cursor-square {
   overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap;
+  flex: 0 0 var(--tabs-h);
 }
 
 .editor-tabs::-webkit-scrollbar {
@@ -949,29 +903,18 @@ a:hover ~ .cursor-square {
   background: var(--bg-tab);
   cursor: pointer;
   position: relative;
-  transition:
-    color var(--transition-fast),
-    background var(--transition-fast);
+  transition: color var(--transition-fast), background var(--transition-fast), transform 0.2s ease;
 }
 
 .tab:hover {
   background: rgba(255, 255, 255, 0.03);
   color: var(--text-strong);
+  transform: translateY(-1px);
 }
 
 .tab.active {
   background: var(--bg-tab-active);
   color: var(--text-strong);
-}
-
-.tab.active::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 1px;
-  background: transparent;
 }
 
 .tab-icon {
@@ -997,9 +940,7 @@ a:hover ~ .cursor-square {
   justify-content: center;
   color: var(--text-muted);
   flex: 0 0 auto;
-  transition:
-    background var(--transition-fast),
-    color var(--transition-fast);
+  transition: background var(--transition-fast), color var(--transition-fast);
 }
 
 .tab-close:hover {
@@ -1011,7 +952,6 @@ a:hover ~ .cursor-square {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  padding-bottom: 80px; /* for bottom nav */
   overflow-x: hidden;
   padding: 28px 26px 36px;
   background:
@@ -1025,45 +965,255 @@ a:hover ~ .cursor-square {
   width: 10px;
 }
 
-.editor-content::-webkit-scrollbar-track {
-  background: transparent;
-}
-
 .editor-content::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.10);
   border-radius: 20px;
 }
 
-/* HERO TEXT */
-.hero-desc {
-  font-size: 18px;
-  line-height: 1.7;
-  color: #aaa;
+/* ========================================================================== 
+   09. COPILOT PANEL
+   ========================================================================== */
+.copilot-sidebar {
+  position: fixed;
+  top: calc(var(--top-header-h) + var(--menu-bar-h));
+  right: 0;
+  width: 360px;
+  height: calc(100vh - var(--top-header-h) - var(--menu-bar-h));
+  background: var(--bg-copilot);
+  border-left: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  z-index: 50;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  padding: 16px;
 }
 
-/* GRADIENT TEXT */
-.gradient-text {
-  background: linear-gradient(90deg, #4fc3f7, #a855f7, #ec4899);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.copilot-sidebar.open {
+  transform: translateX(0);
+}
+
+.copilot-sidebar.minimized {
+  width: 88px;
+  padding: 10px;
+  overflow: hidden;
+}
+
+.copilot-sidebar.minimized .copilot-workspace-row,
+.copilot-sidebar.minimized .copilot-side-hero,
+.copilot-sidebar.minimized .copilot-suggest-grid,
+.copilot-sidebar.minimized .copilot-side-messages,
+.copilot-sidebar.minimized .copilot-side-input-wrap {
+  display: none;
+}
+
+.copilot-side-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
   font-weight: 600;
+  color: #ddd;
+  margin-bottom: 10px;
 }
 
-/* BLINKING CURSOR */
-#typingHero::after {
-  content: "|";
-  animation: blink 1s infinite;
-  margin-left: 4px;
+.copilot-side-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-@keyframes blink {
-  0%, 50%, 100% { opacity: 1; }
-  25%, 75% { opacity: 0; }
+.copilot-side-minimize,
+.copilot-side-close {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  color: var(--text-soft);
+  transition: background var(--transition-fast), color var(--transition-fast);
 }
 
-/* ========================================================================== */
-/*                                TERMINAL PANEL                              */
-/* ========================================================================== */
+.copilot-side-minimize:hover,
+.copilot-side-close:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-strong);
+}
+
+.copilot-workspace-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.copilot-workspace-label {
+  font-size: 11px;
+  color: #888;
+}
+
+.copilot-workspace-pill {
+  background: #2a2d2e;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  color: #4fc3f7;
+}
+
+.copilot-side-hero {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.copilot-avatar-ring {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 12px;
+  border-radius: 50%;
+  border: 2px solid rgba(124, 77, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.copilot-avatar-core {
+  font-size: 26px;
+}
+
+.copilot-side-hero h3 {
+  font-size: 16px;
+  margin-bottom: 6px;
+  color: var(--text-strong);
+}
+
+.copilot-side-hero p {
+  font-size: 13px;
+  color: #aaa;
+  line-height: 1.6;
+}
+
+.copilot-suggest-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.copilot-suggest {
+  background: #252526;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 12px;
+  color: #ccc;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.copilot-suggest:hover {
+  background: #2d2d2d;
+  border-color: #7c4dff;
+  transform: translateY(-1px);
+}
+
+.copilot-side-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.copilot-message {
+  font-size: 13px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  line-height: 1.5;
+  max-width: 78%;
+  word-break: break-word;
+}
+
+.copilot-message.assistant {
+  background: #2a2d2e;
+  color: #ddd;
+}
+
+.copilot-message.user {
+  background: #7c4dff;
+  color: white;
+  align-self: flex-end;
+  margin-left: auto;
+}
+
+.copilot-side-input-wrap {
+  margin-top: auto;
+}
+
+.copilot-input-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+#copilotInput {
+  flex: 1;
+  min-height: 44px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: white;
+  font-size: 13px;
+}
+
+#copilotInput::placeholder {
+  color: #888;
+}
+
+#copilotInput:focus {
+  border-color: #7c4dff;
+  box-shadow: 0 0 20px rgba(124, 77, 255, 0.3);
+}
+
+#copilotSend,
+#copilotVoice {
+  width: 44px;
+  min-width: 44px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+}
+
+#copilotSend {
+  background: linear-gradient(135deg, #7c4dff, #4f46e5);
+  color: white;
+  box-shadow: 0 10px 25px rgba(124, 77, 255, 0.4);
+}
+
+#copilotSend:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 15px 30px rgba(124, 77, 255, 0.6);
+}
+
+#copilotVoice {
+  background: #2a2d2e;
+  color: #ccc;
+}
+
+#copilotVoice:hover {
+  background: #333;
+}
+
+.copilot-side-note {
+  font-size: 11px;
+  color: #888;
+  margin-top: 6px;
+  text-align: center;
+}
+
+/* ========================================================================== 
+   10. TERMINAL
+   ========================================================================== */
 .terminal-panel {
   position: fixed;
   left: var(--activity-w);
@@ -1076,13 +1226,12 @@ a:hover ~ .cursor-square {
   border-top: 1px solid var(--line);
   display: none;
   flex-direction: column;
-  z-index: 24;
+  z-index: 40;
   box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.32);
 }
 
 .terminal-panel.open {
   display: flex;
-  animation: terminalUp 0.18s ease;
 }
 
 .terminal-header {
@@ -1095,7 +1244,6 @@ a:hover ~ .cursor-square {
   font-size: 12px;
   font-family: "Fira Code", monospace;
   color: var(--text-soft);
-  letter-spacing: 0.25px;
 }
 
 .terminal-body {
@@ -1108,19 +1256,6 @@ a:hover ~ .cursor-square {
   color: var(--text-soft);
   white-space: pre-wrap;
   word-break: break-word;
-}
-
-.terminal-body::-webkit-scrollbar {
-  width: 10px;
-}
-
-.terminal-body::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.09);
-  border-radius: 12px;
-}
-
-.terminal-body div {
-  margin-bottom: 2px;
 }
 
 .terminal-input-line {
@@ -1143,16 +1278,18 @@ a:hover ~ .cursor-square {
   flex: 1;
   height: 26px;
   background: transparent;
-  border: none;
-  outline: none;
   color: var(--text-strong);
   font-family: "Fira Code", monospace;
   font-size: 13px;
 }
 
-/* ========================================================================== */
-/*                               SETTINGS PANEL                               */
-/* ========================================================================== */
+.terminal-body .success { color: var(--text-green); }
+.terminal-body .error { color: #ff8a8a; }
+.terminal-body .warning { color: var(--text-yellow); }
+
+/* ========================================================================== 
+   11. SETTINGS PANEL
+   ========================================================================== */
 .settings-panel {
   position: fixed;
   left: 16px;
@@ -1166,13 +1303,17 @@ a:hover ~ .cursor-square {
   border: 1px solid var(--line-strong);
   box-shadow: var(--shadow-xl);
   border-radius: 14px;
-  z-index: 70;
+  z-index: 60;
   display: none;
 }
 
 .settings-panel.open {
   display: block;
-  animation: fadeUp 0.20s ease;
+}
+
+.settings-panel.minimized {
+  max-height: 44px;
+  overflow: hidden;
 }
 
 .settings-header {
@@ -1229,13 +1370,13 @@ a:hover ~ .cursor-square {
   outline: 1px solid rgba(0, 122, 204, 0.24);
 }
 
-/* ========================================================================== */
-/*                              COMMAND PALETTE                               */
-/* ========================================================================== */
+/* ========================================================================== 
+   12. COMMAND PALETTE
+   ========================================================================== */
 .palette-overlay {
   position: fixed;
   inset: 0;
-  z-index: 90;
+  z-index: 80;
   display: none;
 }
 
@@ -1265,7 +1406,6 @@ a:hover ~ .cursor-square {
     var(--shadow-xl),
     0 0 50px rgba(124, 77, 255, 0.12);
   overflow: hidden;
-  animation: palettePop 0.18s ease;
 }
 
 .palette-top {
@@ -1277,10 +1417,6 @@ a:hover ~ .cursor-square {
   border-bottom: 1px solid var(--line-soft);
 }
 
-.palette-feedback {
-  display: none;
-}
-
 .palette-leading {
   color: var(--accent-bright);
   font-size: 18px;
@@ -1290,8 +1426,6 @@ a:hover ~ .cursor-square {
 .palette-input {
   flex: 1;
   background: transparent;
-  border: none;
-  outline: none;
   color: var(--text-strong);
   font-family: "Fira Code", monospace;
   font-size: 14px;
@@ -1319,15 +1453,6 @@ a:hover ~ .cursor-square {
   padding: 6px 0;
 }
 
-.palette-list::-webkit-scrollbar {
-  width: 10px;
-}
-
-.palette-list::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-}
-
 .palette-section-label {
   min-height: 26px;
   padding: 0 16px;
@@ -1347,13 +1472,9 @@ a:hover ~ .cursor-square {
   justify-content: space-between;
   gap: 10px;
   padding: 0 16px;
-  border: none;
   background: transparent;
   color: var(--text);
-  cursor: pointer;
-  transition:
-    background var(--transition-fast),
-    transform var(--transition-fast);
+  transition: background var(--transition-fast), transform var(--transition-fast);
 }
 
 .palette-item:hover,
@@ -1380,50 +1501,15 @@ a:hover ~ .cursor-square {
   flex: 0 0 auto;
 }
 
-.palette-icon.star {
-  background: rgba(124, 77, 255, 0.18);
-  color: #d7c2ff;
-}
-
-.palette-icon.react {
-  background: rgba(79, 193, 255, 0.18);
-  color: #6fdcff;
-}
-
-.palette-icon.html {
-  background: rgba(255, 121, 198, 0.18);
-  color: #ff9ad6;
-}
-
-.palette-icon.js {
-  background: rgba(220, 220, 170, 0.18);
-  color: #f1ee99;
-}
-
-.palette-icon.json {
-  background: rgba(115, 201, 145, 0.18);
-  color: #8fe3ad;
-}
-
-.palette-icon.ts {
-  background: rgba(64, 120, 242, 0.22);
-  color: #8cb2ff;
-}
-
-.palette-icon.css {
-  background: rgba(54, 109, 255, 0.18);
-  color: #8fb1ff;
-}
-
-.palette-icon.md {
-  background: rgba(87, 231, 218, 0.15);
-  color: #7cf2e9;
-}
-
-.palette-icon.pdf {
-  background: rgba(255, 80, 80, 0.18);
-  color: #ff9a9a;
-}
+.palette-icon.star { background: rgba(124, 77, 255, 0.18); color: #d7c2ff; }
+.palette-icon.react { background: rgba(79, 193, 255, 0.18); color: #6fdcff; }
+.palette-icon.html { background: rgba(255, 121, 198, 0.18); color: #ff9ad6; }
+.palette-icon.js { background: rgba(220, 220, 170, 0.18); color: #f1ee99; }
+.palette-icon.json { background: rgba(115, 201, 145, 0.18); color: #8fe3ad; }
+.palette-icon.ts { background: rgba(64, 120, 242, 0.22); color: #8cb2ff; }
+.palette-icon.css { background: rgba(54, 109, 255, 0.18); color: #8fb1ff; }
+.palette-icon.md { background: rgba(87, 231, 218, 0.15); color: #7cf2e9; }
+.palette-icon.pdf { background: rgba(255, 80, 80, 0.18); color: #ff9a9a; }
 
 .palette-text {
   overflow: hidden;
@@ -1437,10 +1523,6 @@ a:hover ~ .cursor-square {
   font-size: 12px;
   font-family: "Fira Code", monospace;
   white-space: nowrap;
-}
-
-.palette-meta.shortcut {
-  color: var(--text-soft);
 }
 
 .palette-footer {
@@ -1459,11 +1541,16 @@ a:hover ~ .cursor-square {
   margin-left: auto;
 }
 
-/* ========================================================================== */
-/*                                 HOME VIEW                                  */
-/* ========================================================================== */
-.home-container {
+/* ========================================================================== 
+   13. CONTENT STYLES
+   ========================================================================== */
+.home-container,
+.about-container,
+.projects-container {
   width: 100%;
+}
+
+.home-container {
   min-height: 100%;
   display: flex;
   align-items: center;
@@ -1480,7 +1567,8 @@ a:hover ~ .cursor-square {
   gap: 62px;
 }
 
-.home-left {
+.home-left,
+.home-right {
   min-width: 0;
 }
 
@@ -1490,13 +1578,37 @@ a:hover ~ .cursor-square {
   align-items: center;
 }
 
+.code-line,
+.section-title,
+.menu-item,
+.trigger-text,
+.tab-label,
+.prompt,
+.palette-text,
+.palette-meta,
+.keycap,
+.sidebar-header,
+.terminal-header,
+.terminal-body,
+.timeline-item span,
+.skills-chip,
+.roles span,
+.home-buttons button,
+.theme-option,
+.action,
+#copilotSend,
+#terminalInput,
+#copilotInput,
+.palette-input,
+.copilot-workspace-pill {
+  font-family: "Fira Code", monospace;
+}
+
 .code-line {
   color: var(--text-cyan);
-  font-family: "Fira Code", monospace;
   font-size: 18px;
   min-height: 28px;
   margin-bottom: 22px;
-  letter-spacing: -0.2px;
 }
 
 .hero-name {
@@ -1530,7 +1642,6 @@ a:hover ~ .cursor-square {
   border: 1px solid var(--line-soft);
   color: var(--text);
   font-size: 13px;
-  font-family: "Fira Code", monospace;
   box-shadow: var(--shadow-xs);
 }
 
@@ -1540,6 +1651,24 @@ a:hover ~ .cursor-square {
   font-size: 20px;
   line-height: 1.65;
   margin-bottom: 28px;
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, #4fc3f7, #a855f7, #ec4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 600;
+}
+
+#typingHero::after {
+  content: "|";
+  animation: blink 1s infinite;
+  margin-left: 4px;
+}
+
+@keyframes blink {
+  0%, 50%, 100% { opacity: 1; }
+  25%, 75% { opacity: 0; }
 }
 
 .home-buttons {
@@ -1555,9 +1684,7 @@ a:hover ~ .cursor-square {
   padding: 0 18px;
   border-radius: 8px;
   font-size: 15px;
-  font-family: "Fira Code", monospace;
   font-weight: 600;
-  cursor: pointer;
   transition:
     transform var(--transition-fast),
     background var(--transition-fast),
@@ -1615,9 +1742,7 @@ a:hover ~ .cursor-square {
 .stat-card:hover {
   transform: translateY(-2px);
   border-color: rgba(0, 122, 204, 0.26);
-  box-shadow:
-    var(--shadow-md),
-    0 0 0 1px rgba(0, 122, 204, 0.10) inset;
+  box-shadow: var(--shadow-md), 0 0 0 1px rgba(0, 122, 204, 0.10) inset;
 }
 
 .stat-card strong {
@@ -1626,7 +1751,6 @@ a:hover ~ .cursor-square {
   font-size: 34px;
   line-height: 1;
   margin-bottom: 8px;
-  font-family: "Fira Code", monospace;
 }
 
 .stat-card span {
@@ -1642,19 +1766,13 @@ a:hover ~ .cursor-square {
   border: 1px solid var(--line-strong);
   overflow: hidden;
   position: relative;
-  box-shadow:
-    var(--shadow-lg),
-    0 0 60px rgba(0, 122, 204, 0.10);
-  transition:
-    transform var(--transition-med),
-    box-shadow var(--transition-med);
+  box-shadow: var(--shadow-lg), 0 0 60px rgba(0, 122, 204, 0.10);
+  transition: transform var(--transition-med), box-shadow var(--transition-med);
 }
 
 .profile-wrapper:hover {
   transform: translateY(-3px);
-  box-shadow:
-    var(--shadow-xl),
-    0 0 70px rgba(0, 122, 204, 0.14);
+  box-shadow: var(--shadow-xl), 0 0 70px rgba(0, 122, 204, 0.14);
 }
 
 .profile-wrapper img {
@@ -1686,12 +1804,9 @@ a:hover ~ .cursor-square {
     linear-gradient(180deg, #181c26, #12151c);
 }
 
-/* ========================================================================== */
-/*                               ABOUT / GENERAL                              */
-/* ========================================================================== */
-.about-container {
-  width: 100%;
-  max-width: 1100px;
+.about-container,
+.projects-container {
+  max-width: 1140px;
   margin: 0 auto;
   padding: 4px 4px 30px;
 }
@@ -1703,14 +1818,13 @@ a:hover ~ .cursor-square {
   margin-bottom: 16px;
 }
 
-.about-card {
+.about-card,
+.project-card {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent),
     rgba(255, 255, 255, 0.015);
   border: 1px solid var(--line-soft);
   border-radius: 14px;
-  padding: 22px 22px;
-  margin-top: 18px;
   box-shadow: var(--shadow-xs);
   transition:
     transform var(--transition-fast),
@@ -1718,7 +1832,13 @@ a:hover ~ .cursor-square {
     box-shadow var(--transition-fast);
 }
 
-.about-card:hover {
+.about-card {
+  padding: 22px;
+  margin-top: 18px;
+}
+
+.about-card:hover,
+.project-card:hover {
   transform: translateY(-1px);
   border-color: rgba(255, 255, 255, 0.12);
   box-shadow: var(--shadow-sm);
@@ -1790,7 +1910,6 @@ a:hover ~ .cursor-square {
   color: var(--text-muted);
   font-size: 13px;
   margin-bottom: 8px;
-  font-family: "Fira Code", monospace;
 }
 
 .timeline-item p {
@@ -1815,7 +1934,6 @@ a:hover ~ .cursor-square {
   border: 1px solid var(--line-soft);
   color: var(--text);
   font-size: 13px;
-  font-family: "Fira Code", monospace;
   transition:
     transform var(--transition-fast),
     background var(--transition-fast),
@@ -1828,16 +1946,6 @@ a:hover ~ .cursor-square {
   border-color: rgba(0, 122, 204, 0.24);
 }
 
-/* ========================================================================== */
-/*                                 PROJECTS                                   */
-/* ========================================================================== */
-.projects-container {
-  width: 100%;
-  max-width: 1140px;
-  margin: 0 auto;
-  padding: 4px 4px 30px;
-}
-
 .project-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1848,16 +1956,6 @@ a:hover ~ .cursor-square {
 .project-card {
   min-height: 190px;
   padding: 22px 20px;
-  border-radius: 14px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent),
-    rgba(255, 255, 255, 0.018);
-  border: 1px solid var(--line-soft);
-  box-shadow: var(--shadow-xs);
-  transition:
-    transform var(--transition-fast),
-    border-color var(--transition-fast),
-    box-shadow var(--transition-fast);
   position: relative;
   overflow: hidden;
 }
@@ -1872,14 +1970,6 @@ a:hover ~ .cursor-square {
   pointer-events: none;
 }
 
-.project-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(0, 122, 204, 0.24);
-  box-shadow:
-    var(--shadow-md),
-    0 0 0 1px rgba(0, 122, 204, 0.10) inset;
-}
-
 .project-card h3 {
   color: var(--text-strong);
   font-size: 20px;
@@ -1892,194 +1982,488 @@ a:hover ~ .cursor-square {
   line-height: 1.8;
 }
 
-/* ========================================================================== */
-/*                                  README                                    */
-/* ========================================================================== */
-.about-container .home-buttons {
+.project-card.clickable {
+  cursor: pointer;
+}
+
+.view-btn {
+  display: inline-flex;
+  align-items: center;
   margin-top: 16px;
-}
-
-/* ========================================================================== */
-/*                                  COPILOT                                   */
-/* ========================================================================== */
-
-/* ================= RIGHT SIDE COPILOT PANEL ================= */
-
-.copilot-sidebar {
-  position: fixed;
-  top: calc(var(--top-header-h) + var(--menu-bar-h));
-  right: 0;
-  width: 380px;
-  height: calc(100vh - var(--top-header-h) - var(--menu-bar-h));
-  background: var(--bg-copilot);
-  border-left: 1px solid var(--line);
-  box-shadow: -10px 0 40px rgba(0,0,0,0.4);
-  display: flex;
-  flex-direction: column;
-  z-index: 40;
-
-  transform: translateX(100%);
-  transition: transform 0.3s ease;
-}
-
-.copilot-card {
-  margin-top: 20px;
-  min-height: calc(100vh - 220px);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent),
-    var(--bg-copilot-card);
-  border: 1px solid var(--line-soft);
-  border-radius: 16px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  box-shadow:
-    var(--shadow-md),
-    0 0 0 1px rgba(124, 77, 255, 0.05) inset;
-}
-
-.copilot-messages {
-  flex: 1;
-  min-height: 360px;
-  padding: 16px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  background:
-    radial-gradient(circle at 50% 0%, rgba(124, 77, 255, 0.06), transparent 30%),
-    transparent;
-}
-
-.copilot-messages::-webkit-scrollbar {
-  width: 10px;
-}
-
-.copilot-messages::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-}
-
-.copilot-message {
-  max-width: 78%;
-  min-height: 42px;
-  padding: 12px 14px;
-  border-radius: 14px;
-  line-height: 1.7;
-  font-size: 14px;
-  box-shadow: var(--shadow-xs);
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-
-.copilot-message.assistant {
-  align-self: flex-start;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
   color: var(--text-strong);
-  background:
-    linear-gradient(180deg, rgba(124, 77, 255, 0.10), transparent),
-    rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(124, 77, 255, 0.18);
-}
-
-.copilot-message.user {
-  align-self: flex-end;
-  color: white;
-  background:
-    linear-gradient(180deg, rgba(0, 122, 204, 0.22), transparent),
-    var(--accent);
+  font-size: 13px;
+  font-family: "Fira Code", monospace;
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.copilot-chips {
+.project-actions {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  padding: 0 16px 16px;
-  border-top: 1px solid var(--line-soft);
-  background: rgba(255, 255, 255, 0.01);
+  justify-content: center;
+  margin-top: 14px;
 }
 
-.copilot-chip {
-  min-height: 38px;
-  padding: 0 14px;
-  border-radius: 999px;
-  background: var(--bg-chip);
-  border: 1px solid var(--line-soft);
-  color: var(--text-soft);
-  cursor: pointer;
+.github-btn {
+  background: #ffffff;
+  color: #111;
+  border: 1px solid #ddd;
+  padding: 9px 14px;
+  border-radius: 8px;
   font-size: 13px;
-  transition:
-    background var(--transition-fast),
-    border-color var(--transition-fast),
-    color var(--transition-fast),
-    transform var(--transition-fast);
+  font-weight: 600;
 }
 
-.copilot-chip:hover {
-  background: var(--bg-chip-hover);
-  border-color: var(--copilot-border);
-  color: var(--text-strong);
-  transform: translateY(-1px);
+.github-btn:hover {
+  background: #f6f8fa;
 }
 
-.copilot-input-row {
-  min-height: 78px;
-  padding: 14px 16px 16px;
+/* ========================================================================== 
+   14. MODALS / LOR / CAROUSEL
+   ========================================================================== */
+.image-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.88);
   display: flex;
   align-items: center;
-  gap: 10px;
-  border-top: 1px solid var(--line-soft);
-  background: var(--bg-copilot);
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
 }
 
-#copilotInput {
-  flex: 1;
-  min-height: 46px;
-  padding: 0 14px;
+.image-modal-content {
+  position: relative;
+  width: min(1000px, 96vw);
+  max-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-modal-content iframe,
+.image-modal-content img,
+.carousel-img {
+  max-width: 100%;
+  max-height: 84vh;
   border-radius: 12px;
-  background: var(--bg-copilot-input);
-  border: 1px solid var(--line-soft);
-  color: var(--text-strong);
-  outline: none;
-  transition:
-    border-color var(--transition-fast),
-    box-shadow var(--transition-fast);
+  background: white;
+  box-shadow: var(--shadow-xl);
 }
 
-#copilotInput:focus {
-  border-color: rgba(124, 77, 255, 0.34);
-  box-shadow: 0 0 0 3px rgba(124, 77, 255, 0.10);
+.lor-img {
+  object-fit: contain;
 }
 
-#copilotInput::placeholder {
-  color: var(--text-muted);
-}
-
-#copilotSend {
-  min-width: 92px;
-  min-height: 46px;
-  padding: 0 18px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, var(--copilot-2), var(--copilot-3));
+.close-modal {
+  position: absolute;
+  top: -44px;
+  right: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-size: 28px;
   color: white;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 14px 26px rgba(124, 77, 255, 0.22);
-  transition:
-    transform var(--transition-fast),
-    filter var(--transition-fast),
-    box-shadow var(--transition-fast);
+  background: rgba(255, 255, 255, 0.08);
 }
 
-#copilotSend:hover {
-  transform: translateY(-1px);
-  filter: brightness(1.05);
-  box-shadow: 0 16px 28px rgba(124, 77, 255, 0.28);
+.close-modal:hover {
+  background: rgba(255, 255, 255, 0.18);
 }
 
-/* ========================================================================== */
-/*                                VISUAL UTILITIES                            */
-/* ========================================================================== */
+.carousel-container {
+  position: relative;
+  width: min(1100px, 96vw);
+  max-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-img {
+  width: auto;
+  max-width: 100%;
+}
+
+.nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+  color: white;
+  font-size: 24px;
+  display: grid;
+  place-items: center;
+}
+
+.prev { left: 12px; }
+.next { right: 12px; }
+
+.nav:hover {
+  background: rgba(0, 0, 0, 0.72);
+}
+
+/* ========================================================================== 
+   15. RESPONSIVE MOBILE SYSTEM MATCHED TO JS
+   ========================================================================== */
+.mobile-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 89;
+  display: none;
+}
+
+.mobile-backdrop.show {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  body {
+    overflow: hidden;
+  }
+
+  .cursor-square,
+  .cursor-dot {
+    display: none !important;
+  }
+
+  .app-shell {
+    height: 100dvh;
+  }
+
+  .top-header {
+    gap: 8px;
+    padding: 0 8px;
+  }
+
+  .header-command-trigger {
+    max-width: none;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .trigger-text {
+    font-size: 11px;
+  }
+
+  .header-spacer,
+  .keycap {
+    display: none;
+  }
+
+  .menu-bar {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0 6px;
+    gap: 0;
+  }
+
+  .menu-bar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .menu-item {
+    padding: 0 10px;
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .dropdown {
+    min-width: 220px;
+  }
+
+  .vscode-layout {
+    height: calc(100dvh - var(--top-header-h) - var(--menu-bar-h));
+  }
+
+  .activity-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 58px;
+    flex-direction: row;
+    justify-content: space-around;
+    padding-top: 0;
+    border-right: none;
+    border-top: 1px solid var(--line);
+    z-index: 95;
+  }
+
+  .activity-icon {
+    width: 20%;
+    height: 100%;
+    font-size: 20px;
+  }
+
+  .activity-icon::before {
+    left: 50%;
+    top: auto;
+    bottom: 0;
+    width: 18px;
+    height: 2px;
+    transform: translateX(-50%) scaleX(0.45);
+  }
+
+  .activity-icon.active::before,
+  .activity-icon:hover::before {
+    transform: translateX(-50%) scaleX(1);
+  }
+
+  .activity-bottom {
+    display: none;
+  }
+
+  .sidebar-panel {
+    position: fixed;
+    top: calc(var(--top-header-h) + var(--menu-bar-h));
+    left: 0;
+    width: min(84vw, 320px);
+    min-width: min(84vw, 320px);
+    height: calc(100dvh - var(--top-header-h) - var(--menu-bar-h));
+    z-index: 92;
+    transform: translateX(-100%);
+    box-shadow: var(--shadow-xl);
+  }
+
+  .sidebar-panel.m-show {
+    transform: translateX(0);
+  }
+
+  .sidebar-panel.hide {
+    width: min(84vw, 320px);
+    min-width: min(84vw, 320px);
+    opacity: 1;
+    transform: translateX(-100%);
+    border-right: 1px solid var(--line);
+  }
+
+  .editor-area {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .editor-tabs {
+    padding-right: 0;
+  }
+
+  .tab {
+    min-width: 130px;
+  }
+
+  .editor-content {
+    padding: 18px 16px 88px;
+  }
+
+  .copilot-sidebar {
+    top: calc(var(--top-header-h) + var(--menu-bar-h));
+    width: 100%;
+    height: calc(100dvh - var(--top-header-h) - var(--menu-bar-h));
+    z-index: 93;
+    padding: 14px;
+  }
+
+  .copilot-sidebar.m-show {
+    transform: translateX(0);
+  }
+
+  .copilot-suggest-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .terminal-panel {
+    left: 0;
+    right: 0;
+    bottom: 58px;
+    height: 38dvh;
+    z-index: 94;
+  }
+
+  .settings-panel {
+    left: 50%;
+    bottom: 74px;
+    transform: translateX(-50%);
+    width: min(92vw, 380px);
+    z-index: 94;
+  }
+
+  .palette-box {
+    top: 74px;
+    width: calc(100vw - 18px);
+  }
+
+  .home-container {
+    align-items: flex-start;
+    padding: 0;
+  }
+
+  .home-grid {
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
+
+  .home-right {
+    order: -1;
+  }
+
+  .hero-name {
+    font-size: clamp(42px, 14vw, 72px);
+    letter-spacing: -2px;
+  }
+
+  .hero-desc {
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  .profile-wrapper {
+    width: min(82vw, 320px);
+    height: min(104vw, 420px);
+  }
+
+  .stats {
+    flex-direction: column;
+  }
+
+  .stat-card {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .focus-grid,
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project-card {
+    min-height: auto;
+  }
+
+  .project-actions {
+    justify-content: stretch;
+  }
+
+  .github-btn {
+    width: 100%;
+  }
+
+  .image-modal {
+    padding: 14px;
+  }
+
+  .close-modal {
+    top: -38px;
+    width: 34px;
+    height: 34px;
+  }
+
+  .nav {
+    width: 42px;
+    height: 42px;
+    font-size: 22px;
+  }
+
+  .prev { left: 6px; }
+  .next { right: 6px; }
+}
+
+/* ========================================================================== 
+   16. SMALL DEVICES
+   ========================================================================== */
+@media (max-width: 480px) {
+  .top-header {
+    padding: 0 6px;
+  }
+
+  .mac-dots {
+    gap: 8px;
+    padding: 4px;
+  }
+
+  .dot {
+    width: 11px;
+    height: 11px;
+  }
+
+  .header-command-trigger {
+    height: 28px;
+    padding: 0 8px;
+  }
+
+  .trigger-text {
+    font-size: 10px;
+  }
+
+  .menu-item {
+    padding: 0 9px;
+    font-size: 12px;
+  }
+
+  .sidebar-panel {
+    width: 88vw;
+    min-width: 88vw;
+  }
+
+  .editor-content {
+    padding: 16px 14px 88px;
+  }
+
+  .hero-name {
+    font-size: clamp(38px, 15vw, 62px);
+  }
+
+  .roles span {
+    font-size: 12px;
+  }
+
+  .home-buttons button {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .copilot-sidebar {
+    padding: 12px;
+  }
+
+  .copilot-side-header {
+    margin-bottom: 8px;
+  }
+
+  .copilot-avatar-ring {
+    width: 60px;
+    height: 60px;
+  }
+
+  .copilot-avatar-core {
+    font-size: 22px;
+  }
+
+  .copilot-input-row {
+    gap: 6px;
+  }
+
+  #copilotSend,
+  #copilotVoice {
+    width: 42px;
+    min-width: 42px;
+  }
+
+  .palette-box {
+    top: 66px;
+  }
+}
+
+/* ========================================================================== 
+   17. ANIMATIONS
+   ========================================================================== */
 .home-animate .hero-reveal,
 .home-animate .role-reveal,
 .home-animate .desc-reveal,
@@ -2091,37 +2475,32 @@ a:hover ~ .cursor-square {
   animation: homeFadeUp 0.65s ease forwards;
 }
 
-.home-animate .hero-reveal {
-  animation-delay: 0.06s;
-}
-
-.home-animate .role-reveal {
-  animation-delay: 0.14s;
-}
-
-.home-animate .desc-reveal {
-  animation-delay: 0.22s;
-}
-
-.home-animate .button-reveal {
-  animation-delay: 0.30s;
-}
-
-.home-animate .stats-reveal {
-  animation-delay: 0.38s;
-}
-
-.home-animate .image-reveal {
-  animation-delay: 0.24s;
-}
+.home-animate .hero-reveal { animation-delay: 0.06s; }
+.home-animate .role-reveal { animation-delay: 0.14s; }
+.home-animate .desc-reveal { animation-delay: 0.22s; }
+.home-animate .button-reveal { animation-delay: 0.30s; }
+.home-animate .stats-reveal { animation-delay: 0.38s; }
+.home-animate .image-reveal { animation-delay: 0.24s; }
 
 .floating-photo {
   animation: floatPhoto 4.6s ease-in-out infinite;
 }
 
-/* ========================================================================== */
-/*                              ADDITIONAL STATES                             */
-/* ========================================================================== */
+@keyframes homeFadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes floatPhoto {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* ========================================================================== 
+   18. ACCESSIBILITY / SELECTION / SCROLL
+   ========================================================================== */
 button:focus-visible,
 input:focus-visible,
 .theme-option:focus-visible,
@@ -2139,71 +2518,6 @@ input:focus-visible,
   color: white;
 }
 
-/* ========================================================================== */
-/*                               CODE-LIKE TEXT                               */
-/* ========================================================================== */
-.hero-name,
-.section-title,
-.code-line,
-.tab-label,
-.prompt,
-.palette-text,
-.palette-meta,
-.menu-item,
-.sidebar-header,
-.file,
-.terminal-header,
-.terminal-body,
-.trigger-text,
-.keycap,
-.palette-input,
-.timeline-item span {
-  letter-spacing: -0.15px;
-}
-
-.code-line,
-.section-title,
-.menu-item,
-.trigger-text,
-.tab-label,
-.prompt,
-.palette-text,
-.palette-meta,
-.keycap,
-.sidebar-header,
-.terminal-header,
-.terminal-body,
-.timeline-item span,
-.skills-chip,
-.roles span,
-.home-buttons button,
-.theme-option,
-.action,
-#copilotSend,
-.copilot-chip,
-#terminalInput,
-#copilotInput,
-.palette-input {
-  font-family: "Fira Code", monospace;
-}
-
-/* ========================================================================== */
-/*                              FORM / INPUT STYLES                           */
-/* ========================================================================== */
-input,
-textarea {
-  appearance: none;
-}
-
-input:-webkit-autofill,
-textarea:-webkit-autofill {
-  -webkit-text-fill-color: var(--text-strong);
-  transition: background-color 9999s ease-in-out 0s;
-}
-
-/* ========================================================================== */
-/*                              SCROLLBAR GLOBAL                              */
-/* ========================================================================== */
 *::-webkit-scrollbar {
   width: 10px;
   height: 10px;
@@ -2222,1335 +2536,21 @@ textarea:-webkit-autofill {
   background: rgba(255, 255, 255, 0.14);
 }
 
-/* ========================================================================== */
-/*                               STATUS-LIKE FX                               */
-/* ========================================================================== */
-.activity-icon:nth-child(1) {
-  color: var(--text-strong);
-}
-
-.file[data-tab="home"],
-.file[data-tab="about"],
-.file[data-tab="projects"],
-.file[data-tab="skills"],
-.file[data-tab="experience"],
-.file[data-tab="contact"],
-.file[data-tab="readme"],
-.file[data-tab="resume"],
-.file[data-tab="copilot"] {
-  position: relative;
-}
-
-.file[data-tab="home"]::after,
-.file[data-tab="about"]::after,
-.file[data-tab="projects"]::after,
-.file[data-tab="skills"]::after,
-.file[data-tab="experience"]::after,
-.file[data-tab="contact"]::after,
-.file[data-tab="readme"]::after,
-.file[data-tab="resume"]::after,
-.file[data-tab="copilot"]::after {
-  content: "";
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  transform: translateY(-50%);
-  background: transparent;
-  transition: background var(--transition-fast);
-}
-
-.file.active::after {
-  background: var(--accent-bright);
-}
-
-
-/* ================= AHANA COPILOT EXACT UI ================= */
-
-.copilot-sidebar {
-  width: 360px;
-  background: #1e1e1e;
-  border-left: 1px solid rgba(255,255,255,0.06);
-  padding: 16px;
-}
-
-/* HEADER */
-.copilot-side-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 14px;
-  font-weight: 600;
-  color: #ddd;
-  margin-bottom: 10px;
-}
-
-/* WORKSPACE */
-.copilot-workspace-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 18px;
-}
-
-.copilot-workspace-label {
-  font-size: 11px;
-  color: #888;
-}
-
-.copilot-workspace-pill {
-  background: #2a2d2e;
-  padding: 4px 10px;
-  border-radius: 8px;
-  font-size: 12px;
-  color: #4fc3f7;
-}
-
-/* HERO SECTION */
-.copilot-side-hero {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.copilot-avatar-ring {
-  width: 70px;
-  height: 70px;
-  margin: 0 auto 12px;
-  border-radius: 50%;
-  border: 2px solid rgba(124,77,255,0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.copilot-avatar-core {
-  font-size: 26px;
-}
-
-.copilot-side-hero h3 {
-  font-size: 16px;
-  margin-bottom: 6px;
-}
-
-.copilot-side-hero p {
-  font-size: 13px;
-  color: #aaa;
-}
-
-/* SUGGESTIONS GRID */
-.copilot-suggest-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.copilot-suggest {
-  background: #252526;
-  border: 1px solid rgba(255,255,255,0.05);
-  border-radius: 10px;
-  padding: 10px;
-  font-size: 12px;
-  color: #ccc;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.copilot-suggest:hover {
-  background: #2d2d2d;
-  border-color: #7c4dff;
-  transform: translateY(-1px);
-}
-
-/* CHAT MESSAGES */
-.copilot-side-messages {
-  flex: 1;
-  overflow-y: auto;
-  padding-right: 4px;
-}
-
-.copilot-message {
-  font-size: 13px;
-  padding: 10px 12px;
-  margin-bottom: 10px;
-  border-radius: 10px;
-  line-height: 1.5;
-}
-
-.copilot-message.assistant {
-  background: #2a2d2e;
-  color: #ddd;
-}
-
-.copilot-message.user {
-  background: #7c4dff;
-  color: white;
-  align-self: flex-end;
-}
-
-/* INPUT SECTION */
-.copilot-side-input-wrap {
-  margin-top: auto;
-}
-
-.copilot-input-row {
-  display: flex;
-  gap: 8px;
-  margin-top: 10px;
-}
-
-#copilotInput {
-  flex: 1;
-  padding: 10px;
-  border-radius: 10px;
-  background: #2a2d2e;
-  border: 1px solid rgba(255,255,255,0.06);
-  color: white;
-  font-size: 13px;
-}
-
-#copilotInput::placeholder {
-  color: #888;
-}
-
-/* SEND BUTTON */
-#copilotSend {
-  width: 44px;
-  border-radius: 10px;
-  border: none;
-  background: linear-gradient(135deg, #7c4dff, #5c6bc0);
-  color: white;
-  cursor: pointer;
-}
-
-/* VOICE BUTTON */
-#copilotVoice {
-  width: 44px;
-  border-radius: 10px;
-  border: none;
-  background: #2a2d2e;
-  color: #ccc;
-  cursor: pointer;
-}
-
-#copilotVoice:hover {
-  background: #333;
-}
-
-/* FOOTER NOTE */
-.copilot-side-note {
-  font-size: 11px;
-  color: #888;
-  margin-top: 6px;
-  text-align: center;
-}
-
-/* ================= EDITOR SHIFT ================= */
-
-.editor-area.with-copilot {
-  margin-right: 380px;
-}
-
-@media (max-width: 768px) {
-  .editor-area.with-copilot {
-    margin-right: 0 !important; /* ✅ FIX */
-  }
-}
-
-/* ================= SMOOTH TAB ANIMATION ================= */
-
-.tab {
-  transition: all 0.2s ease;
-}
-
-.tab:hover {
-  transform: translateY(-1px);
-}
-
-/* ================= GLASS EFFECT ================= */
-
+/* ========================================================================== 
+   19. NICE LITTLE DETAILS
+   ========================================================================== */
 .editor-area {
   backdrop-filter: blur(6px);
 }
 
-/* ================= COPILOT INPUT MODERN ================= */
-
-#copilotInput {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.08);
-}
-
-#copilotInput:focus {
-  border-color: #7c4dff;
-  box-shadow: 0 0 20px rgba(124,77,255,0.3);
-}
-
-/* ================= BUTTON GLOW ================= */
-
-#copilotSend {
-  background: linear-gradient(135deg, #7c4dff, #4f46e5);
-  box-shadow: 0 10px 25px rgba(124,77,255,0.4);
-}
-
-#copilotSend:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 15px 30px rgba(124,77,255,0.6);
-}
-
-/* ================= SCROLL SMOOTH ================= */
-
-.copilot-sidebar * {
-  scroll-behavior: smooth;
-}
-
-/* ========================================================================== */
-/*                               COMMAND PALETTE FX                           */
-/* ========================================================================== */
-.palette-item.active .palette-meta,
-.palette-item:hover .palette-meta {
-  color: var(--text-soft);
-}
-
-.palette-item.active .palette-text,
-.palette-item:hover .palette-text {
-  color: var(--text-strong);
-}
-
-/* ========================================================================== */
-/*                             TERMINAL PROMPT FX                             */
-/* ========================================================================== */
-.terminal-body div:first-child {
-  color: var(--text-soft);
-}
-
-.terminal-body .success {
-  color: var(--text-green);
-}
-
-.terminal-body .warning {
-  color: var(--text-yellow);
-}
-
-.terminal-body .error {
-  color: var(--danger);
-}
-
-/* ========================================================================== */
-/*                               EXTRA UTILITIES                              */
-/* ========================================================================== */
-.hidden {
-  display: none !important;
-}
-
-.flex {
-  display: flex !important;
-}
-
-.grid {
-  display: grid !important;
-}
-
-.center {
-  display: grid !important;
-  place-items: center !important;
-}
-
-/* ========================================================================== */
-/*                                  ANIMATIONS                                */
-/* ========================================================================== */
-@keyframes fadeDown {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes palettePop {
-  from {
-    opacity: 0;
-    transform: translate(-50%, -10px) scale(0.98);
-  }
-
-  to {
-    opacity: 1;
-    transform: translate(-50%, 0) scale(1);
-  }
-}
-
-@keyframes terminalUp {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes homeFadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(24px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes floatPhoto {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-9px);
-  }
-}
-
-@keyframes glowPulse {
-  0%,
-  100% {
-    box-shadow: 0 0 0 rgba(124, 77, 255, 0);
-  }
-
-  50% {
-    box-shadow: 0 0 24px rgba(124, 77, 255, 0.18);
-  }
-}
-
-/* ========================================================================== */
-/*                            RESPONSIVE LARGE DESKTOP                        */
-/* ========================================================================== */
-@media (max-width: 1400px) {
-  .home-grid {
-    gap: 44px;
-    grid-template-columns: minmax(0, 1.15fr) minmax(260px, 340px);
-  }
-
-  .profile-wrapper {
-    width: 300px;
-    height: 390px;
-  }
-
-  .hero-desc {
-    font-size: 18px;
-  }
-}
-
-/* ========================================================================== */
-/*                              RESPONSIVE DESKTOP                            */
-/* ========================================================================== */
-@media (max-width: 1200px) {
-  :root {
-    --sidebar-w: 230px;
-  }
-
-  .editor-content {
-    padding: 24px 22px 34px;
-  }
-
-  .project-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .focus-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .hero-name {
-    font-size: clamp(54px, 8vw, 92px);
-  }
-}
-
-/* ========================================================================== */
-/*                               RESPONSIVE TABLET                            */
-/* ========================================================================== */
-@media (max-width: 980px) {
-  .header-spacer {
-    display: none;
-  }
-
-  .header-command-trigger {
-    max-width: none;
-  }
-
-  .home-grid {
-    grid-template-columns: 1fr;
-    gap: 36px;
-  }
-
-  .home-right {
-    order: -1;
-  }
-
-  .profile-wrapper {
-    width: 280px;
-    height: 350px;
-  }
-
-  .stats {
-    flex-direction: column;
-  }
-
-  .stat-card {
-    min-width: 100%;
-  }
-
-  .copilot-card {
-    min-height: 580px;
-  }
-
-  .copilot-message {
-    max-width: 90%;
-  }
-}
-.copilot-sidebar::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 20% 10%, rgba(124,77,255,0.2), transparent 40%);
-  pointer-events: none;
-}
-
-/* ========================================================================== */
-/*                               RESPONSIVE SMALL                             */
-/* ========================================================================== */
-@media (max-width: 760px) {
-  :root {
-    --activity-w: 48px;
-    --sidebar-w: 210px;
-    --top-header-h: 38px;
-    --menu-bar-h: 28px;
-  }
-
-  .menu-bar {
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-  
-  .copilot-sidebar {
-  width: 100%;
-  }
-  
-  .editor-area.with-copilot {
-    margin-right: 0;
-  }
-
-  .menu-item {
-    flex: 0 0 auto;
-  }
-
-  .dropdown {
-    min-width: 200px;
-  }
-
-  .editor-content {
-    padding: 20px 16px 32px;
-  }
-
-  .code-line {
-    font-size: 15px;
-    min-height: 24px;
-  }
-
-  .hero-name {
-    font-size: 56px;
-    letter-spacing: -2px;
-  }
-
-  .hero-desc {
-    font-size: 16px;
-    line-height: 1.7;
-  }
-
-  .roles span {
-    font-size: 12px;
-    min-height: 30px;
-    padding: 0 11px;
-  }
-
-  .home-buttons {
-    width: 100%;
-  }
-
-  .home-buttons button {
-    min-width: calc(50% - 6px);
-  }
-
-  .tab {
-    min-width: 128px;
-  }
-
-  .palette-box {
-    top: 74px;
-  }
-
-  .settings-panel {
-    width: calc(100vw - 22px);
-    left: 11px;
-  }
-
-  .copilot-input-row {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  #copilotSend {
-    width: 100%;
-  }
-
-  .copilot-input-row::after {
-    position: static;
-    display: block;
-    margin-top: 10px;
-  }
-}
-
-/* ========================================================================== */
-/*                              RESPONSIVE MOBILE                             */
-/* ========================================================================== */
-@media (max-width: 560px) {
-  :root {
-    --sidebar-w: 0px;
-  }
-
-  .cursor-square,
-  .cursor-dot {
-    display: none;
-  }
-
-  .top-header {
-    gap: 10px;
-    padding: 0 10px;
-  }
-
-  .mac-dots {
-    min-width: auto;
-  }
-
-  .header-feedback {
-    display: none;
-  }
-
-  .header-command-trigger {
-    min-width: 0;
-    height: 28px;
-    padding: 0 8px;
-  }
-
-  .trigger-right {
-    display: none;
-  }
-
-  .search-icon {
-    display: none;
-  }
-
-  .trigger-text {
-    font-size: 11px;
-  }
-
-  .activity-bar {
-    width: 46px;
-  }
-
-  .sidebar-panel {
-    position: absolute;
-    left: 46px;
-    top: 0;
-    bottom: 0;
-    width: 220px;
-    z-index: 15;
-    box-shadow: var(--shadow-lg);
-  }
-
-  .sidebar-panel.hide {
-    width: 0;
-    transform: translateX(-14px);
-  }
-
-  .editor-content {
-    padding: 18px 14px 30px;
-  }
-
-  .hero-name {
-    font-size: 44px;
-    letter-spacing: -1.5px;
-  }
-
-  .home-buttons button {
-    width: 100%;
-    min-width: 100%;
-  }
-
-  .profile-wrapper {
-    width: 230px;
-    height: 290px;
-    border-radius: 20px;
-  }
-
-  .about-card {
-    padding: 18px 16px;
-  }
-
-  .about-card p,
-  .project-card p,
-  .timeline-item p {
-    font-size: 14px;
-  }
-
-  .project-card {
-    min-height: auto;
-  }
-
-  .copilot-card {
-    min-height: 520px;
-    margin-bottom: 20px;
-  }
-
-  .copilot-message {
-    max-width: 100%;
-  }
-
-  .terminal-panel {
-    left: 46px;
-    height: 220px;
-  }
-
-  .palette-box {
-    top: 64px;
-    width: calc(100vw - 18px);
-  }
-
-  .palette-footer {
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-
-  .palette-footer-tip {
-    margin-left: 0;
-    width: 100%;
-  }
-}
-
-/* ========================================================================== */
-/*                            VERY SMALL MOBILE                               */
-/* ========================================================================== */
-@media (max-width: 390px) {
-  .hero-name {
-    font-size: 38px;
-  }
-
-  .roles {
-    gap: 8px;
-  }
-
-  .roles span {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .sidebar-panel {
-    width: calc(100vw - 54px);
-  }
-
-  .copilot-chip {
-    width: 100%;
-    justify-content: center;
-  }
-}
-
-/* ========================================================================== */
-/*                         OPTIONAL DECORATIVE ENHANCEMENTS                   */
-/* ========================================================================== */
-.app-shell::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(circle at 22% 14%, rgba(0, 122, 204, 0.08), transparent 22%),
-    radial-gradient(circle at 88% 12%, rgba(124, 77, 255, 0.08), transparent 18%);
-  z-index: -1;
-}
-
-.app-shell::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.015), transparent 22%, transparent 78%, rgba(255, 255, 255, 0.01));
-  mix-blend-mode: screen;
-  z-index: -1;
-}
-
-/* ========================================================================== */
-/*                        CLASSES FOR FUTURE EXTENSIONS                       */
-/* ========================================================================== */
-.copilot-workspace-badge,
-.workspace-badge,
-.right-panel,
-.editor-split,
-.breadcrumbs,
-.editor-breadcrumbs,
-.terminal-tabs,
-.term-tab,
-.bottom-statusbar,
-.status-left,
-.status-right,
-.status-pill,
-.quick-btn,
-.quick-grid,
-.copilot-header,
-.copilot-title,
-.copilot-sub,
-.copilot-avatar,
-.workspace,
-.chat-input-box,
-.chat-input,
-.chat-msg,
-.ai-msg,
-.user-msg,
-.profile-card {
-  /* intentionally left available for future HTML additions */
-}
-
-/* RIGHT COPILOT PANEL */
-.copilot-sidebar {
-  position: fixed;
-  right: 0;
-  top: 40px;
-  width: 340px;
-  height: calc(100vh - 40px);
-  background: #0f131a;
-  border-left: 1px solid #2a2f3a;
-  display: flex;
-  flex-direction: column;
-  z-index: 100;
-}
-
-.copilot-header {
-  padding: 12px;
-  font-weight: bold;
-  border-bottom: 1px solid #2a2f3a;
-}
-
-.copilot-messages {
-  flex: 1;
-  overflow-y: auto;
-  padding: 10px;
-}
-
-.copilot-input-row {
-  display: flex;
-  padding: 10px;
-  gap: 6px;
-}
-
-.copilot-input-row input {
-  flex: 1;
-  padding: 8px;
-  background: #1a1f27;
-  border: none;
-  color: white;
-}
-
-.copilot-input-row button {
-  background: #7c3aed;
-  border: none;
-  padding: 8px;
-  color: white;
-  cursor: pointer;
-}
-
-/* RESPONSIVE */
-@media (max-width: 900px) {
-  .copilot-sidebar {
-    width: 100%;
-    height: 40%;
-    bottom: 0;
-    top: auto;
-  }
-}
-
-.editor {
-  width: calc(100% - 340px);
-}
-
-@media (max-width: 900px) {
-  .editor {
-    width: 100%;
-  }
-}
-
-@keyframes slideInRight {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-.copilot-sidebar {
-  z-index: 9999 !important;
-  opacity: 1 !important;
-}
-
-.copilot-sidebar.open {
-  transform: translateX(0) !important;
-}
-
-.copilot-side-close {
-  background: transparent;
-  border: none;
-  color: #aaa;
-  font-size: 18px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.copilot-side-close:hover {
-  color: white;
-  transform: scale(1.1);
-}
-
-.copilot-side-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.copilot-side-minimize,
-.copilot-side-close {
-  background: transparent;
-  border: none;
-  color: #aaa;
-  font-size: 18px;
-  cursor: pointer;
-}
-
-.copilot-side-minimize:hover,
-.copilot-side-close:hover {
-  color: #fff;
-}
-
-.copilot-sidebar.minimized {
-  position: fixed;
-  right: 20px;
-  bottom: 0;
-  top: auto !important;
-  width: 260px !important;
-  height: 52px !important;
-  border-radius: 12px 12px 0 0;
-  overflow: hidden;
-  z-index: 9999;
-}
-
-.copilot-sidebar.minimized .copilot-workspace-row,
-.copilot-sidebar.minimized .copilot-side-hero,
-.copilot-sidebar.minimized .copilot-suggest-grid,
-.copilot-sidebar.minimized .copilot-side-messages,
-.copilot-sidebar.minimized .copilot-side-input-wrap {
-  display: none !important;
-}
-
-.copilot-sidebar.minimized .copilot-side-header {
-  height: 52px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 14px;
-}
-
-/* ================= SETTINGS MINIMIZE ================= */
-
-.settings-panel.minimized {
-  position: fixed;
-  bottom: 0;
-  right: 100px; /* offset from Copilot */
-
-  width: 240px;
-  height: 50px;
-
-  border-radius: 12px 12px 0 0;
-
-  background: linear-gradient(135deg, #444, #222);
-  color: white;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  cursor: pointer;
-  z-index: 9999;
-}
-
-/* Hide inner content */
-.settings-panel.minimized *:not(.settings-header) {
-  display: none !important;
-}
-
-/* Header layout */
-.settings-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.settings-actions button {
-  background: transparent;
-  border: none;
-  color: #aaa;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.settings-actions button:hover {
-  color: white;
-}
-/* Title style */
-.copilot-sidebar.minimized .copilot-side-title {
-  font-size: 14px;
-  color: white;
-}
-.copilot-side-minimize {
-  background: transparent;
-  border: none;
-  color: #aaa;
-  font-size: 18px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.copilot-side-minimize:hover {
-  color: white;
-  transform: scale(1.1);
-}
-
-.copilot-avatar-ring {
-  position: relative;
-  border: 2px solid rgba(124,77,255,0.4);
-  box-shadow: 0 0 25px rgba(124,77,255,0.3);
-}
-
-.copilot-avatar-core {
-  font-size: 28px;
-  animation: floatMagic 2.5s ease-in-out infinite;
-}
-
-@keyframes floatMagic {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-6px); }
-  100% { transform: translateY(0px); }
-}
-
-.copilot-message.assistant::after {
-  content: "";
-  display: inline-block;
-  width: 4px;
-  height: 4px;
-  margin-left: 6px;
-  border-radius: 50%;
-  background: #7c4dff;
-  animation: blink 1s infinite;
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 0; }
-  50% { opacity: 1; }
-
-}
-
-/* ================= PROJECT MODAL ================= */
-
-.image-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.9);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 99999;
-  cursor: pointer;
-}
-
-.carousel-img,
-.lor-img {
-  max-width: 90vw;
-  max-height: 85vh;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-}
-
-iframe {
-  width: 90vw;
-  height: 85vh;
-}
-
-.carousel-container,
-.image-modal-content {
-  cursor: default;
-}
-
-/* ================= CAROUSEL ================= */
-
-.carousel-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.carousel-container {
-  background: rgba(20, 20, 25, 0.6);
-  padding: 20px;
-  border-radius: 16px;
-  backdrop-filter: blur(10px);
-}
-
-
-.nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(0,0,0,0.6);
-  border: none;
-  color: white;
-  font-size: 28px;
-  padding: 10px;
-  cursor: pointer;
-  border-radius: 50%;
-}
-
-.prev { left: 20px; }
-.next { right: 20px; }
-
-.dots {
-  position: absolute;
-  bottom: -30px;
-  display: flex;
-  gap: 8px;
-}
-
-.dot {
-  width: 10px;
-  height: 10px;
-  background: #888;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-.dot.active {
-  background: #4fc3f7;
-}
-
-.close-modal {
-  position: absolute;
-  top: -15px;
-  right: -15px;
-  background: #111;
-  color: white;
-  font-size: 18px;
-  padding: 6px 10px;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-/* MOBILE FIX */
-@media (max-width: 768px) {
-  .carousel-img {
-    width: 95vw;
-  }
-
-  .prev { left: 10px; }
-  .next { right: 10px; }
-
-  .dots {
-    bottom: 10px;
-  }
-}
-
-/* ================= MOBILE VS CODE UI ================= */
-@media (max-width: 768px) {
-
-  /* 🔥 FULL SCREEN APP */
-  .app-shell {
-    height: 100vh;
-    overflow: hidden;
-  }
-
-  /* 🔥 STACK LAYOUT */
-  .vscode-layout {
-    flex-direction: column;
-  }
-
-  /* 🔥 HIDE SIDEBAR INITIALLY */
-  .sidebar-panel {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 75%;
-    height: 100%;
-    z-index: 999;
-    transform: translateX(-100%);
-    transition: 0.3s ease;
-  }
-
-  .sidebar-panel.show {
-    transform: translateX(0);
-  }
-
-  /* 🔥 OVERLAY */
-  .mobile-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.5);
-    z-index: 5;
-    display: none;
-  }
-
-  .mobile-overlay.show {
-    display: block;
-  }
-
-  /* 🔥 ACTIVITY BAR -> BOTTOM NAV */
-  .activity-bar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 55px;
-    flex-direction: row;
-    justify-content: space-around;
-    border-top: 1px solid var(--line);
-    z-index: 1000;
-  }
-
-  .activity-icon {
-    height: 100%;
-    width: 100%;
-    font-size: 20px;
-  }
-
-  /* 🔥 EDITOR FULL WIDTH */
-  .editor-area {
-    width: 100%;
-    height: calc(100vh - 95px);
-    margin-right: 0 !important;
-  }
-
-  /* 🔥 TABS SCROLL */
-  .editor-tabs {
-    overflow-x: auto;
-  }
-
-  /* 🔥 HERO TEXT */
-  .hero-name {
-    font-size: 26px;
-    text-align: center;
-  }
-
-  .hero-desc {
-    font-size: 14px;
-    text-align: center;
-    padding: 0 10px;
-  }
-
-  /* 🔥 PROJECT CARDS */
-  .project-card {
-    width: 100%;
-    padding: 14px;
-  }
-
-  /* 🔥 BUTTON FULL WIDTH */
-  .github-btn {
-    width: 100%;
-    padding: 10px;
-    font-size: 14px;
-  }
-
-  /* 🔥 MODAL FIX */
-  .carousel-container {
-    width: 95%;
-  }
-
-  .carousel-img {
-    width: 100%;
-    max-height: 60vh;
-  }
-
-  .prev { left: 5px; }
-  .next { right: 5px; }
-
-  /* 🔥 COPILOT FULL SCREEN */
-  .copilot-sidebar {
-    width: 100% !important;
-    right: 0;
-  }
-
-  /* 🔥 HEADER COMPACT */
-  .header-command-trigger {
-    max-width: 180px;
-  }
-
-  .trigger-text {
-    font-size: 10px;
-  }
-
-  .keycap {
-    display: none;
-  }
-}
-.mobile-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
-  z-index: 5;
-  display: none;
-}
-
-.mobile-overlay.show {
-  display: block;
-}
-@media (max-width: 768px) {
-  .copilot-sidebar {
-    width: 100% !important;
-    height: 100%;
-    right: 0;
-    top: 0;
-    z-index: 3000;
-  }
+button,
+.file,
+.tab,
+.menu-item,
+.activity-icon,
+.copilot-box,
+.theme-option,
+.action,
+.palette-item {
+  -webkit-tap-highlight-color: transparent;
 }
