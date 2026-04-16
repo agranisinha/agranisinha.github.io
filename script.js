@@ -273,11 +273,17 @@ document.addEventListener("DOMContentLoaded", () => {
    }
    
    // CLICK OUTSIDE
-   overlay.addEventListener("click", closeMobileSidebar);
+   if (overlay) {
+     overlay.addEventListener("click", closeMobileSidebar);
+   }
    
-   // MOBILE DETECTION
+   // ✅ FIX MOBILE SIDEBAR TRIGGER (ALL ICONS)
    if (window.innerWidth <= 768) {
-     document.querySelector(".activity-icon")?.addEventListener("click", openMobileSidebar);
+     qsa(".activity-icon").forEach(icon => {
+       icon.addEventListener("click", () => {
+         openMobileSidebar();
+       });
+     });
    }
   function persistState() {
     try {
@@ -743,28 +749,31 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function renderContent(tabName) {
-    if (!editorContent) return;
+ function renderContent(tabName) {
+  if (!editorContent) return;
 
+  try {
     const views = getViews();
     const safeTab = isValidTab(tabName) ? tabName : "home";
 
-    editorContent.style.opacity = "0";
+    editorContent.innerHTML = views[safeTab] || "<h2>Loading...</h2>";
 
-    setTimeout(() => {
-      editorContent.innerHTML = views[safeTab] || views.home;
-      editorContent.style.opacity = "1";
+    if (safeTab === "home") {
+      startTyping();
+      setTimeout(startHeroTyping, 300);
+    }
 
-      if (safeTab === "home") {
-        startTyping();
-        setTimeout(startHeroTyping, 300); // ✅ ADD THIS
-      }
+  } catch (err) {
+    console.error("🔥 ERROR IN RENDER:", err);
 
-      animateInsertedContent();
-      runMotionAnimations();
-      persistState();
-    }, 120);
+    editorContent.innerHTML = `
+      <div style="padding:20px;color:red;">
+        <h2>⚠️ Error loading content</h2>
+        <p>${err.message}</p>
+      </div>
+    `;
   }
+}
 
 function highlightKeywords() {
   const el = document.getElementById("typingHero");
