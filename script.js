@@ -223,24 +223,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const sidebar = document.getElementById("sidebarPanel");
   const backdrop = document.getElementById("mobileBackdrop");
 
-  if (window.innerWidth <= 768) {
-    const isOpen = sidebar.classList.contains("show");
-
-    if (isOpen) {
-      sidebar.classList.remove("show");
-      backdrop.classList.remove("show");
-    } else {
-      sidebar.classList.remove("hide"); // remove desktop conflict
-      sidebar.classList.add("show");
-      backdrop.classList.add("show");
-    }
-
-    return;
-  }
-
-  sidebar.classList.toggle("hide");
-  }
-
+  sidebar.classList.toggle("show");
+  backdrop.classList.toggle("show");
+}
   function toggleCopilotSidebar(force) {
   
   const editor = $(".editor-area");
