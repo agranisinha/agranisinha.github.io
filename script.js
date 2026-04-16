@@ -707,7 +707,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (safeTab === "home") {
         startTyping();
-        setTimeout(startHeroTyping, 500); // ✅ ADD THIS
+        setTimeout(startHeroTyping, 300); // ✅ ADD THIS
       }
 
       animateInsertedContent();
@@ -1815,10 +1815,13 @@ function getHome() {
   `;
 }
 
+let heroTyped = false;
 
 function startHeroTyping() {
-  const el = document.getElementById("typingHero");
+  if (heroTyped) return;   // ✅ prevents duplicate typing
+  heroTyped = true;
 
+  const el = document.getElementById("typingHero");
   if (!el) return;
 
   const text = "I design and build intelligent solutions at the intersection of AI, Biotechnology, Health Informatics, and Technology—leveraging data to solve real-world healthcare challenges.";
@@ -1830,9 +1833,7 @@ function startHeroTyping() {
     if (i < text.length) {
       el.innerHTML += text.charAt(i);
       i++;
-      setTimeout(type, 18);
-    } else {
-      highlightKeywords(); // ✅ apply gradient after typing
+      setTimeout(type, 20);
     }
   }
 
