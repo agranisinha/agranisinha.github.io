@@ -46,6 +46,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const terminalBody = document.getElementById("terminalBody");
   const terminalInput = document.getElementById("terminalInput");
 
+  const overlay = document.getElementById("mobileOverlay");
+  const sidebar = document.querySelector(".sidebar-panel");
+
   let sidebarFiles = [];
   let menuItems = [];
   let paletteItems = [];
@@ -228,7 +231,25 @@ document.addEventListener("DOMContentLoaded", () => {
     menuItems = qsa(".menu-item");
     paletteItems = qsa(".palette-item");
   }
-
+  // OPEN SIDEBAR
+   function openMobileSidebar() {
+     sidebar.classList.add("show");
+     overlay.classList.add("show");
+   }
+   
+   // CLOSE SIDEBAR
+   function closeMobileSidebar() {
+     sidebar.classList.remove("show");
+     overlay.classList.remove("show");
+   }
+   
+   // CLICK OUTSIDE
+   overlay.addEventListener("click", closeMobileSidebar);
+   
+   // MOBILE DETECTION
+   if (window.innerWidth <= 768) {
+     document.querySelector(".activity-icon")?.addEventListener("click", openMobileSidebar);
+   }
   function persistState() {
     try {
       localStorage.setItem(STORAGE_KEYS.theme, currentTheme);
@@ -1071,6 +1092,23 @@ function bindMenuEvents() {
     });
   });
 
+   let touchStartX = 0;
+
+   document.addEventListener("touchstart", e => {
+     touchStartX = e.touches[0].clientX;
+   });
+   
+   document.addEventListener("touchend", e => {
+     let touchEndX = e.changedTouches[0].clientX;
+   
+     if (touchStartX < 50 && touchEndX > 120) {
+       openMobileSidebar(); // swipe right
+     }
+   
+     if (touchStartX > 200 && touchEndX < 100) {
+       closeMobileSidebar(); // swipe left
+     }
+   });
   // ✅ CLICK OUTSIDE → CLOSE ALL MENUS
   document.addEventListener("click", () => {
     menuItems.forEach((m) => m.classList.remove("active"));
