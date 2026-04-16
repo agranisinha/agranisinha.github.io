@@ -1408,6 +1408,46 @@ function setSiriState(state = "idle", label = "", hintText = "") {
   if (hint && hintText) hint.textContent = hintText;
 }
 
+/* ================= DYNAMIC CONTENT ENGINE ================= */
+
+function getAllPortfolioContent() {
+  const sections = document.querySelectorAll(".editor-content, .tab-content");
+
+  let fullText = "";
+
+  sections.forEach((sec) => {
+    fullText += " " + sec.innerText;
+  });
+
+  return fullText.toLowerCase();
+}
+
+function findBestMatch(query, content) {
+  const sentences = content.split(/[.?!]/);
+
+  let bestMatch = "";
+  let maxScore = 0;
+
+  const words = query.toLowerCase().split(" ");
+
+  sentences.forEach((sentence) => {
+    let score = 0;
+
+    words.forEach((word) => {
+      if (sentence.includes(word)) score++;
+    });
+
+    if (score > maxScore && sentence.length > 20) {
+      maxScore = score;
+      bestMatch = sentence;
+    }
+  });
+
+  return bestMatch.trim();
+}
+
+/* ================= MAIN AI FUNCTION ================= */
+
 function getNaturalReply(message) {
   try {
     const msg = (message || "").toLowerCase();
@@ -1504,6 +1544,17 @@ function getNaturalReply(message) {
       };
     }
 
+    /* ===== 🔥 DYNAMIC SEARCH (NEW) ===== */
+    const content = getAllPortfolioContent();
+    const match = findBestMatch(msg, content);
+
+    if (match && match.length > 30) {
+      return {
+        reply: match,
+        action: null
+      };
+    }
+
     /* ===== DEFAULT ===== */
     return {
       reply: random([
@@ -1518,7 +1569,6 @@ function getNaturalReply(message) {
   } catch (error) {
     console.error("Siri Error:", error);
 
-    // ✅ SAFE FALLBACK (prevents "Thinking..." freeze)
     return {
       reply: "You can ask about Agrani’s projects, skills, or experience.",
       action: null
