@@ -3778,3 +3778,92 @@ iframe {
 .dot.active {
   background: #4fc3f7;
 }
+/* ================= FINAL FIX ================= */
+
+/* Fix Copilot Open */
+.copilot-sidebar.open {
+  transform: translateX(0);
+}
+
+/* Ensure menu always on top */
+.menu-bar {
+  z-index: 99999 !important;
+}
+
+.dropdown {
+  z-index: 999999 !important;
+}
+
+/* ================= MOBILE UI ================= */
+@media (max-width: 768px) {
+
+  /* Bottom Activity Bar */
+  .activity-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    flex-direction: row;
+    justify-content: space-around;
+    border-top: 1px solid var(--line);
+    z-index: 99999;
+  }
+
+  .activity-icon {
+    height: 100%;
+    font-size: 20px;
+  }
+
+  /* Sidebar Slide */
+  .sidebar-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    transform: translateX(-100%);
+    z-index: 99998;
+    transition: transform 0.3s ease;
+  }
+
+  .sidebar-panel.m-show {
+    transform: translateX(0);
+  }
+
+  /* Overlay */
+  .mobile-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 99997;
+    display: none;
+  }
+
+  .mobile-overlay.show {
+    display: block;
+  }
+
+  /* Copilot Fullscreen */
+  .copilot-sidebar {
+    width: 100%;
+    height: 100%;
+    top: 0;
+  }
+
+  /* Fix editor spacing */
+  .editor-content {
+    padding-bottom: 80px;
+  }
+
+  /* Tabs scroll */
+  .editor-tabs {
+    overflow-x: auto;
+  }
+}
+
+/* Smooth animations */
+.sidebar-panel,
+.copilot-sidebar,
+.activity-bar {
+  transition: all 0.3s ease;
+}
