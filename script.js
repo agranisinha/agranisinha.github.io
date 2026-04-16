@@ -1584,22 +1584,27 @@ function getNaturalReply(message) {
       };
     }
 
-    /* ===== LETTER OF RECOMMENDATION ===== */
-    if (
-      msg.includes("lor") ||
-      msg.includes("letter of recommendation") ||
-      msg.includes("recommendation")
-    ) {
-      return {
-        reply: random([
-          "Opening Agrani’s Letters of Recommendation.",
-          "Here are Agrani’s recommendation letters.",
-          "Let me open the LOR section for you."
-        ]),
-        action: () => openTab("lor")
-      };
-    }
-
+   /* ===== LOR / RECOMMENDATION (FIXED) ===== */
+if (
+  msg.includes("lor") ||
+  msg.includes("lors") ||
+  msg.includes("recommendation") ||
+  msg.includes("recommendations") ||
+  msg.includes("letter") ||
+  msg.includes("letters") ||
+  msg.includes("reference") ||
+  msg.includes("references")
+) {
+  return {
+    reply: random([
+      "Opening Agrani’s Letters of Recommendation.",
+      "Here are Agrani’s recommendation letters.",
+      "Let me show you Agrani’s LORs.",
+      "Displaying Agrani’s Letters of Recommendation now."
+    ]),
+    action: () => openTab("lor")
+  };
+}
     /* ===== GREETING ===== */
     if (msg.includes("hello") || msg.includes("hi") || msg.includes("hey")) {
       return {
