@@ -3278,6 +3278,7 @@ textarea:-webkit-autofill {
   align-items: center;
   justify-content: center;
   z-index: 99999;
+  cursor: pointer;
 }
 
 .carousel-img,
@@ -3292,6 +3293,11 @@ textarea:-webkit-autofill {
 iframe {
   width: 90vw;
   height: 85vh;
+}
+
+.carousel-container,
+.image-modal-content {
+  cursor: default;
 }
 
 /* ================= CAROUSEL ================= */
