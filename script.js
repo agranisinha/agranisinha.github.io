@@ -1,3 +1,5 @@
+const isMobileView = () => window.innerWidth <= 768;
+
 document.addEventListener("DOMContentLoaded", () => {
   "use strict";
 
