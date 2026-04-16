@@ -1,7 +1,9 @@
 // ✅ STOP DESKTOP SCRIPT ON MOBILE PAGE
+// 🚫 STOP DESKTOP SCRIPT ON MOBILE PAGE
 if (document.body.classList.contains("mobile-page")) {
-  console.log("📱 Mobile mode → desktop JS disabled");
-} else {
+  console.log("📱 Mobile mode active → skipping desktop JS");
+  throw new Error("Stop desktop JS on mobile");
+}else {
 
 const isMobileView = () => window.innerWidth <= 768;
 
