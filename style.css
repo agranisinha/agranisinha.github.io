@@ -434,14 +434,14 @@ a:hover ~ .cursor-square {
 
 .mac-dots {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  min-width: 140px;
+  gap: 10px;
+  padding: 6px;
 }
 
+
 .dot {
-  width: 13px;
-  height: 13px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   display: inline-block;
   cursor: pointer;
@@ -579,13 +579,13 @@ a:hover ~ .cursor-square {
   background: var(--bg-menubar);
   border-bottom: 1px solid var(--line);
   position: relative;
-  z-index: 18;
+  z-index: 2000; /* ✅ bring above overlay */
   user-select: none;
 }
 
 .menu-item {
   height: 100%;
-  padding: 0 10px;
+  padding: 10px 12px; /* bigger touch */
   display: inline-flex;
   align-items: center;
   color: var(--text);
