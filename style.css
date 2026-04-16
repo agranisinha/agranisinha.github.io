@@ -3554,3 +3554,227 @@ iframe {
     z-index: 3000;
   }
 }
+/* =========================================================
+   🔥 FINAL MASTER FIX (ADD AT VERY END OF CSS)
+   ========================================================= */
+
+/* ===== Z-INDEX FIXES ===== */
+.menu-bar { z-index: 9999 !important; }
+.dropdown { z-index: 99999 !important; }
+.copilot-sidebar { z-index: 99998 !important; }
+.sidebar-panel { z-index: 99997 !important; }
+.terminal-panel { z-index: 99996 !important; }
+
+/* ===== PREVENT BLANK SCREEN ===== */
+.app-shell,
+.vscode-layout,
+.editor-area {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* ===== FIX COPILOT PANEL ===== */
+.copilot-sidebar {
+  position: fixed;
+  right: 0;
+  top: calc(var(--top-header-h) + var(--menu-bar-h));
+  height: calc(100vh - var(--top-header-h) - var(--menu-bar-h));
+  width: 380px;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+}
+
+.copilot-sidebar.open {
+  transform: translateX(0);
+}
+
+/* ===== FIX EDITOR SHIFT ===== */
+.editor-area.with-copilot {
+  margin-right: 380px;
+}
+
+@media (max-width: 768px) {
+  .editor-area.with-copilot {
+    margin-right: 0 !important;
+  }
+}
+
+/* ===== MOBILE FULL UI ===== */
+@media (max-width: 768px) {
+
+  /* Hide desktop layout */
+  .activity-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 65px;
+    flex-direction: row;
+    justify-content: space-around;
+    border-top: 1px solid var(--line);
+    z-index: 99999;
+  }
+
+  .activity-icon {
+    font-size: 20px;
+  }
+
+  /* Sidebar becomes slide panel */
+  .sidebar-panel {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 260px;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 99998;
+  }
+
+  .sidebar-panel.m-show {
+    transform: translateX(0);
+  }
+
+  /* Overlay */
+  .mobile-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 99997;
+    display: none;
+  }
+
+  .mobile-overlay.show {
+    display: block;
+  }
+
+  /* Copilot FULL SCREEN */
+  .copilot-sidebar {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    z-index: 99999;
+  }
+
+  /* Editor padding for bottom nav */
+  .editor-content {
+    padding-bottom: 80px;
+  }
+
+  /* Tabs scroll fix */
+  .editor-tabs {
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  /* Fix header overflow */
+  .header-command-trigger {
+    max-width: 60%;
+  }
+}
+
+/* ===== FIX DROPDOWN CLICK ===== */
+.menu-item.active .dropdown {
+  display: block;
+}
+
+/* ===== TERMINAL FIX ===== */
+.terminal-panel {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+/* ===== SMOOTH UI ===== */
+.sidebar-panel,
+.copilot-sidebar,
+.activity-bar,
+.editor-area {
+  transition: all 0.3s ease;
+}
+
+/* ===== MODAL FIX (PROJECT + LOR) ===== */
+.image-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999999;
+}
+
+.image-modal-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+}
+
+.image-modal img,
+.image-modal iframe {
+  max-width: 100%;
+  max-height: 80vh;
+  border-radius: 10px;
+  background: white;
+}
+
+/* CLOSE BUTTON */
+.close-modal {
+  position: absolute;
+  top: -40px;
+  right: -10px;
+  font-size: 30px;
+  color: white;
+  cursor: pointer;
+}
+
+/* ===== CAROUSEL ===== */
+.carousel-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-img {
+  width: 80vw;
+  max-height: 80vh;
+  border-radius: 12px;
+}
+
+/* NAV BUTTONS */
+.nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.6);
+  color: white;
+  border: none;
+  font-size: 24px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.prev { left: -40px; }
+.next { right: -40px; }
+
+/* DOTS */
+.dots {
+  position: absolute;
+  bottom: -30px;
+  display: flex;
+  gap: 8px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  background: #888;
+  border-radius: 50%;
+}
+
+.dot.active {
+  background: #4fc3f7;
+}
