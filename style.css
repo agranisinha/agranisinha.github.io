@@ -898,7 +898,12 @@ a:hover ~ .cursor-square {
 
 .editor-area.with-copilot {
   margin-right: 380px;
-  transition: margin-right 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .editor-area.with-copilot {
+    margin-right: 0 !important; /* ✅ FIX */
+  }
 }
 
 .editor-tabs {
@@ -2435,7 +2440,12 @@ textarea:-webkit-autofill {
 
 .editor-area.with-copilot {
   margin-right: 380px;
-  transition: margin-right 0.35s ease;
+}
+
+@media (max-width: 768px) {
+  .editor-area.with-copilot {
+    margin-right: 0 !important; /* ✅ FIX */
+  }
 }
 
 /* ================= SMOOTH TAB ANIMATION ================= */
@@ -3417,7 +3427,7 @@ iframe {
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.5);
-    z-index: 998;
+    z-index: 5;
     display: none;
   }
 
@@ -3517,7 +3527,7 @@ iframe {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.5);
-  z-index: 998;
+  z-index: 5;
   display: none;
 }
 
