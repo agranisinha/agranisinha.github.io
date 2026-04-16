@@ -290,22 +290,18 @@ function toggleSettings() {
 
   const isMobile = window.innerWidth <= 768;
 
-  // ✅ TOGGLE PANEL
-  settings.classList.toggle("open");
+  const isOpen = settings.classList.contains("open");
 
-  // ✅ ALWAYS REMOVE MINIMIZED WHEN OPENING
-  if (settings.classList.contains("open")) {
+  if (isOpen) {
+    settings.classList.remove("open");
+    backdrop?.classList.remove("show");
+  } else {
+    settings.classList.add("open");
     settings.classList.remove("minimized");
-  }
 
-  // ✅ MOBILE BACKDROP CONTROL
-  if (isMobile && backdrop) {
-    backdrop.classList.toggle("show");
-  }
-
-  // ✅ CLEANUP WHEN CLOSED
-  if (!settings.classList.contains("open") && backdrop) {
-    backdrop.classList.remove("show");
+    if (isMobile && backdrop) {
+      backdrop.classList.add("show");
+    }
   }
 }
 
