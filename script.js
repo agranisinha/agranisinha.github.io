@@ -1,5 +1,11 @@
 
-const isMobileView = () => window.innerWidth <= 768;
+const isMobile = () => window.innerWidth <= 768;
+
+document.addEventListener("DOMContentLoaded", () => {
+  if (isMobile()) {
+    document.body.classList.add("mobile-mode");
+  }
+});
 
 document.addEventListener("DOMContentLoaded", () => {
   "use strict";
