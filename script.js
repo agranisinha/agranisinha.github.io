@@ -618,10 +618,9 @@ document.addEventListener("DOMContentLoaded", () => {
       file.addEventListener("click", () => {
   openTab(tabName);
 
-  if (window.innerWidth <= 768) {
-    document.getElementById("sidebarPanel")?.classList.remove("show");
-    document.getElementById("mobileBackdrop")?.classList.remove("show");
-  }
+  // 👉 CLOSE SIDEBAR AFTER CLICK
+  document.getElementById("sidebarPanel")?.classList.remove("show");
+  document.getElementById("mobileBackdrop")?.classList.remove("show");
 });
     });
     $(".copilot-box")?.addEventListener("click", () => toggleCopilotSidebar(true));
