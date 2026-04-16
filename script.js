@@ -1254,7 +1254,7 @@ function getResume() {
       <div class="about-card">
         <p>Open my latest resume for the complete professional record.</p>
         <div class="home-buttons">
-          <button onclick="window.open('docs/Agrani Sinha Resume.pdf', '_blank')">📄 Open Resume</button>
+          <button onclick="window.open('docs/Agrani Sinha Resume copy.pdf', '_blank')">📄 Open Resume</button>
         </div>
       </div>
     </div>
