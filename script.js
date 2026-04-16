@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
     experience: "Agrani’s experience includes Clinical Informatics Intern at Alivia Care, Data Science Analyst at BluCognition, Academic Research Associate at Digiversal, and bioinformatics research.",
     skills: "Core skills include Python, Java, C/C++, JavaScript, HTML/CSS, Flutter, TensorFlow, Machine Learning, Computer Vision, SAS, Excel, EHRGo, WellSky, Android Studio, and GitHub.",
     education: "Agrani is pursuing an M.S. in Health Informatics at the University of North Florida and completed an Integrated Master of Technology in Biotechnology from JIIT.",
-    contact: "You can contact Agrani at agbrian521@gmail.com, phone (904) 228-1179, based in Jacksonville, FL.",
+    contact: "You can contact Agrani at agbrian521@gmail.com,  based in Jacksonville, FL.",
     healthcare: "Agrani’s work focuses on AI-driven healthcare systems, clinical informatics, healthcare analytics, digital health solutions, and practical intelligent systems.",
     leadership: "Agrani has served as Marketing Chair in the Health Informatics & Analytics Club and led outreach, podcast coordination, and student engagement efforts.",
     resume: "You can open the Resume tab or use the resume section to access the latest resume.",
