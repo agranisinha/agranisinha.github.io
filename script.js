@@ -276,16 +276,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function toggleSettings() {
-  const settings = document.getElementById("settingsPanel");
-  const backdrop = document.getElementById("mobileBackdrop");
-
   if (window.innerWidth <= 768) {
-    settings.classList.toggle("open");
-    backdrop.classList.toggle("show");
+    openMobilePanel("settings");
     return;
   }
 
-  settings?.classList.toggle("open");
+  settingsPanel?.classList.toggle("open");
 }
 
   function minimizeSettings() {
