@@ -2230,7 +2230,7 @@ body {
     min-width: min(84vw, 320px);
     height: calc(100dvh - var(--top-header-h) - var(--menu-bar-h));
     z-index: 92;
-    transform: translateX(-100%);
+    
     box-shadow: var(--shadow-xl);
   }
 
@@ -2242,7 +2242,7 @@ body {
     width: min(84vw, 320px);
     min-width: min(84vw, 320px);
     opacity: 1;
-    transform: translateX(-100%);
+    
     border-right: 1px solid var(--line);
   }
 
