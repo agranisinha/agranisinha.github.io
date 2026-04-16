@@ -1054,7 +1054,7 @@ function highlightKeywords() {
      ========================================================================== */
 
 function bindMenuEvents() {
-  menuItems = qsa(".menu-item");
+  const menuItems = qsa(".menu-item");
 
   menuItems.forEach((menu) => {
     menu.addEventListener("click", (e) => {
@@ -1074,8 +1074,13 @@ function bindMenuEvents() {
         menu.classList.add("active");
       }
 
-      // ✅ ONLY run actions that should trigger immediately
+      // ✅ Handle menu actions
       switch (label) {
+
+        case "file":
+          // ✅ DO NOTHING → only open dropdown
+          break;
+
         case "edit":
         case "go":
           openPalette();
@@ -1098,18 +1103,28 @@ function bindMenuEvents() {
         case "copilot":
           toggleCopilotSidebar(true);
           break;
-
-        // ❌ IMPORTANT: DO NOTHING for "file"
-        // File menu should only open dropdown
       }
     });
+
+    // ✅ MOBILE TOUCH SUPPORT (VERY IMPORTANT)
+    menu.addEventListener("touchstart", () => {
+      menu.click();
+    });
   });
-   // ✅ FIX DROPDOWN CLICK FOR MOBILE
-   document.querySelectorAll(".dropdown div").forEach(item => {
-     item.addEventListener("click", (e) => {
-       e.stopPropagation(); // prevents menu close issue
-     });
-   });
+
+  // ✅ FIX DROPDOWN CLICK (so it doesn't close immediately)
+  document.querySelectorAll(".dropdown div").forEach(item => {
+    item.addEventListener("click", (e) => {
+      e.stopPropagation();
+    });
+  });
+
+  // ✅ CLICK OUTSIDE CLOSE MENU (IMPORTANT UX)
+  document.addEventListener("click", () => {
+    menuItems.forEach((m) => m.classList.remove("active"));
+  });
+}
+   
    let touchStartX = 0;
 
    document.addEventListener("touchstart", e => {
