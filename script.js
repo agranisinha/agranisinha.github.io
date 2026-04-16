@@ -838,7 +838,7 @@ if (window.innerWidth <= 768) {
   window.clearTerminal = clearTerminal;
 
   function downloadResume() {
-    window.open("docs/Agrani Sinha Resume.pdf", "_blank");
+    window.open("docs/Agrani Sinha Resume copy.pdf", "_blank");
   }
 
   function toggleFullscreen() {
