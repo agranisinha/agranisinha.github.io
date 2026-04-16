@@ -900,9 +900,6 @@ a:hover ~ .cursor-square {
   margin-right: 380px;
 }
 
-.editor-area.with-copilot {
-  margin-right: 380px;
-}
 
 /* 🔥 ADD THIS EXACTLY BELOW */
 @media (max-width: 768px) {
