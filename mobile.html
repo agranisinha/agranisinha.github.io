@@ -2,171 +2,219 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Agrani VS Code Mobile</title>
+
+  <!-- ✅ IMPORTANT MOBILE META -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+  <title>Agrani Portfolio • Mobile</title>
 
   <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Styles -->
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="mobile.css" />
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="mobile.css">
 </head>
 
 <body class="mobile-page">
 
-<!-- ================= OVERLAY ================= -->
-<div id="mobileOverlay" class="mobile-overlay"></div>
+<!-- ======================================================
+  MOBILE APP ROOT
+====================================================== -->
+<div class="mobile-app">
 
-<!-- ================= APP ================= -->
-<div class="mobile-shell">
+  <!-- ================= HEADER ================= -->
+  <header class="m-header">
 
-  <!-- ================= TOP BAR ================= -->
-  <header class="mobile-topbar">
-    <button onclick="toggleMobileSidebar()">📁</button>
+    <button class="m-icon-btn" onclick="toggleSidebar()">☰</button>
 
-    <div class="mobile-title">
-      agrani-sinha · portfolio
+    <div class="m-title-wrap">
+      <div class="m-title">agrani-portfolio</div>
+      <div class="m-subtitle">mobile vscode</div>
     </div>
 
-    <div class="mobile-actions">
-      <button onclick="openPalette()">🔍</button>
-      <button onclick="toggleCopilotSidebar(true)">🤖</button>
-    </div>
+    <button class="m-icon-btn" onclick="openPalette()">⌕</button>
+
   </header>
 
+
   <!-- ================= TABS ================= -->
-  <div class="mobile-tabs" id="editorTabs"></div>
-
-  <!-- ================= CONTENT ================= -->
-  <main id="editorContent" class="mobile-editor"></main>
-
-</div>
-
-<!-- ================= BOTTOM NAV ================= -->
-<nav class="mobile-bottom-nav">
-
-  <button onclick="openTab('home')">
-    <div>🏠</div>
-    <span>Home</span>
-  </button>
-
-  <button onclick="toggleMobileSidebar()">
-    <div>📂</div>
-    <span>Files</span>
-  </button>
-
-  <button onclick="toggleTerminal()">
-    <div>💻</div>
-    <span>Terminal</span>
-  </button>
-
-  <button onclick="toggleCopilotSidebar(true)">
-    <div>🤖</div>
-    <span>AI</span>
-  </button>
-
-  <button onclick="toggleSettings()">
-    <div>⚙️</div>
-    <span>Settings</span>
-  </button>
-
-</nav>
-
-<!-- ================= FILE EXPLORER ================= -->
-<aside id="mobileSidebar" class="mobile-panel left">
-
-  <div class="mobile-panel-header">
-    <span>Explorer</span>
-    <button onclick="closeAllPanels()">✖</button>
+  <div class="m-tabs">
+    <div class="editor-tabs" id="editorTabs"></div>
   </div>
 
-  <div class="mobile-file-list">
 
-    <div onclick="openTab('home')">⚛️ home.tsx</div>
-    <div onclick="openTab('about')">🌐 about.html</div>
-    <div onclick="openTab('projects')">🟨 projects.js</div>
-    <div onclick="openTab('skills')">🟩 skills.json</div>
-    <div onclick="openTab('experience')">🟦 experience.ts</div>
-    <div onclick="openTab('lor')">📜 lor.pdf</div>
-    <div onclick="openTab('contact')">🎨 contact.css</div>
-    <div onclick="openTab('readme')">📄 README.md</div>
-    <div onclick="openTab('resume')">📕 Resume.pdf</div>
+  <!-- ================= EDITOR ================= -->
+  <main class="m-editor">
+    <div class="editor-content" id="editorContent"></div>
+  </main>
 
-  </div>
 
-</aside>
+  <!-- ================= BOTTOM NAV ================= -->
+  <nav class="m-bottom-nav">
 
-<!-- ================= COPILOT ================= -->
-<aside id="copilotSidebar" class="mobile-panel right">
+    <button onclick="openTab('home')" class="m-nav-btn active">
+      🏠
+      <span>Home</span>
+    </button>
 
-  <div class="mobile-panel-header">
-    <span>Copilot AI</span>
-    <button onclick="closeAllPanels()">✖</button>
-  </div>
+    <button onclick="toggleSidebar()" class="m-nav-btn">
+      📁
+      <span>Files</span>
+    </button>
 
-  <div class="mobile-copilot-body">
+    <button onclick="toggleTerminal()" class="m-nav-btn">
+      💻
+      <span>Terminal</span>
+    </button>
 
-    <div id="copilotMessages"></div>
+    <button onclick="toggleCopilotSidebar(true)" class="m-nav-btn">
+      ✨
+      <span>Copilot</span>
+    </button>
 
-    <div class="mobile-copilot-input">
-      <input id="copilotInput" placeholder="Ask about Agrani..." />
-      <button id="copilotSend">➤</button>
+    <button onclick="toggleSettings()" class="m-nav-btn">
+      ⚙️
+      <span>Settings</span>
+    </button>
+
+  </nav>
+
+
+  <!-- ================= BACKDROP ================= -->
+  <div class="mobile-backdrop"></div>
+
+
+  <!-- ================= SIDEBAR ================= -->
+  <aside class="sidebar-panel m-sidebar" id="sidebarPanel">
+
+    <div class="m-panel-header">
+      <span>Explorer</span>
+      <button onclick="closeAllMobilePanels()">✕</button>
+    </div>
+
+    <div class="file-list">
+
+      <div class="file active" onclick="openTab('home')">⚛ home.tsx</div>
+      <div class="file" onclick="openTab('about')">🌐 about.html</div>
+      <div class="file" onclick="openTab('projects')">🟨 projects.js</div>
+      <div class="file" onclick="openTab('skills')">🟩 skills.json</div>
+      <div class="file" onclick="openTab('experience')">🟦 experience.ts</div>
+      <div class="file" onclick="openTab('lor')">📜 lor.pdf</div>
+      <div class="file" onclick="openTab('contact')">🎨 contact.css</div>
+      <div class="file" onclick="openTab('readme')">📄 README.md</div>
+      <div class="file" onclick="openTab('resume')">📕 Resume.pdf</div>
+
+    </div>
+
+  </aside>
+
+
+  <!-- ================= COPILOT ================= -->
+  <aside class="copilot-sidebar m-copilot" id="copilotSidebar">
+
+    <div class="m-panel-header">
+      <span>✨ Copilot</span>
+      <button onclick="closeAllMobilePanels()">✕</button>
+    </div>
+
+    <div class="copilot-side-messages" id="copilotMessages"></div>
+
+    <div class="copilot-side-input-wrap">
+      <div class="copilot-input-row">
+
+        <input id="copilotInput" placeholder="Ask about Agrani..." />
+
+        <button id="copilotSend">➤</button>
+
+        <button id="copilotVoice">🎤</button>
+
+      </div>
+    </div>
+
+  </aside>
+
+
+  <!-- ================= TERMINAL ================= -->
+  <section class="terminal-panel m-terminal" id="terminalPanel">
+
+    <div class="terminal-header">
+      TERMINAL
+      <button onclick="closeAllMobilePanels()">✕</button>
+    </div>
+
+    <div class="terminal-body" id="terminalBody">
+      Welcome! Type "help"
+    </div>
+
+    <div class="terminal-input-line">
+      <span class="prompt">$</span>
+      <input id="terminalInput" />
+    </div>
+
+  </section>
+
+
+  <!-- ================= SETTINGS ================= -->
+  <section class="settings-panel m-settings" id="settingsPanel">
+
+    <div class="settings-header">
+      SETTINGS
+      <button onclick="closeAllMobilePanels()">✕</button>
+    </div>
+
+    <div class="settings-section">
+
+      <div class="theme-option active" onclick="setTheme('dark')">Dark</div>
+      <div class="theme-option" onclick="setTheme('rose')">Rose</div>
+      <div class="theme-option" onclick="setTheme('tokyo')">Tokyo</div>
+      <div class="theme-option" onclick="setTheme('cat')">Catppuccin</div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================= COMMAND PALETTE ================= -->
+  <div class="palette-overlay" id="paletteOverlay">
+
+    <div class="palette-backdrop" onclick="closePalette()"></div>
+
+    <div class="palette-box">
+
+      <div class="palette-top">
+        <span>›</span>
+        <input id="paletteInput" placeholder="Command..." />
+      </div>
+
+      <div class="palette-list">
+
+        <div class="palette-item" onclick="openTab('home')">Home</div>
+        <div class="palette-item" onclick="openTab('about')">About</div>
+        <div class="palette-item" onclick="openTab('projects')">Projects</div>
+        <div class="palette-item" onclick="toggleCopilotSidebar(true)">Copilot</div>
+
+      </div>
+
     </div>
 
   </div>
 
-</aside>
 
-<!-- ================= TERMINAL ================= -->
-<div id="terminalPanel" class="mobile-terminal">
-
-  <div class="terminal-header">
-    <span>Terminal</span>
-    <button onclick="closeAllPanels()">✖</button>
-  </div>
-
-  <div id="terminalBody" class="terminal-body">
-    <div>Welcome! Type 'help'</div>
-  </div>
-
-  <div class="terminal-input-line">
-    <span>$</span>
-    <input id="terminalInput" placeholder="Type command..." />
-  </div>
+  <!-- ================= FLOATING AI BUTTON ================= -->
+  <button class="m-fab" onclick="toggleCopilotSidebar(true)">
+    ✨
+  </button>
 
 </div>
 
-<!-- ================= SETTINGS ================= -->
-<div id="settingsPanel" class="mobile-panel bottom">
 
-  <div class="mobile-panel-header">
-    <span>Settings</span>
-    <button onclick="closeAllPanels()">✖</button>
-  </div>
-
-  <div class="mobile-settings-body">
-
-    <div onclick="setTheme('dark')">🌙 Dark</div>
-    <div onclick="setTheme('rose')">🌸 Rose</div>
-    <div onclick="setTheme('tokyo')">🌃 Tokyo</div>
-    <div onclick="setTheme('cat')">🐱 Catppuccin</div>
-    <div onclick="setTheme('nord')">❄️ Nord</div>
-    <div onclick="setTheme('gruv')">🔥 Gruvbox</div>
-
-  </div>
-
-</div>
-
-<!-- ================= FLOATING AI ================= -->
-<div id="copilotBubble">🤖</div>
-
-<!-- ================= SCRIPTS ================= -->
-
-<!-- Your main logic -->
+<!-- ======================================================
+  SCRIPTS
+====================================================== -->
 <script src="script.js"></script>
-
-<!-- Mobile controller -->
 <script src="mobile.js"></script>
 
 </body>
