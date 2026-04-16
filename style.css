@@ -3494,3 +3494,22 @@ iframe {
   }
 
 }
+
+.project-actions {
+  margin-top: 10px;
+}
+
+.project-actions button {
+  background: linear-gradient(90deg, #4fc3f7, #a855f7);
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: 0.2s;
+}
+
+.project-actions button:hover {
+  transform: scale(1.05);
+}
