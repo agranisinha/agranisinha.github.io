@@ -1980,18 +1980,18 @@ function getProjects() {
         </div>
 
          <div class="project-card clickable"
-           onclick="window.open('https://github.com/agranisinha/AI-chess-and-checker.git', '_blank')">
+           onclick="window.open('https://github.com/agranisinha/AI-chess-and-checker', '_blank')">
          
            <h3>AI Chess & Checkers</h3>
            <p>Developed intelligent AI systems for Chess and Checkers using strategic algorithms and game theory.</p>
          
            <div class="project-actions">
-             <button onclick="event.stopPropagation(); window.open('https://github.com/agranisinha/AI-chess-and-checker.git', '_blank')">
+             <button onclick="event.stopPropagation(); window.open('https://github.com/agranisinha/AI-chess-and-checker', '_blank')">
                🔗 View on GitHub
              </button>
            </div>
-
-</div>
+         
+         </div>
 
       </div>
     </div>
