@@ -3266,32 +3266,36 @@ textarea:-webkit-autofill {
 /* ================= PROJECT MODAL ================= */
 
 .image-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.85);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
+  background: rgba(0, 0, 0, 0.9);
+  padding: 20px;
 }
 
 /* ================= CAROUSEL ================= */
 
 .carousel-container {
   position: relative;
-  max-width: 90%;
-  max-height: 90%;
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+.carousel-container {
+  background: rgba(20, 20, 25, 0.6);
+  padding: 20px;
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+}
+
 .carousel-img {
-  width: 80vw;
-  max-height: 80vh;
+  max-width: 90vw;
+  max-height: 85vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;   /* ✅ KEY FIX */
+  display: block;
+  margin: auto;
   border-radius: 12px;
 }
 
@@ -3308,8 +3312,8 @@ textarea:-webkit-autofill {
   border-radius: 50%;
 }
 
-.prev { left: -50px; }
-.next { right: -50px; }
+.prev { left: 20px; }
+.next { right: 20px; }
 
 .dots {
   position: absolute;
