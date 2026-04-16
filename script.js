@@ -613,18 +613,26 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function bindSidebarEvents() {
-    updateCollections();
-    sidebarFiles.forEach((file) => {
-      file.addEventListener("click", () => {
-  openTab(tabName);
+  updateCollections();
 
-  // 👉 CLOSE SIDEBAR AFTER CLICK
-  document.getElementById("sidebarPanel")?.classList.remove("show");
-  document.getElementById("mobileBackdrop")?.classList.remove("show");
-});
+  sidebarFiles.forEach((file) => {
+    file.addEventListener("click", () => {
+
+      // ✅ GET TAB NAME CORRECTLY
+      const tabName = file.dataset.tab || normalizeName(file.textContent);
+
+      openTab(tabName);
+
+      // ✅ CLOSE SIDEBAR (MOBILE FIX)
+      if (window.innerWidth <= 768) {
+        document.getElementById("sidebarPanel")?.classList.remove("show");
+        document.getElementById("mobileBackdrop")?.classList.remove("show");
+      }
     });
-    $(".copilot-box")?.addEventListener("click", () => toggleCopilotSidebar(true));
-  }
+  });
+
+  $(".copilot-box")?.addEventListener("click", () => toggleCopilotSidebar(true));
+}
 
  function toggleTerminal() {
   
