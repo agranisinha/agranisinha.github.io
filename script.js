@@ -1366,6 +1366,12 @@ document.getElementById("mobileBackdrop")?.addEventListener("click", () => {
   document.getElementById("sidebarPanel")?.classList.remove("show");
   document.getElementById("mobileBackdrop")?.classList.remove("show");
 });
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    document.getElementById("sidebarPanel")?.classList.remove("show");
+    document.getElementById("mobileBackdrop")?.classList.remove("show");
+  }
+});
 /* ================= SIRI COPILOT ================= */
 
 const SpeechRecognition =
