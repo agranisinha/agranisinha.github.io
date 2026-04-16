@@ -1577,7 +1577,7 @@ function getNaturalReply(message) {
 function speak(text) {
   if (!("speechSynthesis" in window)) return;
 
-  // 🚫 stop current speech safely
+  // 🚫 stop previous speech
   window.speechSynthesis.cancel();
 
   const utterance = new SpeechSynthesisUtterance(text);
@@ -1586,7 +1586,7 @@ function speak(text) {
   utterance.pitch = 1;
 
   utterance.onstart = () => {
-    setSiriState("speaking");
+    setSiriState("speaking", "Speaking…", "Here’s what I found.");
   };
 
   utterance.onend = () => {
@@ -1595,60 +1595,6 @@ function speak(text) {
 
   speechSynthesis.speak(utterance);
 }
-
-function sendMessage() {
-  const { input } = getSiriElements();
-  if (!input) return;
-
-  const raw = input.value.trim();
-  if (!raw) return;
-
-  addCopilotMessage(raw, "user");
-  input.value = "";
-
-  setSiriState("thinking", "Thinking…", "Working on that.");
-
-  // ✅ SAFE HANDLING (NO CRASH)
-  let response = {};
-  try {
-    response = getNaturalReply(raw) || {};
-  } catch (e) {
-    console.error("Reply error:", e);
-  }
-
-  const reply = response.reply || "You can ask about Agrani’s projects, skills, or experience.";
-  const action = response.action || null;
-
-  setTimeout(() => {
-  addCopilotMessage(reply, "bot");
-
-  if (typeof action === "function") {
-    try {
-      action();
-    } catch (e) {
-      console.error("Action error:", e);
-    }
-  }
-
-  // 🔊 SPEAK (SAFE)
-  try {
-    speak(reply);
-  } catch (e) {
-    console.error("Speak error:", e);
-  }
-
-  // ✅ FORCE RESET (THIS FIXES STUCK)
-  setTimeout(() => {
-    setSiriState(
-      "idle",
-      "Hi! I’m Agrani’s Siri Copilot 👋",
-      "Tap the mic and ask about projects, skills, experience, resume, or contact."
-    );
-  }, 1200);
-
-}, 380);
-}
-
 function startListening() {
   const { input } = getSiriElements();
 
