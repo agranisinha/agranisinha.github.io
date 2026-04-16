@@ -39,25 +39,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const green = document.getElementById("btnGreen");
   const feedback = document.getElementById("headerFeedback");
 
-     if (window.innerWidth <= 768) {
-   
-     const messages = [
-       "Close disabled 😎",
-       "Nice try… but this isn’t a real OS 😉",
-       "You’re still inside my portfolio 🚀",
-       "This window doesn’t close that easily 😏",
-       "Relax… nothing to close here 😄",
-       "VS Code vibes, but no exit button 😆",
-       "Simulation mode ON 🤖",
-       "Portfolio > Closing ❌",
-       "Keep exploring instead 🔍",
-     ];
-   
-     red.onclick = () => {
-       const random = messages[Math.floor(Math.random() * messages.length)];
-       alert(random);
-     };
-   
+      // ✅ MAC BUTTONS FIX
+   if (red) {
+     red.onclick = () => alert("Close disabled 😎");
    }
    
    if (yellow) {
@@ -273,17 +257,11 @@ document.addEventListener("DOMContentLoaded", () => {
    }
    
    // CLICK OUTSIDE
-   if (overlay) {
-     overlay.addEventListener("click", closeMobileSidebar);
-   }
+   overlay.addEventListener("click", closeMobileSidebar);
    
-   // ✅ FIX MOBILE SIDEBAR TRIGGER (ALL ICONS)
+   // MOBILE DETECTION
    if (window.innerWidth <= 768) {
-     qsa(".activity-icon").forEach(icon => {
-       icon.addEventListener("click", () => {
-         openMobileSidebar();
-       });
-     });
+     document.querySelector(".activity-icon")?.addEventListener("click", openMobileSidebar);
    }
   function persistState() {
     try {
@@ -749,31 +727,28 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
- function renderContent(tabName) {
-  if (!editorContent) return;
+  function renderContent(tabName) {
+    if (!editorContent) return;
 
-  try {
     const views = getViews();
     const safeTab = isValidTab(tabName) ? tabName : "home";
 
-    editorContent.innerHTML = views[safeTab] || "<h2>Loading...</h2>";
+    editorContent.style.opacity = "0";
 
-    if (safeTab === "home") {
-      startTyping();
-      setTimeout(startHeroTyping, 300);
-    }
+    setTimeout(() => {
+      editorContent.innerHTML = views[safeTab] || views.home;
+      editorContent.style.opacity = "1";
 
-  } catch (err) {
-    console.error("🔥 ERROR IN RENDER:", err);
+      if (safeTab === "home") {
+        startTyping();
+        setTimeout(startHeroTyping, 300); // ✅ ADD THIS
+      }
 
-    editorContent.innerHTML = `
-      <div style="padding:20px;color:red;">
-        <h2>⚠️ Error loading content</h2>
-        <p>${err.message}</p>
-      </div>
-    `;
+      animateInsertedContent();
+      runMotionAnimations();
+      persistState();
+    }, 120);
   }
-}
 
 function highlightKeywords() {
   const el = document.getElementById("typingHero");
