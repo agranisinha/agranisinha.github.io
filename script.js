@@ -449,6 +449,11 @@ document.addEventListener("DOMContentLoaded", () => {
     closePalette();
     if (isMobile()) closeMobilePanels();
     persistState();
+    // ✅ FORCE CLOSE SIDEBAR (GLOBAL FIX)
+if (window.innerWidth <= 768) {
+  document.getElementById("sidebarPanel")?.classList.remove("show");
+  document.getElementById("mobileBackdrop")?.classList.remove("show");
+}
   }
 
   function closeTab(tabName) {
