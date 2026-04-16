@@ -1014,6 +1014,33 @@ a:hover ~ .cursor-square {
   border-radius: 20px;
 }
 
+/* HERO TEXT */
+.hero-desc {
+  font-size: 18px;
+  line-height: 1.7;
+  color: #aaa;
+}
+
+/* GRADIENT TEXT */
+.gradient-text {
+  background: linear-gradient(90deg, #4fc3f7, #a855f7, #ec4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 600;
+}
+
+/* BLINKING CURSOR */
+#typingHero::after {
+  content: "|";
+  animation: blink 1s infinite;
+  margin-left: 4px;
+}
+
+@keyframes blink {
+  0%, 50%, 100% { opacity: 1; }
+  25%, 75% { opacity: 0; }
+}
+
 /* ========================================================================== */
 /*                                TERMINAL PANEL                              */
 /* ========================================================================== */
