@@ -223,13 +223,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const sidebar = document.getElementById("sidebarPanel");
   const backdrop = document.getElementById("mobileBackdrop");
 
+  console.log("CLICKED SIDEBAR");
+
   if (window.innerWidth <= 768) {
+    sidebar.classList.remove("hide"); // 🔥 KEY FIX
     sidebar.classList.toggle("show");
     backdrop.classList.toggle("show");
     return;
   }
 
-  sidebar?.classList.toggle("hide");
+  sidebar.classList.toggle("hide");
 }
 
   function toggleCopilotSidebar(force) {
