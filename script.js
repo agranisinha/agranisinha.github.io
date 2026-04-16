@@ -223,14 +223,25 @@ document.addEventListener("DOMContentLoaded", () => {
   const sidebar = document.getElementById("sidebarPanel");
   const backdrop = document.getElementById("mobileBackdrop");
 
-  console.log("CLICKED SIDEBAR");
-
   if (window.innerWidth <= 768) {
-    sidebar.classList.remove("hide"); // 🔥 KEY FIX
-    sidebar.classList.toggle("show");
-    backdrop.classList.toggle("show");
+
+    // 👉 TOGGLE BOTH
+    const isOpen = sidebar.classList.contains("show");
+
+    if (isOpen) {
+      sidebar.classList.remove("show");
+      backdrop.classList.remove("show");
+    } else {
+      sidebar.classList.remove("hide"); // remove desktop hide
+      sidebar.classList.add("show");
+      backdrop.classList.add("show");
+    }
+
     return;
   }
+
+  sidebar.classList.toggle("hide");
+}
 
   sidebar.classList.toggle("hide");
 }
