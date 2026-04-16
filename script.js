@@ -39,15 +39,25 @@ document.addEventListener("DOMContentLoaded", () => {
   const green = document.getElementById("btnGreen");
   const feedback = document.getElementById("headerFeedback");
 
-      // ✅ MAC BUTTONS FIX
-   // ✅ ONLY FOR MOBILE
-   if (window.innerWidth <= 768) {
-     red.onclick = () => alert("Close disabled 😎");
-   } else {
+     if (window.innerWidth <= 768) {
+   
+     const messages = [
+       "Close disabled 😎",
+       "Nice try… but this isn’t a real OS 😉",
+       "You’re still inside my portfolio 🚀",
+       "This window doesn’t close that easily 😏",
+       "Relax… nothing to close here 😄",
+       "VS Code vibes, but no exit button 😆",
+       "Simulation mode ON 🤖",
+       "Portfolio > Closing ❌",
+       "Keep exploring instead 🔍",
+     ];
+   
      red.onclick = () => {
-       // desktop behavior (optional)
-       window.close(); // or do nothing
+       const random = messages[Math.floor(Math.random() * messages.length)];
+       alert(random);
      };
+   
    }
    
    if (yellow) {
