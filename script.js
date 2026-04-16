@@ -629,9 +629,13 @@ document.addEventListener("DOMContentLoaded", () => {
     updateCollections();
     sidebarFiles.forEach((file) => {
       file.addEventListener("click", () => {
-        const tabName = file.dataset.tab || normalizeName(file.textContent);
-        openTab(tabName);
-      });
+  openTab(tabName);
+
+  if (window.innerWidth <= 768) {
+    document.getElementById("sidebarPanel")?.classList.remove("show");
+    document.getElementById("mobileBackdrop")?.classList.remove("show");
+  }
+});
     });
     $(".copilot-box")?.addEventListener("click", () => toggleCopilotSidebar(true));
   }
