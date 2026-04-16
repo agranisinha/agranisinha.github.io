@@ -1,100 +1,36 @@
-/* ==========================================================================
-   AGRANI PORTFOLIO - FULL UPDATED SCRIPT.JS
-   ==========================================================================
-   FEATURES
-   --------------------------------------------------------------------------
-   1. VS Code-style tab system
-   2. Copilot opens ONLY on right side
-   3. copilot.md / copilot file item auto-removed
-   4. File menu close tab / close all / close others
-   5. Command palette
-   6. Sidebar and activity bar sync
-   7. Voice assistant
-   8. Smart navigation from Copilot
-   9. Real JS execution in terminal
-   10. Python execution via Pyodide if available
-   11. Motion.dev animation hooks if loaded
-   12. Responsive safety helpers
-   ========================================================================== */
-
 document.addEventListener("DOMContentLoaded", () => {
   "use strict";
 
-  /* ==========================================================================
-     DOM REFERENCES
-     ========================================================================== */
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+  const safeText = (v) => String(v ?? "").trim();
+  const isMobile = () => window.innerWidth <= 768;
 
-  const editorContent = document.getElementById("editorContent");
-  const tabsContainer = document.getElementById("editorTabs");
-  const IS_MOBILE = window.innerWidth <= 768;
+  const editorContent = $("#editorContent");
+  const tabsContainer = $("#editorTabs");
+  const paletteOverlay = $("#paletteOverlay");
+  const paletteBackdrop = $("#paletteBackdrop");
+  const paletteInput = $("#paletteInput");
+  const openPaletteBtn = $("#openPaletteBtn");
+  const terminal = $("#terminalPanel");
+  const terminalBody = $("#terminalBody");
+  const terminalInput = $("#terminalInput");
+  const settingsPanel = $("#settingsPanel");
+  const feedback = $("#headerFeedback");
+  const red = $("#btnRed");
+  const yellow = $("#btnYellow");
+  const green = $("#btnGreen");
+  const sidebarPanel = $("#sidebarPanel") || $(".sidebar-panel");
+  const copilotSidebar = $("#copilotSidebar");
+  const cursorSquare = $("#cursorSquare");
+  const cursorDot = $("#cursorDot");
 
-  const paletteOverlay = document.getElementById("paletteOverlay");
-  const paletteBackdrop = document.getElementById("paletteBackdrop");
-  const openPaletteBtn = document.getElementById("openPaletteBtn");
-  const paletteInput = document.getElementById("paletteInput");
-  const settingsPanel = document.getElementById("settingsPanel");
-
-  const red = document.getElementById("btnRed");
-  const yellow = document.getElementById("btnYellow");
-  const green = document.getElementById("btnGreen");
-  const feedback = document.getElementById("headerFeedback");
-
-      // ✅ MAC BUTTONS FIX
-   if (red) {
-     red.onclick = () => alert("Close disabled 😎");
-   }
-   
-   if (yellow) {
-     yellow.onclick = () => toggleSidebar();
-   }
-   
-   if (green) {
-     green.onclick = () => toggleCopilotSidebar(true);
-   }
-
-  const cursorSquare = document.getElementById("cursorSquare");
-  const cursorDot = document.getElementById("cursorDot");
-
-  const terminal = document.getElementById("terminalPanel");
-  const terminalBody = document.getElementById("terminalBody");
-  const terminalInput = document.getElementById("terminalInput");
-
-  const overlay = document.getElementById("mobileOverlay");
-  const sidebar = document.querySelector(".sidebar-panel");
-
-  let sidebarFiles = [];
-  let menuItems = [];
-  let paletteItems = [];
-
-  /* ==========================================================================
-     GLOBAL STATE
-     ========================================================================== */
-
-  let openTabs = [];
-  let activeTab = "";
-  let currentPaletteIndex = 0;
-  let currentDir = "~";
-  let terminalHistory = [];
-  let terminalHistoryIndex = -1;
-  let pyodideInstance = null;
-  let isCopilotOpen = false;
-  let currentTheme = "dark";
-
-  const STORAGE_KEYS = {
-    theme: "agrani_portfolio_theme_v2",
-    tabs: "agrani_portfolio_tabs_v2",
-    activeTab: "agrani_portfolio_active_tab_v2",
-    terminalHistory: "agrani_portfolio_terminal_history_v2",
-    copilotOpen: "agrani_portfolio_copilot_open_v2"
-  };
-
-  const funnyQuotes = [
-    "Nice try 😏 but I’ll stay open.",
-    "You can’t close me that easily 😎",
-    "Still running and glowing ✨",
-    "This portfolio is immortal 🚀",
-    "Denied 😈"
-  ];
+  let mobileBackdrop = $(".mobile-backdrop");
+  if (!mobileBackdrop) {
+    mobileBackdrop = document.createElement("div");
+    mobileBackdrop.className = "mobile-backdrop";
+    document.body.appendChild(mobileBackdrop);
+  }
 
   const TAB_LABELS = {
     home: "⚛ home.tsx",
@@ -114,206 +50,83 @@ document.addEventListener("DOMContentLoaded", () => {
     "projects",
     "skills",
     "experience",
-     "lor",
+    "lor",
     "contact",
     "readme",
     "resume"
   ];
 
-   // AFTER initialization (BOTTOM of DOMContentLoaded)
-
-   const copilotSidebarEl = document.getElementById("copilotSidebar");
-   
-   if (copilotSidebarEl) {
-     copilotSidebarEl.addEventListener("click", (e) => {
-       if (
-         copilotSidebarEl.classList.contains("minimized") &&
-         e.target.closest(".copilot-side-header")
-       ) {
-         minimizeCopilot();
-       }
-     });
-   }
-   
-   const settingsPanelEl = document.getElementById("settingsPanel");
-   
-   if (settingsPanelEl) {
-     settingsPanelEl.addEventListener("click", (e) => {
-       if (
-         settingsPanelEl.classList.contains("minimized") &&
-         e.target.closest(".settings-header")
-       ) {
-         minimizeSettings();
-       }
-     });
-   }
-
-  const COPILOT_REPLIES = {
-    intro:
-      "Hi — I’m Agrani’s portfolio copilot. Ask about projects, experience, skills, education, healthcare AI work, or contact details.",
-    projects:
-      "Agrani has built projects across ML drug discovery, Flutter inventory systems, healthcare chatbots, AI plant identification, bioinformatics, AI game systems, and practical healthcare technology solutions.",
-    experience:
-      "Agrani’s experience includes Clinical Informatics Intern at Alivia Care, Data Science Analyst at BluCognition, Academic Research Associate at Digiversal, and research work in bioinformatics and diagnostics.",
-    skills:
-      "Core skills include Python, Java, C/C++, JavaScript, HTML/CSS, Flutter, TensorFlow, Machine Learning, Computer Vision, SAS, Excel, EHRGo, WellSky, Android Studio, GitHub, and healthcare analytics.",
-    education:
-      "Agrani is pursuing an M.S. in Health Informatics at the University of North Florida and completed an Integrated Master of Technology in Biotechnology from JIIT.",
-    contact:
-      "You can contact Agrani at agbrian521@gmail.com, phone (904) 228-1179, based in Jacksonville, FL.",
-    healthcare:
-      "Agrani’s work focuses on AI-driven healthcare systems, clinical informatics, healthcare analytics, digital health solutions, EHR-centered workflows, and practical intelligent systems.",
-    leadership:
-      "Agrani has served as Marketing Chair in the Health Informatics & Analytics Club and has worked on healthcare outreach, podcast coordination, and student engagement initiatives.",
-    resume:
-      "You can open the Resume tab or use the File menu to download Agrani’s latest resume.",
-     lor: 
-      "Agrani has received multiple Letters of Recommendation from academic and professional experiences. You can view them in the LOR section.",
-    default:
-      "I can answer questions about Agrani’s projects, experience, skills, education, healthcare AI focus, leadership, resume, and contact details."
+  const STORAGE = {
+    theme: "agrani_portfolio_theme_v3",
+    tabs: "agrani_portfolio_tabs_v3",
+    active: "agrani_portfolio_active_v3",
+    history: "agrani_portfolio_terminal_history_v3",
+    copilot: "agrani_portfolio_copilot_v3"
   };
 
-  /* ==========================================================================
-     DYNAMIC VIEW REGISTRY
-     ========================================================================== */
+  const funnyQuotes = [
+    "Nice try 😏 but I’ll stay open.",
+    "You can’t close me that easily 😎",
+    "Still running and glowing ✨",
+    "This portfolio is immortal 🚀",
+    "Denied 😈"
+  ];
 
-  function getViews() {
-    return {
-      home: getHome(),
-      about: getAbout(),
-      projects: getProjects(),
-      skills: getSkills(),
-      experience: getExperience(),
-       lor: getLOR(),
-      contact: getContact(),
-      readme: getReadme(),
-      resume: getResume()
-    };
-  }
+  const COPILOT_REPLIES = {
+    intro: "Hi — I’m Agrani’s portfolio copilot. Ask about projects, experience, skills, education, healthcare AI work, or contact details.",
+    projects: "Agrani has built projects across ML drug discovery, Flutter inventory systems, healthcare chatbots, AI plant identification, bioinformatics, and AI game systems.",
+    experience: "Agrani’s experience includes Clinical Informatics Intern at Alivia Care, Data Science Analyst at BluCognition, Academic Research Associate at Digiversal, and bioinformatics research.",
+    skills: "Core skills include Python, Java, C/C++, JavaScript, HTML/CSS, Flutter, TensorFlow, Machine Learning, Computer Vision, SAS, Excel, EHRGo, WellSky, Android Studio, and GitHub.",
+    education: "Agrani is pursuing an M.S. in Health Informatics at the University of North Florida and completed an Integrated Master of Technology in Biotechnology from JIIT.",
+    contact: "You can contact Agrani at agbrian521@gmail.com, phone (904) 228-1179, based in Jacksonville, FL.",
+    healthcare: "Agrani’s work focuses on AI-driven healthcare systems, clinical informatics, healthcare analytics, digital health solutions, and practical intelligent systems.",
+    leadership: "Agrani has served as Marketing Chair in the Health Informatics & Analytics Club and led outreach, podcast coordination, and student engagement efforts.",
+    resume: "You can open the Resume tab or use the resume section to access the latest resume.",
+    lor: "Agrani has multiple Letters of Recommendation from academic and professional experiences. Open the LOR tab to view them.",
+    default: "I can answer questions about Agrani’s projects, experience, skills, education, leadership, resume, and contact details."
+  };
 
-  /* ==========================================================================
-     BASIC HELPERS
-     ========================================================================== */
+  let openTabs = [];
+  let activeTab = "";
+  let currentPaletteIndex = 0;
+  let currentDir = "~";
+  let terminalHistory = [];
+  let terminalHistoryIndex = -1;
+  let pyodideInstance = null;
+  let isCopilotOpen = false;
+  let currentTheme = "dark";
+  let heroTyped = false;
+  let sidebarFiles = [];
+  let paletteItems = [];
+  let menuItems = [];
 
-  function qs(selector, root = document) {
-    return root.querySelector(selector);
-  }
-
-  function qsa(selector, root = document) {
-    return Array.from(root.querySelectorAll(selector));
-  }
-
-  function safeText(value) {
-    return String(value ?? "").trim();
-  }
-
-  function clamp(num, min, max) {
-    return Math.max(min, Math.min(num, max));
-  }
-
-  function debounce(fn, delay = 150) {
-    let timer = null;
-    return (...args) => {
-      clearTimeout(timer);
-      timer = setTimeout(() => fn(...args), delay);
-    };
-  }
-
-  function delay(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
-
-  function createElement(tag, className = "", html = "") {
-    const el = document.createElement(tag);
-    if (className) el.className = className;
-    if (html) el.innerHTML = html;
-    return el;
-  }
-
-  function escapeHtml(str) {
-    return String(str)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-  }
-
-  function updateCollections() {
-    sidebarFiles = qsa(".file");
-    menuItems = qsa(".menu-item");
-    paletteItems = qsa(".palette-item");
-  }
-  // OPEN SIDEBAR
-   function openMobileSidebar() {
-     sidebar.classList.add("show");
-     overlay.classList.add("show");
-   }
-   
-   // CLOSE SIDEBAR
-   function closeMobileSidebar() {
-     sidebar.classList.remove("show");
-     overlay.classList.remove("show");
-   }
-   
-   // CLICK OUTSIDE
-   overlay.addEventListener("click", closeMobileSidebar);
-   
-   // MOBILE DETECTION
-   if (window.innerWidth <= 768) {
-     document.querySelector(".activity-icon")?.addEventListener("click", openMobileSidebar);
-   }
   function persistState() {
     try {
-      localStorage.setItem(STORAGE_KEYS.theme, currentTheme);
-      localStorage.setItem(STORAGE_KEYS.tabs, JSON.stringify(openTabs));
-      localStorage.setItem(STORAGE_KEYS.activeTab, activeTab);
-      localStorage.setItem(STORAGE_KEYS.terminalHistory, JSON.stringify(terminalHistory.slice(-60)));
-      localStorage.setItem(STORAGE_KEYS.copilotOpen, JSON.stringify(isCopilotOpen));
-    } catch (_error) {
-      /* ignore */
-    }
+      localStorage.setItem(STORAGE.theme, currentTheme);
+      localStorage.setItem(STORAGE.tabs, JSON.stringify(openTabs));
+      localStorage.setItem(STORAGE.active, activeTab);
+      localStorage.setItem(STORAGE.history, JSON.stringify(terminalHistory.slice(-50)));
+      localStorage.setItem(STORAGE.copilot, JSON.stringify(isCopilotOpen));
+    } catch (_) {}
   }
 
   function restoreState() {
     try {
-      const storedTheme = localStorage.getItem(STORAGE_KEYS.theme);
-      const storedTabs = JSON.parse(localStorage.getItem(STORAGE_KEYS.tabs) || "[]");
-      const storedActive = localStorage.getItem(STORAGE_KEYS.activeTab);
-      const storedTerminalHistory = JSON.parse(localStorage.getItem(STORAGE_KEYS.terminalHistory) || "[]");
-      const storedCopilotOpen = JSON.parse(localStorage.getItem(STORAGE_KEYS.copilotOpen) || "false");
-
-      if (storedTheme) {
-        currentTheme = storedTheme;
-      }
-
-      if (Array.isArray(storedTabs) && storedTabs.length) {
-        openTabs = storedTabs.filter((tab) => TAB_ORDER.includes(tab));
-      }
-
-      if (storedActive && TAB_ORDER.includes(storedActive)) {
-        activeTab = storedActive;
-      }
-
-      if (Array.isArray(storedTerminalHistory)) {
-        terminalHistory = storedTerminalHistory;
-      }
-
-      if (typeof storedCopilotOpen === "boolean") {
-        isCopilotOpen = storedCopilotOpen;
-      }
-    } catch (_error) {
-      /* ignore */
+      currentTheme = localStorage.getItem(STORAGE.theme) || "dark";
+      openTabs = JSON.parse(localStorage.getItem(STORAGE.tabs) || "[]").filter((t) => TAB_ORDER.includes(t));
+      activeTab = localStorage.getItem(STORAGE.active) || "home";
+      terminalHistory = JSON.parse(localStorage.getItem(STORAGE.history) || "[]");
+      isCopilotOpen = JSON.parse(localStorage.getItem(STORAGE.copilot) || "false");
+    } catch (_) {
+      openTabs = [];
+      activeTab = "home";
+      terminalHistory = [];
+      isCopilotOpen = false;
     }
   }
 
-  /* ==========================================================================
-     NORMALIZATION
-     ========================================================================== */
-
   function normalizeName(name) {
     const value = String(name).toLowerCase().trim();
-
     if (value.includes("home")) return "home";
     if (value.includes("about")) return "about";
     if (value.includes("project")) return "projects";
@@ -323,489 +136,331 @@ document.addEventListener("DOMContentLoaded", () => {
     if (value.includes("contact")) return "contact";
     if (value.includes("readme")) return "readme";
     if (value.includes("resume")) return "resume";
-
     return "home";
-  }
-
-  function getIcon(tab) {
-    return TAB_LABELS[tab] ? TAB_LABELS[tab].split(" ")[0] : "📄";
-  }
-
-  function getLabel(tab) {
-    return TAB_LABELS[tab] || `📄 ${tab}`;
   }
 
   function isValidTab(tab) {
     return TAB_ORDER.includes(tab);
   }
 
-  /* ==========================================================================
-     REMOVE COPILOT.MD / COPILOT FILE ITEM
-     ========================================================================== */
-
-  function removeCopilotFileEntries() {
-    qsa(".file").forEach((file) => {
-      const text = file.textContent.toLowerCase();
-      if (text.includes("copilot")) {
-        file.remove();
-      }
-    });
-
-    qsa(".palette-item").forEach((item) => {
-      const text = item.textContent.toLowerCase();
-      if (text.includes("copilot.md")) {
-        item.remove();
-      }
-    });
-
-    qsa(".dropdown div").forEach((item) => {
-      const text = item.textContent.toLowerCase();
-      if (text.includes("copilot.md")) {
-        item.remove();
-      }
-    });
-
-    updateCollections();
+  function getIcon(tab) {
+    return (TAB_LABELS[tab] || "📄 file").split(" ")[0];
   }
 
-  /* ==========================================================================
-     CREATE RIGHT-SIDE COPILOT PANEL IF NOT PRESENT
-     ========================================================================== */
-
-  function ensureCopilotSidebar() {
-    let panel = document.getElementById("copilotSidebar");
-
-    if (panel) return panel;
-
-    panel = createElement("aside", "copilot-sidebar");
-    panel.id = "copilotSidebar";
-    panel.setAttribute("aria-hidden", "true");
-
-    panel.innerHTML = `
-      <div class="copilot-side-header">
-        <div class="copilot-side-title">✨ Agrani's Copilot</div>
-        <div class="copilot-side-actions">
-          <button class="copilot-side-minimize" id="copilotSideMinimize" type="button" aria-label="Minimize Copilot">—</button>
-          <button class="copilot-side-close" id="copilotSideClose" type="button" aria-label="Close Copilot">×</button>
-        </div>
-      </div>
-
-      <div class="copilot-workspace-row">
-        <span class="copilot-workspace-label">WORKSPACE</span>
-        <span class="copilot-workspace-pill">● portfolio · agrani-sinha</span>
-      </div>
-
-      <div class="copilot-side-hero">
-        <div class="copilot-avatar-ring">
-          <div class="copilot-avatar-core">🙂</div>
-        </div>
-        <h3>Hi! I'm Agrani's Copilot 👋</h3>
-        <p>
-          Ask me about projects, skills, experience, education, healthcare AI work,
-          leadership, resume, or contact details.
-        </p>
-      </div>
-
-      <div class="copilot-suggest-grid">
-        <button class="copilot-suggest" data-quick="Tell me about Agrani's projects">
-          Tell me about Agrani's projects
-        </button>
-        <button class="copilot-suggest" data-quick="What is Agrani's tech stack?">
-          What's her tech stack?
-        </button>
-        <button class="copilot-suggest" data-quick="Tell me about Agrani's experience">
-          Tell me about her experience
-        </button>
-        <button class="copilot-suggest" data-quick="How can I contact Agrani?">
-          How can I contact Agrani?
-        </button>
-      </div>
-
-      <div class="copilot-side-messages" id="copilotMessages"></div>
-
-      <div class="copilot-side-input-wrap">
-        <div class="copilot-input-row">
-          <input
-            id="copilotInput"
-            type="text"
-            placeholder="Ask about Agrani..."
-            autocomplete="off"
-          />
-          <button id="copilotSend" type="button" aria-label="Send">➤</button>
-          <button id="copilotVoice" type="button" aria-label="Voice assistant">🎤</button>
-        </div>
-        <div class="copilot-side-note">
-          AI can make mistakes • Contact Agrani directly for important info
-        </div>
-      </div>
-    `;
-
-    const appShell = document.querySelector(".app-shell") || document.body;
-    appShell.appendChild(panel);
-
-    return panel;
+  function getLabel(tab) {
+    return TAB_LABELS[tab] || `📄 ${tab}`;
   }
 
-  const copilotSidebar = ensureCopilotSidebar();
-
-  /* ==========================================================================
-     THEME
-     ========================================================================== */
+  function updateCollections() {
+    sidebarFiles = $$(".file");
+    paletteItems = $$(".palette-item");
+    menuItems = $$(".menu-item");
+  }
 
   function applyTheme(theme) {
     currentTheme = theme || "dark";
-
     document.body.classList.remove("rose", "tokyo", "cat", "nord", "gruv");
-    if (currentTheme !== "dark") {
-      document.body.classList.add(currentTheme);
-    }
-
-    qsa(".theme-option").forEach((el) => el.classList.remove("active"));
-    qsa(".theme-option").forEach((el) => {
+    if (currentTheme !== "dark") document.body.classList.add(currentTheme);
+    $$(".theme-option").forEach((el) => el.classList.remove("active"));
+    $$(".theme-option").forEach((el) => {
       const text = el.textContent.toLowerCase();
-      const match =
+      if (
         (currentTheme === "dark" && text.includes("dark")) ||
         (currentTheme === "rose" && text.includes("ros")) ||
         (currentTheme === "tokyo" && text.includes("tokyo")) ||
         (currentTheme === "cat" && text.includes("cat")) ||
         (currentTheme === "nord" && text.includes("nord")) ||
-        (currentTheme === "gruv" && text.includes("gruv"));
-
-      if (match) el.classList.add("active");
+        (currentTheme === "gruv" && text.includes("gruv"))
+      ) {
+        el.classList.add("active");
+      }
     });
-
     persistState();
   }
 
-  window.setTheme = function setTheme(theme) {
-    applyTheme(theme);
-  };
+  window.setTheme = applyTheme;
 
-  window.toggleSettings = function toggleSettings() {
-  const panel = document.getElementById("settingsPanel");
-
-  if (!panel) return;
-
-  const isOpen = panel.classList.contains("open");
-
-  if (isOpen) {
-    panel.classList.remove("open");
-    panel.classList.remove("minimized");
-  } else {
-    panel.classList.add("open");
-    panel.classList.remove("minimized");
-  }
-};
-
-  /* ==========================================================================
-     SIDEBAR / ACTIVITY BAR
-     ========================================================================== */
-
-  function setActivityActive(type) {
-    qsa(".activity-icon").forEach((icon) => {
-      icon.classList.remove("active");
-    });
-
-    const map = {
-      explorer: 0,
-      search: 1,
-      git: 2,
-      files: 3,
-      copilot: 4
-    };
-
-    const index = map[type];
-    const icons = qsa(".activity-icon");
-
-    if (typeof index === "number" && icons[index]) {
-      icons[index].classList.add("active");
-    }
+  function showMessage(msg) {
+    if (!feedback) return;
+    feedback.textContent = msg;
+    feedback.classList.add("show");
+    setTimeout(() => feedback.classList.remove("show"), 2200);
   }
 
-  window.openSidebar = function openSidebar(type) {
-    setActivityActive(type);
+  function openMobilePanel(type) {
+    if (!isMobile()) return;
+    sidebarPanel?.classList.remove("m-show");
+    copilotSidebar?.classList.remove("m-show");
+    settingsPanel?.classList.remove("m-show");
 
-    if (type === "copilot") {
-      toggleCopilotSidebar(true);
-      return;
-    }
+    if (type === "sidebar") sidebarPanel?.classList.add("m-show");
+    if (type === "copilot") copilotSidebar?.classList.add("m-show");
+    if (type === "settings") settingsPanel?.classList.add("m-show");
 
-    if (type === "explorer") {
-      const panel = document.querySelector(".sidebar-panel");
-      if (panel) panel.classList.remove("hide");
-      return;
-    }
+    if (type) mobileBackdrop.classList.add("show");
+    else mobileBackdrop.classList.remove("show");
+  }
 
-    if (type === "search") {
-      openPalette();
-      return;
-    }
+  function closeMobilePanels() {
+    sidebarPanel?.classList.remove("m-show");
+    copilotSidebar?.classList.remove("m-show");
+    settingsPanel?.classList.remove("m-show");
+    mobileBackdrop.classList.remove("show");
+  }
 
-    if (type === "git") {
-      printToTerminal("Git panel is simulated. Use `git log` in terminal.", "warning");
-      return;
-    }
-
-    if (type === "files") {
-      openTab("readme");
-      return;
-    }
-  };
+  mobileBackdrop.addEventListener("click", closeMobilePanels);
 
   function toggleSidebar() {
-    const panel = document.querySelector(".sidebar-panel");
-    if (panel) panel.classList.toggle("hide");
+    if (isMobile()) {
+      const open = sidebarPanel?.classList.contains("m-show");
+      open ? closeMobilePanels() : openMobilePanel("sidebar");
+      return;
+    }
+    sidebarPanel?.classList.toggle("hide");
+  }
+
+  function toggleCopilotSidebar(force) {
+    if (isMobile()) {
+      if (force === false) {
+        closeMobilePanels();
+        isCopilotOpen = false;
+        persistState();
+        return;
+      }
+      const open = copilotSidebar?.classList.contains("m-show");
+      if (force === true) {
+        openMobilePanel("copilot");
+        isCopilotOpen = true;
+        persistState();
+        return;
+      }
+      open ? closeMobilePanels() : openMobilePanel("copilot");
+      isCopilotOpen = !open;
+      persistState();
+      return;
+    }
+
+    const editor = $(".editor-area");
+    if (!copilotSidebar) return;
+
+    if (force === true) {
+      isCopilotOpen = true;
+      copilotSidebar.classList.add("open");
+      copilotSidebar.classList.remove("minimized");
+      editor?.classList.add("with-copilot");
+      persistState();
+      return;
+    }
+
+    if (force === false) {
+      isCopilotOpen = false;
+      copilotSidebar.classList.remove("open", "minimized");
+      editor?.classList.remove("with-copilot");
+      persistState();
+      return;
+    }
+
+    isCopilotOpen = !copilotSidebar.classList.contains("open");
+    copilotSidebar.classList.toggle("open", isCopilotOpen);
+    if (!isCopilotOpen) copilotSidebar.classList.remove("minimized");
+    editor?.classList.toggle("with-copilot", isCopilotOpen);
+    persistState();
+  }
+
+  function minimizeCopilot() {
+    if (!copilotSidebar) return;
+    const editor = $(".editor-area");
+    const minimized = copilotSidebar.classList.contains("minimized");
+    if (minimized) {
+      copilotSidebar.classList.remove("minimized");
+      copilotSidebar.classList.add("open");
+      editor?.classList.add("with-copilot");
+    } else {
+      copilotSidebar.classList.add("minimized", "open");
+      editor?.classList.remove("with-copilot");
+    }
+    isCopilotOpen = true;
+    persistState();
+  }
+
+  function toggleSettings() {
+    if (isMobile()) {
+      const open = settingsPanel?.classList.contains("m-show");
+      open ? closeMobilePanels() : openMobilePanel("settings");
+      return;
+    }
+    settingsPanel?.classList.toggle("open");
+    settingsPanel?.classList.remove("minimized");
+  }
+
+  function minimizeSettings() {
+    if (!settingsPanel) return;
+    settingsPanel.classList.toggle("minimized");
+    settingsPanel.classList.add("open");
   }
 
   window.toggleSidebar = toggleSidebar;
-
-  /* ==========================================================================
-     COPILOT SIDEBAR CONTROL
-     ========================================================================== */
-
- function toggleCopilotSidebar(force) {
-  const sidebar = document.getElementById("copilotSidebar");
-  const editor = document.querySelector(".editor-area");
-
-  if (!sidebar) return;
-
-  if (force === true) {
-    isCopilotOpen = true;
-    sidebar.classList.add("open");
-    sidebar.classList.remove("minimized");
-    editor && editor.classList.add("with-copilot");
-    return;
-  }
-
-  if (force === false) {
-    isCopilotOpen = false;
-    sidebar.classList.remove("open");
-    sidebar.classList.remove("minimized");
-    editor && editor.classList.remove("with-copilot");
-    return;
-  }
-
-  isCopilotOpen = !sidebar.classList.contains("open");
-
-  sidebar.classList.toggle("open", isCopilotOpen);
-
-  if (!isCopilotOpen) {
-    sidebar.classList.remove("minimized");
-  }
-
-  editor && editor.classList.toggle("with-copilot", isCopilotOpen);
-}
-
   window.toggleCopilotSidebar = toggleCopilotSidebar;
+  window.toggleSettings = toggleSettings;
+  window.minimizeCopilot = minimizeCopilot;
+  window.minimizeSettings = minimizeSettings;
 
-  /* ==========================================================================
-     TABS
-     ========================================================================== */
+  function setActivityActive(type) {
+    const map = { explorer: 0, search: 1, git: 2, files: 3, copilot: 4 };
+    $$(".activity-icon").forEach((icon) => icon.classList.remove("active"));
+    const index = map[type];
+    const icons = $$(".activity-icon");
+    if (typeof index === "number" && icons[index]) icons[index].classList.add("active");
+  }
+
+  function openSidebar(type) {
+    setActivityActive(type);
+    if (type === "copilot") return toggleCopilotSidebar(true);
+    if (type === "explorer") return toggleSidebar();
+    if (type === "search") return openPalette();
+    if (type === "git") return printToTerminal("Git panel is simulated. Use 'git log' in terminal.", "warning");
+    if (type === "files") return openTab("readme");
+  }
+
+  window.openSidebar = openSidebar;
 
   function setActiveSidebar(tabName) {
     sidebarFiles.forEach((file) => {
-      const fileText = file.textContent.toLowerCase();
-      const match =
-        (tabName === "home" && fileText.includes("home")) ||
-        (tabName === "about" && fileText.includes("about")) ||
-        (tabName === "projects" && fileText.includes("projects")) ||
-        (tabName === "skills" && fileText.includes("skills")) ||
-        (tabName === "experience" && fileText.includes("experience")) ||
-         (tabName === "lor" && fileText.includes("lor")) ||
-        (tabName === "contact" && fileText.includes("contact")) ||
-        (tabName === "readme" && fileText.includes("readme")) ||
-        (tabName === "resume" && fileText.includes("resume"));
-
-      file.classList.toggle("active", match);
+      file.classList.toggle("active", file.dataset.tab === tabName || normalizeName(file.textContent) === tabName);
     });
   }
 
   function renderTabs() {
     if (!tabsContainer) return;
-
     tabsContainer.innerHTML = "";
-
     openTabs.forEach((tab) => {
       const el = document.createElement("div");
       el.className = `tab ${tab === activeTab ? "active" : ""}`;
       el.dataset.tab = tab;
-
       el.innerHTML = `
         <span class="tab-icon">${getIcon(tab)}</span>
-        <span class="tab-label">${escapeHtml(getLabel(tab).replace(/^[^\s]+\s/, ""))}</span>
+        <span class="tab-label">${getLabel(tab).replace(/^[^\s]+\s/, "")}</span>
         <span class="tab-close" aria-label="Close tab">×</span>
       `;
-
-      el.addEventListener("click", () => {
-        openTab(tab);
+      el.addEventListener("click", () => openTab(tab));
+      el.querySelector(".tab-close")?.addEventListener("click", (e) => {
+        e.stopPropagation();
+        closeTab(tab);
       });
-
-      const closeBtn = el.querySelector(".tab-close");
-      if (closeBtn) {
-        closeBtn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          closeTab(tab);
-        });
-      }
-
       tabsContainer.appendChild(el);
     });
-  }
-
-  function animateInsertedContent() {
-    if (!editorContent) return;
-
-    const targets = editorContent.querySelectorAll(
-      ".hero-name, .roles span, .hero-desc, .home-buttons button, .stat-card, .about-card, .project-card, .timeline-item, .skills-chip, .profile-wrapper"
-    );
-
-    targets.forEach((el, index) => {
-      el.style.opacity = "0";
-      el.style.transform = "translateY(16px)";
-      setTimeout(() => {
-        el.style.transition = "opacity 0.45s ease, transform 0.45s ease";
-        el.style.opacity = "1";
-        el.style.transform = "translateY(0)";
-      }, 40 + index * 35);
-    });
-  }
-
-  function runMotionAnimations() {
-    if (!window.motionAnimate) return;
-
-    try {
-      window.motionAnimate(
-        ".tab",
-        { opacity: [0, 1], y: [-8, 0] },
-        { duration: 0.22 }
-      );
-
-      window.motionAnimate(
-        ".hero-name",
-        { opacity: [0, 1], y: [18, 0] },
-        { duration: 0.45 }
-      );
-
-      if (window.motionStagger) {
-        window.motionAnimate(
-          ".roles span",
-          { opacity: [0, 1], y: [10, 0] },
-          { duration: 0.3, delay: window.motionStagger(0.04) }
-        );
-
-        window.motionAnimate(
-          ".about-card, .project-card, .stat-card",
-          { opacity: [0, 1], y: [18, 0] },
-          { duration: 0.35, delay: window.motionStagger(0.05) }
-        );
-      }
-    } catch (_error) {
-      /* ignore */
-    }
   }
 
   function typeWriter(el, text, speed = 18) {
     if (!el) return;
     el.textContent = "";
     let i = 0;
-
-    function tick() {
+    const tick = () => {
       if (i < text.length) {
-        el.textContent += text.charAt(i);
-        i += 1;
+        el.textContent += text.charAt(i++);
         setTimeout(tick, speed);
       }
-    }
-
+    };
     tick();
   }
 
   function startTyping() {
-    const typingEl = document.getElementById("typingText");
-    if (typingEl) {
-      typeWriter(typingEl, "// hello world !! Welcome to my portfolio", 16);
-    }
+    const typingEl = $("#typingText");
+    if (typingEl) typeWriter(typingEl, "// hello world !! Welcome to my portfolio", 16);
+  }
+
+  function highlightKeywords() {
+    const el = $("#typingHero");
+    if (!el) return;
+    let html = el.innerHTML;
+    ["AI", "Biotechnology", "Health Informatics", "Technology"].forEach((word) => {
+      html = html.replace(new RegExp(word, "g"), `<span class=\"gradient-text\">${word}</span>`);
+    });
+    el.innerHTML = html;
+  }
+
+  function startHeroTyping() {
+    if (heroTyped) return;
+    heroTyped = true;
+    const el = $("#typingHero");
+    if (!el) return;
+    const text = "I design and build intelligent solutions at the intersection of AI, Biotechnology, Health Informatics, and Technology—leveraging data to solve real-world healthcare challenges.";
+    let i = 0;
+    el.innerHTML = "";
+    const type = () => {
+      if (i < text.length) {
+        el.innerHTML += text.charAt(i++);
+        setTimeout(type, 16);
+      } else {
+        highlightKeywords();
+      }
+    };
+    type();
+  }
+
+  function getViews() {
+    return {
+      home: getHome(),
+      about: getAbout(),
+      projects: getProjects(),
+      skills: getSkills(),
+      experience: getExperience(),
+      lor: getLOR(),
+      contact: getContact(),
+      readme: getReadme(),
+      resume: getResume()
+    };
   }
 
   function renderContent(tabName) {
     if (!editorContent) return;
-
-    const views = getViews();
-    const safeTab = isValidTab(tabName) ? tabName : "home";
-
-    editorContent.style.opacity = "0";
-
-    setTimeout(() => {
-      editorContent.innerHTML = views[safeTab] || views.home;
-      editorContent.style.opacity = "1";
-
-      if (safeTab === "home") {
-        startTyping();
-        setTimeout(startHeroTyping, 300); // ✅ ADD THIS
-      }
-
-      animateInsertedContent();
-      runMotionAnimations();
-      persistState();
-    }, 120);
+    try {
+      const views = getViews();
+      const safeTab = isValidTab(tabName) ? tabName : "home";
+      heroTyped = false;
+      editorContent.style.opacity = "0";
+      setTimeout(() => {
+        editorContent.innerHTML = views[safeTab] || views.home;
+        editorContent.style.opacity = "1";
+        if (safeTab === "home") {
+          startTyping();
+          setTimeout(startHeroTyping, 250);
+        }
+        if (safeTab === "projects" || safeTab === "lor") {
+          editorContent.scrollTop = 0;
+        }
+      }, 80);
+    } catch (err) {
+      console.error(err);
+      editorContent.innerHTML = `<div style=\"padding:20px;color:#ff8a8a\"><h2>⚠️ Error loading content</h2><p>${err.message}</p></div>`;
+    }
   }
 
-function highlightKeywords() {
-  const el = document.getElementById("typingHero");
-  if (!el) return;
-
-  let html = el.innerHTML;
-
-  const words = ["AI", "Biotechnology", "Health Informatics", "Technology"];
-
-  words.forEach(word => {
-    const regex = new RegExp(word, "g");
-    html = html.replace(
-      regex,
-      `<span class="gradient-text">${word}</span>`
-    );
-  });
-
-  el.innerHTML = html;
-}
   function openTab(name) {
     const tabName = normalizeName(name);
-
     if (!isValidTab(tabName)) return;
-
-    if (!openTabs.includes(tabName)) {
-      openTabs.push(tabName);
-    }
-
+    if (!openTabs.includes(tabName)) openTabs.push(tabName);
     activeTab = tabName;
     renderTabs();
     setActiveSidebar(tabName);
     renderContent(tabName);
     closePalette();
+    if (isMobile()) closeMobilePanels();
+    persistState();
   }
 
   function closeTab(tabName) {
     openTabs = openTabs.filter((t) => t !== tabName);
-
-    if (!openTabs.length) {
-      openTabs = ["home"];
-    }
-
-    if (activeTab === tabName) {
-      activeTab = openTabs[openTabs.length - 1] || "home";
-    }
-
+    if (!openTabs.length) openTabs = ["home"];
+    if (activeTab === tabName) activeTab = openTabs[openTabs.length - 1] || "home";
     renderTabs();
     setActiveSidebar(activeTab);
     renderContent(activeTab);
-      if (isCopilotOpen) {
-        toggleCopilotSidebar(true);
-      }
+    persistState();
   }
 
   function closeCurrentTab() {
-    if (!activeTab) return;
-    closeTab(activeTab);
+    if (activeTab) closeTab(activeTab);
   }
 
   function closeAllTabs() {
@@ -814,6 +469,7 @@ function highlightKeywords() {
     renderTabs();
     setActiveSidebar("home");
     renderContent("home");
+    persistState();
   }
 
   function closeOtherTabs(tabName = activeTab) {
@@ -823,10 +479,10 @@ function highlightKeywords() {
     renderTabs();
     setActiveSidebar(tabName);
     renderContent(tabName);
+    persistState();
   }
 
   function closeTabsToRight(tabName = activeTab) {
-    if (!tabName) return;
     const index = openTabs.indexOf(tabName);
     if (index === -1) return;
     openTabs = openTabs.slice(0, index + 1);
@@ -834,6 +490,7 @@ function highlightKeywords() {
     renderTabs();
     setActiveSidebar(tabName);
     renderContent(tabName);
+    persistState();
   }
 
   window.openTab = openTab;
@@ -842,22 +499,15 @@ function highlightKeywords() {
   window.closeOtherTabs = closeOtherTabs;
   window.closeTabsToRight = closeTabsToRight;
 
-  /* ==========================================================================
-     COMMAND PALETTE
-     ========================================================================== */
-
   function openPalette() {
     if (!paletteOverlay) return;
-
     paletteOverlay.classList.add("open");
     paletteOverlay.setAttribute("aria-hidden", "false");
-
     if (paletteInput) {
       paletteInput.value = "";
       filterPalette("");
-      setTimeout(() => paletteInput.focus(), 40);
+      setTimeout(() => paletteInput.focus(), 30);
     }
-
     highlightPaletteItem(0);
   }
 
@@ -877,370 +527,116 @@ function highlightKeywords() {
   function highlightPaletteItem(index) {
     const visible = visiblePaletteItems();
     if (!visible.length) return;
-
-    currentPaletteIndex = clamp(index, 0, visible.length - 1);
+    currentPaletteIndex = Math.max(0, Math.min(index, visible.length - 1));
     paletteItems.forEach((item) => item.classList.remove("active"));
-
-    if (visible[currentPaletteIndex]) {
-      visible[currentPaletteIndex].classList.add("active");
-    }
+    visible[currentPaletteIndex]?.classList.add("active");
   }
 
   function filterPalette(query) {
     const q = query.toLowerCase().trim();
-
     paletteItems.forEach((item) => {
-      const txt = item.innerText.toLowerCase();
-      item.style.display = txt.includes(q) ? "flex" : "none";
+      item.style.display = item.innerText.toLowerCase().includes(q) ? "flex" : "none";
     });
-
     highlightPaletteItem(0);
   }
 
   function runPaletteItem(item) {
     const txt = item.innerText.toLowerCase();
-
-    if (txt.includes("home")) {
-      openTab("home");
-      return;
-    }
-    if (txt.includes("about")) {
-      openTab("about");
-      return;
-    }
-    if (txt.includes("projects")) {
-      openTab("projects");
-      return;
-    }
-    if (txt.includes("skills")) {
-      openTab("skills");
-      return;
-    }
-    if (txt.includes("experience")) {
-      openTab("experience");
-      return;
-    }
-     if (txt.includes("lor")) {
-        openTab("lor");
-        return;
-      }
-    if (txt.includes("contact")) {
-      openTab("contact");
-      return;
-    }
-    if (txt.includes("readme")) {
-      openTab("readme");
-      return;
-    }
-    if (txt.includes("resume")) {
-      openTab("resume");
-      return;
-    }
-    if (txt.includes("copilot")) {
-      toggleCopilotSidebar(true);
-      return;
-    }
-  }
-
-  if (openPaletteBtn) {
-    openPaletteBtn.addEventListener("click", openPalette);
-  }
-
-  if (paletteBackdrop) {
-    paletteBackdrop.addEventListener("click", closePalette);
+    if (txt.includes("home")) return openTab("home");
+    if (txt.includes("about")) return openTab("about");
+    if (txt.includes("projects")) return openTab("projects");
+    if (txt.includes("skills")) return openTab("skills");
+    if (txt.includes("experience")) return openTab("experience");
+    if (txt.includes("lor")) return openTab("lor");
+    if (txt.includes("contact")) return openTab("contact");
+    if (txt.includes("readme")) return openTab("readme");
+    if (txt.includes("resume")) return openTab("resume");
+    if (txt.includes("copilot")) return toggleCopilotSidebar(true);
   }
 
   function bindPaletteEvents() {
-    paletteItems = qsa(".palette-item");
-
+    updateCollections();
+    if (openPaletteBtn) openPaletteBtn.addEventListener("click", openPalette);
+    if (paletteBackdrop) paletteBackdrop.addEventListener("click", closePalette);
     if (paletteInput) {
-      paletteInput.addEventListener("input", (e) => {
-        filterPalette(e.target.value);
-      });
-
+      paletteInput.addEventListener("input", (e) => filterPalette(e.target.value));
       paletteInput.addEventListener("keydown", (e) => {
         const visible = visiblePaletteItems();
-
         if (e.key === "ArrowDown") {
           e.preventDefault();
-          if (visible.length) {
-            highlightPaletteItem((currentPaletteIndex + 1) % visible.length);
-          }
+          if (visible.length) highlightPaletteItem((currentPaletteIndex + 1) % visible.length);
         }
-
         if (e.key === "ArrowUp") {
           e.preventDefault();
-          if (visible.length) {
-            highlightPaletteItem(
-              (currentPaletteIndex - 1 + visible.length) % visible.length
-            );
-          }
+          if (visible.length) highlightPaletteItem((currentPaletteIndex - 1 + visible.length) % visible.length);
         }
-
         if (e.key === "Enter") {
           e.preventDefault();
-          if (visible.length) {
-            runPaletteItem(visible[currentPaletteIndex]);
-          }
+          if (visible.length) runPaletteItem(visible[currentPaletteIndex]);
         }
       });
     }
-
-    paletteItems.forEach((item, index) => {
+    paletteItems.forEach((item) => {
       item.addEventListener("mouseenter", () => {
         const visible = visiblePaletteItems();
-        const visibleIndex = visible.indexOf(item);
-        if (visibleIndex !== -1) {
-          highlightPaletteItem(visibleIndex);
-        } else {
-          highlightPaletteItem(index);
-        }
+        const idx = visible.indexOf(item);
+        if (idx !== -1) highlightPaletteItem(idx);
       });
-
-      item.addEventListener("click", () => {
-        runPaletteItem(item);
-      });
+      item.addEventListener("click", () => runPaletteItem(item));
     });
   }
 
-  bindPaletteEvents();
-
-  /* ==========================================================================
-     GLOBAL KEYBOARD SHORTCUTS
-     ========================================================================== */
-
-  document.addEventListener("keydown", (e) => {
-    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "p") {
-      e.preventDefault();
-      openPalette();
-      return;
-    }
-
-    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "w") {
-      e.preventDefault();
-      closeCurrentTab();
-      return;
-    }
-
-    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === "w") {
-      e.preventDefault();
-      closeAllTabs();
-      return;
-    }
-
-    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "j") {
-      e.preventDefault();
-      toggleTerminal();
-      return;
-    }
-
-    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === "c") {
-      e.preventDefault();
-      toggleCopilotSidebar(true);
-      return;
-    }
-
-    if (e.key === "Escape") {
-        closePalette();
-      
-        if (settingsPanel) {
-          settingsPanel.classList.remove("open");
-        }
-      }
-  });
-
-  /* ==========================================================================
-     MENU BAR
-     ========================================================================== */
-
-function bindMenuEvents() {
-  const menuItems = qsa(".menu-item");
-
-  menuItems.forEach((menu) => {
-    menu.addEventListener("click", (e) => {
-      e.stopPropagation();
-
-      const label = safeText(
-        e.currentTarget.childNodes[0]?.textContent || ""
-      ).toLowerCase();
-
-      const isActive = menu.classList.contains("active");
-
-      // ✅ Close all menus first
-      menuItems.forEach((m) => m.classList.remove("active"));
-
-      // ✅ Toggle current menu (VS Code behavior)
-      if (!isActive) {
-        menu.classList.add("active");
-      }
-
-      // ✅ Handle menu actions
-      switch (label) {
-
-        case "file":
-          // ✅ DO NOTHING → only open dropdown
-          break;
-
-        case "edit":
-        case "go":
-          openPalette();
-          break;
-
-        case "view":
-          toggleSidebar();
-          break;
-
-        case "run":
-        case "terminal":
-          toggleTerminal();
-          setTimeout(() => terminalInput?.focus(), 80);
-          break;
-
-        case "help":
-          openTab("readme");
-          break;
-
-        case "copilot":
-          toggleCopilotSidebar(true);
-          break;
-      }
+  function bindMenuEvents() {
+    updateCollections();
+    menuItems.forEach((menu) => {
+      const clickHandler = (e) => {
+        e.stopPropagation();
+        const label = safeText(menu.childNodes[0]?.textContent || "").toLowerCase();
+        const isActive = menu.classList.contains("active");
+        menuItems.forEach((m) => m.classList.remove("active"));
+        if (!isActive) menu.classList.add("active");
+        if (label === "copilot") toggleCopilotSidebar(true);
+      };
+      menu.addEventListener("click", clickHandler);
+      if (isMobile()) menu.addEventListener("touchstart", clickHandler, { passive: false });
     });
 
-    // ✅ MOBILE TOUCH SUPPORT (VERY IMPORTANT)
-    menu.addEventListener("touchstart", () => {
-      menu.click();
-    });
-  });
-
-  // ✅ FIX DROPDOWN CLICK (so it doesn't close immediately)
-  document.querySelectorAll(".dropdown div").forEach(item => {
-    item.addEventListener("click", (e) => {
-      e.stopPropagation();
-    });
-  });
-
-  // ✅ CLICK OUTSIDE CLOSE MENU (IMPORTANT UX)
-  document.addEventListener("click", () => {
-    menuItems.forEach((m) => m.classList.remove("active"));
-  });
-}
-   
-   let touchStartX = 0;
-
-   document.addEventListener("touchstart", e => {
-     touchStartX = e.touches[0].clientX;
-   });
-   
-   document.addEventListener("touchend", e => {
-     let touchEndX = e.changedTouches[0].clientX;
-   
-     if (touchStartX < 50 && touchEndX > 120) {
-       openMobileSidebar(); // swipe right
-     }
-   
-     if (touchStartX > 200 && touchEndX < 100) {
-       closeMobileSidebar(); // swipe left
-     }
-   });
-  // ✅ CLICK OUTSIDE → CLOSE ALL MENUS
-  document.addEventListener("click", () => {
-    menuItems.forEach((m) => m.classList.remove("active"));
-  });
-
-  // ✅ PREVENT DROPDOWN FROM CLOSING WHEN CLICKING INSIDE
-  document.querySelectorAll(".dropdown").forEach((drop) => {
-    drop.addEventListener("click", (e) => {
-      e.stopPropagation();
-    });
-  });
-
-  // ✅ HANDLE DROPDOWN ITEMS (VERY IMPORTANT FIX)
-  document.querySelectorAll(".dropdown-item").forEach((item) => {
-    item.addEventListener("click", (e) => {
-      const action = item.dataset.action;
-
-      switch (action) {
-        case "home":
-          openTab("home");
-          break;
-        case "about":
-          openTab("about");
-          break;
-        case "projects":
-          openTab("projects");
-          break;
-        case "skills":
-          openTab("skills");
-          break;
-        case "experience":
-          openTab("experience");
-          break;
-        case "contact":
-          openTab("contact");
-          break;
-        case "resume":
-          window.open("Resume.pdf", "_blank");
-          break;
-      }
-
-      // ✅ Close menu after click
+    document.addEventListener("click", () => {
       menuItems.forEach((m) => m.classList.remove("active"));
     });
-  });
-}
-  /* ==========================================================================
-     SIDEBAR FILE EVENTS
-     ========================================================================== */
+
+    $$(".dropdown").forEach((drop) => {
+      drop.addEventListener("click", (e) => e.stopPropagation());
+    });
+  }
 
   function bindSidebarEvents() {
-    sidebarFiles = qsa(".file");
-
+    updateCollections();
     sidebarFiles.forEach((file) => {
       file.addEventListener("click", () => {
-        const tabName = normalizeName(file.textContent);
+        const tabName = file.dataset.tab || normalizeName(file.textContent);
         openTab(tabName);
       });
     });
-
-    const copilotBox = qsa(".copilot-box")[0];
-    if (copilotBox) {
-      copilotBox.addEventListener("click", () => {
-        toggleCopilotSidebar(true);
-      });
-    }
+    $(".copilot-box")?.addEventListener("click", () => toggleCopilotSidebar(true));
   }
-
-  bindSidebarEvents();
-
-  /* ==========================================================================
-     TERMINAL
-     ========================================================================== */
 
   function toggleTerminal() {
     if (!terminal) return;
-
     terminal.classList.toggle("open");
-
-    if (terminal.classList.contains("open") && terminalInput) {
-      terminalInput.focus();
-    }
+    if (terminal.classList.contains("open")) terminalInput?.focus();
   }
 
   function clearTerminal() {
-    if (terminalBody) {
-      terminalBody.innerHTML = "";
-    }
+    if (terminalBody) terminalBody.innerHTML = "";
   }
 
   function printToTerminal(text, type = "normal") {
     if (!terminalBody) return;
-
     const line = document.createElement("div");
-
     if (type === "success") line.classList.add("success");
     if (type === "error") line.classList.add("error");
     if (type === "warning") line.classList.add("warning");
-
     line.textContent = text;
     terminalBody.appendChild(line);
     terminalBody.scrollTop = terminalBody.scrollHeight;
@@ -1248,11 +644,7 @@ function bindMenuEvents() {
 
   async function initPyodideEngine() {
     if (pyodideInstance) return pyodideInstance;
-
-    if (typeof loadPyodide === "undefined") {
-      throw new Error("Pyodide is not loaded. Add pyodide.js to your HTML.");
-    }
-
+    if (typeof loadPyodide === "undefined") throw new Error("Pyodide is not loaded. Add pyodide.js to your HTML.");
     printToTerminal("Loading Python runtime...", "warning");
     pyodideInstance = await loadPyodide();
     printToTerminal("Python runtime ready.", "success");
@@ -1261,16 +653,12 @@ function bindMenuEvents() {
 
   async function runJavaScriptInTerminal(code) {
     try {
-      const result = Function(`"use strict"; return (${code})`)();
+      const result = Function(`\"use strict\"; return (${code})`)();
       printToTerminal(String(result), "success");
-    } catch (_error) {
+    } catch (_) {
       try {
-        const result = Function(`"use strict"; ${code}`)();
-        if (result !== undefined) {
-          printToTerminal(String(result), "success");
-        } else {
-          printToTerminal("JavaScript executed.", "success");
-        }
+        const result = Function(`\"use strict\"; ${code}`)();
+        printToTerminal(result !== undefined ? String(result) : "JavaScript executed.", "success");
       } catch (err) {
         printToTerminal(`JS Error: ${err.message}`, "error");
       }
@@ -1281,12 +669,7 @@ function bindMenuEvents() {
     try {
       const py = await initPyodideEngine();
       const result = py.runPython(code);
-
-      if (result !== undefined) {
-        printToTerminal(String(result), "success");
-      } else {
-        printToTerminal("Python executed.", "success");
-      }
+      printToTerminal(result !== undefined ? String(result) : "Python executed.", "success");
     } catch (err) {
       printToTerminal(`Python Error: ${err.message}`, "error");
     }
@@ -1295,84 +678,67 @@ function bindMenuEvents() {
   async function runTerminalCommand(raw) {
     const cmd = raw.trim();
     if (!cmd) return;
-
     terminalHistory.push(cmd);
     terminalHistoryIndex = terminalHistory.length;
     persistState();
-
     printToTerminal(`agrani@portfolio:${currentDir}$ ${cmd}`);
-
     const parts = cmd.split(" ");
     const first = parts[0].toLowerCase();
 
     switch (first) {
       case "help":
-        printToTerminal("Available commands:", "success");
-        printToTerminal("ls — list files");
-        printToTerminal("pwd — print working directory");
-        printToTerminal("cd <dir> — change directory");
-        printToTerminal("cat <file> — open a file");
-        printToTerminal("open <file> — open a file");
-        printToTerminal("whoami — who am I?");
-        printToTerminal("echo <text> — print text");
-        printToTerminal("date — current date & time");
-        printToTerminal("git log — show recent commits");
-        printToTerminal("python --version — show Python runtime status");
-        printToTerminal("js <code> — execute JavaScript");
-        printToTerminal("py <code> — execute Python");
-        printToTerminal("copilot — open Agrani's Copilot");
-        printToTerminal("lor — open LOR section");
-        printToTerminal("clear — clear terminal");
+        [
+          "Available commands:",
+          "ls — list files",
+          "pwd — print working directory",
+          "cd <dir> — change directory",
+          "cat <file> — open a file",
+          "open <file> — open a file",
+          "whoami — who am I?",
+          "echo <text> — print text",
+          "date — current date & time",
+          "git log — show recent commits",
+          "python --version — show Python runtime status",
+          "js <code> — execute JavaScript",
+          "py <code> — execute Python",
+          "copilot — open Agrani's Copilot",
+          "lor — open LOR section",
+          "clear — clear terminal"
+        ].forEach((line, i) => printToTerminal(line, i === 0 ? "success" : "normal"));
         break;
-
       case "ls":
-        printToTerminal(
-          "home.tsx  about.html  projects.js  skills.json  experience.ts  contact.css  README.md  Resume.pdf"
-        );
+        printToTerminal("home.tsx  about.html  projects.js  skills.json  experience.ts  lor.pdf  contact.css  README.md  Resume.pdf");
         break;
-
       case "pwd":
         printToTerminal(`/portfolio/${currentDir === "~" ? "" : currentDir}`.replace(/\/$/, ""));
         break;
-
       case "cd":
-        if (!parts[1] || parts[1] === "~") {
-          currentDir = "~";
-        } else if (parts[1] === "..") {
-          currentDir = "~";
-        } else {
-          currentDir = parts[1];
-        }
+        currentDir = !parts[1] || parts[1] === "~" || parts[1] === ".." ? "~" : parts[1];
         printToTerminal(`moved to ${currentDir}`, "success");
         break;
-
       case "cat":
       case "open":
-        if (parts[1]) {
-          const target = normalizeName(parts[1]);
-          if (isValidTab(target)) {
-            openTab(target);
-            printToTerminal(`opening ${parts[1]}`, "success");
-          } else {
-            printToTerminal(`file not found: ${parts[1]}`, "error");
-          }
-        } else {
+        if (!parts[1]) {
           printToTerminal(`usage: ${first} <file>`, "error");
+          break;
+        }
+        const target = normalizeName(parts[1]);
+        if (isValidTab(target)) {
+          openTab(target);
+          printToTerminal(`opening ${parts[1]}`, "success");
+        } else {
+          printToTerminal(`file not found: ${parts[1]}`, "error");
         }
         break;
-
       case "whoami":
         printToTerminal("Agrani Sinha", "success");
         break;
-
       case "echo":
         printToTerminal(parts.slice(1).join(" "));
         break;
-
       case "date":
         printToTerminal(new Date().toString());
         break;
-
       case "git":
         if (parts[1] === "log") {
           printToTerminal("commit 9f2e1a2 - Upgrade premium portfolio UI");
@@ -1382,7 +748,6 @@ function bindMenuEvents() {
           printToTerminal("git: command not recognized", "error");
         }
         break;
-
       case "python":
         if (parts[1] === "--version") {
           try {
@@ -1395,27 +760,12 @@ function bindMenuEvents() {
           printToTerminal("python: unsupported argument", "error");
         }
         break;
-
-      case "js": {
-        const jsCode = cmd.slice(3).trim();
-        if (!jsCode) {
-          printToTerminal("usage: js <code>", "error");
-        } else {
-          await runJavaScriptInTerminal(jsCode);
-        }
+      case "js":
+        await runJavaScriptInTerminal(cmd.slice(3).trim());
         break;
-      }
-
-      case "py": {
-        const pyCode = cmd.slice(3).trim();
-        if (!pyCode) {
-          printToTerminal("usage: py <code>", "error");
-        } else {
-          await runPythonInTerminal(pyCode);
-        }
+      case "py":
+        await runPythonInTerminal(cmd.slice(3).trim());
         break;
-      }
-
       case "projects":
       case "about":
       case "skills":
@@ -1424,19 +774,16 @@ function bindMenuEvents() {
       case "readme":
       case "resume":
       case "home":
-      case "lor":  
+      case "lor":
         openTab(first);
         break;
-
       case "copilot":
         toggleCopilotSidebar(true);
         printToTerminal("Agrani's Copilot opened.", "success");
         break;
-
       case "clear":
         clearTerminal();
         break;
-
       default:
         printToTerminal(`command not found: ${cmd} — type 'help' for commands`, "error");
     }
@@ -1444,47 +791,32 @@ function bindMenuEvents() {
 
   function bindTerminalEvents() {
     if (!terminalInput) return;
-
     terminalInput.addEventListener("keydown", async (e) => {
       if (e.key === "Enter") {
         const value = terminalInput.value;
         terminalInput.value = "";
         await runTerminalCommand(value);
       }
-
       if (e.key === "ArrowUp") {
         e.preventDefault();
         if (!terminalHistory.length) return;
         terminalHistoryIndex = Math.max(0, terminalHistoryIndex - 1);
         terminalInput.value = terminalHistory[terminalHistoryIndex] || "";
       }
-
       if (e.key === "ArrowDown") {
         e.preventDefault();
         if (!terminalHistory.length) return;
-
         terminalHistoryIndex = Math.min(terminalHistory.length, terminalHistoryIndex + 1);
-
-        if (terminalHistoryIndex >= terminalHistory.length) {
-          terminalInput.value = "";
-        } else {
-          terminalInput.value = terminalHistory[terminalHistoryIndex] || "";
-        }
+        terminalInput.value = terminalHistoryIndex >= terminalHistory.length ? "" : terminalHistory[terminalHistoryIndex] || "";
       }
     });
   }
 
-  bindTerminalEvents();
-
   window.toggleTerminal = toggleTerminal;
   window.clearTerminal = clearTerminal;
 
-  /* ==========================================================================
-     RESUME / FULLSCREEN / WINDOW BUTTONS
-     ========================================================================== */
-
   function downloadResume() {
-    window.open("Agrani Sinha Resume(1).docx", "_blank");
+    window.open("docs/Agrani Sinha Resume.pdf", "_blank");
   }
 
   function toggleFullscreen() {
@@ -1498,203 +830,114 @@ function bindMenuEvents() {
   window.downloadResume = downloadResume;
   window.toggleFullscreen = toggleFullscreen;
 
-  function showMessage(msg) {
-    if (!feedback) return;
-    feedback.textContent = msg;
-    feedback.classList.add("show");
-    setTimeout(() => feedback.classList.remove("show"), 2200);
-  }
-
   if (red) {
-    red.addEventListener("click", () => {
-      const msg = funnyQuotes[Math.floor(Math.random() * funnyQuotes.length)];
-      showMessage(msg);
+    red.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (isMobile()) {
+        closeMobilePanels();
+      }
+      showMessage(funnyQuotes[Math.floor(Math.random() * funnyQuotes.length)]);
     });
   }
 
   if (yellow) {
-    yellow.addEventListener("click", () => {
-      document.body.style.transition = "transform 0.2s ease";
-      document.body.style.transform = "scale(0.97)";
-      setTimeout(() => {
-        document.body.style.transform = "scale(1)";
-      }, 180);
+    yellow.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (isMobile()) {
+        toggleSidebar();
+      } else {
+        document.body.style.transition = "transform 0.2s ease";
+        document.body.style.transform = "scale(0.97)";
+        setTimeout(() => (document.body.style.transform = "scale(1)"), 180);
+      }
     });
   }
 
   if (green) {
-    green.addEventListener("click", toggleFullscreen);
+    green.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (isMobile()) {
+        toggleCopilotSidebar(true);
+      } else {
+        toggleFullscreen();
+      }
+    });
   }
 
-  /* ==========================================================================
-     CURSOR
-     ========================================================================== */
-
   function bindCursorEffects() {
-    if (!cursorSquare || !cursorDot) return;
-
+    if (!cursorSquare || !cursorDot || isMobile()) return;
     document.addEventListener("mousemove", (e) => {
       cursorSquare.style.left = `${e.clientX}px`;
       cursorSquare.style.top = `${e.clientY}px`;
       cursorDot.style.left = `${e.clientX}px`;
       cursorDot.style.top = `${e.clientY}px`;
     });
-
     document.addEventListener("mousedown", () => {
       cursorSquare.style.width = "18px";
       cursorSquare.style.height = "18px";
     });
-
     document.addEventListener("mouseup", () => {
       cursorSquare.style.width = "24px";
       cursorSquare.style.height = "24px";
     });
   }
 
-  bindCursorEffects();
-
-  /* ==========================================================================
-     COPILOT ENGINE
-     ========================================================================== */
-
- function appendCopilotMessage(text, sender = "assistant") {
-  const container = document.getElementById("copilotMessages");
-
-  const msg = document.createElement("div");
-  msg.className = `copilot-message ${sender}`;
-
-  container.appendChild(msg);
-
-  // USER message (no typing animation)
-  if (sender === "user") {
-    msg.textContent = text;
-    container.scrollTop = container.scrollHeight;
-    return;
-  }
-
-  // ✨ Typing animation for assistant
-  let i = 0;
-  function type() {
-    if (i < text.length) {
-      msg.textContent += text.charAt(i);
-      i++;
-      setTimeout(type, 15); // speed (lower = faster)
-    } else {
+  function appendCopilotMessage(text, sender = "assistant") {
+    const container = $("#copilotMessages");
+    if (!container) return;
+    const msg = document.createElement("div");
+    msg.className = `copilot-message ${sender}`;
+    container.appendChild(msg);
+    if (sender === "user") {
+      msg.textContent = text;
       container.scrollTop = container.scrollHeight;
+      return;
     }
+    let i = 0;
+    const type = () => {
+      if (i < text.length) {
+        msg.textContent += text.charAt(i++);
+        setTimeout(type, 12);
+      } else {
+        container.scrollTop = container.scrollHeight;
+      }
+    };
+    type();
   }
 
-  type();
-}
-   function smartNavigate(query) {
-  query = query.toLowerCase();
+  function smartNavigate(query) {
+    query = query.toLowerCase();
+    if (query.includes("project")) openTab("projects");
+    else if (query.includes("skill")) openTab("skills");
+    else if (query.includes("contact")) openTab("contact");
+    else if (query.includes("about")) openTab("about");
+    else if (query.includes("experience")) openTab("experience");
+    else if (query.includes("lor")) openTab("lor");
+  }
 
-        if (query.includes("project")) openTab("projects");
-        else if (query.includes("skill")) openTab("skills");
-        else if (query.includes("contact")) openTab("contact");
-        else if (query.includes("about")) openTab("about");
-      }
   function getCopilotReply(prompt) {
     const q = prompt.toLowerCase();
-      smartNavigate(q); 
-
-    if (q.includes("project")) {
-      openTab("projects");
-      return COPILOT_REPLIES.projects;
-    }
-
-    if (q.includes("experience")) {
-      openTab("experience");
-      return COPILOT_REPLIES.experience;
-    }
-
-    if (q.includes("skill") || q.includes("tech stack")) {
-      openTab("skills");
-      return COPILOT_REPLIES.skills;
-    }
-
-    if (q.includes("education")) {
-      openTab("about");
-      return COPILOT_REPLIES.education;
-    }
-
-    if (q.includes("contact") || q.includes("email") || q.includes("phone")) {
-      openTab("contact");
-      return COPILOT_REPLIES.contact;
-    }
-
-    if (q.includes("healthcare") || q.includes("ai")) {
-      openTab("about");
-      return COPILOT_REPLIES.healthcare;
-    }
-
-    if (q.includes("leadership") || q.includes("club")) {
-      openTab("about");
-      return COPILOT_REPLIES.leadership;
-    }
-
-    if (q.includes("resume") || q.includes("cv")) {
-      openTab("resume");
-      return COPILOT_REPLIES.resume;
-    }
-
-   
-    if (q.includes("open home")) {
-      openTab("home");
-      return "Opening Home.";
-    }
-
-    if (q.includes("open about")) {
-      openTab("about");
-      return "Opening About.";
-    }
-
-    if (q.includes("open projects")) {
-      openTab("projects");
-      return "Opening Projects.";
-    }
-
-    if (q.includes("open skills")) {
-      openTab("skills");
-      return "Opening Skills.";
-    }
-
-    if (q.includes("open experience")) {
-      openTab("experience");
-      return "Opening Experience.";
-    }
-
-    if (q.includes("open contact")) {
-      openTab("contact");
-      return "Opening Contact.";
-    }
-
-    if (q.includes("open resume")) {
-      openTab("resume");
-      return "Opening Resume.";
-    }
-
+    smartNavigate(q);
+    if (q.includes("project")) return COPILOT_REPLIES.projects;
+    if (q.includes("experience")) return COPILOT_REPLIES.experience;
+    if (q.includes("skill") || q.includes("tech stack")) return COPILOT_REPLIES.skills;
+    if (q.includes("education")) return COPILOT_REPLIES.education;
+    if (q.includes("contact") || q.includes("email") || q.includes("phone")) return COPILOT_REPLIES.contact;
+    if (q.includes("healthcare") || q.includes("ai")) return COPILOT_REPLIES.healthcare;
+    if (q.includes("leadership") || q.includes("club")) return COPILOT_REPLIES.leadership;
+    if (q.includes("resume") || q.includes("cv")) return COPILOT_REPLIES.resume;
+    if (q.includes("lor")) return COPILOT_REPLIES.lor;
     return COPILOT_REPLIES.default;
   }
 
   function sendCopilotPrompt(customText = "") {
-    const chatInput = document.getElementById("copilotInput");
+    const chatInput = $("#copilotInput");
     if (!chatInput) return;
-
     const cleaned = safeText(customText || chatInput.value);
     if (!cleaned) return;
-
     appendCopilotMessage(cleaned, "user");
-
-    if (!customText) {
-      chatInput.value = "";
-    } else {
-      chatInput.value = "";
-    }
-
-    setTimeout(() => {
-      appendCopilotMessage(getCopilotReply(cleaned), "assistant");
-    }, 260);
+    chatInput.value = "";
+    setTimeout(() => appendCopilotMessage(getCopilotReply(cleaned), "assistant"), 220);
   }
 
   function quickAsk(text) {
@@ -1703,132 +946,120 @@ function bindMenuEvents() {
   }
 
   function startVoiceAssistant() {
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  const chatInput = document.getElementById("copilotInput");
-
-  if (!SpeechRecognition) {
-    appendCopilotMessage("Voice assistant not supported in this browser.", "assistant");
-    return;
-  }
-
-  const recognition = new SpeechRecognition();
-  recognition.lang = "en-US";
-
-  recognition.start();
-
-  recognition.onresult = (event) => {
-    const text = event.results[0][0].transcript;
-    if (chatInput) {
-      chatInput.value = text;
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const chatInput = $("#copilotInput");
+    if (!SpeechRecognition) {
+      appendCopilotMessage("Voice assistant not supported in this browser.", "assistant");
+      return;
     }
-    sendCopilotPrompt(); // auto send
-  };
-
-  recognition.onerror = () => {
-    appendCopilotMessage("Voice input failed. Try again.", "assistant");
-  };
-}
-
-   
-function bindCopilotEvents() {
-  const chatInput = document.getElementById("copilotInput");
-  const chatSend = document.getElementById("copilotSend");
-  const voiceBtn = document.getElementById("copilotVoice");
-  const closeBtn = document.getElementById("copilotSideClose");
-  const minimizeBtn = document.getElementById("copilotSideMinimize");
-
-  if (chatSend) {
-    chatSend.onclick = () => sendCopilotPrompt();
+    const recognition = new SpeechRecognition();
+    recognition.lang = "en-US";
+    recognition.start();
+    recognition.onresult = (event) => {
+      const text = event.results[0][0].transcript;
+      if (chatInput) chatInput.value = text;
+      sendCopilotPrompt();
+    };
+    recognition.onerror = () => appendCopilotMessage("Voice input failed. Try again.", "assistant");
   }
 
-  if (chatInput) {
-    chatInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        sendCopilotPrompt();
-      }
+  function bindCopilotEvents() {
+    $("#copilotSend")?.addEventListener("click", () => sendCopilotPrompt());
+    $("#copilotInput")?.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") sendCopilotPrompt();
     });
-  }
-
-  if (voiceBtn) {
-    voiceBtn.onclick = startVoiceAssistant;
-  }
-
-  if (closeBtn) {
-    closeBtn.onclick = () => toggleCopilotSidebar(false);
-  }
-
-  if (minimizeBtn) {
-    minimizeBtn.onclick = (e) => {
+    $("#copilotVoice")?.addEventListener("click", startVoiceAssistant);
+    $("#copilotSideClose")?.addEventListener("click", () => toggleCopilotSidebar(false));
+    $("#copilotSideMinimize")?.addEventListener("click", (e) => {
       e.stopPropagation();
       minimizeCopilot();
-    };
-  }
-
-  // Suggestions
-  const sidebar = document.getElementById("copilotSidebar");
-
-  if (sidebar) {
-    qsa(".copilot-suggest", sidebar).forEach((btn) => {
-      btn.onclick = () => {
-        quickAsk(btn.dataset.quick || btn.textContent);
-      };
+    });
+    $$(".copilot-suggest", copilotSidebar).forEach((btn) => {
+      btn.addEventListener("click", () => quickAsk(btn.dataset.quick || btn.textContent));
     });
   }
-}
+
   window.quickAsk = quickAsk;
   window.sendCopilotPrompt = sendCopilotPrompt;
   window.startVoiceAssistant = startVoiceAssistant;
 
-
-  /* ==========================================================================
-     RESPONSIVE HELPERS
-     ========================================================================== */
-
   function handleResize() {
-    if (window.innerWidth < 560) {
+    if (isMobile()) {
       if (cursorSquare) cursorSquare.style.display = "none";
       if (cursorDot) cursorDot.style.display = "none";
     } else {
       if (cursorSquare) cursorSquare.style.display = "";
       if (cursorDot) cursorDot.style.display = "";
+      closeMobilePanels();
     }
   }
 
-  window.addEventListener("resize", debounce(handleResize, 80));
-  handleResize();
+  let touchStartX = 0;
+  document.addEventListener("touchstart", (e) => {
+    touchStartX = e.touches[0].clientX;
+  });
+  document.addEventListener("touchend", (e) => {
+    const touchEndX = e.changedTouches[0].clientX;
+    if (!isMobile()) return;
+    if (touchStartX < 40 && touchEndX > 110) openMobilePanel("sidebar");
+    if (touchStartX > 200 && touchEndX < 100) closeMobilePanels();
+  });
 
-  /* ==========================================================================
-     INITIALIZATION
-     ========================================================================== */
+  document.addEventListener("keydown", (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "p") {
+      e.preventDefault();
+      openPalette();
+      return;
+    }
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "w") {
+      e.preventDefault();
+      closeCurrentTab();
+      return;
+    }
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === "w") {
+      e.preventDefault();
+      closeAllTabs();
+      return;
+    }
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "j") {
+      e.preventDefault();
+      toggleTerminal();
+      return;
+    }
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === "c") {
+      e.preventDefault();
+      toggleCopilotSidebar(true);
+      return;
+    }
+    if (e.key === "Escape") {
+      closePalette();
+      settingsPanel?.classList.remove("open");
+      closeMobilePanels();
+      if (!isMobile()) toggleCopilotSidebar(false);
+    }
+  });
 
+  bindCursorEffects();
+  bindTerminalEvents();
   restoreState();
-  removeCopilotFileEntries();
   updateCollections();
   bindSidebarEvents();
   bindMenuEvents();
   bindPaletteEvents();
+  bindCopilotEvents();
   applyTheme(currentTheme);
-  bindCopilotEvents();   // ✅ MISSING LINE
+  handleResize();
+  window.addEventListener("resize", handleResize);
 
-  if (!openTabs.length) {
-    openTabs = ["home"];
-  }
-
-  if (!activeTab || !isValidTab(activeTab)) {
-    activeTab = openTabs[0] || "home";
-  }
+  if (!openTabs.length) openTabs = ["home"];
+  if (!activeTab || !isValidTab(activeTab)) activeTab = openTabs[0] || "home";
+  if (isCopilotOpen && !isMobile()) toggleCopilotSidebar(true);
 
   renderTabs();
   setActiveSidebar(activeTab);
   renderContent(activeTab);
-
-
   persistState();
 });
-
-/* ==========================================================================
-   VIEW TEMPLATES
-   ========================================================================== */
 
 function getHome() {
   return `
@@ -1836,49 +1067,28 @@ function getHome() {
       <div class="home-grid">
         <div class="home-left">
           <p class="code-line" id="typingText"></p>
-
-          <h1 class="hero-name hero-reveal">
-            Agrani <span>Sinha</span>
-          </h1>
-
+          <h1 class="hero-name hero-reveal">Agrani <span>Sinha</span></h1>
           <div class="roles role-reveal">
             <span>AI Engineer</span>
             <span>Clinical Informatics</span>
             <span>Data Scientist</span>
             <span>Healthcare Systems</span>
           </div>
-
-          <p class="hero-desc desc-reveal">
-           <span id="typingHero"></span>
-         </p>
-
+          <p class="hero-desc desc-reveal"><span id="typingHero"></span></p>
           <div class="home-buttons button-reveal">
             <button onclick="openTab('projects')">📁 Projects</button>
             <button onclick="openTab('about')">👤 About</button>
             <button onclick="openTab('contact')">✉️ Contact</button>
           </div>
-
           <div class="stats stats-reveal">
-            <div class="stat-card">
-              <strong>10+</strong>
-              <span>Projects</span>
-            </div>
-
-            <div class="stat-card">
-              <strong>3+</strong>
-              <span>Years Experience</span>
-            </div>
+            <div class="stat-card"><strong>10+</strong><span>Projects</span></div>
+            <div class="stat-card"><strong>3+</strong><span>Years Experience</span></div>
           </div>
         </div>
-
         <div class="home-right image-reveal">
           <div class="profile-wrapper floating-photo">
             <div class="profile-glow"></div>
-            <img
-              src="assets/images/profile.png"
-              alt="Agrani Sinha"
-              onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=&quot;profile-fallback&quot;>AS</div>';"
-            />
+            <img src="assets/images/profile.png" alt="Agrani Sinha" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=&quot;profile-fallback&quot;>AS</div>';" />
           </div>
         </div>
       </div>
@@ -1886,35 +1096,10 @@ function getHome() {
   `;
 }
 
-let heroTyped = false;
-
-function startHeroTyping() {
-  if (heroTyped) return;   // ✅ prevents duplicate typing
-  heroTyped = true;
-
-  const el = document.getElementById("typingHero");
-  if (!el) return;
-
-  const text = "I design and build intelligent solutions at the intersection of AI, Biotechnology, Health Informatics, and Technology—leveraging data to solve real-world healthcare challenges.";
-
-  let i = 0;
-  el.innerHTML = "";
-
-  function type() {
-    if (i < text.length) {
-      el.innerHTML += text.charAt(i);
-      i++;
-      setTimeout(type, 20);
-    }
-  }
-
-  type();
-}
 function getAbout() {
   return `
     <div class="about-container">
       <p class="code-line">&lt;!-- about.html - Agrani Sinha --&gt;</p>
-
       <h1 class="hero-name">About Me</h1>
       <p class="about-sub">// who I am • what I do • where I build</p>
 
@@ -1934,8 +1119,7 @@ function getAbout() {
         <h3 class="section-title">PROFESSIONAL SUMMARY</h3>
         <p>
           I bring together <span class="highlight">AI, machine learning, backend systems, and healthcare workflows</span>
-          to design solutions that are practical, efficient, and impactful. I enjoy building systems that connect
-          data, technology, and real clinical needs.
+          to design solutions that are practical, efficient, and impactful.
         </p>
       </div>
 
@@ -1953,14 +1137,12 @@ function getAbout() {
 
       <div class="about-card">
         <h3 class="section-title">EDUCATION</h3>
-
         <div class="timeline">
           <div class="timeline-item">
             <strong>University of North Florida</strong>
             <span>Jacksonville, FL • 2025 – Present</span>
             <p>M.S. in Health Informatics</p>
           </div>
-
           <div class="timeline-item">
             <strong>Jaypee Institute of Information Technology</strong>
             <span>Noida, India • 2015 – 2020</span>
@@ -1975,182 +1157,61 @@ function getAbout() {
           <div class="timeline-item">
             <strong>Marketing Chair</strong>
             <span>Health Informatics & Analytics Club (HIAC), University of North Florida</span>
-            <p>
-              Lead marketing and digital outreach for healthcare informatics events, guest lectures, and student engagement activities.
-              Initiated and produced the HIAC Podcast, managing speaker outreach, promotion, and healthcare technology networking.
-            </p>
+            <p>Lead marketing and digital outreach for healthcare informatics events, guest lectures, and student engagement activities.</p>
           </div>
-        </div>
-      </div>
-
-      <div class="about-card">
-        <h3 class="section-title">TECH STACK</h3>
-        <div class="skills-grid">
-          <span class="skills-chip">Python</span>
-          <span class="skills-chip">Java</span>
-          <span class="skills-chip">C</span>
-          <span class="skills-chip">C++</span>
-          <span class="skills-chip">JavaScript</span>
-          <span class="skills-chip">HTML</span>
-          <span class="skills-chip">CSS</span>
-          <span class="skills-chip">Flutter</span>
-          <span class="skills-chip">TensorFlow</span>
-          <span class="skills-chip">Machine Learning</span>
-          <span class="skills-chip">Computer Vision</span>
-          <span class="skills-chip">Jupyter Notebook</span>
-          <span class="skills-chip">Google Colab</span>
-          <span class="skills-chip">SAS</span>
-          <span class="skills-chip">Microsoft Excel</span>
-          <span class="skills-chip">EHRGo</span>
-          <span class="skills-chip">WellSky</span>
-          <span class="skills-chip">Android Studio</span>
-          <span class="skills-chip">GitHub</span>
         </div>
       </div>
     </div>
   `;
 }
+
 function getProjects() {
   return `
     <div class="projects-container">
       <p class="code-line">&lt;!-- projects.js - selected work --&gt;</p>
-
       <h1 class="hero-name">Projects</h1>
       <p class="about-sub">// selected work • applied AI • healthcare + software</p>
-
       <div class="project-grid">
-
-        <div class="project-card">
-          <h3>ML Drug Discovery</h3>
-          <p>Built SVM models with 96.8% accuracy for tuberculosis inhibitor prediction.</p>
+        <div class="project-card"><h3>ML Drug Discovery</h3><p>Built SVM models with 96.8% accuracy for tuberculosis inhibitor prediction.</p></div>
+        <div class="project-card"><h3>Inventory Management App</h3><p>Flutter app with Google Sheets backend.</p></div>
+        <div class="project-card clickable" onclick="openProjectCarousel(['assets/images/Biocalculator/bio1.webp','assets/images/Biocalculator/bio2.webp','assets/images/Biocalculator/bio3.webp','assets/images/Biocalculator/bio4.webp'])"><h3>Bio Calculator App</h3><p>Lab calculation tool published on Play Store.</p><span class="view-btn">👁 View</span></div>
+        <div class="project-card clickable" onclick="openProjectCarousel(['assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (1).jpeg','assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (4).jpeg','assets/images/WhatsApp Image 2026-04-13 at 22.27.45.jpeg'])"><h3>Respiratory Health Chatbot</h3><p>Interactive healthcare chatbot using Vue.js.</p><span class="view-btn">👁 View</span></div>
+        <div class="project-card"><h3>AI Plant Identification</h3><p>TensorFlow system for plant detection.</p></div>
+        <div class="project-card clickable" onclick="window.open('https://github.com/agranisinha/AI-chess-and-checker', '_blank')">
+          <h3>AI Chess & Checkers</h3>
+          <p>Developed intelligent AI systems for Chess and Checkers using strategic algorithms and game theory.</p>
+          <div class="project-actions">
+            <button class="github-btn" onclick="event.stopPropagation(); window.open('https://github.com/agranisinha/AI-chess-and-checker', '_blank')">🔗 View on GitHub</button>
+          </div>
         </div>
-
-        <div class="project-card">
-          <h3>Inventory Management App</h3>
-          <p>Flutter app with Google Sheets backend.</p>
-        </div>
-
-        <!-- ✅ SAFE SINGLE LINE ARRAY -->
-        <div class="project-card clickable"
-          onclick="openProjectCarousel(['assets/images/Biocalculator/bio1.webp','assets/images/Biocalculator/bio2.webp','assets/images/Biocalculator/bio3.webp','assets/images/Biocalculator/bio4.webp'])">
-          <h3>Bio Calculator App</h3>
-          <p>Lab calculation tool published on Play Store.</p>
-          <span class="view-btn">👁 View</span>
-        </div>
-
-        <div class="project-card clickable"
-          onclick="openProjectCarousel(['assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (1).jpeg','assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (4).jpeg','assets/images/WhatsApp Image 2026-04-13 at 22.27.45.jpeg'])">
-          <h3>Respiratory Health Chatbot</h3>
-          <p>Interactive healthcare chatbot using Vue.js.</p>
-          <span class="view-btn">👁 View</span>
-        </div>
-
-        <div class="project-card">
-          <h3>AI Plant Identification</h3>
-          <p>TensorFlow system for plant detection.</p>
-        </div>
-
-         <div class="project-card clickable"
-           onclick="window.open('https://github.com/agranisinha/AI-chess-and-checker', '_blank')">
-         
-           <h3>AI Chess & Checkers</h3>
-           <p>Developed intelligent AI systems for Chess and Checkers using strategic algorithms and game theory.</p>
-         
-            <div class="project-actions">
-              <button class="github-btn"
-                onclick="window.open('https://github.com/agranisinha/AI-chess-and-checker', '_blank')">
-                🔗 View on GitHub
-              </button>
-            </div>
-         
-         </div>
-
       </div>
     </div>
   `;
 }
-
-
 
 function getLOR() {
   return `
     <div class="projects-container">
       <p class="code-line">// LORs - Recommendations</p>
-
       <h1 class="hero-name">Letters of Recommendation</h1>
-
       <div class="project-grid">
-
-        <div class="project-card clickable" onclick="openLOR('docs/Agrani Letter of Recommendation.pdf')">
-          <h3>Clinical Informatics Internship</h3>
-          <p>Alivia Care</p>
-          <span class="view-btn">📄 View LOR</span>
-        </div>
-
-       <div class="project-card clickable" onclick="openLOR('docs/LemonadestandLOR.jpeg')">
-          <h3>Graphic Design & Game Development</h3>
-          <p>Lemonade Stand Bootcamp</p>
-          <span class="view-btn">📄 View LOR</span>
-        </div>
-
-        <div class="project-card clickable" onclick="openLOR('docs/cdri-lor.jpeg')">
-          <h3>Academic Recommendation</h3>
-          <p>Central Drug Research Institute</p>
-          <span class="view-btn">📄 View LOR</span>
-        </div>
-
-        <div class="project-card clickable" onclick="openLOR('docs/sanfoundry-lor.jpeg')">
-          <h3>Content Developer Role</h3>
-          <p>Sanfoundry</p>
-          <span class="view-btn">📄 View LOR</span>
-        </div>
-
+        <div class="project-card clickable" onclick="openLOR('docs/Agrani Letter of Recommendation.pdf')"><h3>Clinical Informatics Internship</h3><p>Alivia Care</p><span class="view-btn">📄 View LOR</span></div>
+        <div class="project-card clickable" onclick="openLOR('docs/LemonadestandLOR.jpeg')"><h3>Graphic Design & Game Development</h3><p>Lemonade Stand Bootcamp</p><span class="view-btn">📄 View LOR</span></div>
+        <div class="project-card clickable" onclick="openLOR('docs/cdri-lor.jpeg')"><h3>Academic Recommendation</h3><p>Central Drug Research Institute</p><span class="view-btn">📄 View LOR</span></div>
+        <div class="project-card clickable" onclick="openLOR('docs/sanfoundry-lor.jpeg')"><h3>Content Developer Role</h3><p>Sanfoundry</p><span class="view-btn">📄 View LOR</span></div>
       </div>
     </div>
   `;
 }
+
 function getSkills() {
   return `
     <div class="about-container">
       <p class="code-line">{ /* skills.json */ }</p>
       <h1 class="hero-name">Skills</h1>
-
-      <div class="about-card">
-        <h3 class="section-title">PROGRAMMING</h3>
-        <div class="skills-grid">
-          <span class="skills-chip">Python</span>
-          <span class="skills-chip">Java</span>
-          <span class="skills-chip">C</span>
-          <span class="skills-chip">C++</span>
-          <span class="skills-chip">JavaScript</span>
-          <span class="skills-chip">HTML</span>
-          <span class="skills-chip">CSS</span>
-          <span class="skills-chip">Flutter</span>
-        </div>
-      </div>
-
-      <div class="about-card">
-        <h3 class="section-title">AI & DATA</h3>
-        <div class="skills-grid">
-          <span class="skills-chip">TensorFlow</span>
-          <span class="skills-chip">Machine Learning</span>
-          <span class="skills-chip">Computer Vision</span>
-          <span class="skills-chip">Jupyter Notebook</span>
-          <span class="skills-chip">Google Colab</span>
-          <span class="skills-chip">SAS</span>
-          <span class="skills-chip">Microsoft Excel</span>
-        </div>
-      </div>
-
-      <div class="about-card">
-        <h3 class="section-title">HEALTHCARE TOOLS</h3>
-        <div class="skills-grid">
-          <span class="skills-chip">EHRGo</span>
-          <span class="skills-chip">WellSky</span>
-          <span class="skills-chip">Clinical Informatics</span>
-          <span class="skills-chip">Healthcare Analytics</span>
-        </div>
-      </div>
+      <div class="about-card"><h3 class="section-title">PROGRAMMING</h3><div class="skills-grid"><span class="skills-chip">Python</span><span class="skills-chip">Java</span><span class="skills-chip">C</span><span class="skills-chip">C++</span><span class="skills-chip">JavaScript</span><span class="skills-chip">HTML</span><span class="skills-chip">CSS</span><span class="skills-chip">Flutter</span></div></div>
+      <div class="about-card"><h3 class="section-title">AI & DATA</h3><div class="skills-grid"><span class="skills-chip">TensorFlow</span><span class="skills-chip">Machine Learning</span><span class="skills-chip">Computer Vision</span><span class="skills-chip">Jupyter Notebook</span><span class="skills-chip">Google Colab</span><span class="skills-chip">SAS</span><span class="skills-chip">Microsoft Excel</span></div></div>
+      <div class="about-card"><h3 class="section-title">HEALTHCARE TOOLS</h3><div class="skills-grid"><span class="skills-chip">EHRGo</span><span class="skills-chip">WellSky</span><span class="skills-chip">Clinical Informatics</span><span class="skills-chip">Healthcare Analytics</span></div></div>
     </div>
   `;
 }
@@ -2160,57 +1221,15 @@ function getExperience() {
     <div class="about-container">
       <p class="code-line">// experience.ts</p>
       <h1 class="hero-name">Experience</h1>
-
       <div class="about-card">
         <h3 class="section-title">PROFESSIONAL EXPERIENCE</h3>
-
         <div class="timeline">
-          <div class="timeline-item">
-            <strong>Clinical Informatics Intern — Alivia Care</strong>
-            <span>Jacksonville, FL • Oct 2025 – Feb 2026</span>
-            <p>Analyzed clinical workflows, supported EHR-based reporting initiatives, and collaborated with informatics teams to interpret clinical data for operational insights. Earned WellSky certifications.</p>
-          </div>
-
-          <div class="timeline-item">
-            <strong>Data Science Analyst — BluCognition</strong>
-            <span>Pune, India • Mar 2022 – Jun 2023</span>
-            <p>Developed TensorFlow-based CNN models for bank statement extraction and financial document classification. Built machine learning pipelines for structured analytics and automation.</p>
-          </div>
-
-          <div class="timeline-item">
-            <strong>Academic Research Associate — Digiversal Consultant</strong>
-            <span>Noida, India • Dec 2020 – Mar 2022</span>
-            <p>Conducted technical research and data analysis for IT and analytics consulting projects, preparing structured reports and documentation.</p>
-          </div>
-
-          <div class="timeline-item">
-            <strong>Bioinformatics Research Intern — IBAB</strong>
-            <span>Remote • Jul 2020 – Dec 2020</span>
-            <p>Curated biological datasets and organized genomic data to support a COVID-19 research meta-database.</p>
-          </div>
-
-          <div class="timeline-item">
-            <strong>Microbiology Trainee — SRL Diagnostics</strong>
-            <span>Noida, India • Jun 2018 – Jul 2018</span>
-            <p>Conducted microbial testing using culture techniques, microscopy, antibody-based assays, and supported BD blood culture diagnostic workflows.</p>
-          </div>
-
-          <div class="timeline-item">
-            <strong>Content Developer — Sanfoundry</strong>
-            <span>Remote • Dec 2017 – Mar 2018</span>
-            <p>Developed and curated 1000+ bioprocess engineering MCQs and technical learning content for an online education platform.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="about-card">
-        <h3 class="section-title">VOLUNTEER</h3>
-        <div class="timeline">
-          <div class="timeline-item">
-            <strong>Volunteer — Game Development & Graphic Design</strong>
-            <span>Lemonade Stand Bootcamp, Pensacola, FL • May 2025 – Aug 2025</span>
-            <p>Designed 2D/3D visual assets using Canva and Blender for educational games and collaborated with cross-functional teams on interactive learning content.</p>
-          </div>
+          <div class="timeline-item"><strong>Clinical Informatics Intern — Alivia Care</strong><span>Jacksonville, FL • Oct 2025 – Feb 2026</span><p>Analyzed clinical workflows, supported EHR-based reporting initiatives, and collaborated with informatics teams.</p></div>
+          <div class="timeline-item"><strong>Data Science Analyst — BluCognition</strong><span>Pune, India • Mar 2022 – Jun 2023</span><p>Developed TensorFlow-based CNN models for bank statement extraction and financial document classification.</p></div>
+          <div class="timeline-item"><strong>Academic Research Associate — Digiversal Consultant</strong><span>Noida, India • Dec 2020 – Mar 2022</span><p>Conducted technical research and data analysis for IT and analytics consulting projects.</p></div>
+          <div class="timeline-item"><strong>Bioinformatics Research Intern — IBAB</strong><span>Remote • Jul 2020 – Dec 2020</span><p>Curated biological datasets and organized genomic data.</p></div>
+          <div class="timeline-item"><strong>Microbiology Trainee — SRL Diagnostics</strong><span>Noida, India • Jun 2018 – Jul 2018</span><p>Conducted microbial testing using culture techniques and microscopy.</p></div>
+          <div class="timeline-item"><strong>Content Developer — Sanfoundry</strong><span>Remote • Dec 2017 – Mar 2018</span><p>Developed and curated 1000+ bioprocess engineering MCQs.</p></div>
         </div>
       </div>
     </div>
@@ -2222,7 +1241,6 @@ function getContact() {
     <div class="about-container">
       <p class="code-line">/* contact.css */</p>
       <h1 class="hero-name">Contact</h1>
-
       <div class="about-card">
         <p><span class="highlight">Email:</span> agbrian521@gmail.com</p>
         <p><span class="highlight">Phone:</span> (904) 228-1179</p>
@@ -2238,140 +1256,20 @@ function getReadme() {
     <div class="about-container">
       <p class="code-line"># README.md</p>
       <h1 class="hero-name">README</h1>
-
       <div class="about-card">
-        <p>
-          This portfolio presents my work across
-          <span class="highlight">health informatics, AI, machine learning, data analytics, and software systems</span>.
-          Use the sidebar or tabs to explore sections like About, Projects, Skills, Experience, Contact, and Resume.
-        </p>
+        <p>This portfolio presents my work across <span class="highlight">health informatics, AI, machine learning, data analytics, and software systems</span>. Use the sidebar or tabs to explore About, Projects, Skills, Experience, Contact, LOR, and Resume.</p>
       </div>
     </div>
   `;
 }
-
-function minimizeCopilot() {
-  const sidebar = document.getElementById("copilotSidebar");
-  const editor = document.querySelector(".editor-area");
-  if (!sidebar) return;
-
-  const isMinimized = sidebar.classList.contains("minimized");
-
-  if (!isMinimized) {
-    sidebar.classList.add("minimized");
-    sidebar.classList.add("open");
-    editor && editor.classList.remove("with-copilot");
-    isCopilotOpen = true;
-  } else {
-    sidebar.classList.remove("minimized");
-    sidebar.classList.add("open");
-    editor && editor.classList.add("with-copilot");
-    isCopilotOpen = true;
-  }
-}
-
-function minimizeSettings() {
-  const panel = document.getElementById("settingsPanel");
-
-  if (!panel) return;
-
-  const isMinimized = panel.classList.contains("minimized");
-
-  if (!isMinimized) {
-    panel.classList.add("minimized");
-    panel.classList.add("open"); // keep visible
-  } else {
-    panel.classList.remove("minimized");
-    panel.classList.add("open");
-  }
-}
-
-/* ================= LOR MODAL ================= */
-
-window.openLOR = function (src) {
-  const modal = document.createElement("div");
-  modal.className = "image-modal";
-
-  // ✅ CHECK FILE TYPE
-  const isPDF = src.toLowerCase().endsWith(".pdf");
-
-  modal.innerHTML = `
-    <div class="image-modal-content">
-      <span class="close-modal">&times;</span>
-
-      ${
-        isPDF
-          ? `<iframe src="${src}" frameborder="0"></iframe>`
-          : `<img src="${src}" class="lor-img" />`
-      }
-
-    </div>
-  `;
-
-  document.body.appendChild(modal);
-
-  // CLOSE BUTTON
-  modal.querySelector(".close-modal").onclick = () => modal.remove();
-
-  // CLICK OUTSIDE CLOSE
-  modal.onclick = (e) => {
-    if (e.target === modal) modal.remove();
-  };
-};
-
-window.openProjectCarousel = function (images) {
-  let current = 0;
-
-  const modal = document.createElement("div");
-  modal.className = "image-modal";
-
-  modal.innerHTML = `
-    <div class="carousel-container">
-      <span class="close-modal">&times;</span>
-
-      <button class="nav prev">❮</button>
-      <img class="carousel-img" src="${images[0]}" />
-      <button class="nav next">❯</button>
-
-      <div class="dots"></div>
-    </div>
-  `;
-
-  document.body.appendChild(modal);
-
-  const img = modal.querySelector(".carousel-img");
-
-  // CLOSE
-  modal.querySelector(".close-modal").onclick = () => modal.remove();
-
-  // PREV
-  modal.querySelector(".prev").onclick = () => {
-    current = (current - 1 + images.length) % images.length;
-    img.src = images[current];
-  };
-
-  // NEXT
-  modal.querySelector(".next").onclick = () => {
-    current = (current + 1) % images.length;
-    img.src = images[current];
-  };
-
-  // CLICK OUTSIDE CLOSE
-  modal.onclick = (e) => {
-    if (e.target === modal) modal.remove();
-  };
-};
 
 function getResume() {
   return `
     <div class="about-container">
       <p class="code-line">/* Resume.pdf */</p>
       <h1 class="hero-name">Resume</h1>
-
       <div class="about-card">
-        <p>
-          Open my latest resume for the complete professional record.
-        </p>
+        <p>Open my latest resume for the complete professional record.</p>
         <div class="home-buttons">
           <button onclick="window.open('docs/Agrani Sinha Resume.pdf', '_blank')">📄 Open Resume</button>
         </div>
@@ -2380,228 +1278,48 @@ function getResume() {
   `;
 }
 
-/* ================= ULTRA MOBILE UI ================= */
-(function () {
-
-  const isMobile = () => window.innerWidth <= 768;
-  if (!isMobile()) return;
-
-  console.log("🚀 ULTRA MOBILE UI ENABLED");
-
-  const qs = s => document.querySelector(s);
-  const qsa = s => document.querySelectorAll(s);
-
-  const sidebar = qs("#sidebarPanel");
-  const copilot = qs("#copilotSidebar");
-  const settings = qs("#settingsPanel");
-  const terminal = qs("#terminalPanel");
-
-  /* ===== BACKDROP ===== */
-  let backdrop = document.createElement("div");
-  backdrop.className = "mobile-backdrop";
-  document.body.appendChild(backdrop);
-
-  function showBackdrop() {
-    backdrop.classList.add("show");
-  }
-
-  function hideBackdrop() {
-    backdrop.classList.remove("show");
-  }
-
-  /* ===== CLOSE ALL ===== */
-  function closeAll() {
-    sidebar?.classList.remove("m-show");
-    copilot?.classList.remove("m-show");
-    settings?.classList.remove("m-show");
-    terminal?.classList.remove("open");
-
-    qsa(".menu-item").forEach(m => m.classList.remove("active"));
-
-    hideBackdrop();
-  }
-
-  backdrop.onclick = closeAll;
-
-  /* ===== SIDEBAR ===== */
-  window.openSidebar = function () {
-    closeAll();
-    sidebar?.classList.add("m-show");
-    showBackdrop();
+window.openLOR = function (src) {
+  const modal = document.createElement("div");
+  modal.className = "image-modal";
+  const isPDF = src.toLowerCase().endsWith(".pdf");
+  modal.innerHTML = `
+    <div class="image-modal-content">
+      <span class="close-modal">&times;</span>
+      ${isPDF ? `<iframe src="${src}" frameborder="0"></iframe>` : `<img src="${src}" class="lor-img" />`}
+    </div>
+  `;
+  document.body.appendChild(modal);
+  modal.querySelector(".close-modal").onclick = () => modal.remove();
+  modal.onclick = (e) => {
+    if (e.target === modal) modal.remove();
   };
-
-  window.toggleSidebar = function () {
-    const open = sidebar.classList.contains("m-show");
-    closeAll();
-    if (!open) {
-      sidebar.classList.add("m-show");
-      showBackdrop();
-    }
-  };
-
-  /* ===== COPILOT ===== */
-  window.toggleCopilotSidebar = function () {
-    const open = copilot.classList.contains("m-show");
-    closeAll();
-    if (!open) {
-      copilot.classList.add("m-show");
-      showBackdrop();
-    }
-  };
-
-  /* ===== SETTINGS ===== */
-  window.toggleSettings = function () {
-    const open = settings.classList.contains("m-show");
-    closeAll();
-    if (!open) {
-      settings.classList.add("m-show");
-      showBackdrop();
-    }
-  };
-
-  /* ===== MENU FIX ===== */
-  qsa(".menu-item").forEach(menu => {
-    menu.onclick = function (e) {
-      e.stopPropagation();
-
-      const active = menu.classList.contains("active");
-
-      qsa(".menu-item").forEach(m => m.classList.remove("active"));
-
-      if (!active) menu.classList.add("active");
-    };
-  });
-
-  /* ===== MAC BUTTONS FIX ===== */
-  qs("#btnRed")?.addEventListener("click", (e) => {
-    e.stopPropagation();
-    closeAll();
-  });
-
-  qs("#btnYellow")?.addEventListener("click", (e) => {
-    e.stopPropagation();
-    closeAll();
-  });
-
-  qs("#btnGreen")?.addEventListener("click", async (e) => {
-    e.stopPropagation();
-    if (!document.fullscreenElement) {
-      await document.documentElement.requestFullscreen();
-    } else {
-      await document.exitFullscreen();
-    }
-  });
-
-  /* ===== MIC FIX ===== */
-  qs("#copilotVoice")?.addEventListener("click", () => {
-    if (typeof startVoiceAssistant === "function") {
-      startVoiceAssistant();
-    } else {
-      alert("Mic not supported");
-    }
-  });
-
-  /* ===== SWIPE ===== */
-  let startX = 0;
-
-  document.addEventListener("touchstart", e => {
-    startX = e.touches[0].clientX;
-  });
-
-  document.addEventListener("touchend", e => {
-    const endX = e.changedTouches[0].clientX;
-
-    if (startX < 40 && endX > 120) {
-      openSidebar();
-    }
-
-    if (endX < startX - 80) {
-      closeAll();
-    }
-  });
-
-})();
-
-/* ================= MODALS ================= */
+};
 
 window.openProjectCarousel = function (images) {
   let current = 0;
-
   const modal = document.createElement("div");
   modal.className = "image-modal";
-
   modal.innerHTML = `
     <div class="carousel-container">
       <span class="close-modal">&times;</span>
-
       <button class="nav prev">❮</button>
       <img class="carousel-img" src="${images[0]}" />
       <button class="nav next">❯</button>
     </div>
   `;
-
   document.body.appendChild(modal);
-
   const img = modal.querySelector(".carousel-img");
-
-  // ✅ CLOSE BUTTON
-  modal.querySelector(".close-modal").onclick = () => closeModal();
-
-  // ✅ NAVIGATION
-  modal.querySelector(".prev").onclick = () => {
+  modal.querySelector(".close-modal").onclick = () => modal.remove();
+  modal.querySelector(".prev").onclick = (e) => {
+    e.stopPropagation();
     current = (current - 1 + images.length) % images.length;
     img.src = images[current];
   };
-
-  modal.querySelector(".next").onclick = () => {
+  modal.querySelector(".next").onclick = (e) => {
+    e.stopPropagation();
     current = (current + 1) % images.length;
     img.src = images[current];
   };
-
-  // ✅ CLICK OUTSIDE (IMPORTANT FIX)
-  modal.addEventListener("click", (e) => {
-    if (!e.target.closest(".carousel-container")) {
-      closeModal();
-    }
-  });
-
-  // ✅ ESC KEY SUPPORT
-  document.addEventListener("keydown", escHandler);
-
-  function escHandler(e) {
-    if (e.key === "Escape") {
-      closeModal();
-    }
-  }
-
-  function closeModal() {
-    modal.remove();
-    document.removeEventListener("keydown", escHandler);
-  }
-};
-
-window.openLOR = function (src) {
-  const modal = document.createElement("div");
-  modal.className = "image-modal";
-
-  const isPDF = src.toLowerCase().endsWith(".pdf");
-
-  modal.innerHTML = `
-    <div class="image-modal-content">
-      <span class="close-modal">&times;</span>
-
-      ${
-        isPDF
-          ? `<iframe src="${src}"></iframe>`
-          : `<img src="${src}" class="lor-img" />`
-      }
-    </div>
-  `;
-
-  document.body.appendChild(modal);
-
-  modal.querySelector(".close-modal").onclick = () => modal.remove();
-
   modal.onclick = (e) => {
     if (e.target === modal) modal.remove();
   };
