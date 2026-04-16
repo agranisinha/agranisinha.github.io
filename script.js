@@ -1029,6 +1029,15 @@ function sendCopilotPrompt(customText = "") {
   bindPaletteEvents();
   bindCopilotEvents();
 
+  // ✅ ADD THIS EXACTLY HERE
+const backdrop = document.getElementById("mobileBackdrop");
+
+backdrop?.addEventListener("click", () => {
+  const settings = document.getElementById("settingsPanel");
+
+  settings?.classList.remove("open");
+  backdrop.classList.remove("show");
+});
   // ✅ CONNECT INPUT + BUTTONS TO SIRI
 const sendBtn = document.getElementById("copilotSend");
 const voiceBtn = document.getElementById("copilotVoice");
