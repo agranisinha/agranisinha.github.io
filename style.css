@@ -2554,3 +2554,54 @@ button,
 .palette-item {
   -webkit-tap-highlight-color: transparent;
 }
+/* ================= MOBILE MODE ================= */
+
+body.mobile-mode .menu-bar {
+  display: none;
+}
+
+body.mobile-mode .activity-bar {
+  display: none;
+}
+
+body.mobile-mode .sidebar-panel {
+  position: fixed;
+  left: -100%;
+  width: 80%;
+  height: 100%;
+  z-index: 1000;
+  transition: 0.3s;
+}
+
+body.mobile-mode .sidebar-panel.show {
+  left: 0;
+}
+
+/* editor full width */
+body.mobile-mode .editor-area {
+  width: 100%;
+}
+
+/* bottom navigation */
+.mobile-nav {
+  display: none;
+}
+
+body.mobile-mode .mobile-nav {
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  background: #111;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 999;
+}
+
+.mobile-nav button {
+  color: white;
+  font-size: 18px;
+  background: none;
+  border: none;
+}
