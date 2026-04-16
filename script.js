@@ -2440,7 +2440,7 @@ function getResume() {
 
 })();
 
-/* ================= PROJECT CAROUSEL ================= */
+/* ================= MODALS ================= */
 
 window.openProjectCarousel = function (images) {
   let current = 0;
@@ -2455,40 +2455,50 @@ window.openProjectCarousel = function (images) {
       <button class="nav prev">❮</button>
       <img class="carousel-img" src="${images[0]}" />
       <button class="nav next">❯</button>
-
-      <div class="dots"></div>
     </div>
   `;
 
   document.body.appendChild(modal);
 
   const img = modal.querySelector(".carousel-img");
-  const dotsContainer = modal.querySelector(".dots");
 
-  // create dots safely
-  images.forEach((_, i) => {
-    const dot = document.createElement("span");
-    dot.className = "dot" + (i === 0 ? " active" : "");
-    dot.onclick = () => update(i);
-    dotsContainer.appendChild(dot);
-  });
-
-  function update(index) {
-    current = index;
-    img.src = images[current];
-
-    modal.querySelectorAll(".dot").forEach((d, i) => {
-      d.classList.toggle("active", i === current);
-    });
-  }
+  modal.querySelector(".close-modal").onclick = () => modal.remove();
 
   modal.querySelector(".prev").onclick = () => {
-    update((current - 1 + images.length) % images.length);
+    current = (current - 1 + images.length) % images.length;
+    img.src = images[current];
   };
 
   modal.querySelector(".next").onclick = () => {
-    update((current + 1) % images.length);
+    current = (current + 1) % images.length;
+    img.src = images[current];
   };
+
+  modal.onclick = (e) => {
+    if (e.target === modal) modal.remove();
+  };
+};
+
+
+window.openLOR = function (src) {
+  const modal = document.createElement("div");
+  modal.className = "image-modal";
+
+  const isPDF = src.toLowerCase().endsWith(".pdf");
+
+  modal.innerHTML = `
+    <div class="image-modal-content">
+      <span class="close-modal">&times;</span>
+
+      ${
+        isPDF
+          ? `<iframe src="${src}"></iframe>`
+          : `<img src="${src}" class="lor-img" />`
+      }
+    </div>
+  `;
+
+  document.body.appendChild(modal);
 
   modal.querySelector(".close-modal").onclick = () => modal.remove();
 
