@@ -1577,30 +1577,23 @@ function getNaturalReply(message) {
 function speak(text) {
   if (!("speechSynthesis" in window)) return;
 
+  // 🚫 stop current speech safely
   window.speechSynthesis.cancel();
 
   const utterance = new SpeechSynthesisUtterance(text);
+
   utterance.rate = 1;
-  utterance.pitch = 1.08;
-  utterance.volume = 1;
-
-  const voices = window.speechSynthesis.getVoices();
-  const preferred =
-    voices.find(v => /Siri|Samantha|Google US English|Google UK English Female/i.test(v.name)) ||
-    voices.find(v => /female|zira|aria|samantha/i.test(v.name)) ||
-    voices[0];
-
-  if (preferred) utterance.voice = preferred;
+  utterance.pitch = 1;
 
   utterance.onstart = () => {
-    setSiriState("speaking", "Speaking…", "Here’s what I found.");
+    setSiriState("speaking");
   };
 
   utterance.onend = () => {
-    setSiriState("idle", "Hi! I’m Agrani’s Siri Copilot 👋", "Tap the mic and ask about projects, skills, experience, resume, or contact.");
+    setSiriState("idle");
   };
 
-  window.speechSynthesis.speak(utterance);
+  speechSynthesis.speak(utterance);
 }
 
 function sendMessage() {
