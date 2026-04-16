@@ -3495,21 +3495,28 @@ iframe {
 
 }
 
+/* CENTER BUTTON */
 .project-actions {
-  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
 }
 
-.project-actions button {
-  background: linear-gradient(90deg, #4fc3f7, #a855f7);
+/* WHITE BUTTON */
+.github-btn {
+  background: white;
+  color: black;
   border: none;
-  color: white;
-  padding: 6px 12px;
-  border-radius: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
   cursor: pointer;
-  font-size: 12px;
-  transition: 0.2s;
+  transition: 0.25s ease;
 }
 
-.project-actions button:hover {
+/* HOVER EFFECT */
+.github-btn:hover {
+  background: #f3f3f3;
   transform: scale(1.05);
 }
