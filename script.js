@@ -1013,6 +1013,24 @@ function sendCopilotPrompt(customText = "") {
   bindMenuEvents();
   bindPaletteEvents();
   bindCopilotEvents();
+
+  // ✅ CONNECT INPUT + BUTTONS TO SIRI
+const sendBtn = document.getElementById("copilotSend");
+const voiceBtn = document.getElementById("copilotVoice");
+const input = document.getElementById("copilotInput");
+
+// 🔥 SEND BUTTON
+sendBtn?.addEventListener("click", sendMessage);
+
+// 🔥 ENTER KEY
+input?.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    sendMessage();
+  }
+});
+
+// 🔥 VOICE BUTTON
+voiceBtn?.addEventListener("click", startListening);
   applyTheme(currentTheme);
   handleResize();
   window.addEventListener("resize", handleResize);
