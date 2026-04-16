@@ -1,3 +1,8 @@
+// ✅ STOP DESKTOP SCRIPT ON MOBILE PAGE
+if (document.body.classList.contains("mobile-page")) {
+  console.log("📱 Mobile mode → desktop JS disabled");
+} else {
+
 const isMobileView = () => window.innerWidth <= 768;
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -1308,3 +1313,5 @@ window.openProjectCarousel = function (images) {
     if (e.target === modal) modal.remove();
   };
 };
+
+}
