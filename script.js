@@ -151,6 +151,8 @@ document.addEventListener("DOMContentLoaded", () => {
       "Agrani has served as Marketing Chair in the Health Informatics & Analytics Club and has worked on healthcare outreach, podcast coordination, and student engagement initiatives.",
     resume:
       "You can open the Resume tab or use the File menu to download Agrani’s latest resume.",
+     lor: 
+      "Agrani has received multiple Letters of Recommendation from academic and professional experiences. You can view them in the LOR section.",
     default:
       "I can answer questions about Agrani’s projects, experience, skills, education, healthcare AI focus, leadership, resume, and contact details."
   };
@@ -1228,6 +1230,7 @@ function bindMenuEvents() {
         printToTerminal("js <code> — execute JavaScript");
         printToTerminal("py <code> — execute Python");
         printToTerminal("copilot — open Agrani's Copilot");
+        printToTerminal("lor — open LOR section");
         printToTerminal("clear — clear terminal");
         break;
 
@@ -1330,6 +1333,7 @@ function bindMenuEvents() {
       case "readme":
       case "resume":
       case "home":
+      case "lor":  
         openTab(first);
         break;
 
