@@ -1362,6 +1362,11 @@ if (diff < -100) {
   document.getElementById("mobileBackdrop")?.classList.remove("show");
 }
 });
+
+document.getElementById("mobileBackdrop")?.addEventListener("click", () => {
+  document.getElementById("sidebarPanel")?.classList.remove("show");
+  document.getElementById("mobileBackdrop")?.classList.remove("show");
+});
 /* ================= SIRI COPILOT ================= */
 
 const SpeechRecognition =
