@@ -2605,3 +2605,20 @@ body.mobile-mode .mobile-nav {
   background: none;
   border: none;
 }
+/* MOBILE SIDEBAR FIX */
+body.mobile-mode .sidebar-panel {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 80%;
+  height: 100%;
+  background: var(--bg-sidebar);
+  z-index: 1000;
+  transition: left 0.3s ease;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+/* SHOW SIDEBAR */
+body.mobile-mode .sidebar-panel.show {
+  left: 0;
+}
