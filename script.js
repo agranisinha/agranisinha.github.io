@@ -2462,8 +2462,10 @@ window.openProjectCarousel = function (images) {
 
   const img = modal.querySelector(".carousel-img");
 
-  modal.querySelector(".close-modal").onclick = () => modal.remove();
+  // ✅ CLOSE BUTTON
+  modal.querySelector(".close-modal").onclick = () => closeModal();
 
+  // ✅ NAVIGATION
   modal.querySelector(".prev").onclick = () => {
     current = (current - 1 + images.length) % images.length;
     img.src = images[current];
@@ -2474,11 +2476,27 @@ window.openProjectCarousel = function (images) {
     img.src = images[current];
   };
 
-  modal.onclick = (e) => {
-    if (e.target === modal) modal.remove();
-  };
-};
+  // ✅ CLICK OUTSIDE (IMPORTANT FIX)
+  modal.addEventListener("click", (e) => {
+    if (!e.target.closest(".carousel-container")) {
+      closeModal();
+    }
+  });
 
+  // ✅ ESC KEY SUPPORT
+  document.addEventListener("keydown", escHandler);
+
+  function escHandler(e) {
+    if (e.key === "Escape") {
+      closeModal();
+    }
+  }
+
+  function closeModal() {
+    modal.remove();
+    document.removeEventListener("keydown", escHandler);
+  }
+};
 
 window.openLOR = function (src) {
   const modal = document.createElement("div");
