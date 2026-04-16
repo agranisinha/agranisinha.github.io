@@ -952,19 +952,29 @@ if (window.innerWidth <= 768) {
     return COPILOT_REPLIES.default;
   }
 
-  function sendCopilotPrompt(customText = "") {
-    const chatInput = $("#copilotInput");
-    if (!chatInput) return;
-    const cleaned = safeText(customText || chatInput.value);
-    if (!cleaned) return;
-    appendCopilotMessage(cleaned, "user");
-    chatInput.value = "";
-    setTimeout(() => appendCopilotMessage(getCopilotReply(cleaned), "assistant"), 220);
-  }
+ function sendCopilotPrompt(customText = "") {
+  const { input } = getSiriElements();
+
+  if (!input) return;
+
+  const text = (customText || input.value || "").trim();
+  if (!text) return;
+
+  // ✅ Set input value
+  input.value = text;
+
+  // ✅ Use NEW Siri system
+  sendMessage();
+}
 
   function quickAsk(text) {
     toggleCopilotSidebar(true);
-    sendCopilotPrompt(text);
+  
+    const { input } = getSiriElements();
+    if (input) {
+      input.value = text;
+      sendMessage(); // ✅ USE NEW SIRI
+    }
   }
 
   function startVoiceAssistant() {
