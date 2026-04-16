@@ -282,24 +282,39 @@ document.addEventListener("DOMContentLoaded", () => {
     persistState();
   }
 
-  function toggleSettings() {
+function toggleSettings() {
   const settings = document.getElementById("settingsPanel");
   const backdrop = document.getElementById("mobileBackdrop");
 
-  if (window.innerWidth <= 768) {
-    settings.classList.toggle("open");
-    backdrop.classList.toggle("show");
-    return;
+  if (!settings) return;
+
+  const isMobile = window.innerWidth <= 768;
+
+  // ✅ TOGGLE PANEL
+  settings.classList.toggle("open");
+
+  // ✅ ALWAYS REMOVE MINIMIZED WHEN OPENING
+  if (settings.classList.contains("open")) {
+    settings.classList.remove("minimized");
   }
 
-  settings?.classList.toggle("open");
+  // ✅ MOBILE BACKDROP CONTROL
+  if (isMobile && backdrop) {
+    backdrop.classList.toggle("show");
+  }
+
+  // ✅ CLEANUP WHEN CLOSED
+  if (!settings.classList.contains("open") && backdrop) {
+    backdrop.classList.remove("show");
+  }
 }
 
-  function minimizeSettings() {
-    if (!settingsPanel) return;
-    settingsPanel.classList.toggle("minimized");
-    settingsPanel.classList.add("open");
-  }
+function minimizeSettings() {
+  const settings = document.getElementById("settingsPanel");
+  if (!settings) return;
+
+  settings.classList.toggle("minimized");
+}
 
   window.toggleSidebar = toggleSidebar;
   window.toggleCopilotSidebar = toggleCopilotSidebar;
