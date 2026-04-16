@@ -2225,6 +2225,50 @@ window.openLOR = function (src) {
     if (e.target === modal) modal.remove();
   };
 };
+
+window.openProjectCarousel = function (images) {
+  let current = 0;
+
+  const modal = document.createElement("div");
+  modal.className = "image-modal";
+
+  modal.innerHTML = `
+    <div class="carousel-container">
+      <span class="close-modal">&times;</span>
+
+      <button class="nav prev">❮</button>
+      <img class="carousel-img" src="${images[0]}" />
+      <button class="nav next">❯</button>
+
+      <div class="dots"></div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  const img = modal.querySelector(".carousel-img");
+
+  // CLOSE
+  modal.querySelector(".close-modal").onclick = () => modal.remove();
+
+  // PREV
+  modal.querySelector(".prev").onclick = () => {
+    current = (current - 1 + images.length) % images.length;
+    img.src = images[current];
+  };
+
+  // NEXT
+  modal.querySelector(".next").onclick = () => {
+    current = (current + 1) % images.length;
+    img.src = images[current];
+  };
+
+  // CLICK OUTSIDE CLOSE
+  modal.onclick = (e) => {
+    if (e.target === modal) modal.remove();
+  };
+};
+
 function getResume() {
   return `
     <div class="about-container">
