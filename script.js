@@ -220,12 +220,11 @@ document.addEventListener("DOMContentLoaded", () => {
   mobileBackdrop.addEventListener("click", closeMobilePanels);
 
   function toggleSidebar() {
-  if (window.innerWidth <= 768) {
-    openMobilePanel("sidebar");   // ✅ USE SYSTEM FUNCTION
-    return;
-  }
+  const sidebar = document.getElementById("sidebarPanel");
+  const backdrop = document.getElementById("mobileBackdrop");
 
-  sidebarPanel?.classList.toggle("hide");
+  sidebar.classList.toggle("show");
+  backdrop.classList.toggle("show");
 }
   function toggleCopilotSidebar(force) {
   
@@ -277,12 +276,16 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function toggleSettings() {
+  const settings = document.getElementById("settingsPanel");
+  const backdrop = document.getElementById("mobileBackdrop");
+
   if (window.innerWidth <= 768) {
-    openMobilePanel("settings");
+    settings.classList.toggle("open");
+    backdrop.classList.toggle("show");
     return;
   }
 
-  settingsPanel?.classList.toggle("open");
+  settings?.classList.toggle("open");
 }
 
   function minimizeSettings() {
@@ -306,16 +309,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function openSidebar(type) {
-  setActivityActive(type);
-
-  if (window.innerWidth <= 768) {
-    return openMobilePanel(type);
+    setActivityActive(type);
+    if (type === "copilot") return toggleCopilotSidebar(true);
+    if (type === "explorer") return toggleSidebar();
+    if (type === "search") return openPalette();
+    if (type === "git") return printToTerminal("Git panel is simulated. Use 'git log' in terminal.", "warning");
+    if (type === "files") return openTab("readme");
   }
-
-  // Desktop
-  if (type === "copilot") return toggleCopilotSidebar(true);
-  if (type === "explorer") return sidebarPanel?.classList.toggle("hide");
-}
 
   window.openSidebar = openSidebar;
 
@@ -609,11 +609,11 @@ document.addEventListener("DOMContentLoaded", () => {
     updateCollections();
     sidebarFiles.forEach((file) => {
       file.addEventListener("click", () => {
-  const tabName = file.dataset.tab || file.textContent;
   openTab(tabName);
 
   if (window.innerWidth <= 768) {
-    closeMobilePanels();
+    document.getElementById("sidebarPanel")?.classList.remove("show");
+    document.getElementById("mobileBackdrop")?.classList.remove("show");
   }
 });
     });
@@ -1327,8 +1327,9 @@ window.openProjectCarousel = function (images) {
   };
 };
 
-document.querySelector(".mobile-backdrop")?.addEventListener("click", () => {
-  closeMobilePanels();
+document.getElementById("mobileBackdrop")?.addEventListener("click", () => {
+  document.getElementById("sidebarPanel")?.classList.remove("show");
+  document.getElementById("mobileBackdrop")?.classList.remove("show");
 });
 
 let startX = 0;
@@ -1341,7 +1342,19 @@ document.addEventListener("touchend", (e) => {
   let endX = e.changedTouches[0].clientX;
   let diff = endX - startX;
 
+  // 👉 Swipe right → open sidebar
+  if (diff > 100 && startX < 50) {
+    document.getElementById("sidebarPanel")?.classList.add("show");
+    document.getElementById("mobileBackdrop")?.classList.add("show");
+  }
 
+  // 👉 Swipe left → close sidebar
+  // Swipe LEFT to close
+if (diff < -100) {
+  document.getElementById("sidebarPanel")?.classList.remove("show");
+  document.getElementById("mobileBackdrop")?.classList.remove("show");
+}
+});
 /* ================= SIRI COPILOT ================= */
 
 const SpeechRecognition =
