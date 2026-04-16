@@ -213,61 +213,43 @@ document.addEventListener("DOMContentLoaded", () => {
   mobileBackdrop.addEventListener("click", closeMobilePanels);
 
   function toggleSidebar() {
-    if (isMobile()) {
-      const open = sidebarPanel?.classList.contains("m-show");
-      open ? closeMobilePanels() : openMobilePanel("sidebar");
-      return;
-    }
+    if (isMobile()) return; // 🚫 stop desktop logic on mobile
     sidebarPanel?.classList.toggle("hide");
   }
 
   function toggleCopilotSidebar(force) {
-    if (isMobile()) {
-      if (force === false) {
-        closeMobilePanels();
-        isCopilotOpen = false;
-        persistState();
-        return;
-      }
-      const open = copilotSidebar?.classList.contains("m-show");
-      if (force === true) {
-        openMobilePanel("copilot");
-        isCopilotOpen = true;
-        persistState();
-        return;
-      }
-      open ? closeMobilePanels() : openMobilePanel("copilot");
-      isCopilotOpen = !open;
-      persistState();
-      return;
-    }
+  if (isMobile()) return; // 🚫 mobile handled in mobile.js
 
-    const editor = $(".editor-area");
-    if (!copilotSidebar) return;
+  const editor = $(".editor-area");
+  if (!copilotSidebar) return;
 
-    if (force === true) {
-      isCopilotOpen = true;
-      copilotSidebar.classList.add("open");
-      copilotSidebar.classList.remove("minimized");
-      editor?.classList.add("with-copilot");
-      persistState();
-      return;
-    }
-
-    if (force === false) {
-      isCopilotOpen = false;
-      copilotSidebar.classList.remove("open", "minimized");
-      editor?.classList.remove("with-copilot");
-      persistState();
-      return;
-    }
-
-    isCopilotOpen = !copilotSidebar.classList.contains("open");
-    copilotSidebar.classList.toggle("open", isCopilotOpen);
-    if (!isCopilotOpen) copilotSidebar.classList.remove("minimized");
-    editor?.classList.toggle("with-copilot", isCopilotOpen);
+  if (force === true) {
+    isCopilotOpen = true;
+    copilotSidebar.classList.add("open");
+    copilotSidebar.classList.remove("minimized");
+    editor?.classList.add("with-copilot");
     persistState();
+    return;
   }
+
+  if (force === false) {
+    isCopilotOpen = false;
+    copilotSidebar.classList.remove("open", "minimized");
+    editor?.classList.remove("with-copilot");
+    persistState();
+    return;
+  }
+
+  isCopilotOpen = !copilotSidebar.classList.contains("open");
+  copilotSidebar.classList.toggle("open", isCopilotOpen);
+
+  if (!isCopilotOpen) {
+    copilotSidebar.classList.remove("minimized");
+  }
+
+  editor?.classList.toggle("with-copilot", isCopilotOpen);
+  persistState();
+}
 
   function minimizeCopilot() {
     if (!copilotSidebar) return;
@@ -286,14 +268,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function toggleSettings() {
-    if (isMobile()) {
-      const open = settingsPanel?.classList.contains("m-show");
-      open ? closeMobilePanels() : openMobilePanel("settings");
-      return;
-    }
-    settingsPanel?.classList.toggle("open");
-    settingsPanel?.classList.remove("minimized");
-  }
+  if (isMobile()) return; // 🚫 mobile handled separately
+  settingsPanel?.classList.toggle("open");
+  settingsPanel?.classList.remove("minimized");
+}
 
   function minimizeSettings() {
     if (!settingsPanel) return;
@@ -623,12 +601,16 @@ document.addEventListener("DOMContentLoaded", () => {
     $(".copilot-box")?.addEventListener("click", () => toggleCopilotSidebar(true));
   }
 
-  function toggleTerminal() {
-    if (!terminal) return;
-    terminal.classList.toggle("open");
-    if (terminal.classList.contains("open")) terminalInput?.focus();
-  }
+ function toggleTerminal() {
+  if (isMobile()) return; // 🚫 mobile handled in mobile.js
+  if (!terminal) return;
 
+  terminal.classList.toggle("open");
+
+  if (terminal.classList.contains("open")) {
+    terminalInput?.focus();
+  }
+}
   function clearTerminal() {
     if (terminalBody) terminalBody.innerHTML = "";
   }
