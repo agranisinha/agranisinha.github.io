@@ -40,8 +40,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const feedback = document.getElementById("headerFeedback");
 
       // ✅ MAC BUTTONS FIX
-   if (red) {
+   // ✅ ONLY FOR MOBILE
+   if (window.innerWidth <= 768) {
      red.onclick = () => alert("Close disabled 😎");
+   } else {
+     red.onclick = () => {
+       // desktop behavior (optional)
+       window.close(); // or do nothing
+     };
    }
    
    if (yellow) {
