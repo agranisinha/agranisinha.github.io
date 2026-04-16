@@ -1617,18 +1617,33 @@ function sendMessage() {
   const action = response.action || null;
 
   setTimeout(() => {
-    addCopilotMessage(reply, "bot");
+  addCopilotMessage(reply, "bot");
 
-    if (typeof action === "function") {
-      try {
-        action();
-      } catch (e) {
-        console.error("Action error:", e);
-      }
+  if (typeof action === "function") {
+    try {
+      action();
+    } catch (e) {
+      console.error("Action error:", e);
     }
+  }
 
+  // 🔊 SPEAK (SAFE)
+  try {
     speak(reply);
-  }, 380);
+  } catch (e) {
+    console.error("Speak error:", e);
+  }
+
+  // ✅ FORCE RESET (THIS FIXES STUCK)
+  setTimeout(() => {
+    setSiriState(
+      "idle",
+      "Hi! I’m Agrani’s Siri Copilot 👋",
+      "Tap the mic and ask about projects, skills, experience, resume, or contact."
+    );
+  }, 1200);
+
+}, 380);
 }
 
 function startListening() {
