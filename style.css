@@ -3545,3 +3545,12 @@ iframe {
 .mobile-overlay.show {
   display: block;
 }
+@media (max-width: 768px) {
+  .copilot-sidebar {
+    width: 100% !important;
+    height: 100%;
+    right: 0;
+    top: 0;
+    z-index: 3000;
+  }
+}
