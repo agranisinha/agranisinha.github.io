@@ -1447,81 +1447,108 @@ function setSiriState(state = "idle", label = "", hintText = "") {
 }
 
 function getNaturalReply(message) {
-  const msg = String(message || "").toLowerCase();
+  const msg = message.toLowerCase();
 
+  const random = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+  /* ===== PROJECTS ===== */
   if (msg.includes("project")) {
     return {
-      reply: "Sure. Opening your projects now.",
+      reply: random([
+        "Sure. Opening Agrani’s projects.",
+        "Here are some of Agrani’s key projects.",
+        "Let me show you what Agrani has built.",
+        "Opening the projects section now.",
+        "Let’s explore Agrani’s work."
+      ]),
       action: () => openTab("projects")
     };
   }
 
-  if (msg.includes("skill") || msg.includes("tech stack")) {
+  /* ===== SKILLS ===== */
+  if (msg.includes("skill") || msg.includes("tech")) {
     return {
-      reply: "Of course. Here are your skills and technical strengths.",
+      reply: random([
+        "Here are Agrani’s core skills.",
+        "Showing Agrani’s technical strengths.",
+        "These are the technologies Agrani works with.",
+        "Let me walk you through Agrani’s skill set."
+      ]),
       action: () => openTab("skills")
     };
   }
 
+  /* ===== EXPERIENCE ===== */
   if (msg.includes("experience") || msg.includes("work")) {
     return {
-      reply: "Alright. Let me show your experience.",
+      reply: random([
+        "Here’s Agrani’s professional experience.",
+        "Showing Agrani’s career journey.",
+        "Let me open Agrani’s experience section."
+      ]),
       action: () => openTab("experience")
     };
   }
 
-  if (msg.includes("contact") || msg.includes("email") || msg.includes("phone")) {
+  /* ===== CONTACT ===== */
+  if (msg.includes("contact") || msg.includes("email")) {
     return {
-      reply: "Here is your contact information.",
+      reply: random([
+        "Here’s how you can contact Agrani.",
+        "Opening Agrani’s contact details.",
+        "You can reach Agrani through the contact section."
+      ]),
       action: () => openTab("contact")
     };
   }
 
-  if (msg.includes("resume") || msg.includes("cv")) {
+  /* ===== RESUME ===== */
+  if (msg.includes("resume")) {
     return {
-      reply: "Opening your resume.",
+      reply: random([
+        "Opening Agrani’s resume.",
+        "Here’s Agrani’s professional resume.",
+        "Let me bring up Agrani’s resume for you."
+      ]),
       action: () => openTab("resume")
     };
   }
 
+  /* ===== ABOUT ===== */
   if (msg.includes("about")) {
     return {
-      reply: "Here is more about you.",
+      reply: random([
+        "Here’s more information about Agrani.",
+        "Let me introduce Agrani to you.",
+        "Opening the about section."
+      ]),
       action: () => openTab("about")
     };
   }
 
-  if (msg.includes("home")) {
+  /* ===== GREETING ===== */
+  if (msg.includes("hello") || msg.includes("hi") || msg.includes("hey")) {
     return {
-      reply: "Taking you back home.",
-      action: () => openTab("home")
+      reply: random([
+        "Hello. How can I assist you today?",
+        "Hi there. What would you like to explore?",
+        "Hello. I can guide you through Agrani’s portfolio."
+      ])
     };
   }
 
-  if (msg.includes("lor") || msg.includes("recommendation")) {
-    return {
-      reply: "Opening the letters of recommendation section.",
-      action: () => openTab("lor")
-    };
-  }
-
-  if (msg.includes("hello") || msg.includes("hey") || msg.includes("hi")) {
-    return {
-      reply: "Hi. How can I help you today?"
-    };
-  }
-
-  if (msg.includes("who are you")) {
-    return {
-      reply: "I’m Agrani’s Siri-style portfolio copilot. I can guide visitors through projects, skills, experience, resume, and contact information."
-    };
-  }
-
+  /* ===== DEFAULT ===== */
   return {
-    reply: "I can help with projects, skills, experience, resume, contact details, and more. Try saying something like show projects or open resume."
+    reply: random([
+      "You can ask about Agrani’s projects, skills, or experience.",
+      "I can guide you through different sections of the portfolio.",
+      "Try asking something like show projects or open skills.",
+      "I’m here to help you explore Agrani’s work."
+    ])
   };
 }
 
+  
 function speak(text) {
   if (!("speechSynthesis" in window)) return;
 
