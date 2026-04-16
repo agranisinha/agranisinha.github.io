@@ -1,10 +1,28 @@
-function show(el) {
-  el?.classList.add("m-show");
-}
+window.openMobilePanel = function (type) {
+  const sidebar = document.getElementById("sidebarPanel");
+  const copilot = document.getElementById("copilotSidebar");
+  const terminal = document.getElementById("terminalPanel");
+  const settings = document.getElementById("settingsPanel");
+  const backdrop = document.querySelector(".mobile-backdrop");
 
-function hide(el) {
-  el?.classList.remove("m-show");
-}
+  // CLOSE ALL
+  [sidebar, copilot, terminal, settings].forEach(el => el?.classList.remove("m-show"));
+
+  // OPEN TARGET
+  if (type === "explorer") sidebar?.classList.add("m-show");
+  if (type === "copilot") copilot?.classList.add("m-show");
+  if (type === "terminal") terminal?.classList.add("m-show");
+  if (type === "settings") settings?.classList.add("m-show");
+
+  backdrop?.classList.add("show");
+};
+
+window.closeAllMobilePanels = function () {
+  document.querySelectorAll(".m-sidebar, .m-copilot, .m-terminal, .m-settings")
+    .forEach(el => el.classList.remove("m-show"));
+
+  document.querySelector(".mobile-backdrop")?.classList.remove("show");
+};
 
 document.addEventListener("DOMContentLoaded", () => {
   const body = document.body;
