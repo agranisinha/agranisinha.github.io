@@ -220,11 +220,12 @@ document.addEventListener("DOMContentLoaded", () => {
   mobileBackdrop.addEventListener("click", closeMobilePanels);
 
   function toggleSidebar() {
-  const sidebar = document.getElementById("sidebarPanel");
-  const backdrop = document.getElementById("mobileBackdrop");
+  if (window.innerWidth <= 768) {
+    openMobilePanel("sidebar");   // ✅ USE SYSTEM FUNCTION
+    return;
+  }
 
-  sidebar.classList.toggle("show");
-  backdrop.classList.toggle("show");
+  sidebarPanel?.classList.toggle("hide");
 }
   function toggleCopilotSidebar(force) {
   
