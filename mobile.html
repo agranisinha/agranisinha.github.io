@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agrani VS Code Mobile</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="mobile.css" />
+</head>
+
+<body class="mobile-page">
+
+<!-- ================= OVERLAY ================= -->
+<div id="mobileOverlay" class="mobile-overlay"></div>
+
+<!-- ================= APP ================= -->
+<div class="mobile-shell">
+
+  <!-- ================= TOP BAR ================= -->
+  <header class="mobile-topbar">
+    <button onclick="toggleMobileSidebar()">📁</button>
+
+    <div class="mobile-title">
+      agrani-sinha · portfolio
+    </div>
+
+    <div class="mobile-actions">
+      <button onclick="openPalette()">🔍</button>
+      <button onclick="toggleCopilotSidebar(true)">🤖</button>
+    </div>
+  </header>
+
+  <!-- ================= TABS ================= -->
+  <div class="mobile-tabs" id="editorTabs"></div>
+
+  <!-- ================= CONTENT ================= -->
+  <main id="editorContent" class="mobile-editor"></main>
+
+</div>
+
+<!-- ================= BOTTOM NAV ================= -->
+<nav class="mobile-bottom-nav">
+
+  <button onclick="openTab('home')">
+    <div>🏠</div>
+    <span>Home</span>
+  </button>
+
+  <button onclick="toggleMobileSidebar()">
+    <div>📂</div>
+    <span>Files</span>
+  </button>
+
+  <button onclick="toggleTerminal()">
+    <div>💻</div>
+    <span>Terminal</span>
+  </button>
+
+  <button onclick="toggleCopilotSidebar(true)">
+    <div>🤖</div>
+    <span>AI</span>
+  </button>
+
+  <button onclick="toggleSettings()">
+    <div>⚙️</div>
+    <span>Settings</span>
+  </button>
+
+</nav>
+
+<!-- ================= FILE EXPLORER ================= -->
+<aside id="mobileSidebar" class="mobile-panel left">
+
+  <div class="mobile-panel-header">
+    <span>Explorer</span>
+    <button onclick="closeAllPanels()">✖</button>
+  </div>
+
+  <div class="mobile-file-list">
+
+    <div onclick="openTab('home')">⚛️ home.tsx</div>
+    <div onclick="openTab('about')">🌐 about.html</div>
+    <div onclick="openTab('projects')">🟨 projects.js</div>
+    <div onclick="openTab('skills')">🟩 skills.json</div>
+    <div onclick="openTab('experience')">🟦 experience.ts</div>
+    <div onclick="openTab('lor')">📜 lor.pdf</div>
+    <div onclick="openTab('contact')">🎨 contact.css</div>
+    <div onclick="openTab('readme')">📄 README.md</div>
+    <div onclick="openTab('resume')">📕 Resume.pdf</div>
+
+  </div>
+
+</aside>
+
+<!-- ================= COPILOT ================= -->
+<aside id="copilotSidebar" class="mobile-panel right">
+
+  <div class="mobile-panel-header">
+    <span>Copilot AI</span>
+    <button onclick="closeAllPanels()">✖</button>
+  </div>
+
+  <div class="mobile-copilot-body">
+
+    <div id="copilotMessages"></div>
+
+    <div class="mobile-copilot-input">
+      <input id="copilotInput" placeholder="Ask about Agrani..." />
+      <button id="copilotSend">➤</button>
+    </div>
+
+  </div>
+
+</aside>
+
+<!-- ================= TERMINAL ================= -->
+<div id="terminalPanel" class="mobile-terminal">
+
+  <div class="terminal-header">
+    <span>Terminal</span>
+    <button onclick="closeAllPanels()">✖</button>
+  </div>
+
+  <div id="terminalBody" class="terminal-body">
+    <div>Welcome! Type 'help'</div>
+  </div>
+
+  <div class="terminal-input-line">
+    <span>$</span>
+    <input id="terminalInput" placeholder="Type command..." />
+  </div>
+
+</div>
+
+<!-- ================= SETTINGS ================= -->
+<div id="settingsPanel" class="mobile-panel bottom">
+
+  <div class="mobile-panel-header">
+    <span>Settings</span>
+    <button onclick="closeAllPanels()">✖</button>
+  </div>
+
+  <div class="mobile-settings-body">
+
+    <div onclick="setTheme('dark')">🌙 Dark</div>
+    <div onclick="setTheme('rose')">🌸 Rose</div>
+    <div onclick="setTheme('tokyo')">🌃 Tokyo</div>
+    <div onclick="setTheme('cat')">🐱 Catppuccin</div>
+    <div onclick="setTheme('nord')">❄️ Nord</div>
+    <div onclick="setTheme('gruv')">🔥 Gruvbox</div>
+
+  </div>
+
+</div>
+
+<!-- ================= FLOATING AI ================= -->
+<div id="copilotBubble">🤖</div>
+
+<!-- ================= SCRIPTS ================= -->
+
+<!-- Your main logic -->
+<script src="script.js"></script>
+
+<!-- Mobile controller -->
+<script src="mobile.js"></script>
+
+</body>
+</html>
