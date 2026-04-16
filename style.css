@@ -1373,6 +1373,11 @@ a:hover ~ .cursor-square {
   color: #7cf2e9;
 }
 
+.palette-icon.pdf {
+  background: rgba(255, 80, 80, 0.18);
+  color: #ff9a9a;
+}
+
 .palette-text {
   overflow: hidden;
   text-overflow: ellipsis;
