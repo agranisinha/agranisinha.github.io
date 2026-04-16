@@ -2613,7 +2613,7 @@ body.mobile-mode .sidebar-panel {
   width: 80%;
   height: 100%;
   background: var(--bg-sidebar);
-  z-index: 1000;
+  z-index: 1001;
   transition: left 0.3s ease;
   box-shadow: 0 0 20px rgba(0,0,0,0.5);
 }
@@ -2636,4 +2636,9 @@ body.mobile-mode .sidebar-panel.show {
 
 .mobile-backdrop.show {
   display: block;
+}
+
+
+.mobile-nav {
+  z-index: 1002;
 }
