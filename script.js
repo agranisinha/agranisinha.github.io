@@ -1356,3 +1356,250 @@ if (diff < -100) {
   document.getElementById("mobileBackdrop")?.classList.remove("show");
 }
 });
+/* ================= SIRI COPILOT ================= */
+
+const SpeechRecognition =
+  window.SpeechRecognition || window.webkitSpeechRecognition;
+
+let recognition = null;
+if (SpeechRecognition) {
+  recognition = new SpeechRecognition();
+  recognition.lang = "en-US";
+  recognition.continuous = false;
+  recognition.interimResults = true;
+}
+
+function getSiriElements() {
+  return {
+    input: document.getElementById("copilotInput"),
+    messages: document.getElementById("copilotMessages"),
+    voiceBtn: document.getElementById("copilotVoice"),
+    sendBtn: document.getElementById("copilotSend"),
+    orb: document.getElementById("siriOrb"),
+    status: document.getElementById("siriStatus"),
+    hint: document.getElementById("siriHint")
+  };
+}
+
+function addCopilotMessage(text, sender = "bot") {
+  const { messages } = getSiriElements();
+  if (!messages) return;
+
+  const div = document.createElement("div");
+  div.className = sender === "user" ? "user-msg" : "bot-msg";
+  div.textContent = text;
+  messages.appendChild(div);
+  messages.scrollTop = messages.scrollHeight;
+}
+
+function setSiriState(state = "idle", label = "", hintText = "") {
+  const { orb, voiceBtn, status, hint } = getSiriElements();
+  if (!orb || !voiceBtn) return;
+
+  orb.classList.remove("listening", "speaking", "thinking");
+  voiceBtn.classList.remove("listening");
+
+  if (state === "listening") {
+    orb.classList.add("listening");
+    voiceBtn.classList.add("listening");
+    voiceBtn.textContent = "🎙️";
+  } else if (state === "speaking") {
+    orb.classList.add("speaking");
+    voiceBtn.textContent = "🔊";
+  } else if (state === "thinking") {
+    orb.classList.add("thinking");
+    voiceBtn.textContent = "✨";
+  } else {
+    voiceBtn.textContent = "🎤";
+  }
+
+  if (status && label) status.textContent = label;
+  if (hint && hintText) hint.textContent = hintText;
+}
+
+function getNaturalReply(message) {
+  const msg = String(message || "").toLowerCase();
+
+  if (msg.includes("project")) {
+    return {
+      reply: "Sure. Opening your projects now.",
+      action: () => openTab("projects")
+    };
+  }
+
+  if (msg.includes("skill") || msg.includes("tech stack")) {
+    return {
+      reply: "Of course. Here are your skills and technical strengths.",
+      action: () => openTab("skills")
+    };
+  }
+
+  if (msg.includes("experience") || msg.includes("work")) {
+    return {
+      reply: "Alright. Let me show your experience.",
+      action: () => openTab("experience")
+    };
+  }
+
+  if (msg.includes("contact") || msg.includes("email") || msg.includes("phone")) {
+    return {
+      reply: "Here is your contact information.",
+      action: () => openTab("contact")
+    };
+  }
+
+  if (msg.includes("resume") || msg.includes("cv")) {
+    return {
+      reply: "Opening your resume.",
+      action: () => openTab("resume")
+    };
+  }
+
+  if (msg.includes("about")) {
+    return {
+      reply: "Here is more about you.",
+      action: () => openTab("about")
+    };
+  }
+
+  if (msg.includes("home")) {
+    return {
+      reply: "Taking you back home.",
+      action: () => openTab("home")
+    };
+  }
+
+  if (msg.includes("lor") || msg.includes("recommendation")) {
+    return {
+      reply: "Opening the letters of recommendation section.",
+      action: () => openTab("lor")
+    };
+  }
+
+  if (msg.includes("hello") || msg.includes("hey") || msg.includes("hi")) {
+    return {
+      reply: "Hi. How can I help you today?"
+    };
+  }
+
+  if (msg.includes("who are you")) {
+    return {
+      reply: "I’m Agrani’s Siri-style portfolio copilot. I can guide visitors through projects, skills, experience, resume, and contact information."
+    };
+  }
+
+  return {
+    reply: "I can help with projects, skills, experience, resume, contact details, and more. Try saying something like show projects or open resume."
+  };
+}
+
+function speak(text) {
+  if (!("speechSynthesis" in window)) return;
+
+  window.speechSynthesis.cancel();
+
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.rate = 1;
+  utterance.pitch = 1.08;
+  utterance.volume = 1;
+
+  const voices = window.speechSynthesis.getVoices();
+  const preferred =
+    voices.find(v => /Siri|Samantha|Google US English|Google UK English Female/i.test(v.name)) ||
+    voices.find(v => /female|zira|aria|samantha/i.test(v.name)) ||
+    voices[0];
+
+  if (preferred) utterance.voice = preferred;
+
+  utterance.onstart = () => {
+    setSiriState("speaking", "Speaking…", "Here’s what I found.");
+  };
+
+  utterance.onend = () => {
+    setSiriState("idle", "Hi! I’m Agrani’s Siri Copilot 👋", "Tap the mic and ask about projects, skills, experience, resume, or contact.");
+  };
+
+  window.speechSynthesis.speak(utterance);
+}
+
+function sendMessage() {
+  const { input } = getSiriElements();
+  if (!input) return;
+
+  const raw = input.value.trim();
+  if (!raw) return;
+
+  addCopilotMessage(raw, "user");
+  input.value = "";
+
+  setSiriState("thinking", "Thinking…", "Working on that.");
+
+  const { reply, action } = getNaturalReply(raw);
+
+  setTimeout(() => {
+    addCopilotMessage(reply, "bot");
+    if (typeof action === "function") action();
+    speak(reply);
+  }, 380);
+}
+
+function startListening() {
+  const { input } = getSiriElements();
+
+  if (!recognition) {
+    addCopilotMessage("Voice input is not supported in this browser. Please use Chrome or Safari.", "bot");
+    speak("Voice input is not supported in this browser.");
+    return;
+  }
+
+  setSiriState("listening", "Listening…", "Speak naturally.");
+  input?.focus();
+
+  recognition.start();
+}
+
+if (recognition) {
+  recognition.onresult = function (event) {
+    const transcript = Array.from(event.results)
+      .map(result => result[0].transcript)
+      .join(" ")
+      .trim();
+
+    const { input } = getSiriElements();
+    if (input) input.value = transcript;
+  };
+
+  recognition.onend = function () {
+    const { input } = getSiriElements();
+    const value = input?.value?.trim();
+
+    if (value) {
+      setSiriState("thinking", "Thinking…", "I heard you.");
+      sendMessage();
+    } else {
+      setSiriState("idle", "Hi! I’m Agrani’s Siri Copilot 👋", "Tap the mic and ask about projects, skills, experience, resume, or contact.");
+    }
+  };
+
+  recognition.onerror = function () {
+    setSiriState("idle", "Hi! I’m Agrani’s Siri Copilot 👋", "Tap the mic and try again.");
+    addCopilotMessage("I couldn’t catch that. Please try again.", "bot");
+  };
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const { input, sendBtn, voiceBtn } = getSiriElements();
+
+  sendBtn?.addEventListener("click", sendMessage);
+  voiceBtn?.addEventListener("click", startListening);
+
+  input?.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") sendMessage();
+  });
+
+  if ("speechSynthesis" in window) {
+    window.speechSynthesis.onvoiceschanged = () => {
+      window.speechSynthesis.getVoices();
+    };
+  }
+});
