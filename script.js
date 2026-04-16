@@ -1246,7 +1246,6 @@ function getContact() {
       <h1 class="hero-name">Contact</h1>
       <div class="about-card">
         <p><span class="highlight">Email:</span> agbrian521@gmail.com</p>
-        <p><span class="highlight">Phone:</span> (904) 228-1179</p>
         <p><span class="highlight">Location:</span> Jacksonville, FL</p>
         <p><span class="highlight">LinkedIn:</span> linkedin.com/in/agranisinha</p>
       </div>
