@@ -1446,6 +1446,58 @@ function findBestMatch(query, content) {
   return bestMatch.trim();
 }
 
+function stripHtml(html) {
+  const temp = document.createElement("div");
+  temp.innerHTML = html;
+  return (temp.textContent || temp.innerText || "").toLowerCase().trim();
+}
+
+function getPortfolioKnowledgeBase() {
+  return {
+    home: stripHtml(getHome()),
+    about: stripHtml(getAbout()),
+    projects: stripHtml(getProjects()),
+    skills: stripHtml(getSkills()),
+    experience: stripHtml(getExperience()),
+    lor: stripHtml(getLOR()),
+    contact: stripHtml(getContact()),
+    readme: stripHtml(getReadme()),
+    resume: stripHtml(getResume())
+  };
+}
+
+function findBestKnowledgeMatch(query, knowledgeBase) {
+  const words = query.toLowerCase().split(/\s+/).filter(Boolean);
+
+  let bestSection = null;
+  let bestSentence = "";
+  let bestScore = 0;
+
+  Object.entries(knowledgeBase).forEach(([section, content]) => {
+    const sentences = content.split(/[.?!\n]/).map(s => s.trim()).filter(Boolean);
+
+    sentences.forEach((sentence) => {
+      let score = 0;
+
+      words.forEach((word) => {
+        if (sentence.includes(word)) score++;
+      });
+
+      if (score > bestScore && sentence.length > 15) {
+        bestScore = score;
+        bestSection = section;
+        bestSentence = sentence;
+      }
+    });
+  });
+
+  return {
+    section: bestSection,
+    sentence: bestSentence,
+    score: bestScore
+  };
+}
+
 /* ================= MAIN AI FUNCTION ================= */
 
 function getNaturalReply(message) {
@@ -1532,6 +1584,22 @@ function getNaturalReply(message) {
       };
     }
 
+    /* ===== LETTER OF RECOMMENDATION ===== */
+    if (
+      msg.includes("lor") ||
+      msg.includes("letter of recommendation") ||
+      msg.includes("recommendation")
+    ) {
+      return {
+        reply: random([
+          "Opening Agrani’s Letters of Recommendation.",
+          "Here are Agrani’s recommendation letters.",
+          "Let me open the LOR section for you."
+        ]),
+        action: () => openTab("lor")
+      };
+    }
+
     /* ===== GREETING ===== */
     if (msg.includes("hello") || msg.includes("hi") || msg.includes("hey")) {
       return {
@@ -1544,23 +1612,23 @@ function getNaturalReply(message) {
       };
     }
 
-    /* ===== 🔥 DYNAMIC SEARCH (NEW) ===== */
-    const content = getAllPortfolioContent();
-    const match = findBestMatch(msg, content);
+    /* ===== DYNAMIC KNOWLEDGE SEARCH ===== */
+    const knowledgeBase = getPortfolioKnowledgeBase();
+    const match = findBestKnowledgeMatch(msg, knowledgeBase);
 
-    if (match && match.length > 30) {
+    if (match.sentence && match.score > 0) {
       return {
-        reply: match,
-        action: null
+        reply: match.sentence,
+        action: match.section ? () => openTab(match.section) : null
       };
     }
 
     /* ===== DEFAULT ===== */
     return {
       reply: random([
-        "You can ask about Agrani’s projects, skills, or experience.",
+        "You can ask about Agrani’s projects, skills, experience, or letters of recommendation.",
         "I can guide you through different sections of the portfolio.",
-        "Try asking something like show projects or open skills.",
+        "Try asking something like show projects, open LOR, or tell me about experience.",
         "I’m here to help you explore Agrani’s work."
       ]),
       action: null
@@ -1570,7 +1638,7 @@ function getNaturalReply(message) {
     console.error("Siri Error:", error);
 
     return {
-      reply: "You can ask about Agrani’s projects, skills, or experience.",
+      reply: "You can ask about Agrani’s projects, skills, experience, or letters of recommendation.",
       action: null
     };
   }
