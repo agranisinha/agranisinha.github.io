@@ -2,77 +2,127 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Agrani Portfolio Mobile</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agrani Sinha | Mobile Portfolio</title>
 
-  <link rel="stylesheet" href="mobile.css">
+  <!-- FONTS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- MOBILE CSS -->
+  <link rel="stylesheet" href="mobile.css" />
 </head>
 
 <body class="mobile-page">
 
-  <!-- BACKDROP -->
-  <div class="mobile-backdrop"></div>
+  <!-- ================= HEADER ================= -->
+  <header class="mobile-header">
+    <div class="header-left">
+      <span class="logo">⚡ Agrani</span>
+    </div>
 
-  <!-- MAIN SCREEN -->
-  <div class="mobile-container">
+    <div class="header-right">
+      <button onclick="openCommand()" title="Command Palette">⌕</button>
+      <button onclick="toggleCopilot()" title="Copilot">✨</button>
+    </div>
+  </header>
 
-    <!-- HEADER -->
-    <div class="mobile-header">
-      <div class="logo">VS Code</div>
-      <div class="header-actions">
-        <button onclick="openMobilePanel('settings')">⚙️</button>
+  <!-- ================= MAIN EDITOR ================= -->
+  <main class="mobile-editor" id="mobileEditor">
+    <div class="editor-content">
+      <h2>Welcome 👋</h2>
+      <p>Tap below to explore your VS Code-style portfolio</p>
+    </div>
+  </main>
+
+  <!-- ================= BOTTOM NAV (VS CODE STYLE) ================= -->
+  <nav class="bottom-nav">
+    <button onclick="openPanel('explorer')">
+      📁
+      <span>Files</span>
+    </button>
+
+    <button onclick="openPanel('search')">
+      🔍
+      <span>Search</span>
+    </button>
+
+    <button onclick="openPanel('terminal')">
+      🖥
+      <span>Terminal</span>
+    </button>
+
+    <button onclick="openPanel('settings')">
+      ⚙️
+      <span>Settings</span>
+    </button>
+  </nav>
+
+  <!-- ================= SLIDE PANEL ================= -->
+  <div class="mobile-panel" id="mobilePanel">
+
+    <div class="panel-header">
+      <span id="panelTitle">Explorer</span>
+      <button onclick="closePanel()">×</button>
+    </div>
+
+    <div class="panel-body" id="panelContent">
+      <!-- Dynamic content loads here -->
+    </div>
+
+  </div>
+
+  <!-- ================= COPILOT SIDEBAR ================= -->
+  <div class="mobile-copilot" id="mobileCopilot">
+
+    <div class="copilot-header">
+      <span>✨ Agrani Copilot</span>
+      <button onclick="toggleCopilot()">×</button>
+    </div>
+
+    <div class="copilot-body" id="copilotMessages">
+      <div class="bot-msg">
+        Hi 👋 Ask me about projects, experience, skills, or contact details.
       </div>
     </div>
 
-    <!-- EDITOR -->
-    <div id="editorContent" class="editor">
-      <h2>Welcome 👋</h2>
-      <p>This is mobile VS Code UI</p>
-    </div>
-
-  </div>
-
-  <!-- SIDEBAR -->
-  <div id="sidebarPanel" class="panel m-sidebar">
-    <h3>Explorer</h3>
-    <div class="file" onclick="openTab('home')">home.tsx</div>
-    <div class="file" onclick="openTab('about')">about.html</div>
-    <div class="file" onclick="openTab('projects')">projects.js</div>
-  </div>
-
-  <!-- COPILOT -->
-  <div id="copilotSidebar" class="panel m-copilot">
-    <h3>Copilot</h3>
-
-    <div id="copilotMessages" class="copilot-messages"></div>
-
     <div class="copilot-input">
-      <input id="copilotInput" placeholder="Ask something..." />
-      <button id="copilotSend">Send</button>
+      <input
+        id="copilotInput"
+        type="text"
+        placeholder="Ask something..."
+      />
+      <button onclick="sendMessage()">➤</button>
     </div>
+
   </div>
 
-  <!-- TERMINAL -->
-  <div id="terminalPanel" class="panel m-terminal">
-    <h3>Terminal</h3>
-    <div id="terminalBody" class="terminal-body"></div>
-    <input id="terminalInput" placeholder="Type command..." />
+  <!-- ================= COMMAND PALETTE ================= -->
+  <div class="command-overlay" id="commandOverlay">
+
+    <div class="command-box">
+      <input
+        type="text"
+        placeholder="Type a command..."
+        id="commandInput"
+      />
+
+      <div class="command-list" id="commandList">
+        <div onclick="loadPage('home')">Open Home</div>
+        <div onclick="loadPage('projects')">Open Projects</div>
+        <div onclick="loadPage('skills')">Open Skills</div>
+        <div onclick="loadPage('contact')">Open Contact</div>
+      </div>
+    </div>
+
   </div>
 
-  <!-- SETTINGS -->
-  <div id="settingsPanel" class="panel m-settings">
-    <h3>Settings</h3>
-    <button onclick="alert('Theme change')">Change Theme</button>
-  </div>
+  <!-- ================= OVERLAY BACKDROP ================= -->
+  <div class="mobile-backdrop" id="mobileBackdrop" onclick="closeAllMobile()"></div>
 
-  <!-- BOTTOM NAV -->
-  <div class="bottom-nav">
-    <button onclick="openMobilePanel('explorer')">📁</button>
-    <button onclick="openMobilePanel('terminal')">💻</button>
-    <button onclick="openMobilePanel('copilot')">🤖</button>
-    <button onclick="openMobilePanel('settings')">⚙️</button>
-  </div>
-
+  <!-- ================= JS ================= -->
   <script src="mobile.js"></script>
+
 </body>
-</html>
+  </html>
