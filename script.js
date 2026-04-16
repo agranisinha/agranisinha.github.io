@@ -39,6 +39,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const green = document.getElementById("btnGreen");
   const feedback = document.getElementById("headerFeedback");
 
+      // ✅ MAC BUTTONS FIX
+   if (red) {
+     red.onclick = () => alert("Close disabled 😎");
+   }
+   
+   if (yellow) {
+     yellow.onclick = () => toggleSidebar();
+   }
+   
+   if (green) {
+     green.onclick = () => toggleCopilotSidebar(true);
+   }
+
   const cursorSquare = document.getElementById("cursorSquare");
   const cursorDot = document.getElementById("cursorDot");
 
@@ -1091,7 +1104,12 @@ function bindMenuEvents() {
       }
     });
   });
-
+   // ✅ FIX DROPDOWN CLICK FOR MOBILE
+   document.querySelectorAll(".dropdown div").forEach(item => {
+     item.addEventListener("click", (e) => {
+       e.stopPropagation(); // prevents menu close issue
+     });
+   });
    let touchStartX = 0;
 
    document.addEventListener("touchstart", e => {
