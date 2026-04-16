@@ -214,13 +214,12 @@ document.addEventListener("DOMContentLoaded", () => {
   mobileBackdrop.addEventListener("click", closeMobilePanels);
 
   function toggleSidebar() {
-    if (isMobile()) return; // 🚫 stop desktop logic on mobile
+    
     sidebarPanel?.classList.toggle("hide");
   }
 
   function toggleCopilotSidebar(force) {
-  if (isMobile()) return; // 🚫 mobile handled in mobile.js
-
+  
   const editor = $(".editor-area");
   if (!copilotSidebar) return;
 
@@ -269,7 +268,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function toggleSettings() {
-  if (isMobile()) return; // 🚫 mobile handled separately
+  
   settingsPanel?.classList.toggle("open");
   settingsPanel?.classList.remove("minimized");
 }
@@ -603,7 +602,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
  function toggleTerminal() {
-  if (isMobile()) return; // 🚫 mobile handled in mobile.js
+  
   if (!terminal) return;
 
   terminal.classList.toggle("open");
