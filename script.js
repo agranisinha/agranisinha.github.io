@@ -1178,7 +1178,20 @@ function getProjects() {
       <h1 class="hero-name">Projects</h1>
       <p class="about-sub">// selected work • applied AI • healthcare + software</p>
       <div class="project-grid">
-        <div class="project-card"><h3>ML Drug Discovery</h3><p>Built SVM models with 96.8% accuracy for tuberculosis inhibitor prediction.</p></div>
+        <div class="project-card"
+  onclick="openDocModal(
+    '🧠 ML Discovery Project',
+    [
+      { name: 'Dissertation Presentation', path: 'docs/Dissertationppt.pptx' },
+      { name: 'Thesis Document', path: 'docs/Thesis.pdf' }
+    ]
+  )">
+
+  <div class="play-overlay">📄</div>
+
+  <h3>🧠 ML Discovery</h3>
+  <p>Machine learning research and analysis project.</p>
+</div>
         <div class="project-card" onclick="openVideoModal('assets/images/VID_20260417_134312.mp4')">
   
   <div class="play-overlay">▶</div>
