@@ -1819,3 +1819,28 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 });
+
+// 🎬 VIDEO MODAL FUNCTIONS
+function openVideoModal(videoPath) {
+  const modal = document.getElementById("videoModal");
+  const video = document.getElementById("projectVideo");
+
+  if (!modal || !video) return;
+
+  video.src = videoPath;
+  modal.classList.add("show");
+
+  video.play();
+}
+
+function closeVideoModal() {
+  const modal = document.getElementById("videoModal");
+  const video = document.getElementById("projectVideo");
+
+  if (!modal || !video) return;
+
+  video.pause();
+  video.currentTime = 0;
+
+  modal.classList.remove("show");
+}
