@@ -364,25 +364,8 @@ function minimizeSettings() {
     });
   }
 
-  function openVideoModal(videoPath) {
-  const modal = document.getElementById("videoModal");
-  const video = document.getElementById("projectVideo");
 
-  video.src = videoPath;
-  modal.classList.add("show");
-
-  video.play();
-}
-
-function closeVideoModal() {
-  const modal = document.getElementById("videoModal");
-  const video = document.getElementById("projectVideo");
-
-  video.pause();
-  video.currentTime = 0;
-
-  modal.classList.remove("show");
-}
+  
   function typeWriter(el, text, speed = 18) {
     if (!el) return;
     el.textContent = "";
