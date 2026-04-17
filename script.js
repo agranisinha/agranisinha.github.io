@@ -1855,3 +1855,36 @@ function closeVideoModal() {
 
   modal.classList.remove("show");
 }
+function openDocModal(title, docs) {
+  const modal = document.getElementById("docModal");
+  const titleEl = document.getElementById("docTitle");
+  const list = document.getElementById("docList");
+
+  if (!modal || !list) return;
+
+  titleEl.textContent = title;
+
+  // Clear old docs
+  list.innerHTML = "";
+
+  // Add new docs
+  docs.forEach(doc => {
+    const item = document.createElement("a");
+    item.href = doc.path;
+    item.target = "_blank";
+    item.className = "doc-item";
+
+    item.innerHTML = `
+      <span>${doc.name}</span>
+      <span>📄</span>
+    `;
+
+    list.appendChild(item);
+  });
+
+  modal.classList.add("show");
+}
+
+function closeDocModal() {
+  document.getElementById("docModal")?.classList.remove("show");
+}
