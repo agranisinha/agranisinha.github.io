@@ -457,6 +457,20 @@
   <button onclick="toggleCopilotSidebar(true)">✨</button>
 </div>
   <div id="mobileBackdrop" class="mobile-backdrop"></div>
+<!-- 🌿 PROJECT VIDEO MODAL -->
+<div id="videoModal" class="video-modal">
+  <div class="video-overlay" onclick="closeVideoModal()"></div>
+
+  <div class="video-container">
+    <button class="video-close" onclick="closeVideoModal()">✖</button>
+
+    <video id="projectVideo" controls>
+      <source src="videos/plant-app.mp4" type="video/mp4" />
+      Your browser does not support video.
+    </video>
+  </div>
+</div>
+  
   <!-- Optional: Pyodide for Python terminal -->
   <!-- <script src="https://cdn.jsdelivr.net/pyodide/v0.29.3/full/pyodide.js"></script> -->
 
