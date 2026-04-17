@@ -1179,7 +1179,13 @@ function getProjects() {
       <p class="about-sub">// selected work • applied AI • healthcare + software</p>
       <div class="project-grid">
         <div class="project-card"><h3>ML Drug Discovery</h3><p>Built SVM models with 96.8% accuracy for tuberculosis inhibitor prediction.</p></div>
-        <div class="project-card"><h3>Inventory Management App</h3><p>Flutter app with Google Sheets backend.</p></div>
+        <div class="project-card" onclick="openVideoModal('assets/images/VID_20260417_134312.mp4')">
+  
+  <div class="play-overlay">▶</div>
+
+  <h3>📦 Inventory Management App</h3>
+  <p>Flutter-based inventory system with Google Sheets integration.</p>
+</div>
         <div class="project-card clickable" onclick="openProjectCarousel(['assets/images/Biocalculator/bio1.webp','assets/images/Biocalculator/bio2.webp','assets/images/Biocalculator/bio3.webp','assets/images/Biocalculator/bio4.webp'])"><h3>Bio Calculator App</h3><p>Lab calculation tool published on Play Store.</p><span class="view-btn">👁 View</span></div>
         <div class="project-card clickable" onclick="openProjectCarousel(['assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (1).jpeg','assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (4).jpeg','assets/images/WhatsApp Image 2026-04-13 at 22.27.45.jpeg'])"><h3>Respiratory Health Chatbot</h3><p>Interactive healthcare chatbot using Vue.js.</p><span class="view-btn">👁 View</span></div>
        <div class="project-card" onclick="openVideoModal('assets/images/667f5344ce4ff6569f32902e4a493778.mp4')">
