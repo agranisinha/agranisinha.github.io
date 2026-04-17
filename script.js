@@ -1183,9 +1183,14 @@ function getProjects() {
         <div class="project-card clickable" onclick="openProjectCarousel(['assets/images/Biocalculator/bio1.webp','assets/images/Biocalculator/bio2.webp','assets/images/Biocalculator/bio3.webp','assets/images/Biocalculator/bio4.webp'])"><h3>Bio Calculator App</h3><p>Lab calculation tool published on Play Store.</p><span class="view-btn">👁 View</span></div>
         <div class="project-card clickable" onclick="openProjectCarousel(['assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (1).jpeg','assets/images/WhatsApp Image 2026-04-13 at 22.27.44 (4).jpeg','assets/images/WhatsApp Image 2026-04-13 at 22.27.45.jpeg'])"><h3>Respiratory Health Chatbot</h3><p>Interactive healthcare chatbot using Vue.js.</p><span class="view-btn">👁 View</span></div>
        <div class="project-card" onclick="openVideoModal('assets/images/667f5344ce4ff6569f32902e4a493778.mp4')">
-        <h3>🌿 AI Plant Identification</h3>
-        <p>TensorFlow system for plant detection.</p>
-       </div>
+  
+  <div class="play-overlay">
+    ▶
+  </div>
+
+  <h3>🌿 AI Plant Identification</h3>
+  <p>TensorFlow system for plant detection.</p>
+</div>
         <div class="project-card clickable" onclick="window.open('https://github.com/agranisinha/AI-chess-and-checker', '_blank')">
           <h3>AI Chess & Checkers</h3>
           <p>Developed intelligent AI systems for Chess and Checkers using strategic algorithms and game theory.</p>
