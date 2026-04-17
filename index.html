@@ -470,7 +470,21 @@
     </video>
   </div>
 </div>
-  
+  <!-- 📄 DOCUMENT MODAL -->
+<div id="docModal" class="doc-modal">
+  <div class="doc-overlay" onclick="closeDocModal()"></div>
+
+  <div class="doc-container">
+
+    <div class="doc-header">
+      <h2 id="docTitle">Documents</h2>
+      <button class="doc-close" onclick="closeDocModal()">✖</button>
+    </div>
+
+    <div class="doc-list" id="docList"></div>
+
+  </div>
+</div>
   <!-- Optional: Pyodide for Python terminal -->
   <!-- <script src="https://cdn.jsdelivr.net/pyodide/v0.29.3/full/pyodide.js"></script> -->
 
