@@ -1228,7 +1228,7 @@ function getLOR() {
       <p class="code-line">// LORs - Recommendations</p>
       <h1 class="hero-name">Letters of Recommendation</h1>
       <div class="project-grid">
-        <div class="project-card clickable" onclick="openLOR('assets/images/Agrani Letter of Recommendation copy.pdf')"><h3>Clinical Informatics Internship</h3><p>Alivia Care</p><span class="view-btn">📄 View LOR</span></div>
+        <div class="project-card clickable" onclick="openLOR('docs/WhatsApp Image 2026-04-13 at 23.46.44.jpeg')"><h3>Clinical Informatics Internship</h3><p>Alivia Care</p><span class="view-btn">📄 View LOR</span></div>
         <div class="project-card clickable" onclick="openLOR('assets/images/LemonadestandLOR copy.jpeg')"><h3>Graphic Design & Game Development</h3><p>Lemonade Stand Bootcamp</p><span class="view-btn">📄 View LOR</span></div>
         <div class="project-card clickable" onclick="openLOR('docs/cdri-lor.jpeg')"><h3>Academic Recommendation</h3><p>Central Drug Research Institute</p><span class="view-btn">📄 View LOR</span></div>
         <div class="project-card clickable" onclick="openLOR('docs/sanfoundry-lor.jpeg')"><h3>Content Developer Role</h3><p>Sanfoundry</p><span class="view-btn">📄 View LOR</span></div>
