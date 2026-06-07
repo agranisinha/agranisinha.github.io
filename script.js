@@ -1257,6 +1257,7 @@ function getExperience() {
       <div class="about-card">
         <h3 class="section-title">PROFESSIONAL EXPERIENCE</h3>
         <div class="timeline">
+          <div class="timeline-item"><strong>Public Health Informatics Intern — Jacksonville Urban League</strong><span>Jacksonville, FL • Jun 2026 – Present</span><p>Developing Healthcare Continuum, a community-focused maternal health platform that leverages health informatics, public health data, patient monitoring, and digital care coordination to support maternal wellness and improve health equity across diverse populations.</p></div>
           <div class="timeline-item"><strong>Clinical Informatics Intern — Alivia Care</strong><span>Jacksonville, FL • Oct 2025 – Feb 2026</span><p>Analyzed clinical workflows, supported EHR-based reporting initiatives, and collaborated with informatics teams.</p></div>
           <div class="timeline-item"><strong>Data Science Analyst — BluCognition</strong><span>Pune, India • Mar 2022 – Jun 2023</span><p>Developed TensorFlow-based CNN models for bank statement extraction and financial document classification.</p></div>
           <div class="timeline-item"><strong>Academic Research Associate — Digiversal Consultant</strong><span>Noida, India • Dec 2020 – Mar 2022</span><p>Conducted technical research and data analysis for IT and analytics consulting projects.</p></div>
